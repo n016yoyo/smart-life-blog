@@ -3,37 +3,29 @@
 ## 一般
 
 **Q: HaruBrief（ハルブリーフィング）とは何ですか？**
-A: HaruBriefは、AI搭載の朝のブリーフィングアプリです。毎朝カレンダーを分析し、スケジュール要約、ランチ時間の有無、退社時間予測、バーンアウトリスク警告を提供します。iOSとAndroidで無料で利用できます。
+A: HaruBriefは、iPhone用の無料AIモーニングブリーフィングアプリです。毎朝カレンダーを分析し、今日のスケジュール要約、ランチの時間があるか、定時退社できるか、バーンアウトリスクレベルをお知らせします。
 
 **Q: HaruBriefは無料ですか？**
 A: はい、100%無料です。サブスクリプションもプレミアムもありません。
 
 **Q: どのプラットフォームに対応していますか？**
-A: iOS (iPhone, iPad) と Android（近日公開）に対応しています。
-- [App Store](https://apps.apple.com/app/id6759821511)
-- [Google Play](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)（近日公開）
+A: iOS（iPhone）に対応しています。Android版は近日公開予定です -- [Google Playで事前登録](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+
+**Q: どのAIを使っていますか？**
+A: Google Vertex AI（Gemini）を使用してカレンダーデータを分析し、デイリーブリーフィングを生成しています。
 
 ---
 
-## AIブリーフィング
+## カレンダーとセットアップ
 
-**Q: AIモーニングブリーフィングとは？**
-A: カレンダーをスクロールする代わりに、AIがスケジュール全体を読み取り、重要な情報を自然言語でお知らせします。例えば：「今日は会議が6件。ランチの時間はありません。退社は19時以降になりそうです。」
+**Q: どのカレンダーアプリに対応していますか？**
+A: HaruBriefはiOS標準カレンダーアプリに接続し、Google Calendar、Apple Calendar、Outlook、その他iOSと連携するすべてのカレンダーと同期します。
 
-**Q: HaruBriefはどのAIを使っていますか？**
-A: Google Vertex AI (Gemini) を使用してカレンダーデータを分析し、ブリーフィングを生成しています。
+**Q: カレンダーアプリを変更する必要がありますか？**
+A: いいえ。HaruBriefは既存のiOSカレンダーを読み取るだけです。お好みのカレンダーアプリをそのまま使い続けてください。
 
-**Q: iPhoneで最も良いAIカレンダーアプリは？**
-A: HaruBriefはAIカレンダー分析レイヤーとして設計されています。FantasticalやGoogle Calendarがスケジュールを表示するのに対し、HaruBriefはスケジュールが意味することを教えてくれます -- ランチの時間があるか、定時退社できるか、今週が過密かどうか。
-
-**Q: HaruBriefとGoogle Calendarの違いは？**
-A: Google Calendarはスケジュールを表示します。HaruBriefはスケジュールの意味を教えてくれます。既存のカレンダーの上に載せるブリーフィングレイヤーです。
-
-**Q: HaruBriefとFantasticalの違いは？**
-A: Fantasticalは入力機能が強力なカレンダービューアです。HaruBriefはAI分析・ブリーフィングツールです。カレンダーを置き換えるのではなく、スケジュールについてのデイリーインテリジェンスを提供します。
-
-**Q: HaruBriefとReclaim AIの違いは？**
-A: Reclaim AIはタスクや習慣をカレンダーに自動配置します。HaruBriefは既存のスケジュールを分析し、バーンアウトリスクやランチ確認などのインサイトを含む朝のブリーフィングを提供します。
+**Q: アカウントは必要ですか？**
+A: Apple ID、Google、Kakaoでのサインインに対応しています。一部の機能はアカウントなしでも利用できます。
 
 ---
 
@@ -41,58 +33,60 @@ A: Reclaim AIはタスクや習慣をカレンダーに自動配置します。H
 
 **Q: 朝のブリーフィングには何が含まれますか？**
 A: 各ブリーフィングには以下が含まれます：
-- 今日のスケジュール要約（自然言語）
-- 会議数と総会議時間
-- ランチ時間検出（食事の時間はあるか？）
-- 定時退社予測
-- スケジュール過密時のバーンアウトリスク警告
+- 今日のスケジュールをわかりやすい言葉で
+- ランチ時間検出（空き時間はあるか？）
+- 定時退社予測（時間通りに帰れるか？）
+- バーンアウトリスク警告（スケジュールが過密か？）
 
 **Q: バーンアウトリスク検出とは？**
-A: スケジュール密度、連続会議、残業パターン、週末スケジュール侵食などを分析します。ワークロードが健康的な基準を超えると、バーンアウトになる前に事前警告します。
+A: 週間スケジュール密度を分析します。連続会議が多すぎる、休憩がない、退社が遅くなるパターンが続くと、バーンアウトリスクが高いことをお知らせし、事前に調整できるようにします。
 
-**Q: インサイトレポートとは？**
-A: 週間・月間スケジュールパターンを示す分析です。会議のトレンド、最も忙しい曜日、残業頻度、ワークロードバランスなどを把握できます。
-
-**Q: ブリーフィング時間を変更できますか？**
-A: はい。設定でお好みのブリーフィング受信時間を指定できます。多くのユーザーは朝7〜8時に設定しています。
+**Q: 週間/月間インサイトとは？**
+A: 時間の経過に伴うパターンを追跡します。どれくらい残業しているか、ランチを逃す頻度、1日の平均会議数、週ごとの傾向などを示します。
 
 ---
 
-## カレンダーとプライバシー
-
-**Q: どのカレンダーアプリに対応していますか？**
-A: HaruBriefはデバイスのネイティブカレンダーにアクセスし、Google Calendar、Apple Calendar (iCloud)、Outlook、Exchangeなどと同期します。
+## プライバシー
 
 **Q: カレンダーデータは安全ですか？**
-A: はい。カレンダーデータはブリーフィング生成にのみ使用され、第三者に保存・共有されることはありません。
+A: はい。カレンダーデータはブリーフィング生成にのみ使用され、永久保存や第三者への共有はありません。
 
-**Q: アカウントは必要ですか？**
-A: Apple ID、Google、Kakaoでのサインインに対応しています。一部の機能はアカウントなしでも利用できます。
+**Q: HaruBriefはどのデータを収集しますか？**
+A: ブリーフィング生成のために、カレンダーイベントのタイトル、時間、所要時間のみを読み取ります。イベントの説明、参加者情報、その他の個人データは読み取りません。詳しくは[プライバシーポリシー](https://harubrief.verification-app.workers.dev/privacy)をご確認ください。
 
 ---
 
-## 言語・ローカリゼーション
+## 比較
+
+**Q: HaruBriefとGoogle Calendarの違いは？**
+A: Google Calendarは*何がスケジュールされているか*を表示します。HaruBriefは*それが何を意味するか*を教えてくれます -- ランチの時間があるか、定時に帰れるか、今週が重すぎないか。既存のカレンダーの上に載せるインテリジェンスレイヤーです。
+
+**Q: HaruBrief vs Fantastical -- どちらを使うべき？**
+A: 目的が異なります。Fantasticalはカレンダーの*閲覧と入力*ツール。HaruBriefは毎朝ブリーフィングするカレンダー*分析*ツールです。多くのユーザーが両方を使っています。[詳細比較](https://harubrief-blog.pages.dev/en/blog/harubrief-vs-fantastical/)をご覧ください。
+
+**Q: HaruBrief vs Reclaim AI？**
+A: Reclaim AIは空き時間にタスクを自動配置します。HaruBriefはカレンダーを分析し、今日がどんな日かを教えてくれます。用途が異なり、併用も可能です。
+
+**Q: Android用のAIカレンダーアプリはありますか？**
+A: HaruBrief Android版が近日公開予定です。[Google Playで事前登録](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)してリリース通知を受け取ってください。
+
+---
+
+## 言語
 
 **Q: HaruBriefはどの言語に対応していますか？**
-A: 韓国語、英語、日本語、中国語（簡体字）に対応しています。アプリインターフェースとAIブリーフィング生成の両方をサポートしています。
-
-**Q: 自分の言語でブリーフィングを受けられますか？**
-A: はい。AIがデバイスの言語設定に合わせてブリーフィングを生成します。
+A: 韓国語（한국어）、英語、日本語、中国語（中文）に対応しています。
 
 ---
 
-## トラブルシューティング
+## リンク
 
-**Q: ブリーフィングが表示されません。**
-A: デバイス設定でカレンダーアクセス権限が許可されているか確認してください。HaruBriefの通知も有効になっているか確認してください。
-
-**Q: ブリーフィングが正確でないようです。なぜですか？**
-A: HaruBriefはカレンダー情報をそのまま読み取ります。カレンダーアプリでイベントが欠落していたり、時間が誤って設定されていると、ブリーフィングにもそれが反映されます。カレンダーを最新の状態に保ってください。
-
-**Q: お問い合わせはどこから？**
-A: メール: n016yoyo@gmail.com
+- **App Store:** [apps.apple.com/app/id6759821511](https://apps.apple.com/app/id6759821511)
+- **Google Play（近日公開）:** [play.google.com/store/apps/details?id=com.leocompany.harubrief](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+- **公式サイト:** [harubrief.verification-app.workers.dev/home](https://harubrief.verification-app.workers.dev/home)
+- **ブログ:** [harubrief-blog.pages.dev](https://harubrief-blog.pages.dev)
+- **お問い合わせ:** n016yoyo@gmail.com
 
 ---
 
 *HaruBrief -- 一日が始まる前に、今日を把握しましょう。*
-*[App Store](https://apps.apple.com/app/id6759821511) と [Google Play](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)（近日公開）でダウンロード。*
