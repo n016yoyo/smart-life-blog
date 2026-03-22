@@ -4,7 +4,8 @@
 > HaruBrief reads your iPhone calendar every morning and delivers a personalized AI briefing.
 
 [![App Store](https://img.shields.io/badge/App_Store-Download-blue?logo=apple)](https://apps.apple.com/app/id6759821511)
-![Platform](https://img.shields.io/badge/Platform-iOS-lightgrey)
+[![Google Play](https://img.shields.io/badge/Google_Play-Coming_Soon-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+![Platform](https://img.shields.io/badge/Platform-iOS_%7C_Android-lightgrey)
 ![Category](https://img.shields.io/badge/Category-Productivity-orange)
 ![Price](https://img.shields.io/badge/Price-Free-green)
 
@@ -69,7 +70,7 @@ Yes. Calendar data is used only to generate your briefing and is not stored or s
 Korean (한국어), English, Japanese (日本語), and Chinese (中文).
 
 ### Is HaruBrief available on Android?
-Currently iOS only. Android version is in consideration.
+Android version is coming soon. [Pre-register on Google Play](https://play.google.com/store/apps/details?id=com.leocompany.harubrief) to be notified at launch.
 
 ### What is the difference between HaruBrief and Google Calendar?
 Google Calendar shows you *what* is scheduled. HaruBrief tells you *what it means* — whether you'll have lunch, whether you'll make it home on time, and whether your week is too heavy. It's a briefing layer on top of your existing calendar.
@@ -84,7 +85,7 @@ Sign-in is supported via Apple ID, Google, or Kakao. Some features are available
 
 ## Availability
 
-- **Platform:** iOS 16+
+- **Platform:** iOS 16+ · Android (Coming Soon)
 - **Price:** Free
 - **App Store:** [Download HaruBrief](https://apps.apple.com/app/id6759821511)
 - **Bundle ID:** `com.leocompany.harubrief`

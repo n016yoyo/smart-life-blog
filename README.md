@@ -22,9 +22,13 @@ Stop wasting food. AI scans your grocery receipts and alerts you before anything
 ### 🎁 [GiftWallet — Gift Card Manager](./giftwallet/)
 AI barcode scanner for Korean gift cards (기프티콘). Never let a gift card expire unused.
 
-- 📱 Auto-scan Korean barcodes
-- ⏰ Expiry alerts
-- 🌐 Korean → English/Japanese/Chinese translation
+- 📱 Auto-scan Korean barcodes → brand, amount, expiry extracted instantly
+- 🌐 Korean → English / Japanese / Chinese auto-translation
+- ⏰ Expiry alerts + calendar sync
+- 🏠 Home screen widget (Android)
+
+[![App Store](https://img.shields.io/badge/App_Store-iOS-black?logo=apple)](https://apps.apple.com/app/id6759313390)
+[![Google Play](https://img.shields.io/badge/Google_Play-Android-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.giftwallet)
 
 ---
 
@@ -41,6 +45,13 @@ Start your day with an AI-generated summary of your calendar, weather, and tasks
 
 Tips on food management, productivity, and smart app picks:
 👉 [n016yoyo.blogspot.com](https://n016yoyo.blogspot.com)
+
+### Recent Posts
+- 🇰🇷 [외국인 동료에게 기프티콘 선물했는데, 한글 못 읽어서 못 쓸 뻔한 이야기](https://n016yoyo.blogspot.com/2026/02/blog-post.html)
+- 🇰🇷 [기프티콘 안 쓰고 버리는 사람 특징 5가지 (+ 해결법)](https://n016yoyo.blogspot.com/2026/02/5.html)
+- 🇺🇸 [Can't Read Korean Gift Cards? This App Translates Them Instantly](https://n016yoyo.blogspot.com/2026/02/i-got-korean-gift-card-and-couldnt-read.html)
+- 🇯🇵 [韓国ギフト券が読めない？このアプリが自動翻訳してくれる](https://n016yoyo.blogspot.com/2026/02/blog-post_25.html)
+- 🇨🇳 [用不了韩国礼品券？这个App帮你自动翻译](https://n016yoyo.blogspot.com/2026/02/app.html)
 
 ---
 
