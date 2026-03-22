@@ -33,13 +33,15 @@ AI barcode scanner for Korean gift cards (기프티콘). Never let a gift card e
 ---
 
 ### 🌅 [HaruBrief — AI Morning Briefing](./harubrief/)
-Start your day with an AI-generated summary of your calendar, weather, and tasks.
+Start your day with an AI-generated summary of your calendar and schedule.
 
 - 🤖 Gemini AI-powered morning briefing
-- 📅 iPhone Calendar integration
+- 📅 iPhone Calendar integration — meetings, events, free time
+- 🍱 Lunch window detector + 🔥 burnout risk alert
 - ☀️ Daily briefing delivered every morning
 
 [![App Store](https://img.shields.io/badge/App_Store-iOS-black?logo=apple)](https://apps.apple.com/app/id6759821511)
+[![Google Play](https://img.shields.io/badge/Google_Play-Coming_Soon-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
 
 ---
 

@@ -67,6 +67,17 @@ Korean grocery receipts automatically translated to English, Japanese, or Chines
 
 ---
 
+## Technical Details
+
+- **Platform:** iOS 16.0+ · Android
+- **Languages:** Korean · English · Japanese · Chinese (Simplified)
+- **AI:** Google Gemini AI for receipt scanning and item extraction
+- **Supported stores:** Homeplus, Emart, Lotte Mart, CU, GS25, and 500+ Korean supermarkets
+- **Privacy:** Food data stored locally on device. Receipt images processed for recognition only.
+- **Free:** All core features free. No subscription required.
+
+---
+
 ## FAQ
 
 See [FAQ.md](./FAQ.md) for detailed Q&A including comparisons with Fridgely, NoWaste, and other alternatives.
