@@ -45,6 +45,7 @@
             "Calendar view for expiring items",
             "Home screen widget (Android)",
             "4-language auto-translation (Korean, English, Japanese, Chinese)",
+            "Works with any grocery receipt worldwide — Walmart, Costco, Whole Foods, Trader Joe's, Target, ALDI, Tesco, Carrefour, AEON, and more",
             "Korean supermarket receipt support (Homeplus, Emart, Lotte Mart, CU, GS25)"
         ]
     }
@@ -77,6 +78,14 @@
                 "acceptedAnswer": {
                     "@type": "Answer",
                     "text": "Track expiry dates proactively with Fridgi. It sends alerts before food expires. At D-7 you have time to plan meals, at D-3 you can prioritize those items. Users report throwing away significantly less food after using Fridgi for 2-3 weeks."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Does Fridgi work with receipts from stores outside Korea?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Fridgi's AI works with any grocery receipt worldwide. It supports major global retailers like Walmart, Costco, Whole Foods, Trader Joe's, Target, Kroger, ALDI, Lidl, Tesco, Sainsbury's, Carrefour, AEON, Lawson, and thousands more. The AI automatically detects food items and estimates shelf life regardless of store or country."
                 }
             },
             {
@@ -123,6 +132,11 @@
         .feature-item strong { display: block; margin-bottom: 4px; }
         .lang-links { margin: 24px 0; }
         .lang-links a { margin-right: 16px; color: #0066cc; text-decoration: none; }
+        .store-section { margin: 16px 0; }
+        .store-region { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+        .store-region strong { display: block; margin-bottom: 6px; font-size: 1.05em; }
+        .store-region .stores { color: #555; line-height: 1.7; }
+        .store-highlight { background: linear-gradient(135deg, #e8f5e9, #f1f8e9); border-radius: 8px; padding: 16px 20px; margin: 16px 0; text-align: center; font-size: 1.05em; color: #2e7d32; }
         .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
         .footer a { color: #0066cc; text-decoration: none; }
         @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
@@ -157,7 +171,27 @@
         </div>
 
         <h2>Supported Stores</h2>
-        <p>Homeplus, Emart, Lotte Mart, CU, GS25, and 500+ Korean supermarkets. Also works with international receipts.</p>
+        <div class="store-highlight">Fridgi's AI works with <strong>any grocery receipt</strong> — no matter where you shop, worldwide.</div>
+
+        <div class="store-section">
+            <div class="store-region">
+                <strong>North America</strong>
+                <span class="stores">Walmart, Costco, Whole Foods, Trader Joe's, Target, Kroger, Safeway, Publix, H-E-B, Wegmans, ALDI, Meijer, Sam's Club, H Mart, 99 Ranch Market</span>
+            </div>
+            <div class="store-region">
+                <strong>Europe</strong>
+                <span class="stores">Tesco, Sainsbury's, ALDI, Lidl, Carrefour, Leclerc, REWE, Edeka, Albert Heijn, Migros, Coop, SPAR, Mercadona, Esselunga</span>
+            </div>
+            <div class="store-region">
+                <strong>Asia &amp; Oceania</strong>
+                <span class="stores">AEON, Lawson, FamilyMart, 7-Eleven, Don Quijote, Woolworths, Coles, NTUC FairPrice, Big C, Lotte Mart, S-Mart</span>
+            </div>
+            <div class="store-region">
+                <strong>Korea</strong>
+                <span class="stores">Homeplus, Emart, Lotte Mart, Costco Korea, CU, GS25, GS The Fresh, No Brand, Traders, Hanaromart, and 500+ more</span>
+            </div>
+        </div>
+        <p style="color: #888; font-size: 0.9em; text-align: center;">Not limited to these stores — Fridgi reads any printed or digital grocery receipt.</p>
 
         <h2>FAQ</h2>
         <p>See the full <a href="./FAQ.md">FAQ</a> for detailed Q&A including comparisons with Fridgely, NoWaste, and other alternatives.</p>
