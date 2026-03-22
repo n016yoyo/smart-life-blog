@@ -1,66 +1,49 @@
-# Smart Life Blog — AI Apps for Everyday Life
+# Smart Life Apps — by n016yoyo
 
-> Practical apps and tips for productivity, food management, and daily optimization. Built by LEO Company.
+AI-powered apps to simplify everyday life. Free for everyone.
 
 ---
 
 ## Our Apps
 
-### 🌅 HaruBrief — AI Morning Briefing
-**The AI that reads your calendar and tells you what matters today.**
+### 🥦 [Fridgi — Food Expiry Tracker](./fridgi/)
+Stop wasting food. AI scans your grocery receipts and alerts you before anything expires.
 
-- [📱 Download on App Store](https://apps.apple.com/app/id6759821511)
-- [🌐 Official Site](https://harubrief.verification-app.workers.dev/home)
-- [📖 Full Details & FAQ →](./harubrief/README.md)
+- 📸 AI receipt scan — add 20 items from one photo
+- 🔔 Expiry alerts at D-7, D-3, and on the day
+- 📊 Fridge · Freezer · Pantry dashboard
+- 🌍 Korean, English, Japanese, Chinese
 
-**What it does:** HaruBrief connects to your iPhone calendar every morning and generates an AI-powered briefing — including lunch availability, on-time departure predictions, and burnout risk alerts. No more opening your calendar to figure out your day.
-
-**Best for:** Busy professionals, students, anyone with a packed calendar.
-
-Keywords: AI calendar summary app, morning briefing app, AI 일정 요약, 하루브리핑, AIスケジュール要約, AI日程摘要
+[![App Store](https://img.shields.io/badge/App_Store-iOS-black?logo=apple)](https://apps.apple.com/app/id6760248261)
+[![Google Play](https://img.shields.io/badge/Google_Play-Android-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.refridge)
 
 ---
 
-### 🎁 GiftWallet — Gifticon Manager
-**Scan, store, and never let a gift card expire again.**
+### 🎁 [GiftWallet — Gift Card Manager](./giftwallet/)
+AI barcode scanner for Korean gift cards (기프티콘). Never let a gift card expire unused.
 
-- [📖 Full Details & FAQ →](./giftwallet/README.md)
-
-**What it does:** AI barcode scanner automatically registers Korean gift cards (기프티콘). Expiry alerts, usage tracking, and multilingual support.
-
-**Best for:** Anyone who receives Korean gift cards (기프티콘), travelers, expats.
-
-Keywords: gifticon manager app, Korean gift card app, 기프티콘 관리 앱, barcode gift card scanner
+- 📱 Auto-scan Korean barcodes
+- ⏰ Expiry alerts
+- 🌐 Korean → English/Japanese/Chinese translation
 
 ---
 
-### 🥗 Fridgi — Food Expiry Tracker
-**Track what's in your fridge, reduce food waste.**
+### 🌅 [HaruBrief — AI Morning Briefing](./harubrief/)
+Start your day with an AI-generated summary of your calendar, weather, and tasks.
 
-- [📖 Full Details & FAQ →](./fridgi/README.md)
-
-**What it does:** Scan barcodes or enter food manually to track expiry dates. AI alerts before food goes bad.
-
-**Best for:** Households, meal preppers, anyone reducing food waste.
-
-Keywords: food expiry tracker app, refrigerator management app, 유통기한 관리 앱, food waste app
+- 🤖 GPT-powered morning briefing
+- 📅 Calendar + task integration
+- ☀️ Daily briefing delivered every morning
 
 ---
 
-## Blog & Resources
+## Blog
 
-- 🇰🇷 [Korean Blog Posts](https://harubrief-blog.pages.dev/ko/)
-- 🇺🇸 [English Blog Posts](https://harubrief-blog.pages.dev/en/)
-- 🇯🇵 [Japanese Blog Posts](https://harubrief-blog.pages.dev/ja/)
-
----
-
-## About LEO Company
-
-We build practical iOS apps that use AI to simplify everyday routines — from managing your morning schedule to tracking food in your fridge.
-
-Contact: [harubrief.verification-app.workers.dev](https://harubrief.verification-app.workers.dev/home)
+Tips on food management, productivity, and smart app picks:
+👉 [n016yoyo.blogspot.com](https://n016yoyo.blogspot.com)
 
 ---
 
-*This repository is maintained for transparency and community engagement. Each app folder contains detailed feature documentation and FAQ.*
+## Contact
+
+📧 n016yoyo@gmail.com
