@@ -1,0 +1,27 @@
+title: Smart Life Apps
+description: >-
+  AI-powered apps for everyday life: HaruBrief (AI morning briefing), 
+  GiftWallet (Korean gift card manager), Fridgi (food expiry tracker). 
+  Free apps by LEO Company.
+lang: en
+theme: minima
+
+minima:
+  skin: classic
+
+author:
+  name: LEO Company
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - "*.sh"
+  - "*.json"
