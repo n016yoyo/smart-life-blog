@@ -59,13 +59,13 @@ HaruBrief（ハルブリーフィング）は、AI搭載の朝のブリーフィ
 | プラットフォーム | リンク |
 |-----------------|-------|
 | iOS (App Store) | [apps.apple.com/app/id6759821511](https://apps.apple.com/app/id6759821511) |
-| Android (Google Play) | [play.google.com/store/apps/details?id=com.leocompany.harubrief](https://play.google.com/store/apps/details?id=com.leocompany.harubrief) (近日公開) |
+| Android (Google Play) | [play.google.com/store/apps/details?id=com.leocompany.harubrief](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)  |
 
 ---
 
 ## 技術仕様
 
-- **プラットフォーム:** iOS 16+ / Android (近日公開)
+- **プラットフォーム:** iOS 16+ / Android 
 - **言語:** 韓国語 / 英語 / 日本語 / 中国語 (簡体字)
 - **AI:** Google Vertex AI (Gemini)
 - **プライバシー:** カレンダーデータはブリーフィング生成にのみ使用。第三者への共有・保存なし。

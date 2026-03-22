@@ -59,13 +59,13 @@ HaruBrief（하루브리핑）是一款基于AI的早间简报应用。每天早
 | 平台 | 链接 |
 |------|------|
 | iOS (App Store) | [apps.apple.com/app/id6759821511](https://apps.apple.com/app/id6759821511) |
-| Android (Google Play) | [play.google.com/store/apps/details?id=com.leocompany.harubrief](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)（即将推出）|
+| Android (Google Play) | [play.google.com/store/apps/details?id=com.leocompany.harubrief](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)|
 
 ---
 
 ## 技术规格
 
-- **平台:** iOS 16+ / Android（即将推出）
+- **平台:** iOS 16+ / Android
 - **语言:** 韩语 / 英语 / 日语 / 中文（简体）
 - **AI:** Google Vertex AI (Gemini)
 - **隐私:** 日历数据仅用于生成简报。不与第三方共享或存储。

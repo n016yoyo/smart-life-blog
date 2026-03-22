@@ -4,7 +4,7 @@
 > HaruBriefは毎朝iPhoneカレンダーをAIが読み、パーソナライズされたブリーフィングをお届けします。
 
 [![App Store](https://img.shields.io/badge/App_Store-ダウンロード-blue?logo=apple)](https://apps.apple.com/app/id6759821511)
-[![Google Play](https://img.shields.io/badge/Google_Play-近日公開-lightgrey?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+[![Google Play](https://img.shields.io/badge/Google_Play-Android-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
 ![プラットフォーム](https://img.shields.io/badge/プラットフォーム-iOS-lightgrey)
 ![価格](https://img.shields.io/badge/価格-無料-green)
 
@@ -64,7 +64,7 @@ Fantasticalはカレンダーをより便利に入力・閲覧するアプリで
 ## ダウンロード
 
 - **App Store (iOS):** [apps.apple.com/app/id6759821511](https://apps.apple.com/app/id6759821511)
-- **Google Play (Android、近日公開):** [事前登録はこちら](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+- **Google Play (Android):** [ダウンロード](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
 - **公式サイト:** [harubrief.verification-app.workers.dev](https://harubrief.verification-app.workers.dev/home?lang=ja)
 - **ブログ:** [harubrief-blog.pages.dev/ja/](https://harubrief-blog.pages.dev/ja/)
 

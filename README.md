@@ -41,7 +41,7 @@ Start your day with an AI-generated summary of your calendar and schedule.
 - ☀️ Daily briefing delivered every morning
 
 [![App Store](https://img.shields.io/badge/App_Store-iOS-black?logo=apple)](https://apps.apple.com/app/id6759821511)
-[![Google Play](https://img.shields.io/badge/Google_Play-Coming_Soon-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
+[![Google Play](https://img.shields.io/badge/Google_Play-Android-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
 
 ---
 
