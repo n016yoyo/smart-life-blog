@@ -16,7 +16,7 @@ A: Yes — 100% free. No subscription, no premium tier.
 A: HaruBrief uses Google Vertex AI (Gemini) to analyze calendar data and generate briefings.
 
 **Q: Which platforms does HaruBrief support?**
-A: iOS (iPhone). Android available on Google Play — [pre-register on Google Play](https://play.google.com/store/apps/details?id=com.leocompany.harubrief).
+A: iOS (iPhone) and Android. [Download on Google Play](https://play.google.com/store/apps/details?id=com.leocompany.harubrief).
 
 ### Calendar
 

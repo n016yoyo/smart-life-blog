@@ -109,8 +109,8 @@ Sign-in is supported via Apple ID, Google, or Kakao. Some features are available
 
 ## Read in Your Language
 
-- [🇰🇷 한국어 (Korean)](./README-ko.md)
-- [🇯🇵 日本語 (Japanese)](./README-ja.md)
-- [🇨🇳 中文 (Chinese)](./README-zh.md)
-- [📋 FAQ — All Languages](./FAQ.md)
+- [🇰🇷 한국어 (Korean)](./README.ko.md)
+- [🇯🇵 日本語 (Japanese)](./README.ja.md)
+- [🇨🇳 中文 (Chinese)](./README.zh.md)
+- [📋 FAQ — All Languages](./faq.html)
 
