@@ -33,25 +33,35 @@ AI barcode scanner for Korean gift cards (기프티콘). Never let a gift card e
 ---
 
 ### 🌅 [HaruBrief — AI Morning Briefing](./harubrief/)
-Start your day with an AI-generated summary of your calendar, weather, and tasks.
+Your calendar, read and explained by AI every morning.
 
-- 🤖 GPT-powered morning briefing
-- 📅 Calendar + task integration
-- ☀️ Daily briefing delivered every morning
+- 🤖 Daily AI briefing from your iPhone calendar (powered by Google Gemini)
+- 🍱 Lunch window detection — know if you have time to eat
+- 🏃 On-time departure prediction — know if you'll leave work on time
+- 🔥 Burnout risk alert — flagged before you feel it
+- 📊 Weekly & monthly schedule insights
+
+[![App Store](https://img.shields.io/badge/App_Store-iOS-black?logo=apple)](https://apps.apple.com/app/id6759821511)
+[![Google Play](https://img.shields.io/badge/Google_Play-Coming_Soon-lightgrey?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)
 
 ---
 
-## Blog
+## Blog & Resources
 
-Tips on food management, productivity, and smart app picks:
-👉 [n016yoyo.blogspot.com](https://n016yoyo.blogspot.com)
+### Official Blog
+- 🌐 [harubrief-blog.pages.dev](https://harubrief-blog.pages.dev) — AI productivity & calendar tips (ko/en/ja)
+- 📝 [n016yoyo.blogspot.com](https://n016yoyo.blogspot.com) — Multilingual app tips (ko/en/ja/zh)
 
-### Recent Posts
+### Recent Posts — HaruBrief
+- 🇰🇷 [AI 일정 요약 앱 추천 2026 — 아이폰 캘린더 앱 TOP 5](https://n016yoyo.blogspot.com/2026/03/ai-2026-top-5.html)
+- 🇺🇸 [Best AI Calendar Apps for iPhone in 2026 — I Tested 7](https://n016yoyo.blogspot.com/2026/03/best-ai-calendar-apps-for-iphone-in.html)
+- 🇯🇵 [AIでスケジュール管理が変わった — HaruBriefガイド2026](https://n016yoyo.blogspot.com/2026/03/ai-harubrief2026.html)
+- 🇨🇳 [2026年最佳AI日程摘要App推荐](https://n016yoyo.blogspot.com/2026/03/2026aiapp-harubrief.html)
+
+### Recent Posts — GiftWallet & Fridgi
 - 🇰🇷 [외국인 동료에게 기프티콘 선물했는데, 한글 못 읽어서 못 쓸 뻔한 이야기](https://n016yoyo.blogspot.com/2026/02/blog-post.html)
-- 🇰🇷 [기프티콘 안 쓰고 버리는 사람 특징 5가지 (+ 해결법)](https://n016yoyo.blogspot.com/2026/02/5.html)
 - 🇺🇸 [Can't Read Korean Gift Cards? This App Translates Them Instantly](https://n016yoyo.blogspot.com/2026/02/i-got-korean-gift-card-and-couldnt-read.html)
-- 🇯🇵 [韓国ギフト券が読めない？このアプリが自動翻訳してくれる](https://n016yoyo.blogspot.com/2026/02/blog-post_25.html)
-- 🇨🇳 [用不了韩国礼品券？这个App帮你自动翻译](https://n016yoyo.blogspot.com/2026/02/app.html)
+- 🇰🇷 [기프티콘 안 쓰고 버리는 사람 특징 5가지 (+ 해결법)](https://n016yoyo.blogspot.com/2026/02/5.html)
 
 ---
 
