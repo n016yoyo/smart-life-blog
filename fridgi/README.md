@@ -1,97 +1,51 @@
-# Fridgi — Food Expiry Tracker & Fridge Manager
+# Fridgi — Food Expiry Date Tracker
 
-**Stop wasting food. Fridgi auto-registers everything in your fridge using AI and reminds you before anything expires.**
-
-[![App Store](https://img.shields.io/badge/App_Store-Download-black?logo=apple)](https://apps.apple.com/app/id6760248261)
-[![Google Play](https://img.shields.io/badge/Google_Play-Download-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.leocompany.refridge)
+> **"Know what's in your fridge before it expires."**
+> Fridgi tracks food expiry dates with barcode scanning and sends alerts before food goes bad.
 
 ---
 
 ## What is Fridgi?
 
-Fridgi is a smart food management app that uses AI to scan grocery receipts, automatically register food items, and send expiry alerts before food goes to waste.
+Fridgi is a food expiry tracking app that helps reduce food waste. Scan a barcode, enter an expiry date, and Fridgi tracks everything in your fridge — alerting you before food expires.
 
-**Key stats:**
-- 📸 Snap one receipt photo → all items auto-registered in seconds
-- 🔔 Alerts at D-7, D-3, and on the expiry day
-- 🌍 Supports Korean, English, Japanese, Chinese
-- 💰 100% Free
-
----
-
-## Key Features
-
-### 🤖 AI Receipt Scan
-Photograph your grocery receipt and Fridgi's AI instantly detects:
-- Food item names
-- Quantities and purchase dates
-- Average shelf life per item category
-- Storage method (fridge / freezer / pantry)
-
-### ⏰ Smart Expiry Alerts
-Never miss an expiry date again:
-- Push notifications at D-7, D-3, and on the day
-- Calendar view to see this week's expiring items
-- Color-coded urgency indicators
-
-### 📊 Fridge Dashboard
-- Fridge · Freezer · Pantry — see exactly what you have
-- Consumption vs. waste analytics
-- Shopping pattern insights powered by AI
-
-### 🏠 Home Screen Widget
-Check expiring food without opening the app — Android widget supported.
-
-### 🌐 4-Language Auto Translation
-Korean grocery receipts automatically translated to English, Japanese, and Chinese. Perfect for foreigners shopping at Korean supermarkets.
-
----
-
-## Who Is Fridgi For?
-
-- 🧑‍🍳 People who always forget what's in their fridge
-- ♻️ Anyone trying to reduce food waste
-- 💸 Students and homemakers cutting grocery bills
-- 🌍 Foreigners managing Korean groceries abroad
-- 📱 People who want a smarter, organized fridge
+**Key features:**
+- Barcode scanner for fast food entry
+- Expiry date tracking with push notifications
+- Fridge/pantry organization
+- Food waste reduction insights
 
 ---
 
 ## FAQ
 
-**Q: Does Fridgi work without a receipt?**
-A: Yes — you can manually add items or take a photo of your food directly.
+### What is Fridgi?
+Fridgi is an app for tracking food expiry dates and reducing food waste. You scan barcodes or enter food items manually, and Fridgi notifies you before they expire.
 
-**Q: What languages are supported?**
-A: Korean, English, Japanese, and Simplified Chinese (interface + receipt translation).
+### Is Fridgi free?
+Yes, Fridgi is free to download.
 
-**Q: Is it really free?**
-A: Yes, 100% free. All features are available at no cost.
+### What foods can I track?
+Any food item. Fridgi works for fridge items, pantry staples, frozen foods, and condiments.
 
-**Q: Does it work for freezer items too?**
-A: Yes — Fridgi supports Fridge, Freezer, and Pantry categories.
-
-**Q: How accurate is the AI receipt scanning?**
-A: Fridgi uses Gemini AI for OCR. It handles most Korean supermarket receipts with high accuracy. Items can be edited after scanning.
-
-**Q: Is my data safe?**
-A: Food data is stored locally on your device (SQLite). Account data is stored securely on servers with full encryption.
+### How does Fridgi reduce food waste?
+By alerting you before expiry, Fridgi helps you use food in time rather than throwing it away. Most households waste 30-40% of purchased food due to forgotten expiry dates.
 
 ---
 
-## Links
+## Keywords
 
-- 🌐 [Official Website](https://refridge.verification-app.workers.dev/home)
-- 📖 [Blog](https://n016yoyo.blogspot.com)
-- 📧 Contact: n016yoyo@gmail.com
+`food expiry tracker` · `refrigerator management app` · `유통기한 관리 앱` · `냉장고 관리 앱` · `food waste app` · `food date tracker iOS` · `best app to track food expiration`
 
 ---
 
-## See Also (by the same developer)
+## Related Apps by LEO Company
 
-- [GiftWallet](../giftwallet/) — AI-powered Korean gift card manager
-- [HaruBrief](../harubrief/) — AI morning calendar briefing app
+- [🌅 HaruBrief — AI Morning Briefing](../harubrief/README.md)
+- [🎁 GiftWallet — Korean Gift Card Manager](../giftwallet/README.md)
+
+[← Back to Smart Life Blog](../README.md)
 
 ---
 
-*Fridgi — Because your fridge deserves a brain.*
+*Detailed documentation coming soon. [Visit the main repository](../README.md) for updates.*
