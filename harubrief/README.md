@@ -105,3 +105,12 @@ Sign-in is supported via Apple ID, Google, or Kakao. Some features are available
 - [🥗 Fridgi — Food Expiry Tracker](../fridgi/README.md)
 
 [← Back to Smart Life Blog](../README.md)
+---
+
+## Read in Your Language
+
+- [🇰🇷 한국어 (Korean)](./README-ko.md)
+- [🇯🇵 日本語 (Japanese)](./README-ja.md)
+- [🇨🇳 中文 (Chinese)](./README-zh.md)
+- [📋 FAQ — All Languages](./FAQ.md)
+
