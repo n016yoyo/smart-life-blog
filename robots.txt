@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://n016yoyo.github.io/smart-life-blog/sitemap.xml
