@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaruBrief FAQ — AI早间简报应用常见问题</title>
+    <meta name="description" content="HaruBrief AI早间简报应用的常见问题解答。">
+    <link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.zh.html">
+    <meta property="og:title" content="HaruBrief FAQ — AI早间简报应用常见问题">
+    <meta property="og:description" content="HaruBrief AI早间简报应用的常见问题解答。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.zh.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HaruBrief FAQ — AI早间简报应用常见问题">
+    <meta name="twitter:description" content="HaruBrief AI早间简报应用的常见问题解答。">
+    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.html">
+    <link rel="alternate" hreflang="ko" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.ko.html">
+    <link rel="alternate" hreflang="ja" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.ja.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.zh.html">
+    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/harubrief/faq.html">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "HaruBrief（하루브리핑）是什么？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "HaruBrief是一款iPhone免费AI早间简报应用。每天早晨分析日历，告诉您今天的日程摘要、是否有时间吃午饭、能否准时下班以及您的倦怠风险水平。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief免费吗？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "是的，100%免费。无订阅，无高级版。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "支持哪些平台？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "iOS（iPhone）。Android版已上线 -- [Google Play下载](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "使用什么AI？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "使用Google Vertex AI（Gemini）分析日历数据并生成每日简报。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "支持哪些日历应用？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "HaruBrief连接iOS原生日历应用，可与Google Calendar、Apple Calendar、Outlook及任何与iOS集成的日历同步。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "需要更换日历应用吗？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "不需要。HaruBrief只是读取您现有的iOS日历。您可以继续使用您喜欢的日历应用。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "需要注册账号吗？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "支持Apple ID、Google和Kakao登录。部分功能无需账号即可使用。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "早间简报包含什么？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "每份简报包含： - 用通俗语言概括今天的日程 - 午餐时间检测（有没有空闲时段？） - 准时下班预测（能按时回家吗？） - 倦怠风险警告（日程是否超负荷？）"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "什么是倦怠风险检测？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "分析每周日程密度。当连续会议过多、没有休息、下班时间持续延迟时，会提示倦怠风险较高，以便您提前调整。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "什么是周度/月度洞察？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "追踪时间维度上的模式：加班频率、错过午餐的次数、每日平均会议量，以及每周趋势变化。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "日历数据安全吗？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "安全。日历数据仅用于生成简报，不会永久存储或与第三方共享。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief收集哪些数据？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "为生成简报，仅读取日历事件的标题、时间和持续时间。不读取事件描述、参会人员信息或任何其他个人数据。详见完整[隐私政策](https://harubrief.verification-app.workers.dev/privacy)。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief和Google Calendar有什么区别？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Google Calendar显示*安排了什么*。HaruBrief告诉您*这意味着什么* -- 是否有时间吃午饭、能否按时回家、这周是否太满。它是覆盖在现有日历上的智能分析层。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief vs Fantastical -- 该用哪个？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "用途不同。Fantastical是日历*查看和输入*工具。HaruBrief是每天早晨提供简报的日历*分析*工具。很多用户两个都用。查看[详细对比](https://harubrief-blog.pages.dev/en/blog/harubrief-vs-fantastical/)。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief vs Reclaim AI？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Reclaim AI自动将任务安排到空闲时间。HaruBrief分析日历并告诉您今天是什么样的一天。用途不同，可以同时使用。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "有Android版的AI日历应用吗？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "HaruBrief Android版已上线。[Google Play下载](https://play.google.com/store/apps/details?id=com.leocompany.harubrief)，发布时会通知您。"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "HaruBrief支持哪些语言？",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "韩语（한국어）、英语、日语（日本語）和中文。"
+                }
+            }
+        ]
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
+        .nav-apps { display: flex; gap: 12px; }
+        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
+        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
+        h1 { font-size: 2em; margin-bottom: 8px; }
+        h2 { font-size: 1.3em; margin-top: 32px; margin-bottom: 16px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; }
+        p, li { color: #444; margin-bottom: 8px; }
+        ul, ol { padding-left: 24px; margin-bottom: 16px; }
+        a { color: #0066cc; text-decoration: none; }
+        hr { border: none; border-top: 1px solid #e0e0e0; margin: 24px 0; }
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .badges a img { height: 32px; }
+        .lang-links { margin: 24px 0; }
+        .lang-links a { margin-right: 16px; }
+        .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
+        .footer a { color: #0066cc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <nav class="site-nav">
+        <a href="../" class="nav-home">Smart Life Apps</a>
+        <div class="nav-apps"><a href="../fridgi/zh.html">Fridgi</a> <a href="../giftwallet/zh.html">GiftWallet</a> <a href="./zh.html" class="active">HaruBrief</a></div>
+    </nav>
+        <div class="badges">
+            <a href="https://apps.apple.com/app/id6759821511"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="App Store"></a>
+            <a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Google Play"></a>
+        </div>
+
+        <div class="lang-links">
+            <a href="./faq.html">English</a> <a href="./faq.ko.html">한국어</a> <a href="./faq.ja.html">日本語</a> <a href="./faq.zh.html"><strong>中文</strong></a>
+        </div>
+
+        <h1>HaruBrief — 常见问题</h1>
+<h2>一般问题</h2>
+<p><strong>Q: HaruBrief（하루브리핑）是什么？</strong>
+A: HaruBrief是一款iPhone免费AI早间简报应用。每天早晨分析日历，告诉您今天的日程摘要、是否有时间吃午饭、能否准时下班以及您的倦怠风险水平。</p>
+<p><strong>Q: HaruBrief免费吗？</strong>
+A: 是的，100%免费。无订阅，无高级版。</p>
+<p><strong>Q: 支持哪些平台？</strong>
+A: iOS（iPhone）。Android版已上线 -- <a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief">Google Play下载</a></p>
+<p><strong>Q: 使用什么AI？</strong>
+A: 使用Google Vertex AI（Gemini）分析日历数据并生成每日简报。</p>
+<hr>
+<h2>日历与设置</h2>
+<p><strong>Q: 支持哪些日历应用？</strong>
+A: HaruBrief连接iOS原生日历应用，可与Google Calendar、Apple Calendar、Outlook及任何与iOS集成的日历同步。</p>
+<p><strong>Q: 需要更换日历应用吗？</strong>
+A: 不需要。HaruBrief只是读取您现有的iOS日历。您可以继续使用您喜欢的日历应用。</p>
+<p><strong>Q: 需要注册账号吗？</strong>
+A: 支持Apple ID、Google和Kakao登录。部分功能无需账号即可使用。</p>
+<hr>
+<h2>功能</h2>
+<p><strong>Q: 早间简报包含什么？</strong>
+A: 每份简报包含：</p>
+<ul>
+<li>用通俗语言概括今天的日程</li>
+<li>午餐时间检测（有没有空闲时段？）</li>
+<li>准时下班预测（能按时回家吗？）</li>
+<li>倦怠风险警告（日程是否超负荷？）</li>
+</ul>
+<p><strong>Q: 什么是倦怠风险检测？</strong>
+A: 分析每周日程密度。当连续会议过多、没有休息、下班时间持续延迟时，会提示倦怠风险较高，以便您提前调整。</p>
+<p><strong>Q: 什么是周度/月度洞察？</strong>
+A: 追踪时间维度上的模式：加班频率、错过午餐的次数、每日平均会议量，以及每周趋势变化。</p>
+<hr>
+<h2>隐私</h2>
+<p><strong>Q: 日历数据安全吗？</strong>
+A: 安全。日历数据仅用于生成简报，不会永久存储或与第三方共享。</p>
+<p><strong>Q: HaruBrief收集哪些数据？</strong>
+A: 为生成简报，仅读取日历事件的标题、时间和持续时间。不读取事件描述、参会人员信息或任何其他个人数据。详见完整<a href="https://harubrief.verification-app.workers.dev/privacy">隐私政策</a>。</p>
+<hr>
+<h2>对比</h2>
+<p><strong>Q: HaruBrief和Google Calendar有什么区别？</strong>
+A: Google Calendar显示<em>安排了什么</em>。HaruBrief告诉您<em>这意味着什么</em> -- 是否有时间吃午饭、能否按时回家、这周是否太满。它是覆盖在现有日历上的智能分析层。</p>
+<p><strong>Q: HaruBrief vs Fantastical -- 该用哪个？</strong>
+A: 用途不同。Fantastical是日历<em>查看和输入</em>工具。HaruBrief是每天早晨提供简报的日历<em>分析</em>工具。很多用户两个都用。查看<a href="https://harubrief-blog.pages.dev/en/blog/harubrief-vs-fantastical/">详细对比</a>。</p>
+<p><strong>Q: HaruBrief vs Reclaim AI？</strong>
+A: Reclaim AI自动将任务安排到空闲时间。HaruBrief分析日历并告诉您今天是什么样的一天。用途不同，可以同时使用。</p>
+<p><strong>Q: 有Android版的AI日历应用吗？</strong>
+A: HaruBrief Android版已上线。<a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief">Google Play下载</a>，发布时会通知您。</p>
+<hr>
+<h2>语言</h2>
+<p><strong>Q: HaruBrief支持哪些语言？</strong>
+A: 韩语（한국어）、英语、日语（日本語）和中文。</p>
+<hr>
+<h2>链接</h2>
+<ul>
+<li><strong>App Store:</strong> <a href="https://apps.apple.com/app/id6759821511">apps.apple.com/app/id6759821511</a></li>
+<li><strong>Google Play:</strong> <a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief">play.google.com/store/apps/details?id=com.leocompany.harubrief</a></li>
+<li><strong>官方网站:</strong> <a href="https://harubrief.verification-app.workers.dev/home">harubrief.verification-app.workers.dev/home</a></li>
+<li><strong>博客:</strong> <a href="https://harubrief-blog.pages.dev">harubrief-blog.pages.dev</a></li>
+<li><strong>客服:</strong> <a href="mailto:n016yoyo@gmail.com">n016yoyo@gmail.com</a></li>
+</ul>
+<hr>
+<p><em>HaruBrief -- 在一天开始之前，了解你的一天。</em></p>
+
+
+        <div class="footer">
+            <p><a href="./zh.html">Back to HaruBrief</a> | <a href="../">Back to Smart Life Apps</a></p>
+            <p>Contact: <a href="mailto:n016yoyo@gmail.com">n016yoyo@gmail.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

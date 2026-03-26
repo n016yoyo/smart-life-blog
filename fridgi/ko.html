@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fridgi — AI 유통기한 관리 앱</title>
+    <meta name="description" content="AI로 마트 영수증을 스캔하고 유통기한 만료 전 알림을 보내줍니다. iOS, Android 무료.">
+    <link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/fridgi/ko.html">
+    <meta property="og:title" content="Fridgi — AI 유통기한 관리 앱">
+    <meta property="og:description" content="AI로 마트 영수증을 스캔하고 유통기한 만료 전 알림을 보내줍니다. iOS, Android 무료.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/fridgi/ko.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fridgi — AI 유통기한 관리 앱">
+    <meta name="twitter:description" content="AI로 마트 영수증을 스캔하고 유통기한 만료 전 알림을 보내줍니다. iOS, Android 무료.">
+    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/fridgi/">
+    <link rel="alternate" hreflang="ko" href="https://n016yoyo.github.io/smart-life-blog/fridgi/ko.html">
+    <link rel="alternate" hreflang="ja" href="https://n016yoyo.github.io/smart-life-blog/fridgi/ja.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://n016yoyo.github.io/smart-life-blog/fridgi/zh.html">
+    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/fridgi/">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
+        .nav-apps { display: flex; gap: 12px; }
+        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
+        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
+        h1 { font-size: 2em; margin-bottom: 8px; }
+        h2 { font-size: 1.3em; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; }
+        h3 { font-size: 1.1em; margin-top: 20px; margin-bottom: 8px; }
+        p, li { color: #444; margin-bottom: 8px; }
+        ul, ol { padding-left: 24px; margin-bottom: 16px; }
+        a { color: #0066cc; text-decoration: none; }
+        table { border-collapse: collapse; margin: 16px 0; width: 100%; }
+        th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+        th { background: #f0f0f0; }
+        hr { border: none; border-top: 1px solid #e0e0e0; margin: 24px 0; }
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .badges a img { height: 32px; }
+        .lang-links { margin: 24px 0; }
+        .lang-links a { margin-right: 16px; }
+        .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
+        .footer a { color: #0066cc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <nav class="site-nav">
+        <a href="../" class="nav-home">Smart Life Apps</a>
+        <div class="nav-apps"><a href="./ko.html" class="active">Fridgi</a> <a href="../giftwallet/ko.html">GiftWallet</a> <a href="../harubrief/ko.html">HaruBrief</a></div>
+    </nav>
+        <div class="badges">
+            <a href="https://apps.apple.com/app/id6760248261"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="App Store"></a>
+            <a href="https://play.google.com/store/apps/details?id=com.leocompany.refridge"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Google Play"></a>
+        </div>
+
+        <div class="lang-links">
+            <a href="./">English</a> <a href="./ko.html"><strong>한국어</strong></a> <a href="./ja.html">日本語</a> <a href="./zh.html">中文</a>
+        </div>
+
+        <h1>Fridgi — 유통기한 관리 &amp; 냉장고 관리 앱</h1>
+<blockquote>
+<p><strong>&quot;음식 낭비를 멈추세요. 만료되기 전에 미리 파악하세요.&quot;</strong>
+AI로 마트 영수증을 스캔하면 냉장고 속 모든 식품을 자동으로 추적합니다.</p>
+</blockquote>
+<p><a href="https://apps.apple.com/app/id6760248261"></a>
+<a href="https://play.google.com/store/apps/details?id=com.leocompany.refridge"></a>
+
+</p>
+<hr>
+<h2>Fridgi란?</h2>
+<p>Fridgi는 iOS와 Android에서 무료로 사용할 수 있는 AI 기반 유통기한 관리 앱입니다. 마트 영수증을 촬영하면 AI가 모든 식품을 자동 등록하고, 유통기한을 추정하며, 만료 전 알림을 보내줍니다.</p>
+<p><strong>핵심 요약:</strong></p>
+<ul>
+<li>📸 영수증 사진 한 장으로 모든 식품 자동 등록</li>
+<li>🔔 D-7, D-3, 당일 만료 알림</li>
+<li>🌍 한국어, 영어, 일본어, 중국어 지원</li>
+<li>💰 100% 무료</li>
+</ul>
+<hr>
+<h2>주요 기능</h2>
+<h3>📦 AI 영수증 스캔</h3>
+<p>마트 영수증을 촬영하면 Fridgi의 AI가 자동으로 감지합니다:</p>
+<ul>
+<li>식품명</li>
+<li>수량 및 구매일</li>
+<li>품목별 평균 유통기한</li>
+<li>보관 방법 (냉장 / 냉동 / 팬트리)</li>
+</ul>
+<h3>⏰ 스마트 만료 알림</h3>
+<ul>
+<li>D-7, D-3, 당일 푸시 알림</li>
+<li>이번 주 만료 식품을 보여주는 캘린더 뷰</li>
+<li>색상별 긴급도 표시</li>
+</ul>
+<h3>📊 냉장고 대시보드</h3>
+<ul>
+<li>냉장실 / 냉동실 / 팬트리 -- 보유 식품을 한눈에</li>
+<li>소비 vs 낭비 분석</li>
+<li>AI 기반 쇼핑 패턴 인사이트</li>
+</ul>
+<h3>🏠 홈 화면 위젯</h3>
+<p>앱을 열지 않고도 만료 임박 식품 확인 -- Android 위젯 지원</p>
+<h3>🌐 4개국어 자동 번역</h3>
+<p>한국 마트 영수증을 영어, 일본어, 중국어로 자동 번역. 한국 마트에서 장 보는 외국인에게 최적.</p>
+<hr>
+<h2>이런 분께 추천합니다</h2>
+<ul>
+<li>🧑‍🍳 냉장고에 뭐가 있는지 항상 잊어버리는 분</li>
+<li>♻️ 음식물 쓰레기를 줄이고 싶은 분</li>
+<li>💸 식비를 절약하려는 학생과 주부</li>
+<li>🌍 한국 마트에서 장 보는 외국인</li>
+</ul>
+<hr>
+<h2>다운로드</h2>
+<table>
+<thead>
+<tr>
+<th>플랫폼</th>
+<th>링크</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS (App Store)</td>
+<td><a href="https://apps.apple.com/app/id6760248261">apps.apple.com/app/id6760248261</a></td>
+</tr>
+<tr>
+<td>Android (Google Play)</td>
+<td><a href="https://play.google.com/store/apps/details?id=com.leocompany.refridge">play.google.com/store/apps/details?id=com.leocompany.refridge</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>기술 사양</h2>
+<ul>
+<li><strong>플랫폼:</strong> iOS 16.0+ / Android</li>
+<li><strong>언어:</strong> 한국어 / 영어 / 일본어 / 중국어 (간체)</li>
+<li><strong>AI:</strong> Google Gemini AI 영수증 스캔 및 식품 추출</li>
+<li><strong>지원 매장:</strong> 홈플러스, 이마트, 롯데마트, CU, GS25 등 500개 이상 한국 마트</li>
+<li><strong>개인정보:</strong> 식품 데이터는 기기 내 로컬 저장. 영수증 이미지는 인식 목적으로만 처리.</li>
+<li><strong>가격:</strong> 모든 핵심 기능 무료. 구독 없음.</li>
+</ul>
+<hr>
+<h2>FAQ</h2>
+<p>자세한 Q&amp;A는 <a href="./faq.ko.html">FAQ.ko.md</a>를 참고하세요. Fridgely, NoWaste 등과의 비교도 포함되어 있습니다.</p>
+<hr>
+<h2>키워드</h2>
+<p><code>유통기한 관리 앱</code> / <code>냉장고 정리 앱</code> / <code>음식물 쓰레기 줄이기</code> / <code>영수증 스캔 앱</code> / <code>AI 식품 관리</code> / <code>유통기한 관리 앱 추천 2026</code> / <code>냉장고 관리 앱 추천</code></p>
+<hr>
+<h2>LEO Company의 다른 앱</h2>
+<ul>
+<li><a href="../harubrief/ko.html">🌅 HaruBrief — AI 아침 브리핑</a></li>
+<li><a href="../giftwallet/ko.html">🎁 GiftWallet — 기프티콘 관리 앱</a></li>
+</ul>
+<p><a href="../">← Smart Life Blog 메인으로</a></p>
+
+
+        <div class="footer">
+            <p>Contact: <a href="mailto:n016yoyo@gmail.com">n016yoyo@gmail.com</a> | <a href="../">Back to Smart Life Apps</a></p>
+        </div>
+    </div>
+</body>
+</html>

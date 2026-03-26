@@ -97,10 +97,22 @@
         .lang-nav a { margin-right: 12px; color: #0066cc; text-decoration: none; font-size: 0.95em; }
         .footer { margin-top: 48px; color: #888; font-size: 0.9em; text-align: center; }
         .footer a { color: #0066cc; text-decoration: none; }
+    
+        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
+        .nav-apps { display: flex; gap: 12px; }
+        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
+        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
     </style>
+    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/">
+    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/">
 </head>
 <body>
     <div class="container">
+    <nav class="site-nav">
+        <a href="./" class="nav-home active">Smart Life Apps</a>
+        <div class="nav-apps"><a href="./fridgi/">Fridgi</a> <a href="./giftwallet/">GiftWallet</a> <a href="./harubrief/">HaruBrief</a></div>
+    </nav>
         <h1>Smart Life Apps</h1>
         <p class="subtitle">Free AI-powered apps to simplify everyday life.</p>
 
