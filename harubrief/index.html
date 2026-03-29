@@ -7,17 +7,17 @@
     <meta name="description" content="HaruBrief reads your iPhone calendar every morning and delivers an AI briefing: lunch availability, departure time, burnout risk. Free for iOS.">
     <meta name="keywords" content="AI calendar app, morning briefing app, daily schedule summary, AI 일정 요약, 하루브리핑, 캘린더 AI 앱, AIスケジュール要約, モーニングブリーフィング, AI日程摘要, HaruBrief, Fantastical alternative, Reclaim AI alternative, burnout prevention app">
     <link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
-    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
-    <link rel="alternate" hreflang="ko" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html">
-    <link rel="alternate" hreflang="ja" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ja.html">
-    <link rel="alternate" hreflang="zh" href="https://n016yoyo.github.io/smart-life-blog/harubrief/zh.html">
-    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
     <meta property="og:title" content="HaruBrief — AI Morning Briefing App">
     <meta property="og:description" content="Know your day before it starts. AI analyzes your calendar and delivers a personalized morning briefing.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/harubrief/">
-    <meta property="og:image" content="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d4/e5/f6/AppIcon-0-0-1x_U007emarketing-0-7-0-0-85-220.png/1200x630wa.png">
+    <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/harubrief/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HaruBrief — AI Morning Briefing App">
+    <meta name="twitter:description" content="AI analyzes your calendar every morning. Lunch availability, departure time, burnout risk. Free.">
+    <meta name="twitter:image" content="https://n016yoyo.github.io/smart-life-blog/harubrief/og-image.png">
 
     <script type="application/ld+json">
     {
@@ -40,7 +40,7 @@
             "@type": "Organization",
             "name": "LEO Company",
             "email": "n016yoyo@gmail.com",
-            "url": "https://n016yoyo.github.io/smart-life-blog/"
+            "url": "https://harubrief-blog.pages.dev"
         },
         "softwareVersion": "1.0",
         "inLanguage": ["ko", "en", "ja", "zh"],
@@ -54,63 +54,6 @@
             "Privacy-first: calendar data processed on-device",
             "Dark mode support",
             "4-language support (Korean, English, Japanese, Chinese)"
-        ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "What is the best AI calendar app for iPhone?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "HaruBrief is designed as an AI calendar analysis layer. Unlike Fantastical or Google Calendar that display your schedule, HaruBrief tells you what your schedule means -- whether you have time for lunch, whether you'll leave on time, and whether your week is overloaded."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How is HaruBrief different from Google Calendar?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Google Calendar shows you what is scheduled. HaruBrief tells you what it means -- whether you'll have lunch, make it home on time, and whether your week is too heavy. It's an intelligence layer on top of your existing calendar."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "HaruBrief vs Fantastical - which should I use?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "They serve different purposes. Fantastical is a calendar viewer and input tool. HaruBrief is a calendar analysis tool that briefs you each morning. Many users use both together."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "HaruBrief vs Reclaim AI?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Reclaim AI auto-schedules tasks into your free time. HaruBrief analyzes your calendar and tells you what your day looks like. Different use cases; they can be used together."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What is burnout risk detection?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "HaruBrief analyzes your weekly schedule density. When your calendar is consistently overloaded with too many back-to-back meetings, no breaks, and late finishes, it flags a high burnout risk so you can adjust before it affects you."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Is HaruBrief free?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, HaruBrief is 100% free. No subscription, no premium tier. All features are completely free."
-                }
-            }
         ]
     }
     </script>
@@ -134,10 +77,48 @@
         .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
         .footer a { color: #0066cc; text-decoration: none; }
         @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+    
+        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
+        .nav-apps { display: flex; gap: 12px; }
+        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
+        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
     </style>
+    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
+    <link rel="alternate" hreflang="ko" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html">
+    <link rel="alternate" hreflang="ja" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ja.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://n016yoyo.github.io/smart-life-blog/harubrief/zh.html">
+    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
+    <link rel="icon" type="image/png" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+    <link rel="apple-touch-icon" href="https://n016yoyo.github.io/smart-life-blog/apple-touch-icon.png">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Smart Life Apps",
+                "item": "https://n016yoyo.github.io/smart-life-blog/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "HaruBrief",
+                "item": "https://n016yoyo.github.io/smart-life-blog/harubrief/"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <div class="container">
+    <nav class="site-nav">
+        <a href="../" class="nav-home">Smart Life Apps</a>
+        <div class="nav-apps"><a href="../fridgi/">Fridgi</a> <a href="../giftwallet/">GiftWallet</a> <a href="./" class="active">HaruBrief</a></div>
+    </nav>
         <h1>HaruBrief</h1>
         <p class="tagline">"Know your day before it starts."</p>
 
@@ -148,10 +129,10 @@
         </div>
 
         <div class="lang-links">
-            <a href="./README.md">English</a>
-            <a href="./README.ko.md">한국어</a>
-            <a href="./README.ja.md">日本語</a>
-            <a href="./README.zh.md">中文</a>
+            <a href="./">English</a>
+            <a href="./ko.html">한국어</a>
+            <a href="./ja.html">日本語</a>
+            <a href="./zh.html">中文</a>
         </div>
 
         <h2>What is HaruBrief?</h2>
@@ -170,12 +151,10 @@
         <h2>FAQ</h2>
         <p>See the full <a href="./faq.html">FAQ</a> for detailed Q&A including comparisons with Google Calendar, Fantastical, and Reclaim AI.</p>
 
-        <h2>Blog Posts</h2>
+        <h2>Links</h2>
         <ul>
-            <li><a href="https://n016yoyo.blogspot.com/2026/03/best-ai-calendar-apps-for-iphone-in.html">Best AI Calendar Apps for iPhone in 2026</a></li>
-            <li><a href="https://n016yoyo.blogspot.com/2026/03/office-burnout-test-if-4-or-more-apply.html">Office Burnout Test — If 4 or More Apply, Check Now</a></li>
-            <li><a href="https://n016yoyo.blogspot.com/2026/03/how-to-detect-burnout-before-it-hits-ai.html">How to Detect Burnout Before It Hits (AI Method)</a></li>
-            <li><a href="https://n016yoyo.blogspot.com/2026/03/5-ways-ai-can-transform-your-morning.html">5 Ways AI Can Transform Your Morning Routine</a></li>
+            <li><a href="https://harubrief.verification-app.workers.dev/home">Official Website</a></li>
+            <li><a href="https://harubrief-blog.pages.dev">Blog</a></li>
         </ul>
 
         <h2>Related Apps</h2>

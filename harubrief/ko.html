@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaruBrief — AI 아침 브리핑 앱</title>
+    <meta name="description" content="AI가 매일 아침 캘린더를 분석합니다. 점심 여유, 퇴근 예측, 번아웃 위험. 무료.">
+    <link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html">
+    <meta property="og:title" content="HaruBrief — AI 아침 브리핑 앱">
+    <meta property="og:description" content="AI가 매일 아침 캘린더를 분석합니다. 점심 여유, 퇴근 예측, 번아웃 위험. 무료.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html">
+    <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/harubrief/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HaruBrief — AI 아침 브리핑 앱">
+    <meta name="twitter:description" content="AI가 매일 아침 캘린더를 분석합니다. 점심 여유, 퇴근 예측, 번아웃 위험. 무료.">
+    <meta name="twitter:image" content="https://n016yoyo.github.io/smart-life-blog/harubrief/og-image.png">
+    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
+    <link rel="alternate" hreflang="ko" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html">
+    <link rel="alternate" hreflang="ja" href="https://n016yoyo.github.io/smart-life-blog/harubrief/ja.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://n016yoyo.github.io/smart-life-blog/harubrief/zh.html">
+    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/harubrief/">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
+        .nav-apps { display: flex; gap: 12px; }
+        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
+        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
+        h1 { font-size: 2em; margin-bottom: 8px; }
+        h2 { font-size: 1.3em; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; }
+        h3 { font-size: 1.1em; margin-top: 20px; margin-bottom: 8px; }
+        p, li { color: #444; margin-bottom: 8px; }
+        ul, ol { padding-left: 24px; margin-bottom: 16px; }
+        a { color: #0066cc; text-decoration: none; }
+        table { border-collapse: collapse; margin: 16px 0; width: 100%; }
+        th, td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }
+        th { background: #f0f0f0; }
+        hr { border: none; border-top: 1px solid #e0e0e0; margin: 24px 0; }
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .badges a img { height: 32px; }
+        .lang-links { margin: 24px 0; }
+        .lang-links a { margin-right: 16px; }
+        .footer { margin-top: 40px; color: #888; font-size: 0.9em; }
+        .footer a { color: #0066cc; }
+    </style>
+    <link rel="icon" type="image/png" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+    <link rel="apple-touch-icon" href="https://n016yoyo.github.io/smart-life-blog/apple-touch-icon.png">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Smart Life Apps",
+                "item": "https://n016yoyo.github.io/smart-life-blog/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "HaruBrief",
+                "item": "https://n016yoyo.github.io/smart-life-blog/harubrief/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "한국어",
+                "item": "https://n016yoyo.github.io/smart-life-blog/harubrief/ko.html"
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+    <nav class="site-nav">
+        <a href="../" class="nav-home">Smart Life Apps</a>
+        <div class="nav-apps"><a href="../fridgi/ko.html">Fridgi</a> <a href="../giftwallet/ko.html">GiftWallet</a> <a href="./ko.html" class="active">HaruBrief</a></div>
+    </nav>
+        <div class="badges">
+            <a href="https://apps.apple.com/app/id6759821511"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="App Store"></a>
+            <a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Google Play"></a>
+        </div>
+
+        <div class="lang-links">
+            <a href="./">English</a> <a href="./ko.html"><strong>한국어</strong></a> <a href="./ja.html">日本語</a> <a href="./zh.html">中文</a>
+        </div>
+
+        <h1>HaruBrief (하루브리핑) — AI 아침 브리핑 앱</h1>
+<blockquote>
+<p><strong>&quot;하루가 시작되기 전에, 오늘을 파악하세요.&quot;</strong>
+매일 아침 캘린더를 분석하고 AI가 오늘 일정을 한 문장으로 요약해드립니다.</p>
+</blockquote>
+<p><a href="https://apps.apple.com/app/id6759821511"></a>
+<a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief"></a>
+
+
+</p>
+<hr>
+<h2>HaruBrief란?</h2>
+<p>HaruBrief(하루브리핑)는 AI 기반 아침 브리핑 앱입니다. 매일 아침 캘린더를 분석해서 일정 요약, 점심 시간 여부, 퇴근 시간 예측, 번아웃 리스크까지 알려드립니다.</p>
+<p>빽빽한 캘린더를 스크롤하며 하루를 파악할 필요 없습니다. HaruBrief를 열면 <strong>10초 안에 오늘이 어떤 날인지</strong> 알 수 있습니다.</p>
+<hr>
+<h2>주요 기능</h2>
+<table>
+<thead>
+<tr>
+<th>기능</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🤖 AI 브리핑</td>
+<td>일정을 자연어로 요약해주는 매일 아침 브리핑</td>
+</tr>
+<tr>
+<td>🍱 점심 감지</td>
+<td>오늘 점심 먹을 시간이 있는지 자동 확인</td>
+</tr>
+<tr>
+<td>🏃 퇴근 예측</td>
+<td>오늘 정시 퇴근이 가능한지 예측</td>
+</tr>
+<tr>
+<td>🔥 번아웃 경고</td>
+<td>일정이 과밀할 때 사전 경고</td>
+</tr>
+<tr>
+<td>📊 인사이트</td>
+<td>주간/월간 일정 패턴 분석</td>
+</tr>
+<tr>
+<td>🔒 개인정보 보호</td>
+<td>캘린더 데이터 기기 내 처리 / 익명화</td>
+</tr>
+<tr>
+<td>🌏 다국어</td>
+<td>한국어, 영어, 일본어, 중국어</td>
+</tr>
+<tr>
+<td>🌙 다크 모드</td>
+<td>다크 모드 완벽 지원</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>이렇게 작동합니다</h2>
+<ol>
+<li><strong>iPhone 캘린더 연동</strong> (iOS 캘린더 / Google 캘린더)</li>
+<li><strong>매일 아침 브리핑 수신</strong> (원하는 시간 설정 가능)</li>
+<li><strong>위험 일정 알림</strong> 수신 (과밀, 점심 누락 등)</li>
+<li><strong>인사이트 리포트로</strong> 주간/월간 일정 개선</li>
+</ol>
+<hr>
+<h2>이런 분께 추천합니다</h2>
+<table>
+<thead>
+<tr>
+<th>사용자</th>
+<th>활용 사례</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>회의가 많은 직장인</strong></td>
+<td>하루 회의 11개, 점심도 없는 날 사전 파악</td>
+</tr>
+<tr>
+<td><strong>매니저/팀장</strong></td>
+<td>팀 회의와 1:1 일정 과부하 감지</td>
+</tr>
+<tr>
+<td><strong>프리랜서</strong></td>
+<td>여러 프로젝트 일정을 한눈에 파악</td>
+</tr>
+<tr>
+<td><strong>번아웃 관리가 필요한 분</strong></td>
+<td>과밀 패턴 조기 발견</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>다운로드</h2>
+<table>
+<thead>
+<tr>
+<th>플랫폼</th>
+<th>링크</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS (App Store)</td>
+<td><a href="https://apps.apple.com/app/id6759821511">apps.apple.com/app/id6759821511</a></td>
+</tr>
+<tr>
+<td>Android (Google Play)</td>
+<td><a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief">play.google.com/store/apps/details?id=com.leocompany.harubrief</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>기술 사양</h2>
+<ul>
+<li><strong>플랫폼:</strong> iOS 16+ / Android </li>
+<li><strong>언어:</strong> 한국어 / 영어 / 일본어 / 중국어 (간체)</li>
+<li><strong>AI:</strong> Google Vertex AI (Gemini)</li>
+<li><strong>개인정보:</strong> 캘린더 데이터는 브리핑 생성에만 사용. 제3자 공유/저장 없음.</li>
+<li><strong>가격:</strong> 무료</li>
+<li><strong>로그인:</strong> Apple ID, Google, 카카오 (비로그인 일부 기능 사용 가능)</li>
+</ul>
+<hr>
+<h2>FAQ</h2>
+<p>자세한 Q&amp;A는 <a href="./faq.ko.html">FAQ.ko.md</a>를 참고하세요.</p>
+<hr>
+<h2>키워드</h2>
+<p><code>AI 일정 요약 앱</code> / <code>하루브리핑</code> / <code>아침 브리핑 앱</code> / <code>캘린더 AI 앱</code> / <code>번아웃 관리 앱</code> / <code>일정 관리 앱 추천 2026</code> / <code>직장인 일정 앱</code> / <code>AI calendar app</code></p>
+<hr>
+<h2>LEO Company의 다른 앱</h2>
+<ul>
+<li><a href="../giftwallet/ko.html">🎁 GiftWallet — 기프티콘 관리 앱</a></li>
+<li><a href="../fridgi/ko.html">🥗 Fridgi — 유통기한 관리 앱</a></li>
+</ul>
+<p><a href="../">← Smart Life Blog 메인으로</a></p>
+
+
+        <div class="footer">
+            <p>Contact: <a href="mailto:n016yoyo@gmail.com">n016yoyo@gmail.com</a> | <a href="../">Back to Smart Life Apps</a></p>
+        </div>
+    </div>
+</body>
+</html>
