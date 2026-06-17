@@ -1,157 +1,315 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" data-lang="ko" data-platform="desktop">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Life Apps — Fridgi, GiftWallet, HaruBrief</title>
-    <meta name="description" content="Free AI-powered apps for everyday life: Fridgi (food expiry tracker), GiftWallet (Korean gift card manager), HaruBrief (AI morning briefing).">
-    <meta name="keywords" content="food expiry tracker, Korean gift card app, AI calendar briefing, Fridgi, GiftWallet, HaruBrief, gifticon, 유통기한 관리, 기프티콘 관리, AI 일정 요약">
-    <link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/">
-    <meta property="og:title" content="Smart Life Apps — Fridgi, GiftWallet, HaruBrief">
-    <meta property="og:description" content="Free AI-powered apps for everyday life: Fridgi (food expiry tracker), GiftWallet (Korean gift card manager), HaruBrief (AI morning briefing).">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/">
-    <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Smart Life Apps — Fridgi, GiftWallet, HaruBrief">
-    <meta name="twitter:description" content="Free AI-powered apps: food expiry tracker, gift card manager, AI morning briefing.">
-    <meta name="twitter:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Smart Life Apps",
-        "description": "Free AI-powered iOS and Android apps by LEO Company",
-        "url": "https://n016yoyo.github.io/smart-life-blog/",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "item": {
-                    "@type": "SoftwareApplication",
-                    "name": "Fridgi",
-                    "description": "AI food expiry tracker. Scan grocery receipts to track expiry dates and reduce food waste.",
-                    "applicationCategory": "LifestyleApplication",
-                    "operatingSystem": "iOS, Android",
-                    "url": "https://n016yoyo.github.io/smart-life-blog/fridgi/",
-                    "downloadUrl": "https://apps.apple.com/app/id6760248261",
-                    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "item": {
-                    "@type": "SoftwareApplication",
-                    "name": "GiftWallet",
-                    "description": "AI gift card manager for Korean gift cards with auto-translation.",
-                    "applicationCategory": "LifestyleApplication",
-                    "operatingSystem": "iOS, Android",
-                    "url": "https://n016yoyo.github.io/smart-life-blog/giftwallet/",
-                    "downloadUrl": "https://apps.apple.com/app/id6759313390",
-                    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "item": {
-                    "@type": "SoftwareApplication",
-                    "name": "HaruBrief",
-                    "description": "AI morning briefing app that analyzes your calendar and tells you your day summary.",
-                    "applicationCategory": "ProductivityApplication",
-                    "operatingSystem": "iOS",
-                    "url": "https://n016yoyo.github.io/smart-life-blog/harubrief/",
-                    "downloadUrl": "https://apps.apple.com/app/id6759821511",
-                    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
-                }
-            }
-        ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "LEO Company",
-        "url": "https://n016yoyo.github.io/smart-life-blog/",
-        "email": "n016yoyo@gmail.com",
-        "sameAs": [
-            "https://github.com/n016yoyo",
-            "https://n016yoyo.blogspot.com"
-        ]
-    }
-    </script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-        h1 { font-size: 2em; margin-bottom: 8px; }
-        .subtitle { color: #666; margin-bottom: 40px; font-size: 1.1em; }
-        .app-card { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .app-card h2 { font-size: 1.4em; margin-bottom: 8px; }
-        .app-card h2 a { color: #1a1a1a; text-decoration: none; }
-        .app-card h2 a:hover { color: #0066cc; }
-        .app-card p { color: #555; margin-bottom: 16px; }
-        .badges { display: flex; gap: 8px; flex-wrap: wrap; }
-        .badges a img { height: 28px; }
-        .lang-nav { margin-bottom: 32px; }
-        .lang-nav a { margin-right: 12px; color: #0066cc; text-decoration: none; font-size: 0.95em; }
-        .footer { margin-top: 48px; color: #888; font-size: 0.9em; text-align: center; }
-        .footer a { color: #0066cc; text-decoration: none; }
-    
-        .site-nav { display: flex; align-items: center; gap: 16px; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
-        .nav-home { font-weight: 700; color: #1a1a1a; text-decoration: none; }
-        .nav-apps { display: flex; gap: 12px; }
-        .nav-apps a { color: #666; text-decoration: none; font-size: 0.95em; }
-        .nav-apps a:hover, .nav-apps a.active { color: #0066cc; }
-    </style>
-    <link rel="alternate" hreflang="en" href="https://n016yoyo.github.io/smart-life-blog/">
-    <link rel="alternate" hreflang="x-default" href="https://n016yoyo.github.io/smart-life-blog/">
-    <link rel="icon" type="image/png" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
-    <link rel="apple-touch-icon" href="https://n016yoyo.github.io/smart-life-blog/apple-touch-icon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Smart Life Apps — Fridgi · GiftWallet · HaruBrief · Restocky · CardScanner</title>
+<meta name="description" content="매일의 번거로움을 대신 해결하는 다섯 개의 iOS·Android 앱. Fridgi(유통기한), GiftWallet(기프티콘), HaruBrief(아침 브리핑), Restocky(재입고·가격), CardScanner(트레이딩 카드). 무료.">
+<meta name="keywords" content="Fridgi, GiftWallet, HaruBrief, Restocky, CardScanner, 유통기한 관리, 기프티콘 관리, 아침 브리핑, 재입고 알림, 트레이딩 카드 스캔, LEO Company, iOS, Android">
+<link rel="canonical" href="https://n016yoyo.github.io/smart-life-blog/">
+<meta name="theme-color" content="#f7f7f5">
+<meta property="og:title" content="Smart Life Apps — 5 focused apps for everyday life">
+<meta property="og:description" content="매일 부딪히는 작은 문제들을 푸는 다섯 개의 앱. iOS와 Android에서 무료로.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://n016yoyo.github.io/smart-life-blog/">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Smart Life Apps">
+<meta name="twitter:description" content="Five focused apps that take the friction out of daily life — free on iOS and Android.">
+<meta name="twitter:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Smart Life Apps",
+  "description": "Free iOS and Android apps by LEO Company / DONGHYUCK YANG",
+  "url": "https://n016yoyo.github.io/smart-life-blog/",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"item":{"@type":"SoftwareApplication","name":"Fridgi","applicationCategory":"LifestyleApplication","operatingSystem":"iOS, Android","downloadUrl":"https://apps.apple.com/app/id6760248261","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+    {"@type":"ListItem","position":2,"item":{"@type":"SoftwareApplication","name":"GiftWallet","applicationCategory":"LifestyleApplication","operatingSystem":"iOS, Android","downloadUrl":"https://apps.apple.com/app/id6759313390","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+    {"@type":"ListItem","position":3,"item":{"@type":"SoftwareApplication","name":"HaruBrief","applicationCategory":"ProductivityApplication","operatingSystem":"iOS, Android","downloadUrl":"https://apps.apple.com/app/id6759821511","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+    {"@type":"ListItem","position":4,"item":{"@type":"SoftwareApplication","name":"Restocky","applicationCategory":"ShoppingApplication","operatingSystem":"iOS, Android","downloadUrl":"https://apps.apple.com/app/id6779082478","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+    {"@type":"ListItem","position":5,"item":{"@type":"SoftwareApplication","name":"CardScanner","applicationCategory":"ShoppingApplication","operatingSystem":"iOS, Android","downloadUrl":"https://apps.apple.com/app/id6767862375","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
+  ]
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f7f5;color:#0e0e0a;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+[data-lang="ko"] [data-en]{display:none!important}
+[data-lang="en"] [data-ko]{display:none!important}
+[data-platform="ios"] [data-store="android"]{display:none!important}
+[data-platform="android"] [data-store="ios"]{display:none!important}
+
+.wrap{position:relative;min-height:100vh}
+.container{max-width:1040px;margin:0 auto;padding-inline:clamp(20px,5vw,40px)}
+
+.aura{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(94px)}
+.aura1{top:-12%;left:-10%;width:60vw;height:60vw;max-width:760px;max-height:760px;background:rgba(120,160,255,0.09);animation:drift1 22s ease-in-out infinite}
+.aura2{bottom:-14%;right:-12%;width:64vw;height:64vw;max-width:820px;max-height:820px;background:rgba(150,150,170,0.08);animation:drift2 26s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.08)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-34px,-26px) scale(1.06)}}
+
+.page{position:relative;z-index:1}
+
+.hdr{position:sticky;top:0;z-index:50;backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);background:rgba(247,247,245,0.7);border-bottom:1px solid rgba(0,0,0,0.05)}
+.hdr-in{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:0.04em;color:#3c3c34}
+.brand-mark{width:13px;height:13px;border-radius:4px;background:linear-gradient(140deg,#34d399,#7c3aed)}
+.seg{display:flex;gap:2px;padding:3px;background:#ececE8;border-radius:999px}
+.seg button{border:none;cursor:pointer;background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:#86867e;transition:background .2s,color .2s}
+[data-lang="ko"] .seg [data-seg="ko"],[data-lang="en"] .seg [data-seg="en"]{background:#0e0e0a;color:#fff}
+
+.hero{text-align:center;padding:clamp(54px,11vw,118px) 0 clamp(34px,6vw,54px)}
+.eyebrow{text-transform:uppercase;font-size:12.5px;font-weight:700;letter-spacing:0.22em;color:#a0a097;margin-bottom:clamp(16px,3vw,22px)}
+.h1{font-weight:800;letter-spacing:-0.042em;line-height:1.04;font-size:clamp(38px,9vw,82px);margin:0 auto clamp(20px,4vw,30px);max-width:13ch}
+.sub{font-size:clamp(16px,2.6vw,21px);line-height:1.6;color:#5a5a50;max-width:33ch;margin:0 auto clamp(30px,6vw,46px)}
+.icrow{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(12px,3vw,20px)}
+.icbtn{border:none;background:transparent;cursor:pointer;width:clamp(52px,12.5vw,64px);height:clamp(52px,12.5vw,64px);border-radius:26%;overflow:hidden;padding:0;animation:floaty 6s ease-in-out infinite;transition:transform .25s}
+.icbtn:hover{transform:translateY(-4px) scale(1.06)}
+.icbtn img{width:100%;height:100%;object-fit:cover}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.showcase{position:relative}
+.vp{position:relative;height:clamp(560px,112vw,648px);perspective:1900px;touch-action:pan-y}
+.card{position:absolute;top:0;left:50%;width:clamp(284px,82vw,360px);height:100%;background:#0e0e0a;border-radius:32px;border:1px solid rgba(0,0,0,0.06);overflow:hidden;will-change:transform,opacity;box-shadow:0 36px 80px -34px rgba(0,0,0,0.45),0 2px 8px rgba(0,0,0,0.06);transition:transform .7s cubic-bezier(.33,0,.2,1),opacity .55s ease,box-shadow .7s ease;transform:translateX(-50%)}
+.card-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.bar{position:absolute;left:12px;right:12px;bottom:12px;padding:clamp(15px,3.6vw,19px);border-radius:22px;background:rgba(255,255,255,0.8);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);box-shadow:0 12px 34px -14px rgba(0,0,0,0.45)}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:13px}
+.bar-icon{width:46px;height:46px;border-radius:23%;flex:none}
+.bar-name{font-size:19px;font-weight:800;letter-spacing:-0.03em;color:#0e0e0a;line-height:1.1}
+.bar-cat{font-size:12.5px;font-weight:600;margin-top:2px}
+.badges{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 15px;border-radius:9px;background:#000;border:1px solid rgba(255,255,255,0.28);color:#fff;transition:transform .2s}
+.badge:hover{transform:translateY(-2px)}
+.badge .bt{display:flex;flex-direction:column;line-height:1.05;text-align:left}
+.badge .bt small{font-size:9px;font-weight:500}
+.badge .bt b{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.badge[data-store="android"] .bt b{font-size:15px}
+.badge[data-store="android"] .bt small{letter-spacing:0.05em}
+
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px -6px rgba(0,0,0,0.25);transition:transform .2s}
+.arrow:hover{transform:translateY(-50%) scale(1.1)}
+.arrow.prev{left:clamp(2px,2vw,18px)}
+.arrow.next{right:clamp(2px,2vw,18px)}
+.dots{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:clamp(26px,5vw,38px)}
+.dot{height:8px;width:8px;border:none;cursor:pointer;border-radius:999px;background:#cccbc2;transition:all .4s}
+.dot.on{width:28px;background:#0e0e0a}
+
+.ftr{border-top:1px solid rgba(0,0,0,0.07);padding:clamp(40px,7vw,64px) 0 clamp(48px,8vw,72px);text-align:center;margin-top:clamp(40px,7vw,60px)}
+.ftr .tag{font-size:15px;color:#79796e;margin-bottom:clamp(22px,4vw,30px)}
+.flinks{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+.flink{font-size:14px;font-weight:600;padding:9px 16px;border-radius:11px;border:1px solid rgba(0,0,0,0.12);transition:border-color .2s,transform .2s}
+.flink:hover{border-color:rgba(0,0,0,0.32);transform:translateY(-2px)}
+.copy{font-size:13px;color:#a8a89e;margin-top:clamp(26px,5vw,38px)}
+
+@media (prefers-reduced-motion: no-preference){
+  [data-reveal]{animation:heroIn .85s cubic-bezier(.2,.75,.2,1) both}
+}
+@keyframes heroIn{from{transform:translateY(28px)}to{transform:translateY(0)}}
+</style>
 </head>
 <body>
-    <div class="container">
-    <nav class="site-nav">
-        <a href="./" class="nav-home active">Smart Life Apps</a>
-        <div class="nav-apps"><a href="./fridgi/">Fridgi</a> <a href="./giftwallet/">GiftWallet</a> <a href="./harubrief/">HaruBrief</a></div>
-    </nav>
-        <h1>Smart Life Apps</h1>
-        <p class="subtitle">Free AI-powered apps to simplify everyday life.</p>
+<a id="top"></a>
+<div class="wrap">
+  <div class="aura aura1"></div>
+  <div class="aura aura2"></div>
 
-        <div class="app-card">
-            <h2><a href="./fridgi/">Fridgi — Food Expiry Tracker</a></h2>
-            <p>AI scans your grocery receipts and alerts you before food expires. Supports Fridge, Freezer, and Pantry. Available in Korean, English, Japanese, and Chinese.</p>
-            <div class="badges">
-                <a href="https://apps.apple.com/app/id6760248261"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="iOS App Store"></a>
-                <a href="https://play.google.com/store/apps/details?id=com.leocompany.refridge"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Google Play"></a>
+  <div class="page">
+    <header class="hdr">
+      <div class="container hdr-in">
+        <a class="brand" href="#top"><span class="brand-mark"></span>APPS</a>
+        <div class="seg" role="group" aria-label="Language">
+          <button data-seg="ko" type="button" aria-label="한국어">한국어</button>
+          <button data-seg="en" type="button" aria-label="English">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="eyebrow" data-reveal>iOS &amp; ANDROID</div>
+        <h1 class="h1" data-reveal style="animation-delay:.08s">
+          <span data-ko>매일의 번거로움을<br>대신 해결합니다.</span>
+          <span data-en>The everyday,<br>made effortless.</span>
+        </h1>
+        <p class="sub" data-reveal style="animation-delay:.16s">
+          <span data-ko>매일 부딪히는 작은 문제들을 푸는 다섯 개의 앱. iOS와 Android에서 무료로 만나보세요.</span>
+          <span data-en>Five focused apps that take the friction out of daily life — free on iOS and Android.</span>
+        </p>
+        <div class="icrow" data-reveal style="animation-delay:.24s">
+          <button class="icbtn" type="button" data-jump="0" style="animation-delay:0s;box-shadow:0 8px 20px -6px #059669" aria-label="Fridgi"><img src="assets/icon-fridgi.png" alt="Fridgi"></button>
+          <button class="icbtn" type="button" data-jump="1" style="animation-delay:-1.2s;box-shadow:0 8px 20px -6px #0f766e" aria-label="GiftWallet"><img src="assets/icon-giftwallet.png" alt="GiftWallet"></button>
+          <button class="icbtn" type="button" data-jump="2" style="animation-delay:-2.4s;box-shadow:0 8px 20px -6px #d97706" aria-label="HaruBrief"><img src="assets/icon-harubrief.png" alt="HaruBrief"></button>
+          <button class="icbtn" type="button" data-jump="3" style="animation-delay:-3.6s;box-shadow:0 8px 20px -6px #1f1f1f" aria-label="Restocky"><img src="assets/icon-restocky.png" alt="Restocky"></button>
+          <button class="icbtn" type="button" data-jump="4" style="animation-delay:-4.8s;box-shadow:0 8px 20px -6px #0e7490" aria-label="CardScanner"><img src="assets/icon-cardscanner.png" alt="CardScanner"></button>
+        </div>
+      </section>
+
+      <section class="showcase" data-showcase aria-label="App showcase">
+        <div class="vp" data-viewport>
+          <article class="card" data-index="0">
+            <img class="card-shot" src="assets/ss-fridgi.png" alt="Fridgi app screenshot" loading="lazy">
+            <div class="bar">
+              <div class="bar-row">
+                <img class="bar-icon" src="assets/icon-fridgi.png" alt="">
+                <div><div class="bar-name">Fridgi</div><div class="bar-cat" style="color:#059669"><span data-ko>유통기한 관리</span><span data-en>Food Expiry Tracker</span></div></div>
+              </div>
+              <div class="badges">
+                <a class="badge" data-store="ios" href="https://apps.apple.com/app/id6760248261" target="_blank" rel="noopener" aria-label="Download Fridgi on the App Store"><svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.03 2.28-1.27 3.14-2.53.99-1.45 1.4-2.85 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.65.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg><span class="bt"><small>Download on the</small><b>App Store</b></span></a>
+                <a class="badge" data-store="android" href="https://play.google.com/store/apps/details?id=com.leocompany.refridge" target="_blank" rel="noopener" aria-label="Get Fridgi on Google Play"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.609 1.814 13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z"/><path fill="#FFCE00" d="m17.5 8.31 1.86 1.07c1.28.74 1.28 2.5 0 3.24l-1.86 1.07L14.21 12z"/><path fill="#FF3B30" d="m17.5 15.69-3.71-3.69-9.18 9.18c.41.39 1.02.42 1.59.09z"/><path fill="#00E676" d="m17.5 8.31-11.3-6.59c-.57-.33-1.18-.3-1.59.09l9.18 9.18z"/></svg><span class="bt"><small>GET IT ON</small><b>Google Play</b></span></a>
+              </div>
             </div>
-        </div>
-
-        <div class="app-card">
-            <h2><a href="./giftwallet/">GiftWallet — Korean Gift Card Manager</a></h2>
-            <p>AI barcode scanner for Korean gift cards. Auto-translates to English, Japanese, and Chinese. Never let a gift card expire unused.</p>
-            <div class="badges">
-                <a href="https://apps.apple.com/app/id6759313390"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="iOS App Store"></a>
-                <a href="https://play.google.com/store/apps/details?id=com.leocompany.giftwallet"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Google Play"></a>
+          </article>
+          <article class="card" data-index="1">
+            <img class="card-shot" src="assets/ss-giftwallet.png" alt="GiftWallet app screenshot" loading="lazy">
+            <div class="bar">
+              <div class="bar-row">
+                <img class="bar-icon" src="assets/icon-giftwallet.png" alt="">
+                <div><div class="bar-name">GiftWallet</div><div class="bar-cat" style="color:#0f766e"><span data-ko>기프티콘 관리</span><span data-en>Gift Card Manager</span></div></div>
+              </div>
+              <div class="badges">
+                <a class="badge" data-store="ios" href="https://apps.apple.com/app/id6759313390" target="_blank" rel="noopener" aria-label="Download GiftWallet on the App Store"><svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.03 2.28-1.27 3.14-2.53.99-1.45 1.4-2.85 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.65.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg><span class="bt"><small>Download on the</small><b>App Store</b></span></a>
+                <a class="badge" data-store="android" href="https://play.google.com/store/apps/details?id=com.leocompany.giftwallet" target="_blank" rel="noopener" aria-label="Get GiftWallet on Google Play"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.609 1.814 13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z"/><path fill="#FFCE00" d="m17.5 8.31 1.86 1.07c1.28.74 1.28 2.5 0 3.24l-1.86 1.07L14.21 12z"/><path fill="#FF3B30" d="m17.5 15.69-3.71-3.69-9.18 9.18c.41.39 1.02.42 1.59.09z"/><path fill="#00E676" d="m17.5 8.31-11.3-6.59c-.57-.33-1.18-.3-1.59.09l9.18 9.18z"/></svg><span class="bt"><small>GET IT ON</small><b>Google Play</b></span></a>
+              </div>
             </div>
-        </div>
-
-        <div class="app-card">
-            <h2><a href="./harubrief/">HaruBrief — AI Morning Briefing</a></h2>
-            <p>AI analyzes your iPhone calendar every morning. Tells you lunch availability, departure time prediction, and burnout risk in 10 seconds.</p>
-            <div class="badges">
-                <a href="https://apps.apple.com/app/id6759821511"><img src="https://img.shields.io/badge/App_Store-iOS-black?logo=apple" alt="iOS App Store"></a>
-                <a href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief"><img src="https://img.shields.io/badge/Google_Play-Android-green?logo=google-play" alt="Get it on Google Play"></a>
+          </article>
+          <article class="card" data-index="2">
+            <img class="card-shot" src="assets/ss-harubrief.png" alt="HaruBrief app screenshot" loading="lazy">
+            <div class="bar">
+              <div class="bar-row">
+                <img class="bar-icon" src="assets/icon-harubrief.png" alt="">
+                <div><div class="bar-name">HaruBrief</div><div class="bar-cat" style="color:#d97706"><span data-ko>아침 브리핑</span><span data-en>Morning Briefing</span></div></div>
+              </div>
+              <div class="badges">
+                <a class="badge" data-store="ios" href="https://apps.apple.com/app/id6759821511" target="_blank" rel="noopener" aria-label="Download HaruBrief on the App Store"><svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.03 2.28-1.27 3.14-2.53.99-1.45 1.4-2.85 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.65.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg><span class="bt"><small>Download on the</small><b>App Store</b></span></a>
+                <a class="badge" data-store="android" href="https://play.google.com/store/apps/details?id=com.leocompany.harubrief" target="_blank" rel="noopener" aria-label="Get HaruBrief on Google Play"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.609 1.814 13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z"/><path fill="#FFCE00" d="m17.5 8.31 1.86 1.07c1.28.74 1.28 2.5 0 3.24l-1.86 1.07L14.21 12z"/><path fill="#FF3B30" d="m17.5 15.69-3.71-3.69-9.18 9.18c.41.39 1.02.42 1.59.09z"/><path fill="#00E676" d="m17.5 8.31-11.3-6.59c-.57-.33-1.18-.3-1.59.09l9.18 9.18z"/></svg><span class="bt"><small>GET IT ON</small><b>Google Play</b></span></a>
+              </div>
             </div>
+          </article>
+          <article class="card" data-index="3">
+            <img class="card-shot" src="assets/ss-restocky.png" alt="Restocky app screenshot" loading="lazy" style="object-position:center 38%">
+            <div class="bar">
+              <div class="bar-row">
+                <img class="bar-icon" src="assets/icon-restocky.png" alt="">
+                <div><div class="bar-name">Restocky</div><div class="bar-cat" style="color:#1f1f1f"><span data-ko>재입고·가격 추적</span><span data-en>Restock &amp; Price Tracker</span></div></div>
+              </div>
+              <div class="badges">
+                <a class="badge" data-store="ios" href="https://apps.apple.com/app/id6779082478" target="_blank" rel="noopener" aria-label="Download Restocky on the App Store"><svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.03 2.28-1.27 3.14-2.53.99-1.45 1.4-2.85 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.65.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg><span class="bt"><small>Download on the</small><b>App Store</b></span></a>
+                <a class="badge" data-store="android" href="https://play.google.com/store/apps/details?id=com.leocompany.restocky" target="_blank" rel="noopener" aria-label="Get Restocky on Google Play"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.609 1.814 13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z"/><path fill="#FFCE00" d="m17.5 8.31 1.86 1.07c1.28.74 1.28 2.5 0 3.24l-1.86 1.07L14.21 12z"/><path fill="#FF3B30" d="m17.5 15.69-3.71-3.69-9.18 9.18c.41.39 1.02.42 1.59.09z"/><path fill="#00E676" d="m17.5 8.31-11.3-6.59c-.57-.33-1.18-.3-1.59.09l9.18 9.18z"/></svg><span class="bt"><small>GET IT ON</small><b>Google Play</b></span></a>
+              </div>
+            </div>
+          </article>
+          <article class="card" data-index="4">
+            <img class="card-shot" src="assets/ss-cardscanner.png" alt="CardScanner app screenshot" loading="lazy">
+            <div class="bar">
+              <div class="bar-row">
+                <img class="bar-icon" src="assets/icon-cardscanner.png" alt="">
+                <div><div class="bar-name">CardScanner</div><div class="bar-cat" style="color:#0e7490"><span data-ko>트레이딩 카드 스캔</span><span data-en>Trading Card Scanner</span></div></div>
+              </div>
+              <div class="badges">
+                <a class="badge" data-store="ios" href="https://apps.apple.com/app/id6767862375" target="_blank" rel="noopener" aria-label="Download CardScanner on the App Store"><svg width="21" height="21" viewBox="0 0 24 24" fill="#fff"><path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.89-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.39.81 1.4-.03 2.28-1.27 3.14-2.53.99-1.45 1.4-2.85 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.59c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.65.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg><span class="bt"><small>Download on the</small><b>App Store</b></span></a>
+                <a class="badge" data-store="android" href="https://play.google.com/store/apps/details?id=com.leocompany.cardscan" target="_blank" rel="noopener" aria-label="Get CardScanner on Google Play"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.609 1.814 13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z"/><path fill="#FFCE00" d="m17.5 8.31 1.86 1.07c1.28.74 1.28 2.5 0 3.24l-1.86 1.07L14.21 12z"/><path fill="#FF3B30" d="m17.5 15.69-3.71-3.69-9.18 9.18c.41.39 1.02.42 1.59.09z"/><path fill="#00E676" d="m17.5 8.31-11.3-6.59c-.57-.33-1.18-.3-1.59.09l9.18 9.18z"/></svg><span class="bt"><small>GET IT ON</small><b>Google Play</b></span></a>
+              </div>
+            </div>
+          </article>
+
+          <button class="arrow prev" type="button" aria-label="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e0e0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 9 12l6-6"/></svg></button>
+          <button class="arrow next" type="button" aria-label="Next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e0e0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
 
-        <div class="footer">
-            <p>Contact: <a href="mailto:n016yoyo@gmail.com">n016yoyo@gmail.com</a> | Blog: <a href="https://n016yoyo.blogspot.com">n016yoyo.blogspot.com</a></p>
+        <div class="dots" role="tablist" aria-label="Select app">
+          <button class="dot on" type="button" data-dot="0" aria-label="Fridgi"></button>
+          <button class="dot" type="button" data-dot="1" aria-label="GiftWallet"></button>
+          <button class="dot" type="button" data-dot="2" aria-label="HaruBrief"></button>
+          <button class="dot" type="button" data-dot="3" aria-label="Restocky"></button>
+          <button class="dot" type="button" data-dot="4" aria-label="CardScanner"></button>
         </div>
-    </div>
+      </section>
+
+      <footer class="ftr" data-reveal>
+        <p class="tag"><span data-ko>매일의 번거로움을 대신 해결합니다.</span><span data-en>Taking the hassle out of every day.</span></p>
+        <div class="flinks">
+          <a class="flink" href="mailto:n016yoyo@gmail.com">Email</a>
+          <a class="flink" href="https://n016yoyo.blogspot.com" target="_blank" rel="noopener">Blog</a>
+        </div>
+        <p class="copy">© 2026 · DONGHYUCK YANG</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  var N = 5, active = 0, timer = null;
+  var root = document.documentElement;
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var dots  = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+
+  function apply(){
+    for (var i=0;i<N;i++){
+      var d = i - active;
+      if (d > N/2) d -= N; else if (d < -N/2) d += N;
+      var ad = Math.abs(d), t, o, z, p;
+      if (d === 0){ t='translateX(-50%) scale(1) rotateY(0deg) translateZ(0)'; o=1; z=30; p='auto'; }
+      else if (ad === 1){ t='translateX(calc(-50% + '+(d*66)+'%)) scale(0.8) rotateY('+(-d*34)+'deg) translateZ(-150px)'; o=0.55; z=20; p='auto'; }
+      else { t='translateX(calc(-50% + '+(d*88)+'%)) scale(0.62) rotateY('+(-d*42)+'deg) translateZ(-340px)'; o=0; z=10; p='none'; }
+      var c = cards[i];
+      c.style.transform = t; c.style.opacity = o; c.style.zIndex = z; c.style.pointerEvents = p;
+      c.setAttribute('aria-hidden', d===0 ? 'false' : 'true');
+    }
+    for (var j=0;j<dots.length;j++) dots[j].classList.toggle('on', j===active);
+  }
+  function stopAuto(){ if (timer){ clearInterval(timer); timer=null; } }
+  function scheduleAuto(){ stopAuto(); timer = setInterval(function(){ active=(active+1)%N; apply(); }, 4400); }
+  function resetAuto(){ stopAuto(); setTimeout(scheduleAuto, 0); }
+  function go(dir){ active=(active+dir+N)%N; apply(); resetAuto(); }
+  function focus(i){ active=i; apply(); resetAuto(); }
+  function jump(i){
+    focus(i);
+    var el = document.querySelector('[data-showcase]');
+    if (el){ var y = el.getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({ top:y, behavior:'smooth' }); }
+  }
+
+  function setLang(l){ try{ localStorage.setItem('leo_lang', l); }catch(e){} root.setAttribute('data-lang', l); }
+  try{ var s = localStorage.getItem('leo_lang'); if (s==='ko'||s==='en') root.setAttribute('data-lang', s); }catch(e){}
+  document.querySelector('[data-seg="ko"]').addEventListener('click', function(){ setLang('ko'); });
+  document.querySelector('[data-seg="en"]').addEventListener('click', function(){ setLang('en'); });
+
+  var ua = navigator.userAgent || '', platform = 'desktop';
+  if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) platform = 'ios';
+  else if (/Android/i.test(ua)) platform = 'android';
+  root.setAttribute('data-platform', platform);
+
+  document.querySelector('.arrow.prev').addEventListener('click', function(){ go(-1); });
+  document.querySelector('.arrow.next').addEventListener('click', function(){ go(1); });
+  dots.forEach(function(dot){ dot.addEventListener('click', function(){ focus(parseInt(dot.getAttribute('data-dot'),10)); }); });
+  document.querySelectorAll('[data-jump]').forEach(function(b){ b.addEventListener('click', function(){ jump(parseInt(b.getAttribute('data-jump'),10)); }); });
+
+  var vp = document.querySelector('[data-viewport]'), sx = null;
+  vp.addEventListener('pointerdown', function(e){ sx = e.clientX; stopAuto(); });
+  vp.addEventListener('pointerup', function(e){
+    if (sx != null){ var dx = e.clientX - sx; if (dx > 42) go(-1); else if (dx < -42) go(1); }
+    sx = null; resetAuto();
+  });
+  vp.addEventListener('pointercancel', function(){ sx = null; resetAuto(); });
+  vp.addEventListener('mouseenter', stopAuto);
+  vp.addEventListener('mouseleave', scheduleAuto);
+
+  apply();
+  scheduleAuto();
+})();
+</script>
 </body>
 </html>
