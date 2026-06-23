@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>비결 · 코딩 없이 AI로 그 영상 만드는 법 | AI TIGER MASK</title>
+<meta name="description" content="마스코트가 걸어와 윤곽선에 딱 맞는 정지챌린지 영상, 코딩 한 줄 없이 AI한테 말로 시켜서 만드는 법(바이브 코딩).">
+<style>
+  :root{ --o:#d97757; --ink:#1a1610; --mut:#6b665e; --bg:#f4efe6; --card:#fff; --line:#e7e0d4; }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:-apple-system,"Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-text-size-adjust:100%}
+  .wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+  header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:48px 22px 42px;text-align:center}
+  header .brand{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+  header h1{font-size:29px;margin:12px 0 10px;line-height:1.3}
+  header h1 b{color:var(--o)}
+  header p{color:#cfc7bd;font-size:15px}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:24px 0;font-size:16px}
+  .lead b{color:var(--o)}
+  h2{font-size:21px;margin:36px 0 12px;display:flex;align-items:center;gap:10px}
+  h2 .n{flex:none;width:32px;height:32px;background:var(--o);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+  h3{font-size:16px;margin:18px 0 8px}
+  p,li{font-size:15.5px;color:#312b24} ul{padding-left:20px} li{margin:5px 0}
+  a{color:var(--o);word-break:break-all}
+  .tip{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;font-size:14.5px;color:#4a443c}
+  .warn{background:#fff4ec;border:1px solid #f3c9af;border-left:5px solid var(--o);border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14.5px}
+  .warn b{color:var(--o)}
+  .promptbox{position:relative;margin:14px 0;border-radius:14px;overflow:hidden;border:2px solid var(--o)}
+  .promptbox .bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:700;padding:9px 14px}
+  .copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:6px 16px;font-size:13px;font-weight:800;cursor:pointer}
+  .copy.ok{background:#3a9d4e;color:#fff}
+  .prompt{margin:0;background:#fffdf9;color:#2a241d;padding:16px;white-space:pre-wrap;word-break:break-word;font-size:14.5px;line-height:1.7;font-family:inherit}
+  .step{color:var(--mut);font-size:13px;font-weight:700;letter-spacing:1px}
+  .cta{display:block;background:var(--o);color:#fff;text-align:center;text-decoration:none;font-weight:800;padding:17px;border-radius:14px;margin:30px 0 10px;font-size:16px}
+  .cta.alt{background:#2a221d}
+  .foot{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);text-align:center;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>그 정지챌린지 영상,<br><b>코딩 없이</b> AI한테 시켜서 만들기</h1>
+  <p>한 줄도 직접 안 써요. 말로 시키면 AI가 다 만들어줘요 (바이브 코딩)</p>
+</header>
+<div class="wrap">
+
+  <div class="lead">
+    캐릭터가 걸어와 <b>자기 모양 빨간 윤곽선</b>에 딱 맞고 통과하는 그 영상. 직접 코딩하는 게 아니라, <b>아래 프롬프트(=AI한테 시키는 말)를 복사해서 그대로 붙여넣기</b>만 하면 돼요. AI가 코드도 쓰고 영상도 뽑아줍니다.
+  </div>
+
+  <h2><span class="n">0</span>준비물 (딱 2개)</h2>
+  <h3>① 시킬 AI , 클로드 코드(Claude Code)</h3>
+  <p>"AI한테 말로 프로그램 만들게 시키는 도구"예요. PC에 설치하거나, <b>폰만 있으면 우리 텔레그램 봇</b>으로 똑같이 시킬 수 있어요.</p>
+  <a class="cta alt" href="https://www.instagram.com/aitigermask/">📱 폰으로 시작하기 (텔레그램으로 시키는 법) →</a>
+
+  <h3>② 캐릭터 그림 4장 , 배경 투명(누끼)</h3>
+  <p>같은 캐릭터로 <b>정면 1장 + 옆모습 걷는 동작 3장</b>, 총 4장이 필요해요. 그림 배경이 <b>투명(누끼)</b>이어야 윤곽선이 따지고 자연스럽게 합성돼요.</p>
+  <div class="warn">
+    <b>누끼가 뭐예요?</b> 사진/그림에서 <b>배경을 지우고 캐릭터만 남긴</b> 거예요(배경 투명). 직접 안 해도 돼요 , 아래 1단계 프롬프트로 <b>AI한테 "배경 투명하게 빼줘"라고 시키면</b> 됩니다.
+  </div>
+  <p>캐릭터가 아예 없어도 괜찮아요. 1단계에서 AI한테 만들어 달라고 하면 돼요.</p>
+
+  <h2><span class="n">1</span>캐릭터부터 만들기 (그림 없을 때)</h2>
+  <p class="step">아래를 복사 → AI(클로드 코드/텔레그램 봇)에 붙여넣기</p>
+  <div class="promptbox">
+    <div class="bar"><span>프롬프트 복사해서 붙여넣기</span><button class="copy" data-c="p1">복사</button></div>
+    <pre class="prompt" id="p1"></pre>
+  </div>
+  <div class="tip">이미 캐릭터(투명 PNG 4장)가 있으면 이 단계는 건너뛰고 2단계로 가세요.</div>
+
+  <h2><span class="n">2</span>영상 만들어 달라고 시키기</h2>
+  <p class="step">이게 핵심 , 이 말만 그대로 붙여넣으면 AI가 영상까지 뽑아줘요</p>
+  <div class="promptbox">
+    <div class="bar"><span>영상 만들기 프롬프트 (전체 복사)</span><button class="copy" data-c="p2">전체 복사</button></div>
+    <pre class="prompt" id="p2"></pre>
+  </div>
+
+  <h2><span class="n">3</span>마음에 안 들면? 그냥 말로 고쳐요</h2>
+  <p>다시 코딩할 필요 없어요. 결과를 보고 <b>이렇게 말만 더 하면</b> AI가 고쳐줍니다:</p>
+  <div class="promptbox">
+    <div class="bar"><span>수정 요청 예시 (골라서 복사)</span><button class="copy" data-c="p3">복사</button></div>
+    <pre class="prompt" id="p3"></pre>
+  </div>
+
+  <h2><span class="n">4</span>잘 시키는 꿀팁</h2>
+  <ul>
+    <li><b>구체적으로</b> 말할수록 잘 나와요. "예쁘게" 보다 "윤곽선은 빨강·두껍게, 캐릭터는 가운데 딱 맞게".</li>
+    <li>한 번에 완벽 안 나와도 정상. <b>"더 ~하게 바꿔줘"</b>를 2~3번 반복하면 원하는 게 나와요.</li>
+    <li>에러가 떠도 그 에러 메시지를 <b>그대로 복사해서 붙여넣고 "고쳐줘"</b> 하면 AI가 알아서 고쳐요.</li>
+    <li>완성되면 "<b>이거 인스타 릴스용 세로로 저장해줘</b>"라고 하면 끝.</li>
+  </ul>
+
+  <a class="cta" href="https://www.instagram.com/aitigermask/">📱 지금 폰으로 따라 해보기 →</a>
+  <div class="foot">AI TIGER MASK · 코딩 1도 몰라도 AI로 다 만들어요 · <a href="https://instagram.com/aitigermask">@aitigermask</a></div>
+</div>
+
+<!-- ===== 복붙용 원문(프롬프트) ===== -->
+<script type="text/plain" id="src-p1">
+내 브랜드 마스코트 캐릭터를 만들어줘. 같은 캐릭터로 4장이 필요해:
+1) 정면 전신 1장
+2) 오른쪽을 보고 걷는 옆모습 3장 (걷는 동작이 조금씩 다르게)
+스타일은 "귀엽고 단순한 주황색 호랑이 캐릭터"로 해줘. (원하는 스타일로 바꿔도 됨)
+다 만든 다음, 네 장 전부 배경을 투명하게(누끼) 빼서
+front.png, walk1.png, walk2.png, walk3.png 라는 이름으로 저장해줘.
+</script>
+<script type="text/plain" id="src-p2">
+세로 영상(1080x1920, 약 3.4초)을 만들어줘. "정지챌린지" 컨셉이야.
+
+- 화면 한가운데에 내 캐릭터(front.png) "모양 그대로"의 빨간 실선 윤곽선을 그려둬. (네모 박스 말고, 캐릭터 외곽선 모양)
+- 같은 캐릭터가 화면 왼쪽 밖에서 옆모습으로 걸어 들어와 (walk1·walk2·walk3.png를 번갈아 쓰고, 걸을 때 위아래로 살짝 들썩이게).
+- 화면 정중앙에 도착하면 정면(front.png)으로 바뀌면서 그 빨간 윤곽선 안에 딱 맞게 멈춰. 그 순간 위쪽에 "딱!" 글자가 팡 뜨고, "ding" 효과음이 나게 해줘.
+- 그 다음엔 계속 오른쪽으로 걸어 나가서 화면 밖으로 사라져.
+- 맨 위에 큰 글씨로 "0.001%만 멈춘다 🎯", 그 아래 작은 글씨로 "윤곽선에 딱 맞는 순간, 멈춰봐".
+- 배경은 밝은 색으로. 걷는 동안 발소리 같은 잔잔한 효과음 깔아줘.
+
+캐릭터 그림(front/walk1~3.png)은 배경이 투명(누끼)이야. 무료 도구만 써서(node + ffmpeg + sharp) 만들고, 글씨 폰트는 Pretendard를 받아서 써줘. 다 되면 hook_spark.mp4 로 저장해줘.
+</script>
+<script type="text/plain" id="src-p3">
+• 빨간 윤곽선이 너무 얇아. 더 두껍게 해줘.
+• 캐릭터가 윤곽선보다 작아. 윤곽선에 딱 맞게 키워줘.
+• 걷는 속도가 너무 빨라. 더 천천히 자연스럽게 걷게 해줘.
+• "딱!" 글자랑 효과음이 캐릭터가 가운데 올 때랑 안 맞아. 타이밍 맞춰줘.
+• 위 문구 글씨가 너무 작아. 더 크고 또렷하게.
+• 이거 인스타 릴스용으로 세로 1080x1920, 소리 포함해서 저장해줘.
+</script>
+
+<script>
+  document.querySelectorAll("pre[id]").forEach(pre => {
+    const src = document.getElementById("src-" + pre.id);
+    if (src) pre.textContent = src.textContent.trim();
+  });
+  document.querySelectorAll(".copy").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const src = document.getElementById("src-" + btn.dataset.c);
+      const label = btn.dataset.c === "p2" ? "전체 복사" : "복사";
+      try {
+        await navigator.clipboard.writeText(src.textContent.trim());
+        btn.textContent = "복사됨 ✓"; btn.classList.add("ok");
+        setTimeout(() => { btn.textContent = label; btn.classList.remove("ok"); }, 1600);
+      } catch (e) {
+        const r = document.createRange(); r.selectNode(document.getElementById(btn.dataset.c));
+        getSelection().removeAllRanges(); getSelection().addRange(r);
+      }
+    });
+  });
+</script>
+</body>
+</html>
