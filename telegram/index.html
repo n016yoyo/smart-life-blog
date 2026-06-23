@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>텔레그램으로 Claude Code 조종하기 · 만드는 법 완전 가이드</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#181b22; --card2:#1f232c; --line:#2a2f3a;
+    --tx:#e7e9ee; --mut:#9aa3b2; --acc:#229ED9; --acc2:#34d399; --ok:#34d399; --warn:#fbbf24; --bad:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Apple SD Gothic Neo",sans-serif;line-height:1.7}
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px}
+  header.hero{background:linear-gradient(135deg,#229ED922,#34d39922);border-bottom:1px solid var(--line);padding:56px 0 40px;text-align:center}
+  .badge{display:inline-block;font-size:13px;color:var(--acc2);border:1px solid #34d39955;border-radius:999px;padding:4px 12px;margin-bottom:14px}
+  h1{font-size:30px;margin:6px 0 10px;line-height:1.3}
+  .sub{color:var(--mut);font-size:16px;max-width:560px;margin:0 auto}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:22px;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+  h3{font-size:17px;margin:22px 0 8px}
+  p{color:#d3d8e2}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+  .grid{display:grid;gap:12px}
+  .grid.two{grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.grid.two{grid-template-columns:1fr}}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:13px;color:#ffd9a8}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;font-size:13px;color:#cfe3ff;line-height:1.6}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:#fff}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .mut{color:var(--mut)}
+  .step{display:flex;gap:14px;margin:14px 0}
+  .num{flex:0 0 34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .flow{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#bfe3c9;background:#0b0d11;border:1px solid var(--line);border-radius:12px;padding:16px;white-space:pre-wrap}
+  .copybox{position:relative}
+  .copybtn{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+  .copybtn:active{transform:scale(.97)}
+  .pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .toc a{font-size:13px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .toc a:hover{color:#fff;border-color:var(--acc)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;padding:12px 0}
+  footer{padding:30px 0 60px;text-align:center;color:var(--mut);font-size:13px}
+  .hl{background:#229ED922;border-left:3px solid var(--acc);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">📱 실전 검증 완료 · 직접 만들고 겪은 노하우</span>
+    <h1>텔레그램으로 Claude Code 조종하기<br>만드는 법 완전 가이드</h1>
+    <p class="sub">폰 텔레그램에서 메시지를 보내면, <b>하나의 살아있는 Claude Code 세션</b>이 실제 작업(파일 수정, ffmpeg, 스크랩)을 하고 결과를 다시 톡으로 답장합니다. 추가 서버 0개, 봇 토큰 1개면 끝.</p>
+    <div class="toc">
+      <a href="#what">뭘 만드나</a>
+      <a href="#arch">전체 구조</a>
+      <a href="#flow">동작 원리</a>
+      <a href="#traps">⚠️ 함정·노하우</a>
+      <a href="#ai">🤖 AI 빌드 프롬프트</a>
+      <a href="#manual">🙋 사람이 할 일</a>
+      <a href="#cost">비용</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="what">
+  <h2>🎯 뭘 만드는 거야?</h2>
+  <div class="flow">나(폰): "릴스 자막 좀 키워줘"  💬
+        ↓ (봇이 톡을 Claude Code 로 전달)
+Claude Code: ffmpeg 로 자막 키우고 파일 저장
+        ↓
+봇:  "✅ 완료. out/reel_final.mp4 만들었어요" 📩</div>
+  <p>PC 앞에 없어도 폰 톡 한 줄로 <b>진짜 작업</b>이 돌아갑니다. 대화가 한 세션으로 계속 이어져서, 어제 하던 작업을 오늘 이어서 시킬 수도 있어요. 웹훅도, 클라우드 서버도 필요 없습니다.</p>
+</section>
+
+<section id="arch">
+  <h2>🗺️ 전체 구조</h2>
+  <p>조각은 단 <b>3개</b>뿐입니다. 별도 인프라가 없는 게 핵심이에요.</p>
+  <div class="grid two">
+    <div class="card">① <b>텔레그램 봇</b> 📱<br><span class="mut">@BotFather 로 1분 발급. 메시지 받는 창구. 토큰 1개가 전부.</span></div>
+    <div class="card">② <b>브리지 (bridge.js)</b> 🌉<br><span class="mut">내 PC의 Claude Code 환경에서 도는 작은 Node 스크립트. 의존성 0(내장 모듈만).</span></div>
+    <div class="card">③ <b>Claude Code 세션</b> 🤖<br><span class="mut">브리지가 "스트리밍 모드로 하나만" 띄워두고 살려두는 실작업 두뇌.</span></div>
+    <div class="card">＋ <b>상태 파일</b> 🗄️<br><span class="mut">세션 id 와 메시지 offset 저장. 재시작해도 대화 이어감.</span></div>
+  </div>
+  <div class="flow">폰 텔레그램  ──(메시지/파일)──▶  Telegram 서버 (약 24h 보관)
+                                  ▲ │ getUpdates (long-poll)
+                                  │ ▼
+                         [ bridge.js ]  (Claude Code 환경에서 실행)
+                            │  ※ claude 를 스트리밍 모드로 하나만 유지
+                            │  stdin  ◀── 텔레그램 메시지 (JSON 한 줄)
+                            │  stdout ──▶ 결과 이벤트
+                            ▼
+                    같은 세션 = 캐시 따뜻 = 저렴 → 답장 (sendMessage)</div>
+  <div class="hl">💡 <b>웹훅·서버가 필요 없는 이유:</b> 텔레그램의 <code>getUpdates</code> long-poll 로 브리지가 직접 "새 메시지 있어?"를 물어봅니다. 그래서 공개 주소도, 클라우드 배포도 없이 내 PC만으로 돕니다.</div>
+</section>
+
+<section id="flow">
+  <h2>⚙️ 동작 원리 <span class="pill">검증된 스트리밍 프로토콜</span></h2>
+  <h3>핵심: 프로세스 하나를 계속 살려둔다</h3>
+  <p>메시지마다 <code>claude -p --resume</code> 를 <b>새로 부르면</b> 매번 대화를 처음부터 다시 읽어 캐시가 차갑고 비쌉니다. 대신 <b>프로세스 하나를 계속 살려두면</b> 대화가 한 세션으로 쌓이고 프롬프트 캐시가 따뜻하게 유지돼서, 터미널에서 직접 치는 것과 같은 저렴한 비용이 됩니다.</p>
+  <pre>claude -p --input-format stream-json --output-format stream-json --verbose [--resume &lt;id&gt;]</pre>
+  <h3>주고받는 형식</h3>
+  <table>
+    <tr><th>방향</th><th>형식</th></tr>
+    <tr><td><b>입력</b> (stdin, 메시지당 한 줄)</td><td><code>{"type":"user","message":{"role":"user","content":[{"type":"text","text":"..."}]}}</code></td></tr>
+    <tr><td><b>시작 이벤트</b></td><td><code>{"type":"system","subtype":"init","session_id":"..."}</code> (1회)</td></tr>
+    <tr><td><b>답 조각</b></td><td><code>{"type":"assistant","message":{...}}</code></td></tr>
+    <tr><td><b>턴 종료</b></td><td><code>{"type":"result","result":"답","session_id":"..."}</code></td></tr>
+  </table>
+  <p>브리지는 <code>result</code> 이벤트가 올 때까지 기다렸다가 <code>.result</code>(답)를 톡으로 보내고, <code>.session_id</code> 를 저장합니다(재시작 시 <code>--resume</code> 으로 부활).</p>
+  <div class="hl">✅ <code>--verbose</code> 는 stream-json 출력에 필수입니다. 실행 시 <code>apiKeySource:none</code> 이 보이면 <b>구독으로 동작</b>(별도 유료 API 키 불필요)한다는 뜻이에요.</div>
+</section>
+
+<section id="traps">
+  <h2>⚠️ 우리가 겪은 함정 &amp; 노하우 <span class="pill">이게 핵심</span></h2>
+  <p>이 가이드의 진짜 가치. 직접 만들며 부딪힌 부분들입니다.</p>
+
+  <details open><summary>💸 비용은 "캐시"가 좌우한다</summary>
+    <p>같은 세션을 빠르게 주고받으면(캐시 TTL 약 5분 안) 큰 컨텍스트도 <b>캐시 읽기(약 0.1배)</b>로 싸집니다. 5분 넘게 비면 캐시가 식어 그 한 메시지는 비싸져요. 이 브리지가 <b>지속 세션</b>을 쓰는 이유가 바로 이 따뜻한 캐시를 재현하려는 것입니다.</p></details>
+
+  <details><summary>🐘 거대한 기존 대화를 봇으로 매번 이어가지 말 것</summary>
+    <p>수십 MB짜리 큰 대화를 봇으로 resume 하면 메시지당 컨텍스트 토큰이 폭증합니다. 봇 전용은 <b>가볍거나 새 세션</b>으로 쓰고, 필요하면 <code>MODEL=claude-sonnet-4-6</code> 으로 비용을 낮추세요.</p></details>
+
+  <details><summary>🔌 spawn ENOENT: claude 경로 문제</summary>
+    <p>백그라운드로 띄우면 <code>spawn claude ENOENT</code> 가 날 수 있어요. PATH 에 <code>~</code> 가 안 풀려 <code>claude</code> 를 못 찾는 경우입니다. 실행 스크립트에서 <b>claude 절대경로</b>를 잡아주면(예: <code>CLAUDE_BIN="$(command -v claude)"</code>) PATH 상태와 무관하게 안정적으로 켜집니다.</p></details>
+
+  <details><summary>🔁 터미널과 봇에서 같은 세션 동시 구동 금지</summary>
+    <p>같은 세션을 터미널과 봇에서 <b>동시에</b> 돌리면 대화 기록(transcript)이 갈라집니다. 한 번에 한 곳에서만 쓰세요.</p></details>
+
+  <details><summary>🆔 세션 id 안 외워도 됨 (번호 피커)</summary>
+    <p><code>/sessions</code> 로 최근 대화 목록(번호·시각·미리보기)을 보고 <code>/resume &lt;번호&gt;</code> 로 이어갑니다. 터미널 <code>claude --resume</code> 피커처럼 긴 id 를 외울 필요가 없어요. 목록은 <code>~/.claude/projects/&lt;workdir 인코딩&gt;/*.jsonl</code> 을 최근순으로 읽어 첫 메시지를 미리보기로 보여줍니다.</p></details>
+
+  <details><summary>💀 환경이 죽어도 메시지는 안 날아간다</summary>
+    <p>텔레그램이 메시지를 <b>약 24시간 보관</b>하므로, 브리지가 그 안에 다시 켜지면 유실 없이 처리됩니다. 더 길게 보장하려면 텔레그램 → Cloudflare Worker 웹훅 → KV 큐로 확장하면 영구 보관이 됩니다.</p></details>
+</section>
+
+<section id="ai">
+  <h2>🤖 AI 빌드 프롬프트 <span class="pill">복사해서 AI에 붙여넣기</span></h2>
+  <p>아래를 통째로 복사해 <b>Claude Code 등 AI 코딩 도구</b>에 붙이면, 브리지 스크립트 전체를 만들어줍니다. (봇 토큰 발급은 <a href="#manual">아래 사람 체크리스트</a> 참고)</p>
+  <div class="card copybox">
+    <button class="copybtn" onclick="copyPrompt()">📋 복사</button>
+    <pre id="ai-prompt">텔레그램으로 Claude Code 를 조종하는 브리지(bridge.js)를 만들어줘. Node 내장 모듈만 쓰고(외부 의존성 0), 어떤 Claude Code 프로젝트에도 복붙으로 작동하게 해.
+
+# 동작 개요
+- 텔레그램 getUpdates long-poll 로 메시지를 받는다(웹훅·서버 불필요).
+- claude 를 스트리밍 모드로 "하나만" 띄워 계속 살려둔다(따뜻한 캐시 = 저렴).
+- 받은 텍스트를 그 세션 stdin 에 JSON 한 줄로 넣고, result 이벤트의 답을 톡으로 보낸다.
+
+# Claude 프로세스
+spawn 명령: claude -p --input-format stream-json --output-format stream-json --verbose --dangerously-skip-permissions [--resume &lt;id&gt;]
+- claude 실행 파일은 process.env.CLAUDE_BIN || "claude" 로(절대경로 주입 가능, ENOENT 방지).
+- stdin 입력(한 줄): {"type":"user","message":{"role":"user","content":[{"type":"text","text":"<메시지>"}]}}
+- stdout 파싱: type=="system"&&subtype=="init" 또는 result 이벤트의 session_id 를 저장,
+  type=="result" 의 result 를 답으로 사용. 프로세스 죽으면 자동 재시작 후 --resume.
+
+# 텔레그램
+- getUpdates(offset, timeout=50) long-poll 루프. 처리한 update_id+1 을 offset 으로 저장.
+- sendMessage 로 답장(긴 답은 4096자 단위로 분할).
+- 문서/사진 첨부: getFile→다운로드해 WORKDIR 에 저장(중복 시 name(1).ext), 캡션 있으면 지시문으로 전달.
+
+# 명령어
+/help,/start(안내+chat_id) · /sessions,/ls(최근대화 목록: 번호·시각·크기·미리보기, 현재세션 표시)
+/resume <번호|id> · /session(현재 id+터미널 resume 명령) · /new,/clear(새 세션) · /cd <경로>(작업폴더 변경)
+/down <경로>(서버 파일을 톡으로 전송). 그 외 텍스트는 Claude 로 전달.
+
+# 환경변수
+TG_TOKEN(필수) · ALLOWED_CHAT(이 chat_id 만 허용, 보안 필수) · WORKDIR(기본 cwd)
+RESUME(이어갈 세션 id) · MODEL(예 claude-sonnet-4-6) · STATE_FILE(기본 ./.tg_bridge_state.json) · CLAUDE_BIN
+
+# 반드시 반영할 함정
+- 지속 세션을 유지해 캐시를 따뜻하게(메시지마다 새로 resume 하지 말 것).
+- claude 절대경로(CLAUDE_BIN)로 spawn ENOENT 방지.
+- ALLOWED_CHAT 없으면 사실상 셸 권한 노출이므로 본인 chat 만 허용.
+- 세션 목록은 ~/.claude/projects/<workdir 인코딩>/*.jsonl 을 최근 수정순으로 읽어 첫 메시지를 미리보기로.
+- 파일은 텔레그램 한도 20MB.
+
+bridge.js 전체 코드 + 한 방 실행/재시작용 restart.sh(토큰·ALLOWED_CHAT·CLAUDE_BIN export, nohup 백그라운드, stop 인자) 까지 만들어줘.</pre>
+  </div>
+  <p class="mut">붙여넣으면 AI가 코드를 만들고, "봇 토큰부터 발급하세요"라고 안내해줄 거예요.</p>
+</section>
+
+<section id="manual">
+  <h2>🙋 사람이 직접 해야 하는 것 <span class="pill">AI가 대신 못 함</span></h2>
+  <p>봇 발급과 실행은 본인이 해야 합니다. 순서대로:</p>
+  <div class="step"><div class="num">1</div><div><b>텔레그램 봇 생성</b><br><span class="mut">@BotFather 에게 <code>/newbot</code> → 이름 정하고 토큰 발급(<code>123456:ABC-...</code>)</span></div></div>
+  <div class="step"><div class="num">2</div><div><b>내 chat_id 확인</b><br><span class="mut"><code>TG_TOKEN="..." node bridge.js</code> 실행 후, 봇에게 <code>/start</code> → "chat_id=99999999" 회신</span></div></div>
+  <div class="step"><div class="num">3</div><div><b>본 실행 (본인 chat만 허용)</b><br><span class="mut"><code>TG_TOKEN="..." ALLOWED_CHAT="99999999" WORKDIR="$(pwd)" node bridge.js</code></span></div></div>
+  <div class="step"><div class="num">4</div><div><b>백그라운드로 유지</b><br><span class="mut"><code>nohup node bridge.js &gt; bridge.log 2&gt;&amp;1 &amp;</code> (터미널 닫아도 유지). 끄기는 <code>pkill -f "node bridge.js"</code></span></div></div>
+  <div class="step"><div class="num">5</div><div><b>이제 폰에서 톡</b><br><span class="mut">보내는 메시지가 그 프로젝트의 Claude Code 작업으로 실행되고 결과가 답장됩니다</span></div></div>
+</section>
+
+<section id="cost">
+  <h2>💰 비용 / 사용량 <span class="pill">꼭 읽기</span></h2>
+  <div class="flow">현금($) 0원   ← 구독 인증으로 도는 경우 별도 API 청구 없음 (구독 quota 만 소모)
+비용을 좌우하는 것 = 캐시 (같은 세션을 5분 안에 주고받으면 쌈)</div>
+  <table>
+    <tr><th>상황</th><th>비용</th></tr>
+    <tr><td>가벼운 새 세션, 빠른 왕복</td><td class="ok">저렴 (따뜻한 캐시 = 약 0.1배)</td></tr>
+    <tr><td>5분 넘게 비운 뒤 한 메시지</td><td class="warn">그 한 번은 캐시가 식어 비쌈</td></tr>
+    <tr><td>수십 MB 큰 대화를 매번 resume</td><td class="bad">메시지당 토큰 폭증 (피할 것)</td></tr>
+  </table>
+  <p class="mut">참고: 컨텍스트 로딩 때문에 사소한 "PONG" 한 번도 약 $0.06 상당 quota 를 씁니다. 큰 대화 resume 은 그 수배에서 수십배. 절약하려면 봇 전용은 가벼운 세션 + 필요 시 <code>MODEL=claude-sonnet-4-6</code>.</p>
+</section>
+
+<section id="faq">
+  <h2>❓ FAQ</h2>
+  <div class="card"><b>Q. 서버나 클라우드가 필요해?</b><br>❌ 아니요. 내 PC의 Claude Code 환경에서 <code>node bridge.js</code> 하나만 돌면 됩니다. 텔레그램 long-poll 이라 공개 주소가 필요 없어요.</div>
+  <div class="card"><b>Q. 돈이 따로 들어?</b><br>구독으로 도는 경우 현금 청구는 0원, 구독 quota 만 소모합니다. 캐시를 따뜻하게 쓰면 인터랙티브와 같은 저렴한 비용이에요.</div>
+  <div class="card"><b>Q. PC를 꺼두면 메시지가 날아가?</b><br>텔레그램이 약 24시간 보관해서, 그 안에 브리지를 다시 켜면 유실 없이 처리됩니다.</div>
+  <div class="card"><b>Q. 보안은?</b><br><code>--dangerously-skip-permissions</code> 로 도구가 자동 실행되니, 봇을 아는 사람은 사실상 셸 권한을 가집니다. <b>반드시 <code>ALLOWED_CHAT</code> 으로 본인 chat 만 허용</b>하고, 토큰 노출 시 @BotFather <code>/revoke</code>.</div>
+  <div class="card"><b>Q. 기성품은 없어?</b><br>같은 일을 하는 완성품 <a href="https://github.com/kstost/cokacdir" target="_blank" rel="noopener">cokacdir</a> 가 있습니다(텔레그램·디스코드·슬랙 멀티플랫폼). "기능 풍부한 기성품"이면 그걸, "직접 통제·최소 구성"이면 이 키트를 쓰면 됩니다.</div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  실전 검증 기반 가이드 · 비밀값(봇 토큰)은 절대 코드/문서에 넣지 말 것 🔒
+</footer>
+
+<script>
+function copyPrompt(){
+  var t = document.getElementById('ai-prompt').textContent;
+  navigator.clipboard.writeText(t).then(function(){
+    var b=document.querySelector('.copybtn'); var o=b.textContent;
+    b.textContent='✅ 복사됨!'; setTimeout(function(){b.textContent=o;},1600);
+  });
+}
+</script>
+</body>
+</html>

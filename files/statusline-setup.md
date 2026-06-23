@@ -1,0 +1,179 @@
+# Claude Code 상태줄(statusline) 설정 — 포터블 가이드
+
+다른 환경/프로젝트에서도 이 상태줄을 그대로 재현하기 위한 자립형 문서.
+결과 예시:
+
+```
+[Opus 4.8 (1M context)]  ctx: 19%  |  5h: 1% (↺4h50m)  7d: 4% (↺3d18h)
+```
+
+- `ctx: N%` — 현재 컨텍스트 창 사용률
+- `5h: N% (↺…)` — 5시간 레이트리밋 사용률 + 리셋까지 남은 시간
+- `7d: N% (↺…)` — 7일 레이트리밋 사용률 + 리셋까지 남은 시간
+
+## 왜 세션을 나갔다 와도 유지되나
+
+설정을 **유저 레벨 설정 파일 `~/.claude/settings.json`** 에 넣기 때문.
+이 파일은 특정 프로젝트가 아니라 그 머신의 **모든 세션·모든 프로젝트에 영구 적용**된다.
+(프로젝트 한정으로 쓰려면 대신 `<프로젝트>/.claude/settings.json` 에 동일 키를 넣으면 됨.)
+
+## 사전 요건
+
+- `jq` 설치 필요 (`jq --version` 로 확인. 없으면 `apt install jq` / `brew install jq`)
+- 레이트리밋(`5h`/`7d`) 줄은 **Pro/Max 구독에서, 그리고 그 세션의 첫 API 응답 이후부터만** 나타남.
+  없으면 해당 구간은 자동 생략되고 `[모델]  ctx: N%` 만 표시됨 (정상).
+- Claude Code 2.x 기준. `context_window` / `rate_limits` 필드를 제공하는 버전이어야 함
+  (`claude --version` 으로 확인. 본 가이드는 2.1.x에서 검증).
+
+## 설치 (2단계)
+
+### 1) 상태줄 스크립트 생성 — `~/.claude/statusline.sh`
+
+아래 내용 그대로 저장:
+
+```bash
+#!/bin/bash
+input=$(cat)
+NOW=$(date +%s)
+
+fmt_remain() {
+  local s=${1%.*}
+  [ -z "$s" ] && return
+  [ "$s" -le 0 ] 2>/dev/null && return
+  local d=$((s/86400)) h=$(((s%86400)/3600)) m=$(((s%3600)/60))
+  if   [ "$d" -gt 0 ]; then printf '%dd%dh' "$d" "$h"
+  elif [ "$h" -gt 0 ]; then printf '%dh%dm' "$h" "$m"
+  else printf '%dm' "$m"; fi
+}
+
+MODEL=$(echo "$input" | jq -r '.model.display_name')
+PCT=$(echo "$input" | jq -r '.context_window.used_percentage // empty' | cut -d. -f1)
+
+# rate_limits는 Pro/Max 구독자만, 첫 API 응답 이후부터 나타남
+FIVE_H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+FIVE_R=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+WEEK_R=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
+
+OUT="[$MODEL]"
+[ -n "$PCT" ] && OUT="$OUT  ctx: ${PCT}%"
+
+LIMITS=""
+if [ -n "$FIVE_H" ]; then
+  seg="5h: $(printf '%.0f' "$FIVE_H")%"
+  [ -n "$FIVE_R" ] && { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  LIMITS="$seg"
+fi
+if [ -n "$WEEK" ]; then
+  seg="7d: $(printf '%.0f' "$WEEK")%"
+  [ -n "$WEEK_R" ] && { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  LIMITS="${LIMITS:+$LIMITS  }$seg"
+fi
+[ -n "$LIMITS" ] && OUT="$OUT  |  $LIMITS"
+
+echo "$OUT"
+```
+
+실행 권한 부여:
+
+```bash
+chmod +x ~/.claude/statusline.sh
+```
+
+### 2) 설정에 등록 — `~/.claude/settings.json`
+
+`statusLine` 키 추가 (다른 키가 이미 있으면 그 안에 병합):
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "refreshInterval": 5,
+    "padding": 2
+  }
+}
+```
+
+- `refreshInterval`(선택, 초): 유휴 중에도 N초마다 스크립트 재실행 → `↺` **카운트다운이 실시간으로 줄어듦**. 없으면 매 턴에만 갱신.
+- `padding`(선택): 좌우 여백 문자 수. 기본 0.
+
+저장 후 새 세션부터 자동 적용 (현재 세션은 재시작 필요할 수 있음).
+
+> **더 쉬운 대안**: Claude Code 안에서 `/statusline` 명령에 원하는 표시를 자연어로 말하면
+> 스크립트를 자동 생성하고 `settings.json`까지 등록해 줌. 삭제는 `/statusline delete`.
+> (이 문서는 그 결과물을 직접 손에 쥐고 다른 환경에 그대로 이식하기 위한 버전.)
+
+## 한 방 설치 스크립트 (복붙용)
+
+```bash
+mkdir -p ~/.claude
+cat > ~/.claude/statusline.sh <<'EOF'
+#!/bin/bash
+input=$(cat)
+NOW=$(date +%s)
+fmt_remain() {
+  local s=${1%.*}
+  [ -z "$s" ] && return
+  [ "$s" -le 0 ] 2>/dev/null && return
+  local d=$((s/86400)) h=$(((s%86400)/3600)) m=$(((s%3600)/60))
+  if   [ "$d" -gt 0 ]; then printf '%dd%dh' "$d" "$h"
+  elif [ "$h" -gt 0 ]; then printf '%dh%dm' "$h" "$m"
+  else printf '%dm' "$m"; fi
+}
+MODEL=$(echo "$input" | jq -r '.model.display_name')
+PCT=$(echo "$input" | jq -r '.context_window.used_percentage // empty' | cut -d. -f1)
+FIVE_H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+FIVE_R=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+WEEK_R=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
+OUT="[$MODEL]"
+[ -n "$PCT" ] && OUT="$OUT  ctx: ${PCT}%"
+LIMITS=""
+if [ -n "$FIVE_H" ]; then
+  seg="5h: $(printf '%.0f' "$FIVE_H")%"
+  [ -n "$FIVE_R" ] && { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  LIMITS="$seg"
+fi
+if [ -n "$WEEK" ]; then
+  seg="7d: $(printf '%.0f' "$WEEK")%"
+  [ -n "$WEEK_R" ] && { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  LIMITS="${LIMITS:+$LIMITS  }$seg"
+fi
+[ -n "$LIMITS" ] && OUT="$OUT  |  $LIMITS"
+echo "$OUT"
+EOF
+chmod +x ~/.claude/statusline.sh
+
+# settings.json에 statusLine 병합 (jq 사용, 기존 키 보존)
+SETTINGS=~/.claude/settings.json
+[ -f "$SETTINGS" ] || echo '{}' > "$SETTINGS"
+jq '.statusLine = {"type":"command","command":"~/.claude/statusline.sh","refreshInterval":5,"padding":2}' "$SETTINGS" > "$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS"
+echo "설치 완료. 새 세션부터 적용됩니다."
+```
+
+## statusline 입력 JSON 필드 참조
+
+Claude Code가 stdin(JSON)으로 넘겨주는 값 중 이 스크립트가 쓰는 키:
+
+| 필드 | 의미 |
+|------|------|
+| `.model.display_name` | 모델 표시명 (예: `Opus 4.8 (1M context)`) |
+| `.context_window.used_percentage` | 컨텍스트 창 사용률(%) |
+| `.rate_limits.five_hour.used_percentage` | 5시간 윈도우 사용률(%) — Pro/Max, 첫 응답 이후 |
+| `.rate_limits.five_hour.resets_at` | 5시간 윈도우 리셋 epoch초 |
+| `.rate_limits.seven_day.used_percentage` | 7일 윈도우 사용률(%) |
+| `.rate_limits.seven_day.resets_at` | 7일 윈도우 리셋 epoch초 |
+
+> 다른 정보(현재 디렉토리·git 브랜치·비용 등)도 같은 JSON에 들어옴.
+> `echo '{}' | ~/.claude/statusline.sh` 로 직접 테스트하거나,
+> 실제 입력을 보려면 스크립트 첫 줄에 `cat > /tmp/sl.json` 를 임시로 넣어 덤프해 확인.
+
+## 트러블슈팅
+
+| 증상 | 원인 / 해결 |
+|------|-------------|
+| 상태줄이 아예 안 뜸 | `chmod +x` 누락 / `settings.json` JSON 문법 오류 / 경로 오타 |
+| `ctx`만 뜨고 `5h`·`7d` 없음 | 정상. Pro/Max가 아니거나 아직 첫 API 응답 전 |
+| 깨진 출력·빈 줄 | `jq` 미설치 — `jq --version` 확인 |
+| 모델명이 `null` | 구버전 Claude Code — `claude --version` 후 업데이트 |

@@ -1,0 +1,96 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Code 명령어 전체 + 실제 사용 예시</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);max-width:680px;margin:0 auto;padding:28px 18px 60px;line-height:1.5}
+.tag{font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--acc)}
+h1{font-size:27px;line-height:1.25;margin:6px 0 4px}
+.sub{color:var(--mut);font-size:14px;margin-bottom:22px}
+.cmd{background:#fff;border:1px solid #e6ddcd;border-radius:16px;padding:16px 18px;margin:12px 0;box-shadow:0 4px 12px rgba(30,25,15,.05)}
+.ch{font-size:21px;font-weight:800;color:var(--ink)}
+.wh{font-size:15px;font-weight:700;color:var(--acc);margin:2px 0 8px}
+.us{font-size:14.5px;color:#33302a}
+.us b{color:var(--ink);background:#f1e9da;padding:1px 7px;border-radius:6px;font-size:12px;margin-right:6px}
+.foot{margin-top:26px;text-align:center;color:var(--mut);font-size:14px}
+.foot a{color:var(--acc);font-weight:700;text-decoration:none}
+</style></head>
+<body>
+<div class="tag">CLAUDE CODE 꿀팁</div>
+<h1>Claude Code 명령어 전체 + 실제 사용 예시</h1>
+<div class="sub">비개발자도 바로 쓰는 명령어 모음 · by @aitigermask</div>
+
+    <div class="cmd">
+      <div class="ch">/resume</div>
+      <div class="wh">이전 대화 이어가기</div>
+      <div class="us"><b>예시</b> 어제 만들던 작업, claude 켜고 /resume 으로 그 대화 그대로 이어서 진행.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/model</div>
+      <div class="wh">모델 바꾸기</div>
+      <div class="us"><b>예시</b> 간단한 수정은 빠른 모델, 어려운 설계는 강한 모델로 바꿔 속도·비용 최적화.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/compact</div>
+      <div class="wh">대화 압축 (토큰 절약)</div>
+      <div class="us"><b>예시</b> 대화가 길어 느려지면 /compact 로 핵심만 요약 압축. 맥락 유지하며 토큰 절약.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/clear</div>
+      <div class="wh">대화 초기화</div>
+      <div class="us"><b>예시</b> 전혀 다른 작업 시작 전 /clear 로 이전 맥락 비워 엉뚱한 참조 방지.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/init</div>
+      <div class="wh">프로젝트 규칙(CLAUDE.md) 생성</div>
+      <div class="us"><b>예시</b> 새 프로젝트에서 /init → 구조·컨벤션 분석해 규칙 문서 자동 생성. 이후 일관된 작업.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/agents</div>
+      <div class="wh">서브에이전트 (일 나눠 시키기)</div>
+      <div class="us"><b>예시</b> 큰 작업을 여러 에이전트에 분배. 예: 검색 전담·리뷰 전담을 동시에.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/memory</div>
+      <div class="wh">기억(메모리) 편집</div>
+      <div class="us"><b>예시</b> "항상 한국어로, 엠대시 금지" 같은 영구 규칙 저장 → 매번 안 알려줘도 됨.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/mcp</div>
+      <div class="wh">외부 도구 연결</div>
+      <div class="us"><b>예시</b> 피그마·노션·DB 등 외부 도구를 연결해 Claude가 직접 읽고 쓰게.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/review</div>
+      <div class="wh">코드 자동 검토</div>
+      <div class="us"><b>예시</b> 변경한 코드 /review 로 버그·개선점 자동 점검.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/loop</div>
+      <div class="wh">반복 작업 자동 실행</div>
+      <div class="us"><b>예시</b> "5분마다 배포 상태 확인" 처럼 주기적 작업을 알아서 반복.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/cost</div>
+      <div class="wh">사용량·비용 확인</div>
+      <div class="us"><b>예시</b> 이번 세션 토큰을 얼마나 썼는지 바로 확인.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/rewind</div>
+      <div class="wh">되돌리기(체크포인트)</div>
+      <div class="us"><b>예시</b> 잘못된 변경을 이전 시점으로 롤백.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">/config</div>
+      <div class="wh">설정 열기</div>
+      <div class="us"><b>예시</b> 테마·권한·모델 기본값 등 변경.</div>
+    </div>
+    <div class="cmd">
+      <div class="ch">Shift+Tab</div>
+      <div class="wh">플랜 모드</div>
+      <div class="us"><b>예시</b> 바로 실행 말고 계획부터 세우게. 큰 작업 전에 안전하게.</div>
+    </div>
+<div class="foot">더 많은 Claude·AI 자동화 꿀팁 → <a href="https://instagram.com/aitigermask">@aitigermask</a> 팔로우</div>
+</body></html>

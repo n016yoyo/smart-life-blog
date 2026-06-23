@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타 댓글 자동응답 봇 — 만드는 법 완전 가이드</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#181b22; --card2:#1f232c; --line:#2a2f3a;
+    --tx:#e7e9ee; --mut:#9aa3b2; --acc:#e1306c; --acc2:#f77737; --ok:#34d399; --warn:#fbbf24; --bad:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Apple SD Gothic Neo",sans-serif;line-height:1.7}
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px}
+  header.hero{background:linear-gradient(135deg,#e1306c22,#f7773722);border-bottom:1px solid var(--line);padding:56px 0 40px;text-align:center}
+  .badge{display:inline-block;font-size:13px;color:var(--acc2);border:1px solid #f7773755;border-radius:999px;padding:4px 12px;margin-bottom:14px}
+  h1{font-size:30px;margin:6px 0 10px;line-height:1.3}
+  .sub{color:var(--mut);font-size:16px;max-width:560px;margin:0 auto}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:22px;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+  h3{font-size:17px;margin:22px 0 8px}
+  p{color:#d3d8e2}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+  .grid{display:grid;gap:12px}
+  .grid.two{grid-template-columns:1fr 1fr}
+  @media(max-width:640px){.grid.two{grid-template-columns:1fr}}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:13px;color:#ffd9a8}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;font-size:13px;color:#cfe3ff;line-height:1.6}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--card2);color:#fff}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .mut{color:var(--mut)}
+  .step{display:flex;gap:14px;margin:14px 0}
+  .num{flex:0 0 34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .flow{font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#bfe3c9;background:#0b0d11;border:1px solid var(--line);border-radius:12px;padding:16px;white-space:pre-wrap}
+  .copybox{position:relative}
+  .copybtn{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+  .copybtn:active{transform:scale(.97)}
+  .pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .toc a{font-size:13px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .toc a:hover{color:#fff;border-color:var(--acc)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;padding:12px 0}
+  footer{padding:30px 0 60px;text-align:center;color:var(--mut);font-size:13px}
+  .hl{background:#e1306c22;border-left:3px solid var(--acc);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">📸 실전 검증 완료 · 직접 만들고 겪은 노하우</span>
+    <h1>인스타 댓글 자동응답 봇<br>만드는 법 완전 가이드</h1>
+    <p class="sub">팔로워가 게시물에 댓글 달면 → <b>1초 안에 자동으로 답글 + DM</b>. 코드는 AI에게 맡기고, 사람은 계정 설정만. 우리가 실제로 만들며 부딪힌 함정까지 전부 담았습니다.</p>
+    <div class="toc">
+      <a href="#what">뭘 만드나</a>
+      <a href="#arch">전체 구조</a>
+      <a href="#flow">동작 흐름</a>
+      <a href="#traps">⚠️ 함정·노하우</a>
+      <a href="#ai">🤖 AI 빌드 프롬프트</a>
+      <a href="#manual">🙋 사람이 할 일</a>
+      <a href="#limit">한도</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="what">
+  <h2>🎯 뭘 만드는 거야?</h2>
+  <div class="flow">팔로워: "가격 얼마예요?"  💬
+        ↓ (봇이 즉시 감지)
+답글:  "DM 보냈어요! 팔로우하면 바로 떠요 📩"
+ DM :  "가격표 여기 있어요 👉 (내 링크)"</div>
+  <p>특정 <b>키워드</b>(가격, 링크 등)가 들어간 댓글에만 반응합니다. 댓글당 1번, 매번 다른 문구(랜덤)로 — 봇 티가 안 나게.</p>
+</section>
+
+<section id="arch">
+  <h2>🗺️ 전체 구조</h2>
+  <p>헷갈리기 쉬운데, 시스템은 <b>3개 조각</b>으로 이뤄져요. "앱"은 폰앱이 아니라 <b>권한 등록증</b>입니다.</p>
+  <div class="grid two">
+    <div class="card">① <b>메타 개발자 앱</b> 🪪<br><span class="mut">인스타 API 쓸 "허가증". App ID + 시크릿. 화면 없음.</span></div>
+    <div class="card">② <b>서버 (Cloudflare Worker)</b> 🤖<br><span class="mut">실제로 댓글 보고 답하는 "로봇". 코드가 여기 돌아감.</span></div>
+    <div class="card">③ <b>인스타 비즈니스 계정</b> 📱<br><span class="mut">자동화 대상. 이 계정이 "허락"해야 봇이 대신 일함.</span></div>
+    <div class="card">＋ <b>저장소 (KV)</b> 🗄️<br><span class="mut">처리한 댓글 기록(중복방지), 토큰 보관.</span></div>
+  </div>
+  <div class="hl">💡 <b>로그인은 "계정 주인"이 합니다.</b> DM 받는 팔로워는 로그인 안 해요. 사장님이 봇에게 "내 계정 관리해도 돼"라고 허락하는 게 로그인(OAuth)이에요.</div>
+</section>
+
+<section id="flow">
+  <h2>⚙️ 동작 흐름</h2>
+  <h3>댓글 1개가 처리되는 판정 순서</h3>
+  <div class="flow">① 내 계정이 단 댓글? (ID 여러표기 + username 검사) → 스킵 (무한루프 방지)
+② 대댓글(parent_id 있음)?                       → 스킵 (최상위만 응답)
+③ 이미 처리한 댓글? (KV ig:seen)                → 스킵 (중복방지)
+④ 키워드 있나? (가격/링크 등)                    → 없으면 스킵
+⑤ 답글 발송 (후보 중 랜덤)
+⑥ DM 발송 (후보 중 랜덤, Private Reply)</div>
+  <h3>두 가지 감지 경로</h3>
+  <table>
+    <tr><th>경로</th><th>원리</th><th>특징</th></tr>
+    <tr><td><b>웹훅</b> (주력)</td><td>댓글 달리면 Meta가 서버를 즉시 호출</td><td class="ok">실시간 ⚡ (1~2초)</td></tr>
+    <tr><td><b>폴링</b> (안전망)</td><td>서버가 주기적으로 "새 댓글?" 확인</td><td>웹훅 누락 대비 + 토큰 갱신, 하루 1회</td></tr>
+  </table>
+</section>
+
+<section id="traps">
+  <h2>⚠️ 우리가 겪은 함정 &amp; 노하우 <span class="pill">이게 핵심</span></h2>
+  <p>이 가이드의 진짜 가치. 직접 만들며 며칠 헤맨 부분들입니다.</p>
+
+  <details open><summary>🆔 식별자(ID)가 여러 개라 헷갈림</summary>
+    <p>한 계정에 ID 표기가 여러 개예요: <code>Meta 앱 ID</code> ≠ <code>Instagram 앱 ID</code>, 계정도 <code>IGSID</code>/<code>비즈니스 계정 ID</code>/<code>app-scoped ID</code>로 다르게 나옴. <b>웹훅은 Meta 앱 ID, OAuth는 Instagram 앱 ID</b>를 씁니다. 자기댓글 필터는 ID를 <b>세트로 + username</b>으로 검사해야 안 샘.</p></details>
+
+  <details><summary>🔑 앱 시크릿이 2개 (용도 다름)</summary>
+    <p><b>Meta 앱 시크릿</b> = 웹훅 서명 검증용. <b>Instagram 제품 시크릿</b> = OAuth 토큰 교환용. 서로 다름! 웹훅 서명은 Meta 앱 시크릿으로 되므로, 검증 코드는 <b>두 시크릿 모두 허용</b>하게 만들면 안전.</p></details>
+
+  <details><summary>💬 DM은 "Private Reply"로 — 팔로우·대화창 무관</summary>
+    <p>일반 DM은 24시간 대화창 제약이 있지만, <b>댓글 기반 Private Reply</b>(<code>recipient: {comment_id}</code>)는 댓글 단 사람에게 <b>팔로우 여부·이전 대화 무관하게</b> 보낼 수 있어요. 단 <b>댓글당 1회, 7일 이내</b>.</p></details>
+
+  <details><summary>✅ 본인 비즈니스 계정은 앱 검수 불필요</summary>
+    <p>Meta 콘솔이 명시: "나만의 Instagram 비즈니스용이면 앱 검수 건너뛰기". 그래서 <b>테스터·팔로워 아닌 아무 사람</b>이 댓글 달아도 답글+DM이 갑니다. 검수는 <b>남의 계정을 연결해주는 서비스</b>를 만들 때만 필요.</p></details>
+
+  <details><summary>🔁 무한루프 &amp; 대댓글 주의</summary>
+    <p>내 자동답글도 "댓글"이라 다시 감지됨 → <b>자기댓글 필터 필수</b>. 그리고 웹훅은 대댓글에도 발생하므로 <code>parent_id</code> 있으면 스킵해서 <b>최상위 댓글만</b> 응답.</p></details>
+
+  <details><summary>🌐 workers.dev 서브도메인 확인</summary>
+    <p>콜백 URL이 죽어있으면 웹훅이 영영 안 와요. 실제 배포 서브도메인을 <b>반드시 확인</b>(<code>wrangler deployments</code> / 대시보드). 우리도 잘못된 주소로 한참 헤맸음.</p></details>
+
+  <details><summary>📑 댓글 폭주 시 누락 방지 (페이지네이션)</summary>
+    <p>"최신 N개만" 보면 창 밖 댓글을 영영 놓침. <b>이미 처리한 댓글에 닿을 때까지 페이지를 넘기며</b> 스캔하면 누락이 없어요. 발송엔 <b>run당 상한</b>(예: 15명)을 둬서 버스트·한도·스팸을 방지.</p></details>
+
+  <details><summary>🚫 팔로워인지 확인은 불가능</summary>
+    <p>API가 <b>팔로워 목록도, 남의 프로필도</b> 안 줍니다(프라이버시). "팔로워에게만 보내기"는 기술적으로 불가. 대신 답글을 <b>"팔로우하면 DM 바로 보여요"</b>로 — 비팔로워 DM은 실제로 '메시지 요청'함行이라 <b>사실 기반 유도</b>가 됨.</p></details>
+</section>
+
+<section id="ai">
+  <h2>🤖 AI 빌드 프롬프트 <span class="pill">복사해서 AI에 붙여넣기</span></h2>
+  <p>아래를 통째로 복사해 <b>Claude / Cursor 등 AI 코딩 도구</b>에 붙이면, 서버 코드 전체를 생성해줍니다. (계정 설정은 <a href="#manual">아래 사람 체크리스트</a> 참고)</p>
+  <div class="card copybox">
+    <button class="copybtn" onclick="copyPrompt()">📋 복사</button>
+    <pre id="ai-prompt">인스타그램 댓글 자동응답(공개 답글 + DM) 시스템을 만들어줘. 아래 사양을 정확히 따라.
+
+# 기술 스택
+- Cloudflare Workers + Hono (TypeScript)
+- Cloudflare KV (상태 저장)
+- Instagram Graph API: https://graph.instagram.com/v21.0
+
+# 시크릿 (wrangler secret)
+- IG_ACCESS_TOKEN     : 장기 액세스 토큰
+- IG_APP_SECRET       : Meta 앱 시크릿 (웹훅 서명 검증)
+- IG_APP_SECRET_ALT   : Instagram 제품 시크릿 (보조 서명검증 + OAuth client secret)
+- IG_VERIFY_TOKEN     : 웹훅 등록 검증용 임의 문자열
+- IG_USER_ID          : 내 IG 계정 ID
+- IG_SELF_IDS         : 내 계정 ID들(콤마구분, IGSID/비즈니스ID/app-scoped 등 여러 표기)
+- IG_USERNAME         : 내 계정 사용자명
+- IG_CLIENT_ID        : Instagram 앱 ID (OAuth용)
+- IG_ADMIN_KEY        : 규칙 관리 API 보호용
+
+# 엔드포인트
+GET  /webhooks/instagram : hub.verify_token==IG_VERIFY_TOKEN 이면 hub.challenge 반환, 아니면 403
+POST /webhooks/instagram :
+  - X-Hub-Signature-256 검증: IG_APP_SECRET 또는 IG_APP_SECRET_ALT 중 하나로 HMAC-SHA256 매칭(둘 다 실패 401)
+  - object=="instagram" && changes[].field=="comments" 만 처리
+  - value.parent_id 있으면 대댓글 → 스킵
+  - 즉시 200 반환, 처리는 ctx.waitUntil 백그라운드
+GET  /auth/callback : OAuth code→단기토큰→장기토큰(ig_exchange_token) 교환 후 KV 저장
+GET/PUT /admin/ig-rules : x-admin-key 헤더 보호, 키워드 규칙 조회/교체
+GET  /privacy : 개인정보처리방침 페이지
+
+# 댓글 처리 로직 (handleComment)
+1) 자기댓글 스킵: from.id가 (IG_USER_ID + IG_SELF_IDS) 세트에 있거나 from.username==IG_USERNAME
+2) 중복방지: KV "ig:seen:{commentId}" 있으면 스킵, 없으면 기록(TTL 7일)
+3) 키워드 매칭: 규칙(KV "ig:rules", 없으면 기본값) 중 댓글 텍스트에 키워드 포함된 첫 규칙
+4) 답글: 규칙.replies[] 중 랜덤 → POST /{commentId}/replies {message}
+5) DM:  규칙.dms[] 중 랜덤 → POST /me/messages {recipient:{comment_id}, message:{text}}  (Private Reply)
+규칙 형식: { id, keywords:[], replies:[], dms:[] }
+
+# 감지: 웹훅(주) + 폴링(안전망, Cron)
+- 폴링: GET /me/media?limit=3 → 각 미디어 GET /{id}/comments?fields=id,text,from{id,username}&limit=50
+  - 페이지네이션: 처리 전 "가장 오래된 댓글이 이미 seen"이면 더 옛 페이지 안 봄(최대 5페이지)
+  - run당 발송 상한 15명
+- Cron 하루 1회: 폴링(안전망) + 토큰 갱신(만료 7일전부터 ig_refresh_token, KV "ig:token" 저장)
+
+# 반드시 반영할 함정
+- 웹훅 서명은 Meta 앱 시크릿으로 됨 → 두 시크릿 모두 허용
+- 내 계정 ID가 여러 표기 → self필터는 ID세트+username
+- Private Reply는 팔로우/대화창 무관, 댓글당 1회·7일내
+- 본인 비즈니스 계정이면 앱 검수 불필요(비테스터·비팔로워도 동작)
+- 팔로워 여부는 API로 확인 불가 → 답글로 팔로우 유도만
+- Rate limit: 시간당 200×연결계정수(공유풀), 응답1건=2호출
+
+전체 코드 + wrangler.toml + 배포/웹훅등록 명령까지 만들어줘.</pre>
+  </div>
+  <p class="mut">붙여넣으면 AI가 코드를 만들고, "다음 수동 단계를 하세요"라고 안내해줄 거예요.</p>
+</section>
+
+<section id="manual">
+  <h2>🙋 사람이 직접 해야 하는 것 <span class="pill">AI가 대신 못 함</span></h2>
+  <p>계정·권한·배포는 본인 로그인이 필요해서 AI가 못 합니다. 순서대로:</p>
+  <div class="step"><div class="num">1</div><div><b>인스타 프로 계정 전환</b><br><span class="mut">개인→비즈니스/크리에이터 (무료)</span></div></div>
+  <div class="step"><div class="num">2</div><div><b>Meta 개발자 앱 생성</b> + Instagram 제품(Instagram 로그인 방식) 추가<br><span class="mut">developers.facebook.com · App ID/시크릿 확보</span></div></div>
+  <div class="step"><div class="num">3</div><div><b>액세스 토큰 발급</b><br><span class="mut">콘솔에서 계정 연결 → 장기 토큰 (또는 /auth/callback OAuth)</span></div></div>
+  <div class="step"><div class="num">4</div><div><b>시크릿 등록 + 배포</b><br><span class="mut">wrangler secret put … → wrangler deploy</span></div></div>
+  <div class="step"><div class="num">5</div><div><b>웹훅 등록</b><br><span class="mut">대시보드 Webhooks에 콜백 URL + 인증토큰 저장 → comments 구독. "테스트" 버튼으로 도달 확인</span></div></div>
+  <div class="step"><div class="num">6</div><div><b>앱 라이브 전환</b><br><span class="mut">개인정보처리방침 URL 입력 후 Live로</span></div></div>
+  <div class="step"><div class="num">7</div><div><b>앱 검수</b> — <span class="ok">본인 계정만 쓰면 건너뛰기</span><br><span class="mut">남의 계정 연결 서비스일 때만 제출</span></div></div>
+</section>
+
+<section id="limit">
+  <h2>📊 호출 한도 (Rate Limit)</h2>
+  <div class="flow">시간당 한도 = 200 × (앱에 연결된 계정 수)   ← 공유 풀
+응답 1건 = 2회 호출 (답글 + DM)</div>
+  <table>
+    <tr><th>방식</th><th>시간당 처리 가능</th></tr>
+    <tr><td>폴링 2분 주기</td><td>~40명 (지켜보기에 120회 소모)</td></tr>
+    <tr><td>웹훅 (지켜보기 0)</td><td class="ok">~100명 (계정 1개 기준 천장)</td></tr>
+    <tr><td>계정 여러 개 연결</td><td>200×계정수 만큼 풀 커짐</td></tr>
+  </table>
+  <p class="mut">댓글 폭주(예: 1시간 1000개)는 계정 1개론 다 못 따라잡음(최소 10시간+). 그땐 계정 풀 확장 필요.</p>
+</section>
+
+<section id="faq">
+  <h2>❓ FAQ</h2>
+  <div class="card"><b>Q. 테스터 아니어도 돼?</b><br>✅ 네. 본인 비즈니스 계정이면 아무나 댓글 달아도 답글+DM 갑니다.</div>
+  <div class="card"><b>Q. 팔로워 아니어도 DM 받아?</b><br>✅ 네. Private Reply는 팔로우 무관. (실증 완료)</div>
+  <div class="card"><b>Q. 실시간이야?</b><br>✅ 웹훅이면 1~2초. 폴링이면 주기만큼 지연.</div>
+  <div class="card"><b>Q. "팔로워에게만" 보낼 수 있어?</b><br>❌ 불가능. API가 팔로우 여부를 안 줌. 답글로 유도만 가능.</div>
+  <div class="card"><b>Q. 스팸으로 막히지 않아?</b><br>관련 키워드에만·댓글당 1회·발송 상한을 지키면 정책 친화적. 무차별 도배는 제재 위험.</div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  실전 검증 기반 가이드 · 비밀값(토큰·시크릿)은 절대 코드/문서에 넣지 말 것 🔒
+</footer>
+
+<script>
+function copyPrompt(){
+  var t = document.getElementById('ai-prompt').textContent;
+  navigator.clipboard.writeText(t).then(function(){
+    var b=document.querySelector('.copybtn'); var o=b.textContent;
+    b.textContent='✅ 복사됨!'; setTimeout(function(){b.textContent=o;},1600);
+  });
+}
+</script>
+</body>
+</html>
