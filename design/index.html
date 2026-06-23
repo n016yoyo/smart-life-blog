@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI TIGER MASK · 코드로 내린 커피</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+  :root{ --bg:#040404; --gold:#c8a45c; --ink:#ece6da; --mut:#8a8378; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Inter','Pretendard Variable',sans-serif;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Cormorant Garamond','Noto Serif KR',serif}
+  ::selection{background:var(--gold);color:#000}
+
+  /* topbar */
+  .top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:1.3rem 2.2rem;mix-blend-mode:difference}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:.22em;font-weight:600;padding-left:.22em}
+  .top a{color:#fff;text-decoration:none;font-size:.72rem;letter-spacing:.22em;opacity:.85}
+
+  /* scroll hero */
+  .hero{height:560vh;position:relative}
+  .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+  #hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+  .pin::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 40%,rgba(0,0,0,.55) 100%);pointer-events:none}
+  .caps{position:absolute;inset:0;z-index:3;pointer-events:none}
+  .cap{position:absolute;left:0;right:0;text-align:center;opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;padding:0 8%}
+  .cap.show{opacity:1;transform:none}
+  .cap .big{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:clamp(2rem,5.5vw,4.2rem);font-weight:500;line-height:1.12}
+  .cap .sub{margin-top:.8rem;font-size:clamp(.72rem,1.3vw,.98rem);letter-spacing:.2em;color:var(--mut)}
+  .c1{top:18%}.c2{top:16%}.c3{bottom:20%}.c4{top:50%;transform:translateY(-50%)}
+  .gold{color:var(--gold)}
+  .word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.4rem,9vw,7rem);letter-spacing:.12em;color:rgba(255,255,255,.06);z-index:2;white-space:nowrap;padding-left:.12em}
+
+  /* collection */
+  .sec{padding:14vh 6vw;position:relative;z-index:5;background:var(--bg)}
+  .eyebrow{text-align:center;font-size:.7rem;letter-spacing:.34em;color:var(--gold);margin-bottom:1rem}
+  .h2{text-align:center;font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:clamp(2rem,6vw,3.6rem);font-weight:500;margin-bottom:5vh}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:1100px;margin:0 auto}
+  .card{border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0b0b0a,#070706);
+    opacity:0;transform:translateY(40px)}
+  .card .img{aspect-ratio:4/5;background:radial-gradient(80% 60% at 50% 30%,rgba(200,164,92,.22),transparent 70%),#0a0a09;position:relative;display:grid;place-items:center}
+  .card .img span.rn{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:2.8rem;color:rgba(200,164,92,.55)}
+  .badge{position:absolute;top:.8rem;right:.8rem;font-size:.6rem;letter-spacing:.1em;border:1px solid var(--gold);color:var(--gold);padding:.25rem .55rem;border-radius:99px}
+  .card .body{padding:1.4rem}
+  .card h3{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:1.7rem;font-weight:600;letter-spacing:.02em}
+  .card .desc{color:var(--mut);font-size:.86rem;margin:.4rem 0 1rem;font-weight:300;line-height:1.5}
+  .card .row{display:flex;justify-content:space-between;align-items:center}
+  .card .price{font-size:1rem;color:var(--ink)}
+  .btn{font-size:.72rem;letter-spacing:.08em;border:1px solid var(--gold);color:var(--gold);
+    background:transparent;padding:.7rem 1.1rem;border-radius:99px;cursor:pointer;transition:.25s;text-decoration:none;display:inline-block}
+  .btn:hover{background:var(--gold);color:#000}
+
+  /* cta */
+  .cta{padding:20vh 6vw;text-align:center;background:radial-gradient(70% 60% at 50% 0%,rgba(200,164,92,.08),transparent 70%),var(--bg)}
+  .cta h2{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:clamp(2rem,7vw,4.4rem);font-weight:500;line-height:1.15}
+  .cta p{color:var(--mut);margin:1.2rem auto 0;letter-spacing:.02em;max-width:560px;line-height:1.7}
+  .cta .big-btn{margin-top:2.4rem;font-size:.92rem;padding:1.05rem 2.2rem;background:var(--gold);color:#000;font-weight:600}
+  .cta .big-btn:hover{filter:brightness(1.1)}
+  .handle{margin-top:1.6rem;font-size:.9rem;color:var(--mut)}
+  .handle b{color:var(--ink)}
+  /* making */
+  .making{max-width:840px;margin:0 auto;padding:4vh 6vw 18vh}
+  .making .h2{margin-bottom:1rem}
+  .mlead{text-align:center;color:var(--mut);margin-bottom:5vh;font-size:.92rem;line-height:1.6}
+  .step{border-left:2px solid rgba(200,164,92,.35);padding:0 0 2.6rem 1.5rem;margin-left:.3rem}
+  .step .num{color:var(--gold);font-size:.86rem;letter-spacing:.05em;font-weight:600;margin-bottom:.5rem}
+  .step p{color:var(--mut);font-size:.92rem;line-height:1.65}
+  .making pre{background:#0b0b0a;border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:1rem 1.1rem;
+    overflow-x:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;color:#cfe9dc;line-height:1.7;margin-top:.85rem;white-space:pre;text-align:left}
+  .making pre b{color:var(--gold);font-weight:600}
+  footer{padding:3rem;text-align:center;color:#555;font-size:.72rem;letter-spacing:.12em}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}.brand{font-size:1.15rem}}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">AI TIGER MASK</div>
+    <a href="https://instagram.com/aitigermask">@aitigermask</a>
+  </div>
+
+  <!-- SCROLL HERO -->
+  <section class="hero" id="top">
+    <div class="pin">
+      <div class="word">AI TIGER MASK</div>
+      <canvas id="hero"></canvas>
+      <div class="caps">
+        <div class="cap c1"><div class="big serif">한 잔에,<br><span class="gold">모든 것이 담긴다.</span></div></div>
+        <div class="cap c2"><div class="big serif">지금 이 순간, 갈리다.</div><div class="sub">단 6초. 수백 년의 정성.</div></div>
+        <div class="cap c3"><div class="big serif">붓고. 기다리고. 숨쉰다.</div></div>
+        <div class="cap c4"><div class="sub">AI TIGER MASK</div><div class="big serif gold">고요 속에서, 내려진다.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA : 우리 정체성 -->
+  <section class="cta">
+    <div class="eyebrow">made with Claude Code</div>
+    <h2 class="serif">이 카페, <span class="gold">코드로</span> 만들었습니다.</h2>
+    <p>히어로 영상도, 디자인도, 이 페이지도 전부 Claude Code로. 코딩 한 줄 몰라도 돼요. 만드는 법, 전부 공개합니다.</p>
+  </section>
+
+  <!-- 만드는 법 (복붙용) -->
+  <section class="making">
+    <div class="eyebrow">HOW IT'S MADE</div>
+    <h2 class="h2 serif">스텝별로, 이렇게 만들었어요</h2>
+    <p class="mlead">총비용 0원 · 전부 Claude Code에게 말로 시켜서. 아래 코드는 복붙용이에요.</p>
+
+    <div class="step"><div class="num">01 · 레퍼런스 분석</div>
+      <p>인스타 릴스의 정체는 "스크롤하면 영상이 흐르는" 스크롤-스크럽 랜딩.</p></div>
+
+    <div class="step"><div class="num">02 · 히어로 영상 생성 (무료 AI 영상)</div>
+      <p>무료 AI 영상 툴(Kling, Hailuo, Pika, Luma, Higgsfield 등 가입 시 무료 크레딧 주는 곳)에 프롬프트만 넣으면 끝. 무음 8초면 충분해요. 아래 프롬프트가 의도대로 "원두→그라인드→드립→크레마잔"을 뽑아줬어요.</p>
+      <pre>prompt:
+"Cinematic macro on pure black: dark roasted beans tumble &amp; pour,
+ grind into powder, espresso drips into a glass with golden crema,
+ wisps of steam rising, warm rim light, slow premium motion."</pre></div>
+
+    <div class="step"><div class="num">03 · 영상 → 프레임 96장</div>
+      <p>영상을 직접 스크럽하면 호스팅에서 깨져요(아래 05 참고). 그래서 이미지로 쪼갬.</p>
+      <pre>ffmpeg -i hero.mp4 -vf "fps=12,scale=1280:-1" -q:v 6 frames/f_%03d.jpg
+<b># 8s × 12fps ≈ 96장, 장당 ~25KB</b></pre></div>
+
+    <div class="step"><div class="num">04 · 스크롤-스크럽 페이지 ★핵심</div>
+      <p>GSAP ScrollTrigger + Lenis. 스크롤 진행도로 해당 프레임을 canvas에 그림. 프레임은 전부 preload.</p>
+      <pre>const N=96, frames=[], ctx=canvas.getContext('2d');
+for(let i=1;i&lt;=N;i++){ const im=new Image();
+  im.src=`frames/f_${String(i).padStart(3,'0')}.jpg`; frames.push(im); }
+ScrollTrigger.create({ trigger:'.hero', scrub:true, start:'top top', end:'bottom bottom',
+  onUpdate:s =&gt; draw(frames[Math.round(s.progress*(N-1))]) });</pre></div>
+
+    <div class="step"><div class="num">05 · 함정 & 해결</div>
+      <p>처음엔 <b>&lt;video&gt;</b>를 스크롤로 seek했는데, Cloudflare Pages가 mp4를 HTTP Range 없이 줘서 브라우저가 seek를 못 함 → 스크럽 작동 안 함. <b>해결: 영상 대신 프레임 이미지 + canvas</b>(애플 제품페이지 방식, Range 의존 0).</p></div>
+
+    <div class="step"><div class="num">06 · 배포 (Cloudflare Pages)</div>
+      <p>정적 자산만 올리면 끝. 서버 불필요.</p>
+      <pre>mkdir dist &amp;&amp; cp index.html dist/ &amp;&amp; cp -r frames dist/
+npx wrangler pages deploy dist --project-name smart-coffee</pre></div>
+  </section>
+  <footer>AI TIGER MASK · made with Claude Code · @aitigermask · 2026</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // smooth scroll
+  const lenis = new Lenis({ lerp: 0.09 });
+  window.lenis = lenis;
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t)=> lenis.raf(t*1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // image-sequence scrub to scroll (robust: no video seek / no HTTP range dependency)
+  const N = 96;
+  const PAD = i => String(i).padStart(3,'0');
+  const frames = [];
+  const canvas = document.querySelector('#hero');
+  const ctx = canvas.getContext('2d');
+  let cur = 0, firstDrawn = false;
+
+  function fit(){
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    canvas.width = innerWidth*dpr; canvas.height = innerHeight*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    draw(cur);
+  }
+  function draw(idx){
+    const img = frames[Math.max(0, Math.min(N-1, Math.round(idx)))];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const cw=innerWidth, ch=innerHeight, ir=img.naturalWidth/img.naturalHeight, cr=cw/ch;
+    let w,h; if (cr>ir){ w=cw; h=cw/ir; } else { h=ch; w=ch*ir; }
+    ctx.clearRect(0,0,cw,ch);
+    ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
+  }
+  for (let i=1;i<=N;i++){
+    const img = new Image();
+    img.onload = ()=>{ if(!firstDrawn){ firstDrawn=true; draw(cur); } };
+    img.src = `frames/f_${PAD(i)}.jpg`;
+    frames.push(img);
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  ScrollTrigger.create({
+    trigger: '.hero', start: 'top top', end: 'bottom bottom', scrub: true,
+    onUpdate: self => {
+      cur = self.progress * (N-1);
+      window.__cur = cur;
+      draw(cur);
+      const p = self.progress;
+      show('.c1', p > 0.04 && p < 0.24);
+      show('.c2', p > 0.30 && p < 0.50);
+      show('.c3', p > 0.56 && p < 0.76);
+      show('.c4', p > 0.82);
+    }
+  });
+  function show(sel, on){ document.querySelector(sel).classList.toggle('show', on); }
+
+  // product cards reveal
+  gsap.utils.toArray('.card').forEach((c,i)=>{
+    gsap.to(c, { opacity:1, y:0, duration:.9, ease:'power3.out',
+      scrollTrigger:{ trigger:c, start:'top 85%' }, delay:i*0.08 });
+  });
+</script>
+</body>
+</html>
