@@ -1,4 +1,22 @@
-# Claude Code 상태줄(statusline) 설정 — 포터블 가이드
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude 상태줄 설정 자료 | AI TIGER MASK</title>
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 70px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:42px 20px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}header h1{font-size:26px;margin-top:10px}
+.box{position:relative;margin:22px 0;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:9px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:6px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+.foot{margin-top:30px;text-align:center;color:#6b665e;font-size:13px}
+</style></head><body>
+<header><div class=b>AI TIGER MASK</div><h1>Claude 상태줄(statusline) 설정 자료</h1></header>
+<div class=wrap>
+<div class=box><div class=bar><span>전체 복사해서 AI한테 주거나 따라하세요</span><button class=copy onclick="navigator.clipboard.writeText(document.getElementById(&quot;g&quot;).textContent).then(()=>{this.textContent=&quot;복사됨 ✓&quot;})">전체 복사</button></div>
+<pre id="g"># Claude Code 상태줄(statusline) 설정 — 포터블 가이드
 
 다른 환경/프로젝트에서도 이 상태줄을 그대로 재현하기 위한 자립형 문서.
 결과 예시:
@@ -15,7 +33,7 @@
 
 설정을 **유저 레벨 설정 파일 `~/.claude/settings.json`** 에 넣기 때문.
 이 파일은 특정 프로젝트가 아니라 그 머신의 **모든 세션·모든 프로젝트에 영구 적용**된다.
-(프로젝트 한정으로 쓰려면 대신 `<프로젝트>/.claude/settings.json` 에 동일 키를 넣으면 됨.)
+(프로젝트 한정으로 쓰려면 대신 `&lt;프로젝트&gt;/.claude/settings.json` 에 동일 키를 넣으면 됨.)
 
 ## 사전 요건
 
@@ -38,8 +56,8 @@ NOW=$(date +%s)
 
 fmt_remain() {
   local s=${1%.*}
-  [ -z "$s" ] && return
-  [ "$s" -le 0 ] 2>/dev/null && return
+  [ -z "$s" ] &amp;&amp; return
+  [ "$s" -le 0 ] 2&gt;/dev/null &amp;&amp; return
   local d=$((s/86400)) h=$(((s%86400)/3600)) m=$(((s%3600)/60))
   if   [ "$d" -gt 0 ]; then printf '%dd%dh' "$d" "$h"
   elif [ "$h" -gt 0 ]; then printf '%dh%dm' "$h" "$m"
@@ -56,20 +74,20 @@ WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 WEEK_R=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 OUT="[$MODEL]"
-[ -n "$PCT" ] && OUT="$OUT  ctx: ${PCT}%"
+[ -n "$PCT" ] &amp;&amp; OUT="$OUT  ctx: ${PCT}%"
 
 LIMITS=""
 if [ -n "$FIVE_H" ]; then
   seg="5h: $(printf '%.0f' "$FIVE_H")%"
-  [ -n "$FIVE_R" ] && { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  [ -n "$FIVE_R" ] &amp;&amp; { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] &amp;&amp; seg="$seg (↺${r})"; }
   LIMITS="$seg"
 fi
 if [ -n "$WEEK" ]; then
   seg="7d: $(printf '%.0f' "$WEEK")%"
-  [ -n "$WEEK_R" ] && { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  [ -n "$WEEK_R" ] &amp;&amp; { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] &amp;&amp; seg="$seg (↺${r})"; }
   LIMITS="${LIMITS:+$LIMITS  }$seg"
 fi
-[ -n "$LIMITS" ] && OUT="$OUT  |  $LIMITS"
+[ -n "$LIMITS" ] &amp;&amp; OUT="$OUT  |  $LIMITS"
 
 echo "$OUT"
 ```
@@ -100,22 +118,22 @@ chmod +x ~/.claude/statusline.sh
 
 저장 후 새 세션부터 자동 적용 (현재 세션은 재시작 필요할 수 있음).
 
-> **더 쉬운 대안**: Claude Code 안에서 `/statusline` 명령에 원하는 표시를 자연어로 말하면
-> 스크립트를 자동 생성하고 `settings.json`까지 등록해 줌. 삭제는 `/statusline delete`.
-> (이 문서는 그 결과물을 직접 손에 쥐고 다른 환경에 그대로 이식하기 위한 버전.)
+&gt; **더 쉬운 대안**: Claude Code 안에서 `/statusline` 명령에 원하는 표시를 자연어로 말하면
+&gt; 스크립트를 자동 생성하고 `settings.json`까지 등록해 줌. 삭제는 `/statusline delete`.
+&gt; (이 문서는 그 결과물을 직접 손에 쥐고 다른 환경에 그대로 이식하기 위한 버전.)
 
 ## 한 방 설치 스크립트 (복붙용)
 
 ```bash
 mkdir -p ~/.claude
-cat > ~/.claude/statusline.sh <<'EOF'
+cat &gt; ~/.claude/statusline.sh &lt;&lt;'EOF'
 #!/bin/bash
 input=$(cat)
 NOW=$(date +%s)
 fmt_remain() {
   local s=${1%.*}
-  [ -z "$s" ] && return
-  [ "$s" -le 0 ] 2>/dev/null && return
+  [ -z "$s" ] &amp;&amp; return
+  [ "$s" -le 0 ] 2&gt;/dev/null &amp;&amp; return
   local d=$((s/86400)) h=$(((s%86400)/3600)) m=$(((s%3600)/60))
   if   [ "$d" -gt 0 ]; then printf '%dd%dh' "$d" "$h"
   elif [ "$h" -gt 0 ]; then printf '%dh%dm' "$h" "$m"
@@ -128,27 +146,27 @@ FIVE_R=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 WEEK_R=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 OUT="[$MODEL]"
-[ -n "$PCT" ] && OUT="$OUT  ctx: ${PCT}%"
+[ -n "$PCT" ] &amp;&amp; OUT="$OUT  ctx: ${PCT}%"
 LIMITS=""
 if [ -n "$FIVE_H" ]; then
   seg="5h: $(printf '%.0f' "$FIVE_H")%"
-  [ -n "$FIVE_R" ] && { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  [ -n "$FIVE_R" ] &amp;&amp; { r=$(fmt_remain $(( ${FIVE_R%.*} - NOW ))); [ -n "$r" ] &amp;&amp; seg="$seg (↺${r})"; }
   LIMITS="$seg"
 fi
 if [ -n "$WEEK" ]; then
   seg="7d: $(printf '%.0f' "$WEEK")%"
-  [ -n "$WEEK_R" ] && { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] && seg="$seg (↺${r})"; }
+  [ -n "$WEEK_R" ] &amp;&amp; { r=$(fmt_remain $(( ${WEEK_R%.*} - NOW ))); [ -n "$r" ] &amp;&amp; seg="$seg (↺${r})"; }
   LIMITS="${LIMITS:+$LIMITS  }$seg"
 fi
-[ -n "$LIMITS" ] && OUT="$OUT  |  $LIMITS"
+[ -n "$LIMITS" ] &amp;&amp; OUT="$OUT  |  $LIMITS"
 echo "$OUT"
 EOF
 chmod +x ~/.claude/statusline.sh
 
 # settings.json에 statusLine 병합 (jq 사용, 기존 키 보존)
 SETTINGS=~/.claude/settings.json
-[ -f "$SETTINGS" ] || echo '{}' > "$SETTINGS"
-jq '.statusLine = {"type":"command","command":"~/.claude/statusline.sh","refreshInterval":5,"padding":2}' "$SETTINGS" > "$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS"
+[ -f "$SETTINGS" ] || echo '{}' &gt; "$SETTINGS"
+jq '.statusLine = {"type":"command","command":"~/.claude/statusline.sh","refreshInterval":5,"padding":2}' "$SETTINGS" &gt; "$SETTINGS.tmp" &amp;&amp; mv "$SETTINGS.tmp" "$SETTINGS"
 echo "설치 완료. 새 세션부터 적용됩니다."
 ```
 
@@ -165,9 +183,9 @@ Claude Code가 stdin(JSON)으로 넘겨주는 값 중 이 스크립트가 쓰는
 | `.rate_limits.seven_day.used_percentage` | 7일 윈도우 사용률(%) |
 | `.rate_limits.seven_day.resets_at` | 7일 윈도우 리셋 epoch초 |
 
-> 다른 정보(현재 디렉토리·git 브랜치·비용 등)도 같은 JSON에 들어옴.
-> `echo '{}' | ~/.claude/statusline.sh` 로 직접 테스트하거나,
-> 실제 입력을 보려면 스크립트 첫 줄에 `cat > /tmp/sl.json` 를 임시로 넣어 덤프해 확인.
+&gt; 다른 정보(현재 디렉토리·git 브랜치·비용 등)도 같은 JSON에 들어옴.
+&gt; `echo '{}' | ~/.claude/statusline.sh` 로 직접 테스트하거나,
+&gt; 실제 입력을 보려면 스크립트 첫 줄에 `cat &gt; /tmp/sl.json` 를 임시로 넣어 덤프해 확인.
 
 ## 트러블슈팅
 
@@ -177,3 +195,6 @@ Claude Code가 stdin(JSON)으로 넘겨주는 값 중 이 스크립트가 쓰는
 | `ctx`만 뜨고 `5h`·`7d` 없음 | 정상. Pro/Max가 아니거나 아직 첫 API 응답 전 |
 | 깨진 출력·빈 줄 | `jq` 미설치 — `jq --version` 확인 |
 | 모델명이 `null` | 구버전 Claude Code — `claude --version` 후 업데이트 |
+</pre></div>
+<div class=foot>AI TIGER MASK · 코딩 1도 몰라도 AI로 다 만들어요 · <a href="https://instagram.com/aitigermask">@aitigermask</a></div>
+</div></body></html>
