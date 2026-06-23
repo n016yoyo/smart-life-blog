@@ -132,7 +132,7 @@
       <p>GSAP ScrollTrigger + Lenis. 스크롤 진행도로 해당 프레임을 canvas에 그림. 프레임은 전부 preload.</p>
       <pre>const N=96, frames=[], ctx=canvas.getContext('2d');
 for(let i=1;i&lt;=N;i++){ const im=new Image();
-  im.src=`frames/f_${String(i).padStart(3,'0')}.jpg`; frames.push(im); }
+  im.src=`https://smart-coffee.pages.dev/frames/f_${String(i).padStart(3,'0')}.jpg`; frames.push(im); }
 ScrollTrigger.create({ trigger:'.hero', scrub:true, start:'top top', end:'bottom bottom',
   onUpdate:s =&gt; draw(frames[Math.round(s.progress*(N-1))]) });</pre></div>
 
@@ -181,7 +181,7 @@ npx wrangler pages deploy dist --project-name smart-coffee</pre></div>
   for (let i=1;i<=N;i++){
     const img = new Image();
     img.onload = ()=>{ if(!firstDrawn){ firstDrawn=true; draw(cur); } };
-    img.src = `frames/f_${PAD(i)}.jpg`;
+    img.src = `https://smart-coffee.pages.dev/frames/f_${PAD(i)}.jpg`;
     frames.push(img);
   }
   window.addEventListener('resize', fit);
