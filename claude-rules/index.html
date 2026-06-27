@@ -1,0 +1,118 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카파시가 알려주는 클로드 규칙 5줄 (CLAUDE.md) | AI TIGER MASK</title>
+<meta name="description" content="전 테슬라 AI 총괄 안드레이 카파시의 CLAUDE.md 4규칙 + 우리가 더한 5번째 한 줄. 복붙해서 클로드(Claude Code)를 시키는 기계에서 생각하는 동료로 바꾸세요.">
+<meta property="og:title" content="카파시가 알려주는 클로드 규칙 5줄 (CLAUDE.md)">
+<meta property="og:description" content="복붙 한 번으로 클로드가 먼저 더 나은 방법을 제안하게 만드는 CLAUDE.md 규칙.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule.add{border-color:var(--o);background:#fff7f3}
+.rule.add .n{background:var(--o);color:#fff}
+.rule.add .tag{display:inline-block;margin-left:7px;font-size:11.5px;font-weight:800;color:var(--o);vertical-align:middle}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>카파시가 알려주는<br>클로드 규칙 5줄</h1>
+  <div class="sub">시키는 것만 하는 클로드를, 먼저 제안하는 동료로</div>
+  <div class="chips"><span class="chip"><b>전</b> 테슬라 AI 총괄</span><span class="chip"><b>지금</b> 클로드 잘 쓰는 법</span><span class="chip">CLAUDE.md</span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>안드레이 카파시가 누구냐면</h2>
+    <p>테슬라에서 자율주행 AI를 총괄(Senior Director of AI)했고, OpenAI 창립 멤버였어요. "바이브코딩(vibe coding)"이라는 말을 만든 사람이기도 하죠. AI 분야에서 손꼽히는 권위자입니다.</p>
+    <p class="note">※ 카파시는 Anthropic(클로드) 소속은 아니에요. "클로드를 가장 잘 쓰는 규칙"을 공개했고, 그게 전 세계 개발자들 사이에서 화제가 됐습니다. 이 페이지는 그 규칙을 한국어로 정리하고 한 줄을 더한 거예요.</p>
+  </div>
+
+  <div class="lead">
+    <h2>이거 그대로 복사해서 쓰세요</h2>
+    <p>프로젝트 폴더에 <b>CLAUDE.md</b> 파일로 저장하면 클로드 코드가 알아서 읽어요</p>
+  </div>
+  <div class="box">
+    <div class="bar"><span>CLAUDE.md 전체 복사</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('md').textContent).then(()=>{this.textContent='복사됨 ✓'})">전체 복사</button></div>
+<pre id="md"># CLAUDE.md , 작업 규칙
+
+1. 멋대로 짐작하지 마. 불분명하면 코드 한 줄이라도 쓰기 전에 먼저 물어봐. 의도·구조·요구사항을 말없이 가정하지 마.
+
+2. 단순한 문제는 가장 단순하게 풀어. 요청하지 않은 추상화나 유연성을 미리 넣지 마. (단, 어려운 문제는 제대로 된 해법으로. 대충 지름길로 때우지 마.)
+
+3. 관련 없는 코드는 건드리지 마. 지금 작업과 직접 상관없는 파일·함수는 더 좋아 보여도 수정하지 마. (대신 발견한 나쁜 코드·설계 냄새는 따로 알려줘.)
+
+4. 불확실하면 솔직히 말해. 확신이 없으면 진행하기 전에 그렇다고 말해. 어설픈 확신이 모르는 것보다 더 큰 피해를 준다.
+
+5. 더 나은 방법이 있으면 먼저 제안해. 시키는 대로만 하지 말고, 임시방편보다 오래가는 방향이 보이면 주저 말고 제안해.</pre>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>멋대로 짐작 말고, 먼저 물어봐</h3><p>클로드가 혼자 넘겨짚고 엉뚱하게 만드는 걸 막아요. 애매하면 물어보게.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>제일 단순한 방법부터</h3><p>쓸데없이 복잡하게 안 짜게. 단, 어려운 문제까지 대충 때우면 안 되니 단서를 붙였어요(아래 주의 참고).</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>관련 없는 코드는 건들지 마</h3><p>시키지도 않은 파일을 멋대로 고쳐 망가뜨리는 사고를 예방.</p></div></div>
+    <div class="rule"><div class="n">4</div><div><h3>모르면 모른다고 솔직히</h3><p>아는 척하다 더 큰 피해를 주는 걸 막아요.</p></div></div>
+    <div class="rule add"><div class="n">5</div><div><h3>더 나은 방법 있으면 먼저 제안해 <span class="tag">+ 우리가 추가</span></h3><p>위 4개만 넣으면 클로드가 너무 고분고분해져서 시키는 것만 해요. 이 한 줄을 더하면 클로드가 "이렇게 하면 목표는 같은데 더 나아요" 하고 먼저 제안합니다. 코드 찍는 기계가 아니라 같이 고민하는 동료가 돼요.</p></div></div>
+  </div>
+
+  <div class="warn">
+    <h3>⚠️ 2번 규칙은 양날의 검</h3>
+    <p>"제일 단순하게"만 그냥 넣으면, 클로드가 당장 통과만 하는 대충짜기로 가서 나중에 구조가 꼬일 수 있어요(해외 사용자들이 가장 많이 지적한 부분). 그래서 위 복붙본에는 <b>"어려운 문제는 제대로"</b>라는 단서를 함께 넣었습니다. 그대로 쓰시면 됩니다.</p>
+  </div>
+
+  <div class="how">
+    <h2>쓰는 법 (1분)</h2>
+    <ol>
+      <li>작업하는 프로젝트 폴더 맨 위에 <code>CLAUDE.md</code> 파일을 만들어요.</li>
+      <li>위 <b>전체 복사</b>를 눌러 그대로 붙여넣고 저장.</li>
+      <li>끝이에요. 클로드 코드(Claude Code)는 그 폴더에서 일할 때 <code>CLAUDE.md</code>를 자동으로 읽어 규칙을 따릅니다.</li>
+      <li>내 프로젝트에 맞는 규칙(말투·금지사항 등)이 있으면 아래에 줄로 더 추가해도 돼요.</li>
+    </ol>
+  </div>
+
+  <div class="src">
+    원본 규칙 출처: 안드레이 카파시가 공개한 4가지 CLAUDE.md 규칙 (<a href="https://www.youtube.com/watch?v=96jN2OCOfLs" target="_blank" rel="noopener">Karpathy @ Sequoia AI Ascent 영상</a>) + 전 세계 사용자 피드백(<a href="https://reddit.com/r/ClaudeAI/comments/1uc7izy/" target="_blank" rel="noopener">Reddit r/ClaudeAI 토론</a>)을 바탕으로 5번째 한 줄을 더해 한국어로 정리했습니다.
+  </div>
+
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+</body></html>
