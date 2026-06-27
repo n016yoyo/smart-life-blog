@@ -78,6 +78,10 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
 .cseg .p.g{color:var(--ok)}.cseg .p.r{color:var(--bad)}.cseg .p.y{color:var(--warn)}
 .condlab{font-size:10.5px;color:var(--dim);text-align:center;margin-top:8px}
 .naband{margin-top:9px;text-align:center;font-size:12px;font-weight:800;color:#8a9084;background:#f1f0ea;border-radius:10px;padding:9px}
+.livep{margin-top:10px;background:#eef6f0;border:1px solid #cfe7d8;border-radius:12px;padding:12px}
+.livep .lpp{font-weight:900;font-size:17px;text-align:center}
+.livep .lpp.g{color:var(--ok)}.livep .lpp.y{color:var(--warn)}.livep .lpp.r{color:var(--bad)}
+.livep .lps{font-size:12px;color:#4b473f;text-align:center;margin-top:5px;line-height:1.45}
 .sim{margin-top:10px;border-top:1px dashed #e7e3d6;padding-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
 .sim button{border:0;background:#ebe6d8;color:#15301f;font-weight:900;font-size:15px;width:31px;height:31px;border-radius:9px;cursor:pointer}
 .sim .n{font-weight:900;min-width:18px;text-align:center;font-size:16px}
@@ -183,7 +187,7 @@ const pc=v=>Math.round(v*100);
 const colorClass=p=>p>=60?"ok":p>=33?"warn":"bad";
 const pcls=p=>p>=60?"g":p>=33?"y":"r";
 // 경기 영향 분석: {relevant, best, conds:[3]}
-function analyze(i,PA){const c=[0,1,2].map(o=>condProb(i,o,PA));const valid=c.filter(x=>x!==null);const mx=Math.max(...valid),mn=Math.min(...valid);let best=-1,bv=-1,worst=-1,wv=2;c.forEach((v,o)=>{if(v==null)return;if(v>bv){bv=v;best=o;}if(v<wv){wv=v;worst=o;}});let tier="none";if(mx-mn>=0.012){const rb=reasonFor(i,best),rw=reasonFor(i,worst);tier=(rb.ak!==rw.ak)?"key":"minor";}return {tier,best,worst,conds:c};}
+function analyze(i,PA){const c=[0,1,2].map(o=>condProb(i,o,PA));const valid=c.filter(x=>x!==null);const mx=Math.max(...valid),mn=Math.min(...valid);let best=-1,bv=-1,worst=-1,wv=2;c.forEach((v,o)=>{if(v==null)return;if(v>bv){bv=v;best=o;}if(v<wv){wv=v;worst=o;}});const sw=mx-mn;const tier=sw>=0.20?"key":sw>=0.035?"swing":"none";return {tier,best,worst,conds:c,sw};}
 
 function render(){
   const PA=baseProb(),prob=advance(PA),P=pc(prob);
@@ -224,11 +228,13 @@ function render(){
       <div class="sc"><span>${showH}</span><span class="x">:</span><span>${showA}</span></div>
       <div class="side away"><img class="fl" src="${fl(m.a)}" alt=""><span class="nm">${KO[m.a]}</span></div></div>
       <div class="mstat ${live?"lv":""}">${live?"🔴 진행중 "+m.detail:done?"종료 "+m.detail:m.applied?"내가 가정한 결과":(m.date?"🕐 "+kst(m.date)+" (한국시간)":"예정")}</div>`;
-    if(a.tier!=="none"){const ol=[KO[m.h]+" 승",`무`,KO[m.a]+" 승"];
+    if(fixed){const e=thirdNow(m.g);const ak=aboveKor([e[1],e[2],e[3]]);const cc=colorClass(P)==="ok"?"g":colorClass(P)==="warn"?"y":"r";
+      html+=`<div class="livep"><div class="lpp ${cc}">이 점수 기준 한국 진출확률 ${P}%</div><div class="lps">${m.g}조 잠정 3위 <b>${KO[e[0]]}</b>(승점 ${e[1]}·득실 ${e[2]>0?"+":""}${e[2]}) · ${ak>=1?'<b style="color:var(--bad)">한국보다 위 ⚠️ 위협</b>':ak<=0?'<b style="color:var(--ok)">한국보다 아래 ✓ 안전</b>':"한국과 동률"}<br><span style="color:#9aa093">점수를 바꾸면 위 확률이 실시간으로 바뀝니다</span></div></div>`;
+    } else if(a.tier!=="none"){const ol=[KO[m.h]+" 승",`무`,KO[m.a]+" 승"];
       html+=`<div class="cond">`;
-      for(let o=0;o<3;o++){const v=a.conds[o]==null?null:pc(a.conds[o]);const isBest=!fixed&&a.tier==="key"&&o===a.best;const isCur=fixed&&curO===o;
-        html+=`<div class="cseg ${isCur?"cur":""} ${isBest?"best":""}"><div class="o">${ol[o]}</div><div class="p ${v==null?"":pcls(v)}">${v==null?"-":v+"%"}</div></div>`;}
-      html+=`</div><div class="condlab">↑ 각 칸 = 그 결과 시 <b>한국 진출확률</b>${a.tier==="key"?" · 🟡베스트 = 한국에 제일 유리한 결과":" · 당락은 안 바뀜(확률만 소폭)"}</div>`;
+      for(let o=0;o<3;o++){const v=a.conds[o]==null?null:pc(a.conds[o]);const isBest=a.tier==="key"&&o===a.best;
+        html+=`<div class="cseg ${isBest?"best":""}"><div class="o">${ol[o]}</div><div class="p ${v==null?"":pcls(v)}">${v==null?"-":v+"%"}</div></div>`;}
+      html+=`</div><div class="condlab">↑ 각 칸 = 그 결과 시 <b>한국 진출확률</b> (다른 경기 입력 반영해 실시간 변동)${a.tier==="key"?" · 🟡베스트=가장 유리":""}</div>`;
     } else {
       html+=`<div class="naband">이 경기 결과는 한국 32강에 영향 없음 (편하게 보세요 🍿)</div>`;
     }
