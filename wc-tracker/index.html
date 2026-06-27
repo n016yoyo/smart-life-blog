@@ -49,7 +49,9 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
 .exrow .tx .m{font-weight:900;color:#15301f}
 .exrow .tx .need{font-weight:800;margin-top:2px}
 .exrow .tx .need.good{color:var(--ok)}.exrow .tx .need.na{color:#9aa093}
-.exrow .tx .sm{font-size:11.5px;color:var(--dim);margin-top:1px}
+.exrow .tx .why{font-size:11.5px;color:#5a564d;margin-top:5px;line-height:1.55;background:#f7f4ea;border-radius:9px;padding:8px 10px}
+.exrow .tx .why .gd{color:var(--ok);font-weight:800}.exrow .tx .why .bd{color:var(--bad);font-weight:800}
+.exrow .tx .sm{font-size:11px;color:var(--dim);margin-top:5px}
 /* MATCH CARDS */
 .mwrap{display:flex;flex-direction:column;gap:11px}
 .grp-lab{font-size:12px;font-weight:900;color:var(--green);margin:8px 0 1px;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
@@ -100,6 +102,8 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
 .foot a{color:var(--green)}
 .upd{font-size:11px;color:var(--dim);text-align:center;padding:8px}
 .igcta{display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(120deg,#feda75,#fa7e1e,#d62976,#962fbf);color:#fff;text-decoration:none;font-weight:900;font-size:15px;padding:16px;border-radius:16px;box-shadow:0 12px 28px -14px rgba(214,41,118,.65)}
+.igchip{display:inline-block;margin-top:13px;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:8px 15px;border-radius:99px;font-weight:800;font-size:12.5px;text-decoration:none}
+.igmini{display:block;text-align:center;color:var(--green);font-weight:800;font-size:13px;text-decoration:none;background:#eaf6ee;border:1px dashed #b9ddc6;border-radius:12px;padding:11px}
 </style></head><body>
 <div class="app">
   <div class="hero">
@@ -112,20 +116,17 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
       <div class="pbar"><i id="pbar" style="width:0%;background:var(--gold)"></i></div>
       <div class="vsub" id="vsub">데이터 불러오는 중…</div>
       <div class="vmeta" id="vmeta"></div>
+      <a class="igchip" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 @aitigermask · 클로드/AI 꿀팁</a>
     </div>
   </div>
 
   <div class="sec">
-    <h2>📖 경우의 수 한눈에</h2>
-    <p class="desc">어떤 결과가 나와야 한국이 올라가는지</p>
-    <div class="explain" id="explain"></div>
-  </div>
-
-  <div class="sec">
     <h2>⚽ 내일 최종전 · 경기별 진출확률</h2>
-    <p class="desc">결과별 한국 진출확률 (실시간 자동 갱신). 안 끝난 경기는 점수 가정도 가능</p>
+    <p class="desc">각 칸의 % = <b>그 결과가 나오면 한국 진출확률</b> (승무패 발생 확률 아님) · 🟡베스트 = 셋 중 한국에 가장 유리한 결과 · 실시간 자동</p>
     <div class="mwrap" id="matches"></div>
   </div>
+
+  <div style="padding:8px 16px 0"><a class="igmini" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 이런 거 더 보고 싶다면 → @aitigermask</a></div>
 
   <div class="sec">
     <h2>📊 조 3위 경쟁 (8팀 진출)</h2>
@@ -134,7 +135,13 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
     <div class="upd" id="upd"></div>
   </div>
 
-  <div style="padding:10px 16px 0">
+  <div class="sec">
+    <h2>📖 경우의 수 한눈에</h2>
+    <p class="desc">어떤 결과여야 한국이 올라가는지 · 왜 그런지까지</p>
+    <div class="explain" id="explain"></div>
+  </div>
+
+  <div style="padding:14px 16px 0">
     <a class="igcta" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 매일 클로드·AI 꿀팁 더 보기 · @aitigermask</a>
   </div>
   <p class="foot">30초마다 자동 갱신 · 확률은 대회 득실 기반 추정치(참고용)이며 동점자는 승점→골득실→다득점 기준. 실제 FIFA 최종순위엔 페어플레이 등 추가 규정이 적용될 수 있어요.<br><a href="/">← AI TIGER MASK 홈</a></p>
@@ -145,7 +152,7 @@ const fl=a=>"flags/"+a+".png";
 const FIXED3=[["kor",3,-1,2,"A"],["bih",4,-1,5,"B"],["sco",3,-3,1,"C"],["par",4,-2,2,"D"],["ecu",4,0,2,"E"],["swe",4,0,7,"F"],["irn",3,0,3,"G"],["uru",2,-1,3,"H"],["sen",3,2,8,"I"]];
 const BASE={arg:[6,5,5],aut:[3,0,3],alg:[3,-2,2],jor:[0,-3,2],col:[6,3,4],por:[4,5,6],uzb:[0,-7,1],cod:[1,-1,1],eng:[4,2,4],cro:[3,-1,3],pan:[0,-2,0],gha:[4,1,1]};
 const GROUPS={J:["arg","aut","alg","jor"],K:["col","por","uzb","cod"],L:["eng","cro","pan","gha"]};
-const MATCHES=[{g:"J",h:"alg",a:"aut"},{g:"J",h:"jor",a:"arg"},{g:"K",h:"col",a:"por"},{g:"K",h:"cod",a:"uzb"},{g:"L",h:"cro",a:"gha"},{g:"L",h:"pan",a:"eng"}];
+const MATCHES=[{g:"L",h:"cro",a:"gha"},{g:"L",h:"pan",a:"eng"},{g:"K",h:"col",a:"por"},{g:"K",h:"cod",a:"uzb"},{g:"J",h:"alg",a:"aut"},{g:"J",h:"jor",a:"arg"}];
 const M=MATCHES.map(m=>({...m,state:"pre",hs:0,as:0,detail:"예정",applied:false,sim:null,date:null}));
 function kst(iso){if(!iso)return "";try{return new Date(iso).toLocaleString("ko-KR",{timeZone:"Asia/Seoul",month:"numeric",day:"numeric",weekday:"short",hour:"numeric",minute:"2-digit"});}catch(e){return "";}}
 const KORS=[3,-1,2];
@@ -162,6 +169,12 @@ function dist(m){const r=fixedResult(m);if(r)return [{hs:r.hs,as:r.as,p:1}];retu
 function thirdStats(group,resByIdx){const st={};for(const t of GROUPS[group])st[t]=[...BASE[t]];M.forEach((m,i)=>{if(m.g!==group)return;const r=resByIdx[i];if(r)applyMatch(st,m,r.hs,r.as);});const arr=GROUPS[group].map(t=>[t,...st[t]]);arr.sort(cmp);return [arr[2][1],arr[2][2],arr[2][3]];}
 function aboveKor(s){return s[0]>KORS[0]?1:s[0]<KORS[0]?0:(s[1]>KORS[1]?1:s[1]<KORS[1]?0:(s[2]>KORS[2]?1:s[2]<KORS[2]?0:.5));}
 function idxOf(group){return M.map((m,i)=>m.g===group?i:-1).filter(i=>i>=0);}
+function third3(group,res){const st={};for(const t of GROUPS[group])st[t]=[...BASE[t]];M.forEach((m,i)=>{if(m.g!==group)return;const r=res[i];if(r)applyMatch(st,m,r.hs,r.as);});const arr=GROUPS[group].map(t=>[t,...st[t]]);arr.sort(cmp);return arr[2];}
+function repScore(m,o){const sub=distAll(m).filter(x=>{const s=Math.sign(x.hs-x.as);return o===0?s>0:o===1?s===0:s<0;});sub.sort((a,b)=>b.p-a.p);return sub[0]||{hs:o===0?1:0,as:o===2?1:0};}
+function modeScore(m){const r=fixedResult(m);if(r)return r;return distAll(m).slice().sort((a,b)=>b.p-a.p)[0];}
+function worstOut(c){let w=-1,wv=2;c.forEach((v,o)=>{if(v!==null&&v<wv){wv=v;w=o;}});return w;}
+function reasonFor(i,o){const m=M[i],g=m.g,ix=idxOf(g),oth=ix.find(x=>x!==i);const res={[i]:repScore(m,o),[oth]:modeScore(M[oth])};const e=third3(g,res);const ak=aboveKor([e[1],e[2],e[3]]);return {team:e[0],pts:e[1],gd:e[2],ak,txt:`${g}조 3위가 <b>${KO[e[0]]}</b>(승점 ${e[1]}·득실 ${e[2]>0?"+":""}${e[2]})가 돼서 `+(ak>=1?'<span class="bd">한국보다 위 → 위협</span>':ak<=0?'<span class="gd">한국보다 아래 → 한국 안전</span>':'한국과 동률 → 애매')};}
+const olab=(m,o)=>o===0?KO[m.h]+" 승":o===1?"무승부":KO[m.a]+" 승";
 function pAbove(group,override){const ix=idxOf(group);const d0=override&&override.i===ix[0]?override.d:dist(M[ix[0]]);const d1=override&&override.i===ix[1]?override.d:dist(M[ix[1]]);let p=0;for(const a of d0)for(const b of d1){p+=a.p*b.p*aboveKor(thirdStats(group,{[ix[0]]:a,[ix[1]]:b}));}return p;}
 function advance(pa){const a=pa.J,b=pa.K,c=pa.L;return (1-a)*(1-b)*(1-c)+a*(1-b)*(1-c)+(1-a)*b*(1-c)+(1-a)*(1-b)*c;}
 function baseProb(){return {J:pAbove("J"),K:pAbove("K"),L:pAbove("L")};}
@@ -170,7 +183,7 @@ const pc=v=>Math.round(v*100);
 const colorClass=p=>p>=60?"ok":p>=33?"warn":"bad";
 const pcls=p=>p>=60?"g":p>=33?"y":"r";
 // 경기 영향 분석: {relevant, best, conds:[3]}
-function analyze(i,PA){const c=[0,1,2].map(o=>condProb(i,o,PA));const valid=c.filter(x=>x!==null);const mx=Math.max(...valid),mn=Math.min(...valid);const relevant=(mx-mn)>=0.015;let best=-1,bv=-1;c.forEach((v,o)=>{if(v!==null&&v>bv){bv=v;best=o;}});return {relevant,best,conds:c};}
+function analyze(i,PA){const c=[0,1,2].map(o=>condProb(i,o,PA));const valid=c.filter(x=>x!==null);const mx=Math.max(...valid),mn=Math.min(...valid);let best=-1,bv=-1,worst=-1,wv=2;c.forEach((v,o)=>{if(v==null)return;if(v>bv){bv=v;best=o;}if(v<wv){wv=v;worst=o;}});let tier="none";if(mx-mn>=0.012){const rb=reasonFor(i,best),rw=reasonFor(i,worst);tier=(rb.ak!==rw.ak)?"key":"minor";}return {tier,best,worst,conds:c};}
 
 function render(){
   const PA=baseProb(),prob=advance(PA),P=pc(prob);
@@ -185,32 +198,37 @@ function render(){
 
   // 경우의 수 설명
   const an=M.map((m,i)=>analyze(i,PA));
-  const keyMatches=M.map((m,i)=>({m,i,a:an[i]})).filter(x=>x.a.relevant);
-  const naMatches=M.map((m,i)=>({m,i,a:an[i]})).filter(x=>!x.a.relevant);
-  let ex=`<div class="exhead">한국은 <b>조 3위 8팀</b>에 들어야 진출. 다른 조(A~I)에서 한국 위로 이미 <b>6팀</b> 확정 → <b>내일 J·K·L조 3위</b> 중 한국보다 위로 올라오는 팀이 <b>1팀 이하면 진출 ✅</b>, 2팀 이상이면 탈락 ❌.<br>👉 지금 진출확률 <b>${P}%</b>, ${krIdx<8?"현재 "+(krIdx+1)+"위로 진출권":"현재 "+(krIdx+1)+"위로 탈락권"}.</div>`;
-  for(const {m,i,a} of keyMatches){const need=a.best;
-    ex+=`<div class="exrow"><div class="ic key">✓</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조)</span></div><div class="need good">${need===0?KO[m.h]+" 승리":need===1?"무승부":KO[m.a]+" 승리"}여야 한국에 유리</div><div class="sm">${lab.map((L,o)=>(a.conds[o]==null?"":`${o===0?KO[m.h]+"승":o===1?"무":KO[m.a]+"승"} ${pc(a.conds[o])}%`)).filter(Boolean).join(" · ")}</div></div></div>`;}
-  for(const {m,i} of naMatches){
+  const ord=[...M.keys()].sort((x,y)=>{const dx=M[x].date||"",dy=M[y].date||"";return dx<dy?-1:dx>dy?1:x-y;});
+  const rows=ord.map(i=>({m:M[i],i,a:an[i]}));
+  const keyMatches=rows.filter(x=>x.a.tier==="key");
+  const minorMatches=rows.filter(x=>x.a.tier==="minor");
+  const naMatches=rows.filter(x=>x.a.tier==="none");
+  let ex=`<div class="exhead">한국은 <b>조 3위 8팀</b>에 들어야 진출. 다른 조(A~I)에서 한국 위로 이미 <b>6팀</b> 확정 → <b>내일 J·K·L조 3위</b> 중 한국보다 위로 올라오는 팀이 <b>1팀 이하면 진출 ✅</b>, 2팀 이상이면 탈락 ❌.<br>👉 지금 진출확률 <b>${P}%</b>, ${krIdx<8?"현재 "+(krIdx+1)+"위로 진출권":"현재 "+(krIdx+1)+"위로 탈락권"}.<br>🎯 당락을 직접 가르는 <b>핵심 ${keyMatches.length}경기</b>는 아래에.</div>`;
+  for(const {m,i,a} of keyMatches){const need=a.best,worst=a.worst;const rb=reasonFor(i,need),rw=reasonFor(i,worst);
+    ex+=`<div class="exrow"><div class="ic key">✓</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조 · 핵심)</span></div><div class="need good">${need===1?"무승부":KO[need===0?m.h:m.a]+" 승리"}여야 한국에 유리</div><div class="why">👍 <b>${olab(m,need)}</b>면 ${rb.txt}.<br>👎 <b>${olab(m,worst)}</b>면 ${rw.txt}.</div><div class="sm">${lab.map((L,o)=>(a.conds[o]==null?"":`${olab(m,o)} ${pc(a.conds[o])}%`)).filter(Boolean).join(" · ")}</div></div></div>`;}
+  for(const {m,i,a} of minorMatches){
+    ex+=`<div class="exrow"><div class="ic" style="background:var(--warn)">~</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조)</span></div><div class="need" style="color:var(--warn)">당락은 안 바뀜, 확률만 소폭 변동</div><div class="sm">${lab.map((L,o)=>(a.conds[o]==null?"":`${olab(m,o)} ${pc(a.conds[o])}%`)).filter(Boolean).join(" · ")}</div></div></div>`;}
+  for(const {m} of naMatches){
     ex+=`<div class="exrow"><div class="ic na">–</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조)</span></div><div class="need na">한국 운명과 무관 (결과 영향 없음)</div></div></div>`;}
   document.getElementById("explain").innerHTML=ex;
 
   // 경기 카드
   let html="",lastG="";
-  for(let i=0;i<M.length;i++){const m=M[i],a=an[i];if(m.g!==lastG){html+=`<div class="grp-lab">${m.g}조</div>`;lastG=m.g;}
+  for(const i of ord){const m=M[i],a=an[i];if(m.g!==lastG){html+=`<div class="grp-lab">${m.date?kst(m.date).replace(/^\S+\s/,"")+" · ":""}${m.g}조</div>`;lastG=m.g;}
     const live=m.state==="in",done=m.state==="post",fixed=live||done||(m.applied&&m.sim);
     const r=fixedResult(m),showH=r?r.hs:"-",showA=r?r.as:"-";
     const curO=r?(r.hs>r.as?0:r.hs===r.as?1:2):-1;
-    const tag=live?`<div class="tagtop live">🔴 LIVE</div>`:!a.relevant?`<div class="tagtop na">무관</div>`:`<div class="tagtop key">핵심</div>`;
-    html+=`<div class="match ${a.relevant?"":"na"}">${tag}<div class="mrow">
+    const tag=live?`<div class="tagtop live">🔴 LIVE</div>`:a.tier==="none"?`<div class="tagtop na">무관</div>`:a.tier==="minor"?`<div class="tagtop" style="background:var(--warn)">영향 작음</div>`:`<div class="tagtop key">핵심</div>`;
+    html+=`<div class="match ${a.tier==="none"?"na":""}">${tag}<div class="mrow">
       <div class="side"><img class="fl" src="${fl(m.h)}" alt=""><span class="nm">${KO[m.h]}</span></div>
       <div class="sc"><span>${showH}</span><span class="x">:</span><span>${showA}</span></div>
       <div class="side away"><img class="fl" src="${fl(m.a)}" alt=""><span class="nm">${KO[m.a]}</span></div></div>
       <div class="mstat ${live?"lv":""}">${live?"🔴 진행중 "+m.detail:done?"종료 "+m.detail:m.applied?"내가 가정한 결과":(m.date?"🕐 "+kst(m.date)+" (한국시간)":"예정")}</div>`;
-    if(a.relevant){const ol=[KO[m.h]+" 승",`무`,KO[m.a]+" 승"];
+    if(a.tier!=="none"){const ol=[KO[m.h]+" 승",`무`,KO[m.a]+" 승"];
       html+=`<div class="cond">`;
-      for(let o=0;o<3;o++){const v=a.conds[o]==null?null:pc(a.conds[o]);const isBest=!fixed&&o===a.best;const isCur=fixed&&curO===o;
+      for(let o=0;o<3;o++){const v=a.conds[o]==null?null:pc(a.conds[o]);const isBest=!fixed&&a.tier==="key"&&o===a.best;const isCur=fixed&&curO===o;
         html+=`<div class="cseg ${isCur?"cur":""} ${isBest?"best":""}"><div class="o">${ol[o]}</div><div class="p ${v==null?"":pcls(v)}">${v==null?"-":v+"%"}</div></div>`;}
-      html+=`</div><div class="condlab">↑ 결과별 한국 진출확률 · 베스트=가장 유리</div>`;
+      html+=`</div><div class="condlab">↑ 각 칸 = 그 결과 시 <b>한국 진출확률</b>${a.tier==="key"?" · 🟡베스트 = 한국에 제일 유리한 결과":" · 당락은 안 바뀜(확률만 소폭)"}</div>`;
     } else {
       html+=`<div class="naband">이 경기 결과는 한국 32강에 영향 없음 (편하게 보세요 🍿)</div>`;
     }
