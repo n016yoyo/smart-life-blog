@@ -145,8 +145,30 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
     <div class="explain" id="explain"></div>
   </div>
 
+  <div class="sec">
+    <h2>이거 어떻게 만들었나 (코드 0줄)</h2>
+    <p class="desc">개발 안 배웠어요. 컴퓨터에 클로드 코드(Claude Code)만 깔고 말로 시켰습니다</p>
+    <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:16px;box-shadow:0 10px 26px -18px rgba(0,0,0,.5)">
+      <ol style="margin:0;padding-left:20px;font-size:13.5px;color:#43403a;line-height:1.7">
+        <li><b>데이터</b> , ESPN 무료 월드컵 API(키 없이)로 실시간 점수·순위를 30초마다 불러오게.</li>
+        <li><b>계산</b> , 조 3위 12팀 중 상위 8팀 진출, 한국 위로 오는 3위가 1팀 이하면 진출. 동률은 승점→골득실→다득점.</li>
+        <li><b>화면</b> , 국가명 한글+국기, 모바일 최적화, 경기별로 한국에 미치는 영향 표시.</li>
+        <li><b>배포</b> , 클라우드플레어 페이지(Cloudflare Pages)에 무료로 공개.</li>
+      </ol>
+      <div style="margin-top:14px;border:1px solid #322c25;border-radius:12px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#0a7d3c;color:#fff;font-size:12.5px;font-weight:800;padding:9px 13px"><span>클로드한테 이렇게 시켰어요 (복붙)</span><button onclick="navigator.clipboard.writeText(document.getElementById('mk').textContent).then(()=>{this.textContent='복사됨 ✓'})" style="background:#fff;color:#0a7d3c;border:0;border-radius:8px;padding:6px 14px;font-weight:800;font-size:12.5px;cursor:pointer">복사</button></div>
+<pre id="mk" style="margin:0;background:#1e1b17;color:#e8e2d6;padding:14px;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace">ESPN 무료 월드컵 API(scoreboard·standings)로 한국 32강 진출확률 실시간 계산 사이트 만들어줘.
+- 조 3위 12팀 중 상위 8팀 진출. 한국(A조 3위) 위로 올라오는 3위가 1팀 이하면 진출.
+- 동률은 승점 → 골득실 → 다득점 순.
+- 내일 경기 점수가 들어오면 30초마다 자동 갱신하고, 경기별로 한국에 미치는 영향(핵심/무관)을 표시해줘.
+- 국가명은 한글, 국기 넣고, 모바일에서 잘 보이게.
+- 다 되면 클라우드플레어 페이지에 무료로 올려줘.</pre>
+      </div>
+    </div>
+  </div>
+
   <div style="padding:14px 16px 0">
-    <a class="igcta" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 매일 클로드·AI 꿀팁 더 보기 · @aitigermask</a>
+    <a class="igcta" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 더 자세한 만드는 법·꿀팁 · @aitigermask</a>
   </div>
   <p class="foot">30초마다 자동 갱신 · 확률은 대회 득실 기반 추정치(참고용)이며 동점자는 승점 → 골득실 → 다득점 → 페어플레이 → 추첨 기준.</p>
 </div>
