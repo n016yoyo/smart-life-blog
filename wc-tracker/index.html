@@ -1,213 +1,244 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>대한민국 32강 경우의 수 , 2026 월드컵 실시간</title>
-<meta name="description" content="2026 북중미 월드컵 대한민국 32강 진출 경우의 수. 내일 J·K·L조 최종전 실시간 점수로 한국 진출 여부 자동 계산.">
+<title>대한민국 32강 경우의 수 · 진출확률 , 2026 월드컵 실시간</title>
+<meta name="description" content="2026 북중미 월드컵 대한민국 32강 진출확률 실시간. 경기별 필요한 결과·베스트 시나리오·무관 경기까지 한눈에.">
 <meta name="robots" content="noindex">
 <style>
-:root{--green:#0a7d3c;--green2:#0c5e30;--gold:#f4c430;--ink:#10110f;--card:#ffffff;--dim:#7b8076;--ok:#1aa356;--bad:#e23b3b;--warn:#e8941a}
+:root{--green:#0a7d3c;--green2:#063;--gold:#f4c430;--ink:#10110f;--card:#fff;--dim:#7b8076;--ok:#13a04f;--bad:#e23b3b;--warn:#e8941a}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#0d150f;color:var(--ink);line-height:1.5}
-.app{max-width:560px;margin:0 auto;background:#f1ede3;min-height:100vh}
-/* hero */
-.hero{position:relative;background:linear-gradient(160deg,#0a7d3c,#073d20);color:#fff;padding:max(26px,env(safe-area-inset-top)) 18px 22px;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 28px,transparent 28px 56px);opacity:.5}
-.hero>*{position:relative}
-.htop{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;letter-spacing:1px;color:var(--gold)}
-.htop .live{margin-left:auto;display:flex;align-items:center;gap:5px;color:#fff;background:rgba(255,255,255,.14);padding:3px 9px;border-radius:99px;font-size:11px;letter-spacing:0}
-.dotlive{width:7px;height:7px;border-radius:50%;background:#ff5b5b;animation:bl 1.1s infinite}
+body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#06100a;color:var(--ink);line-height:1.5}
+.app{max-width:560px;margin:0 auto;background:#f0ece1;min-height:100vh;overflow:hidden;position:relative}
+/* HERO , 스타디움 나이트 */
+.hero{position:relative;background:radial-gradient(120% 90% at 50% -10%,#11a352 0%,#0a7d3c 35%,#064f27 70%,#03331a 100%);color:#fff;padding:max(24px,env(safe-area-inset-top)) 18px 26px;overflow:hidden;border-bottom:4px solid var(--gold)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 30px,transparent 30px 60px);opacity:.55}
+.hero::after{content:"";position:absolute;left:50%;top:-40px;width:240px;height:240px;border:3px solid rgba(255,255,255,.16);border-radius:50%;transform:translateX(-50%)}
+.hero>*{position:relative;z-index:2}
+.conf{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.conf i{position:absolute;top:-12px;width:8px;height:8px;border-radius:2px;opacity:.9;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(360px) rotate(360deg);opacity:0}}
+.htop{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--gold)}
+.htop .live{margin-left:auto;display:flex;align-items:center;gap:5px;color:#fff;background:rgba(255,255,255,.16);padding:4px 10px;border-radius:99px;font-size:11px;letter-spacing:0}
+.dotlive{width:7px;height:7px;border-radius:50%;background:#ff5b5b;box-shadow:0 0 8px #ff5b5b;animation:bl 1.1s infinite}
 @keyframes bl{50%{opacity:.25}}
-.h1{font-size:clamp(22px,6.4vw,28px);font-weight:900;margin-top:12px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
-.h1 .fl{width:34px;height:24px;border-radius:4px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.35)}
-.verdict{margin-top:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:16px 18px;backdrop-filter:blur(4px)}
-.vbig{font-size:clamp(26px,8vw,36px);font-weight:900;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
-.vbig.ok{color:#9cffc0}.vbig.bad{color:#ff9a9a}.vbig.warn{color:#ffd980}
-.vsub{font-size:13.5px;color:#dfeede;margin-top:5px}
-.vmeta{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.pill{font-size:12px;font-weight:800;background:rgba(255,255,255,.14);padding:6px 11px;border-radius:99px}
+.h1{font-size:clamp(19px,5.2vw,24px);font-weight:900;margin-top:12px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.h1 .fl{width:34px;height:23px;border-radius:4px;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.3)}
+.gauge{margin-top:16px;text-align:center}
+.gnum{font-size:clamp(58px,21vw,86px);font-weight:900;letter-spacing:-.04em;line-height:.92;text-shadow:0 4px 24px rgba(0,0,0,.35)}
+.gnum.ok{color:#62ffa0}.gnum.warn{color:#ffd24a}.gnum.bad{color:#ff8585}
+.gnum small{font-size:.42em;font-weight:800;margin-left:4px;opacity:.85}
+.glab{font-size:13px;font-weight:800;color:#dff3e6;margin-top:2px;letter-spacing:1px}
+.pbar{height:12px;border-radius:99px;background:rgba(0,0,0,.28);margin:14px 6px 0;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
+.pbar i{display:block;height:100%;border-radius:99px;transition:width .7s cubic-bezier(.3,1,.4,1);box-shadow:0 0 12px rgba(255,255,255,.4)}
+.vsub{font-size:13.5px;color:#eafff0;margin-top:13px;font-weight:800;text-align:center}
+.vmeta{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;justify-content:center}
+.pill{font-size:11.5px;font-weight:800;background:rgba(255,255,255,.15);padding:6px 11px;border-radius:99px;border:1px solid rgba(255,255,255,.12)}
 .pill b{color:var(--gold)}
-/* sections */
-.sec{padding:20px 14px 4px}
-.sec h2{font-size:15px;font-weight:900;margin:0 0 4px;display:flex;align-items:center;gap:7px;color:#15301f}
-.sec .desc{font-size:12px;color:var(--dim);margin-bottom:12px}
-/* match cards */
-.mwrap{display:flex;flex-direction:column;gap:10px}
-.grp-lab{font-size:11.5px;font-weight:900;color:#0a7d3c;margin:6px 0 2px;letter-spacing:.5px}
-.match{background:var(--card);border-radius:16px;padding:12px 13px;box-shadow:0 8px 22px -16px rgba(0,0,0,.5)}
-.mrow{display:flex;align-items:center;gap:8px}
+/* SECTIONS */
+.sec{padding:22px 14px 2px}
+.sec h2{font-size:16px;font-weight:900;margin:0 0 4px;display:flex;align-items:center;gap:8px;color:#0c2c1a}
+.sec h2::before{content:"";width:5px;height:18px;border-radius:3px;background:linear-gradient(var(--gold),var(--green))}
+.sec .desc{font-size:12px;color:var(--dim);margin:0 0 12px 13px}
+/* 경우의 수 설명 */
+.explain{background:linear-gradient(180deg,#fff,#fbf8ef);border:1.5px solid #ece3c8;border-radius:18px;padding:16px;box-shadow:0 10px 30px -20px rgba(0,0,0,.5)}
+.exhead{font-size:13.5px;font-weight:800;color:#15301f;line-height:1.6;background:#eef6f0;border-radius:12px;padding:12px 13px;margin-bottom:13px}
+.exhead b{color:var(--green)}
+.exrow{display:flex;gap:10px;padding:11px 4px;border-top:1px solid #f1ecdd}
+.exrow .ic{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff}
+.exrow .ic.key{background:var(--green)}.exrow .ic.na{background:#b8bcb2}
+.exrow .tx{font-size:13px}
+.exrow .tx .m{font-weight:900;color:#15301f}
+.exrow .tx .need{font-weight:800;margin-top:2px}
+.exrow .tx .need.good{color:var(--ok)}.exrow .tx .need.na{color:#9aa093}
+.exrow .tx .sm{font-size:11.5px;color:var(--dim);margin-top:1px}
+/* MATCH CARDS */
+.mwrap{display:flex;flex-direction:column;gap:11px}
+.grp-lab{font-size:12px;font-weight:900;color:var(--green);margin:8px 0 1px;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.grp-lab::before{content:"⚽"}
+.match{background:var(--card);border-radius:16px;padding:13px;box-shadow:0 10px 26px -18px rgba(0,0,0,.55);border:1px solid #efe9da;position:relative;overflow:hidden}
+.match.na{opacity:.74}
+.match .tagtop{position:absolute;top:0;right:0;font-size:10px;font-weight:900;color:#fff;padding:4px 11px;border-bottom-left-radius:12px;letter-spacing:.5px}
+.tagtop.key{background:var(--green)}.tagtop.na{background:#aab0a4}.tagtop.live{background:var(--bad)}
+.mrow{display:flex;align-items:center;gap:8px;margin-top:6px}
 .side{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
 .side.away{flex-direction:row-reverse;text-align:right}
-.side .fl{width:30px;height:21px;border-radius:3px;object-fit:cover;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.side .nm{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sc{display:flex;align-items:center;gap:8px;font-weight:900;font-size:22px;flex:none;padding:0 2px}
-.sc .x{font-size:13px;color:#bbb}
-.mstat{text-align:center;font-size:11px;font-weight:800;margin-top:7px;color:var(--dim)}
+.side .fl{width:32px;height:22px;border-radius:3px;object-fit:cover;flex:none;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.side .nm{font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc{display:flex;align-items:center;gap:9px;font-weight:900;font-size:24px;flex:none}
+.sc .x{font-size:13px;color:#c4c4c4}
+.mstat{text-align:center;font-size:11px;font-weight:800;margin-top:8px;color:var(--dim)}
 .mstat .lv{color:var(--bad)}
-.fav{margin-top:8px;font-size:11.5px;font-weight:800;text-align:center;border-radius:9px;padding:5px;background:#f3f1e8}
-.fav.good{background:#e7f7ec;color:#0a7d3c}.fav.poor{background:#fdeaea;color:#c0392b}
-/* steppers */
-.sim{margin-top:9px;border-top:1px dashed #e7e3d6;padding-top:9px;display:flex;align-items:center;justify-content:center;gap:6px}
-.sim button{border:0;background:#eee9dc;color:#15301f;font-weight:900;font-size:15px;width:30px;height:30px;border-radius:8px;cursor:pointer}
+.cond{margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
+.cseg{background:#f5f2e9;border-radius:11px;padding:8px 4px;position:relative}
+.cseg .o{font-size:10.5px;font-weight:800;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cseg .p{font-size:18px;font-weight:900;margin-top:2px}
+.cseg.cur{outline:2px solid var(--green);background:#e9f6ee}
+.cseg.best::after{content:"베스트";position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:var(--gold);color:#3a2c00;font-size:9px;font-weight:900;padding:1px 7px;border-radius:99px}
+.cseg .p.g{color:var(--ok)}.cseg .p.r{color:var(--bad)}.cseg .p.y{color:var(--warn)}
+.condlab{font-size:10.5px;color:var(--dim);text-align:center;margin-top:8px}
+.naband{margin-top:9px;text-align:center;font-size:12px;font-weight:800;color:#8a9084;background:#f1f0ea;border-radius:10px;padding:9px}
+.sim{margin-top:10px;border-top:1px dashed #e7e3d6;padding-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.sim button{border:0;background:#ebe6d8;color:#15301f;font-weight:900;font-size:15px;width:31px;height:31px;border-radius:9px;cursor:pointer}
 .sim .n{font-weight:900;min-width:18px;text-align:center;font-size:16px}
-.sim .lab{font-size:11px;color:var(--dim);margin:0 4px}
-.simhint{font-size:10.5px;color:#a59;color:var(--dim);text-align:center;margin-top:6px}
-.start{margin-top:9px;width:100%;border:0;background:#eef5ef;color:#0a7d3c;font-weight:800;font-size:12.5px;padding:8px;border-radius:10px;cursor:pointer}
-/* table */
-.tbl{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 8px 22px -16px rgba(0,0,0,.5)}
-.tr{display:grid;grid-template-columns:30px 1fr 42px 42px 40px;align-items:center;gap:6px;padding:9px 12px;font-size:13px;border-top:1px solid #f0ece1}
+.sim .lab{font-size:11px;color:var(--dim);margin:0 3px}
+.start{margin-top:10px;width:100%;border:0;background:#edf5ef;color:var(--green);font-weight:800;font-size:12.5px;padding:9px;border-radius:11px;cursor:pointer}
+.clr{display:block;text-align:center;font-size:11px;color:#c0392b;margin-top:7px;text-decoration:none}
+/* TABLE */
+.tbl{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 10px 26px -18px rgba(0,0,0,.55);border:1px solid #efe9da}
+.tr{display:grid;grid-template-columns:26px 1fr 38px 40px 36px;align-items:center;gap:6px;padding:9px 12px;font-size:13px;border-top:1px solid #f0ece1}
 .tr:first-child{border-top:0}
-.tr.hd{font-size:11px;font-weight:800;color:var(--dim);background:#faf8f1}
+.tr.hd{font-size:10.5px;font-weight:800;color:var(--dim);background:#faf8f1}
 .tr .rk{font-weight:900;color:#15301f;text-align:center}
 .tr .tm{display:flex;align-items:center;gap:7px;min-width:0}
-.tr .tm .fl{width:24px;height:17px;border-radius:3px;object-fit:cover;flex:none}
+.tr .tm .fl{width:24px;height:17px;border-radius:3px;object-fit:cover;flex:none;box-shadow:0 1px 2px rgba(0,0,0,.2)}
 .tr .tm .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tr .v{text-align:center;font-variant-numeric:tabular-nums}
-.tr.me{background:linear-gradient(90deg,#fff7df,#fffdf4);box-shadow:inset 3px 0 0 var(--gold)}
-.tr.me .nm{color:#b8860b}
-.cut{display:flex;align-items:center;gap:8px;padding:5px 12px;background:#0a7d3c;color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px}
-.cut::after{content:"진출 컷 (3위 8팀)";margin-left:auto}
-.foot{padding:22px 16px 40px;text-align:center;color:#8a8f84;font-size:11.5px}
-.foot a{color:#0a7d3c}
-.upd{font-size:11px;color:var(--dim);text-align:center;padding:6px}
+.tr.me{background:linear-gradient(90deg,#fff5d4,#fffdf3);box-shadow:inset 4px 0 0 var(--gold)}
+.tr.me .nm{color:#b8860b;font-weight:900}
+.cut{display:flex;align-items:center;padding:6px 12px;background:linear-gradient(90deg,var(--green),var(--green2));color:#fff;font-size:11px;font-weight:900;letter-spacing:.5px}
+.cut::after{content:"⬆ 8위 진출 컷";margin-left:auto}
+.foot{padding:22px 16px 44px;text-align:center;color:#8a8f84;font-size:11.5px;line-height:1.6}
+.foot a{color:var(--green)}
+.upd{font-size:11px;color:var(--dim);text-align:center;padding:8px}
+.igcta{display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(120deg,#feda75,#fa7e1e,#d62976,#962fbf);color:#fff;text-decoration:none;font-weight:900;font-size:15px;padding:16px;border-radius:16px;box-shadow:0 12px 28px -14px rgba(214,41,118,.65)}
 </style></head><body>
 <div class="app">
   <div class="hero">
-    <div class="htop">🏆 2026 북중미 월드컵 · 32강 경우의 수<span class="live"><span class="dotlive"></span>LIVE</span></div>
-    <div class="h1"><img class="fl" src="flags/kor.png" alt="대한민국">대한민국 32강 갈까?</div>
-    <div class="verdict" id="verdict">
-      <div class="vbig warn" id="vbig">계산 중…</div>
-      <div class="vsub" id="vsub">데이터 불러오는 중</div>
+    <div class="conf" id="conf"></div>
+    <div class="htop">🏆 2026 북중미 월드컵 · 32강 진출확률<span class="live"><span class="dotlive"></span>LIVE</span></div>
+    <div class="h1"><img class="fl" src="flags/kor.png" alt="대한민국">대한민국, 32강 갈까?</div>
+    <div class="gauge">
+      <div class="gnum warn" id="gnum">…<small>%</small></div>
+      <div class="glab">진출 확률</div>
+      <div class="pbar"><i id="pbar" style="width:0%;background:var(--gold)"></i></div>
+      <div class="vsub" id="vsub">데이터 불러오는 중…</div>
       <div class="vmeta" id="vmeta"></div>
     </div>
   </div>
 
   <div class="sec">
-    <h2>⚽ 내일 최종전 (실시간)</h2>
-    <p class="desc">J·K·L조 마지막 경기. 점수가 들어오면 아래 표·진출 여부가 자동으로 바뀝니다. 안 시작한 경기는 직접 점수를 넣어 가정해볼 수 있어요.</p>
+    <h2>📖 경우의 수 한눈에</h2>
+    <p class="desc">어떤 결과가 나와야 한국이 올라가는지</p>
+    <div class="explain" id="explain"></div>
+  </div>
+
+  <div class="sec">
+    <h2>⚽ 내일 최종전 · 경기별 진출확률</h2>
+    <p class="desc">결과별 한국 진출확률 (실시간 자동 갱신). 안 끝난 경기는 점수 가정도 가능</p>
     <div class="mwrap" id="matches"></div>
   </div>
 
   <div class="sec">
     <h2>📊 조 3위 경쟁 (8팀 진출)</h2>
-    <p class="desc">12개 조 3위 팀을 승점 → 골득실 → 다득점 순으로 정렬. 8위 안에 들면 진출. 한국은 노란 줄.</p>
+    <p class="desc">승점→골득실→다득점 순. 8위 안이면 진출. 한국은 노란 줄</p>
     <div class="tbl" id="tbl"></div>
     <div class="upd" id="upd"></div>
   </div>
 
-  <p class="foot">데이터: ESPN · 30초 자동 갱신 · 동점자 규정(승점→골득실→다득점) 기준 추정이며 실제 FIFA 최종 순위는 페어플레이 등 추가 규정이 적용될 수 있어요.<br><a href="/">← AI TIGER MASK</a></p>
+  <div style="padding:10px 16px 0">
+    <a class="igcta" href="https://instagram.com/aitigermask" target="_blank" rel="noopener">📸 매일 클로드·AI 꿀팁 더 보기 · @aitigermask</a>
+  </div>
+  <p class="foot">30초마다 자동 갱신 · 확률은 대회 득실 기반 추정치(참고용)이며 동점자는 승점→골득실→다득점 기준. 실제 FIFA 최종순위엔 페어플레이 등 추가 규정이 적용될 수 있어요.<br><a href="/">← AI TIGER MASK 홈</a></p>
 </div>
-
 <script>
-// ===== 고정 데이터 (A~I조 3위 확정 + J/K/L조 베이스: gp2 스냅샷 2026-06-27) =====
 const KO={kor:"대한민국",bih:"보스니아",sco:"스코틀랜드",par:"파라과이",ecu:"에콰도르",swe:"스웨덴",irn:"이란",uru:"우루과이",sen:"세네갈",arg:"아르헨티나",aut:"오스트리아",alg:"알제리",jor:"요르단",col:"콜롬비아",por:"포르투갈",uzb:"우즈베키스탄",cod:"콩고DR",eng:"잉글랜드",cro:"크로아티아",pan:"파나마",gha:"가나"};
 const fl=a=>"flags/"+a+".png";
-// A~I조 3위 (확정, 변동없음)  [abbr, 승점, 골득실, 득점]
 const FIXED3=[["kor",3,-1,2,"A"],["bih",4,-1,5,"B"],["sco",3,-3,1,"C"],["par",4,-2,2,"D"],["ecu",4,0,2,"E"],["swe",4,0,7,"F"],["irn",3,0,3,"G"],["uru",2,-1,3,"H"],["sen",3,2,8,"I"]];
-// J/K/L조 4팀 베이스 (gp2)  abbr:[승점,골득실,득점]
-const BASE={
-  arg:[6,5,5],aut:[3,0,3],alg:[3,-2,2],jor:[0,-3,2],
-  col:[6,3,4],por:[4,5,6],uzb:[0,-7,1],cod:[1,-1,1],
-  eng:[4,2,4],cro:[3,-1,3],pan:[0,-2,0],gha:[4,1,1]};
+const BASE={arg:[6,5,5],aut:[3,0,3],alg:[3,-2,2],jor:[0,-3,2],col:[6,3,4],por:[4,5,6],uzb:[0,-7,1],cod:[1,-1,1],eng:[4,2,4],cro:[3,-1,3],pan:[0,-2,0],gha:[4,1,1]};
 const GROUPS={J:["arg","aut","alg","jor"],K:["col","por","uzb","cod"],L:["eng","cro","pan","gha"]};
-// 내일 6경기 (조, 홈, 원정) , ESPN 약자와 매칭
-const MATCHES=[
-  {g:"J",h:"alg",a:"aut"},{g:"J",h:"jor",a:"arg"},
-  {g:"K",h:"col",a:"por"},{g:"K",h:"cod",a:"uzb"},
-  {g:"L",h:"cro",a:"gha"},{g:"L",h:"pan",a:"eng"}];
-// 경기별 상태: {state:'pre'|'in'|'post', hs, as, detail, applied, sim:{hs,as}}
-const M=MATCHES.map(m=>({...m,state:"pre",hs:0,as:0,detail:"예정",applied:false,sim:null}));
-
-// ===== 엔진 =====
-function applyMatch(st,m,hs,as){ // st: {abbr:[pts,gd,gf]} 복사본에 경기결과 반영
-  const r=(a,b,gf)=>{const p=a>b?3:a===b?1:0;return [p,a-b,gf];};
-  for(const [team,sa,sb] of [[m.h,hs,as],[m.a,as,hs]]){const d=r(sa,sb,sa);st[team]=[st[team][0]+d[0],st[team][1]+d[1],st[team][2]+d[2]];}
-}
-function thirdOf(group){ // J/K/L조 투영 3위 계산
-  const st={};for(const t of GROUPS[group])st[t]=[...BASE[t]];
-  for(const m of M){if(m.g!==group)continue;let res=null;
-    if(m.state==="in"||m.state==="post")res=[m.hs,m.as];
-    else if(m.applied&&m.sim)res=[m.sim.hs,m.sim.as];
-    if(res)applyMatch(st,m,res[0],res[1]);}
-  const arr=GROUPS[group].map(t=>[t,...st[t]]);
-  arr.sort(cmp); return [arr[2][0],arr[2][1],arr[2][2],arr[2][3],group]; // 3위
-}
+const MATCHES=[{g:"J",h:"alg",a:"aut"},{g:"J",h:"jor",a:"arg"},{g:"K",h:"col",a:"por"},{g:"K",h:"cod",a:"uzb"},{g:"L",h:"cro",a:"gha"},{g:"L",h:"pan",a:"eng"}];
+const M=MATCHES.map(m=>({...m,state:"pre",hs:0,as:0,detail:"예정",applied:false,sim:null,date:null}));
+function kst(iso){if(!iso)return "";try{return new Date(iso).toLocaleString("ko-KR",{timeZone:"Asia/Seoul",month:"numeric",day:"numeric",weekday:"short",hour:"numeric",minute:"2-digit"});}catch(e){return "";}}
+const KORS=[3,-1,2];
+function applyMatch(st,m,hs,as){const r=(a,b,gf)=>[a>b?3:a===b?1:0,a-b,gf];for(const [t,sa,sb] of [[m.h,hs,as],[m.a,as,hs]]){const d=r(sa,sb,sa);st[t]=[st[t][0]+d[0],st[t][1]+d[1],st[t][2]+d[2]];}}
 function cmp(a,b){return b[1]-a[1]||b[2]-a[2]||b[3]-a[3]||a[0].localeCompare(b[0]);}
-function table(){ // 12개 조 3위 정렬
-  const thirds=[...FIXED3.map(x=>x.slice(0,4).concat(x[4]))];
-  for(const g of ["J","K","L"])thirds.push(thirdOf(g));
-  thirds.sort(cmp); return thirds;
-}
-function korFavorable(m){ // 이 경기 결과가 한국에 유리한가 (적용된 결과 기준)
-  let res=null; if(m.state==="in"||m.state==="post")res=[m.hs,m.as]; else if(m.applied&&m.sim)res=[m.sim.hs,m.sim.as];
-  if(!res)return null;
-  const t=table(); const kr=t.findIndex(x=>x[0]==="kor"); return kr<8; // 단순: 이 결과 포함 시 한국 진출권이면 good
-}
+function fixedResult(m){if(m.state==="in"||m.state==="post")return {hs:m.hs,as:m.as};if(m.applied&&m.sim)return {hs:m.sim.hs,as:m.sim.as};return null;}
+function thirdNow(group){const st={};for(const t of GROUPS[group])st[t]=[...BASE[t]];M.forEach(m=>{if(m.g!==group)return;const r=fixedResult(m);if(r)applyMatch(st,m,r.hs,r.as);});const arr=GROUPS[group].map(t=>[t,...st[t]]);arr.sort(cmp);return arr[2];}
+function tableNow(){const t=[...FIXED3.map(x=>[x[0],x[1],x[2],x[3],x[4]])];for(const g of ["J","K","L"]){const e=thirdNow(g);t.push([e[0],e[1],e[2],e[3],g]);}t.sort(cmp);return t;}
+function pois(l,k){let e=Math.exp(-l),f=1;for(let i=2;i<=k;i++)f*=i;return e*Math.pow(l,k)/f;}
+const MAXG=6;
+function lam(t,opp){const ar=BASE[t][2]/2,dr=(BASE[opp][2]-BASE[opp][1])/2;return Math.max(0.2,Math.min(3.6,(ar+dr)/2));}
+function distAll(m){const lh=lam(m.h,m.a),la=lam(m.a,m.h);const out=[];let tot=0;for(let i=0;i<=MAXG;i++)for(let j=0;j<=MAXG;j++){const p=pois(lh,i)*pois(la,j);out.push({hs:i,as:j,p});tot+=p;}out.forEach(o=>o.p/=tot);return out;}
+function dist(m){const r=fixedResult(m);if(r)return [{hs:r.hs,as:r.as,p:1}];return distAll(m);}
+function thirdStats(group,resByIdx){const st={};for(const t of GROUPS[group])st[t]=[...BASE[t]];M.forEach((m,i)=>{if(m.g!==group)return;const r=resByIdx[i];if(r)applyMatch(st,m,r.hs,r.as);});const arr=GROUPS[group].map(t=>[t,...st[t]]);arr.sort(cmp);return [arr[2][1],arr[2][2],arr[2][3]];}
+function aboveKor(s){return s[0]>KORS[0]?1:s[0]<KORS[0]?0:(s[1]>KORS[1]?1:s[1]<KORS[1]?0:(s[2]>KORS[2]?1:s[2]<KORS[2]?0:.5));}
+function idxOf(group){return M.map((m,i)=>m.g===group?i:-1).filter(i=>i>=0);}
+function pAbove(group,override){const ix=idxOf(group);const d0=override&&override.i===ix[0]?override.d:dist(M[ix[0]]);const d1=override&&override.i===ix[1]?override.d:dist(M[ix[1]]);let p=0;for(const a of d0)for(const b of d1){p+=a.p*b.p*aboveKor(thirdStats(group,{[ix[0]]:a,[ix[1]]:b}));}return p;}
+function advance(pa){const a=pa.J,b=pa.K,c=pa.L;return (1-a)*(1-b)*(1-c)+a*(1-b)*(1-c)+(1-a)*b*(1-c)+(1-a)*(1-b)*c;}
+function baseProb(){return {J:pAbove("J"),K:pAbove("K"),L:pAbove("L")};}
+function condProb(mi,outcome,PA){const m=M[mi],g=m.g;const sub=distAll(m).filter(o=>{const s=Math.sign(o.hs-o.as);return outcome===0?s>0:outcome===1?s===0:s<0;});let tot=sub.reduce((x,o)=>x+o.p,0);if(tot<=0)return null;sub.forEach(o=>o.p/=tot);return advance({...PA,[g]:pAbove(g,{i:mi,d:sub})});}
+const pc=v=>Math.round(v*100);
+const colorClass=p=>p>=60?"ok":p>=33?"warn":"bad";
+const pcls=p=>p>=60?"g":p>=33?"y":"r";
+// 경기 영향 분석: {relevant, best, conds:[3]}
+function analyze(i,PA){const c=[0,1,2].map(o=>condProb(i,o,PA));const valid=c.filter(x=>x!==null);const mx=Math.max(...valid),mn=Math.min(...valid);const relevant=(mx-mn)>=0.015;let best=-1,bv=-1;c.forEach((v,o)=>{if(v!==null&&v>bv){bv=v;best=o;}});return {relevant,best,conds:c};}
 
-// ===== 렌더 =====
 function render(){
-  const t=table(); const krIdx=t.findIndex(x=>x[0]==="kor"); const inTop8=krIdx<8; const kr=t[krIdx];
-  // verdict
-  const vb=document.getElementById("vbig"), vs=document.getElementById("vsub"), vm=document.getElementById("vmeta");
-  const anyLive=M.some(m=>m.state==="in"), allDone=M.every(m=>m.state==="post");
-  vb.className="vbig "+(inTop8?(krIdx<=6?"ok":"warn"):"bad");
-  vb.textContent=inTop8?(krIdx<=6?"✅ 진출권":"⚠️ 막차 (8위)"):"❌ 탈락권";
-  vs.textContent=(allDone?"최종 ":anyLive?"실시간 ":"현재 ")+"기준 조 3위 중 "+(krIdx+1)+"위 / 8위까지 진출";
-  const cut=t[7],nextUp=t[8];
-  vm.innerHTML=`<span class="pill">한국 <b>승점 ${kr[1]}</b> 득실 ${kr[2]} 득점 ${kr[3]}</span>`+
-    (inTop8&&nextUp?`<span class="pill">추격 ${KO[nextUp[0]]||nextUp[0]} <b>승${nextUp[1]}</b>/${nextUp[2]}</span>`:"")+
-    (!inTop8&&cut?`<span class="pill">컷 ${KO[cut[0]]||cut[0]} <b>승${cut[1]}</b>/${cut[2]}</span>`:"");
-  // matches
-  const mc=document.getElementById("matches"); let html="",lastG="";
-  for(let i=0;i<M.length;i++){const m=M[i];
-    if(m.g!==lastG){html+=`<div class="grp-lab">${m.g}조</div>`;lastG=m.g;}
-    const live=m.state==="in",done=m.state==="post";
-    const showH=(live||done)?m.hs:(m.applied&&m.sim?m.sim.hs:"-"), showA=(live||done)?m.as:(m.applied&&m.sim?m.sim.as:"-");
-    const fav=korFavorable(m);
-    html+=`<div class="match"><div class="mrow">
-      <div class="side"><img class="fl" src="${fl(m.h)}" alt=""><span class="nm">${KO[m.h]||m.h}</span></div>
+  const PA=baseProb(),prob=advance(PA),P=pc(prob);
+  const t=tableNow(),krIdx=t.findIndex(x=>x[0]==="kor"),kr=t[krIdx];
+  const anyLive=M.some(m=>m.state==="in"),allDone=M.every(m=>m.state==="post"),lab=["홈승","무","원정승"];
+  // 히어로
+  const gn=document.getElementById("gnum");gn.innerHTML=P+'<small>%</small>';gn.className="gnum "+colorClass(P);
+  const pb=document.getElementById("pbar");pb.style.width=P+"%";pb.style.background=P>=60?"linear-gradient(90deg,#36e07e,#9cffc0)":P>=33?"linear-gradient(90deg,#ffcf4d,#ffe89a)":"linear-gradient(90deg,#ff7a7a,#ffb3b3)";
+  document.getElementById("vsub").textContent=(allDone?"최종 ":anyLive?"실시간 ":"현재 ")+"조 3위 중 "+(krIdx+1)+"위 · "+(krIdx<8?"진출권":"탈락권");
+  const nu=t[8],cu=t[7];
+  document.getElementById("vmeta").innerHTML=`<span class="pill">한국 <b>승점 ${kr[1]}</b> 득실 ${kr[2]} 득점 ${kr[3]}</span>`+(krIdx<8&&nu?`<span class="pill">바로 밑 ${KO[nu[0]]} 승${nu[1]}/${nu[2]}</span>`:"")+(krIdx>=8&&cu?`<span class="pill">컷 ${KO[cu[0]]} 승${cu[1]}/${cu[2]}</span>`:"");
+
+  // 경우의 수 설명
+  const an=M.map((m,i)=>analyze(i,PA));
+  const keyMatches=M.map((m,i)=>({m,i,a:an[i]})).filter(x=>x.a.relevant);
+  const naMatches=M.map((m,i)=>({m,i,a:an[i]})).filter(x=>!x.a.relevant);
+  let ex=`<div class="exhead">한국은 <b>조 3위 8팀</b>에 들어야 진출. 다른 조(A~I)에서 한국 위로 이미 <b>6팀</b> 확정 → <b>내일 J·K·L조 3위</b> 중 한국보다 위로 올라오는 팀이 <b>1팀 이하면 진출 ✅</b>, 2팀 이상이면 탈락 ❌.<br>👉 지금 진출확률 <b>${P}%</b>, ${krIdx<8?"현재 "+(krIdx+1)+"위로 진출권":"현재 "+(krIdx+1)+"위로 탈락권"}.</div>`;
+  for(const {m,i,a} of keyMatches){const need=a.best;
+    ex+=`<div class="exrow"><div class="ic key">✓</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조)</span></div><div class="need good">${need===0?KO[m.h]+" 승리":need===1?"무승부":KO[m.a]+" 승리"}여야 한국에 유리</div><div class="sm">${lab.map((L,o)=>(a.conds[o]==null?"":`${o===0?KO[m.h]+"승":o===1?"무":KO[m.a]+"승"} ${pc(a.conds[o])}%`)).filter(Boolean).join(" · ")}</div></div></div>`;}
+  for(const {m,i} of naMatches){
+    ex+=`<div class="exrow"><div class="ic na">–</div><div class="tx"><div class="m">${KO[m.h]} vs ${KO[m.a]} <span style="color:#b7bcae">(${m.g}조)</span></div><div class="need na">한국 운명과 무관 (결과 영향 없음)</div></div></div>`;}
+  document.getElementById("explain").innerHTML=ex;
+
+  // 경기 카드
+  let html="",lastG="";
+  for(let i=0;i<M.length;i++){const m=M[i],a=an[i];if(m.g!==lastG){html+=`<div class="grp-lab">${m.g}조</div>`;lastG=m.g;}
+    const live=m.state==="in",done=m.state==="post",fixed=live||done||(m.applied&&m.sim);
+    const r=fixedResult(m),showH=r?r.hs:"-",showA=r?r.as:"-";
+    const curO=r?(r.hs>r.as?0:r.hs===r.as?1:2):-1;
+    const tag=live?`<div class="tagtop live">🔴 LIVE</div>`:!a.relevant?`<div class="tagtop na">무관</div>`:`<div class="tagtop key">핵심</div>`;
+    html+=`<div class="match ${a.relevant?"":"na"}">${tag}<div class="mrow">
+      <div class="side"><img class="fl" src="${fl(m.h)}" alt=""><span class="nm">${KO[m.h]}</span></div>
       <div class="sc"><span>${showH}</span><span class="x">:</span><span>${showA}</span></div>
-      <div class="side away"><img class="fl" src="${fl(m.a)}" alt=""><span class="nm">${KO[m.a]||m.a}</span></div>
-    </div>
-    <div class="mstat ${live?"lv":""}">${live?"🔴 진행중 "+m.detail:done?"종료 "+m.detail:"예정 "+m.detail}</div>`;
-    if(fav!==null)html+=`<div class="fav ${fav?"good":"poor"}">${fav?"○ 이대로면 한국 진출권":"● 이대로면 한국 탈락권"}</div>`;
-    if(!live&&!done){ // 시뮬레이터
-      if(m.applied&&m.sim){html+=`<div class="sim">
-        <span class="lab">${KO[m.h]}</span><button onclick="stp(${i},'h',-1)">−</button><span class="n">${m.sim.hs}</span><button onclick="stp(${i},'h',1)">+</button>
-        <span class="lab">:</span><button onclick="stp(${i},'a',-1)">−</button><span class="n">${m.sim.as}</span><button onclick="stp(${i},'a',1)">+</button><span class="lab">${KO[m.a]}</span>
-      </div><div class="simhint">결과를 가정해보는 중 · <a href="javascript:clr(${i})" style="color:#c0392b">지우기</a></div>`;}
-      else html+=`<button class="start" onclick="clr(${i},true)">이 경기 결과 가정해보기 ✎</button>`;
+      <div class="side away"><img class="fl" src="${fl(m.a)}" alt=""><span class="nm">${KO[m.a]}</span></div></div>
+      <div class="mstat ${live?"lv":""}">${live?"🔴 진행중 "+m.detail:done?"종료 "+m.detail:m.applied?"내가 가정한 결과":(m.date?"🕐 "+kst(m.date)+" (한국시간)":"예정")}</div>`;
+    if(a.relevant){const ol=[KO[m.h]+" 승",`무`,KO[m.a]+" 승"];
+      html+=`<div class="cond">`;
+      for(let o=0;o<3;o++){const v=a.conds[o]==null?null:pc(a.conds[o]);const isBest=!fixed&&o===a.best;const isCur=fixed&&curO===o;
+        html+=`<div class="cseg ${isCur?"cur":""} ${isBest?"best":""}"><div class="o">${ol[o]}</div><div class="p ${v==null?"":pcls(v)}">${v==null?"-":v+"%"}</div></div>`;}
+      html+=`</div><div class="condlab">↑ 결과별 한국 진출확률 · 베스트=가장 유리</div>`;
+    } else {
+      html+=`<div class="naband">이 경기 결과는 한국 32강에 영향 없음 (편하게 보세요 🍿)</div>`;
+    }
+    if(!live&&!done){
+      if(m.applied&&m.sim)html+=`<div class="sim"><span class="lab">${KO[m.h]}</span><button onclick="stp(${i},'h',-1)">−</button><span class="n">${m.sim.hs}</span><button onclick="stp(${i},'h',1)">+</button><span class="lab">:</span><button onclick="stp(${i},'a',-1)">−</button><span class="n">${m.sim.as}</span><button onclick="stp(${i},'a',1)">+</button><span class="lab">${KO[m.a]}</span></div><a class="clr" href="javascript:clr(${i})">가정 지우기</a>`;
+      else html+=`<button class="start" onclick="clr(${i},true)">점수 직접 넣어 가정해보기 ✎</button>`;
     }
     html+=`</div>`;
   }
-  mc.innerHTML=html;
-  // table
+  document.getElementById("matches").innerHTML=html;
+  // 표
   let tb=`<div class="tr hd"><span class="rk">#</span><span class="tm">조 3위 팀</span><span class="v">승점</span><span class="v">득실</span><span class="v">득점</span></div>`;
-  t.forEach((r,i)=>{ if(i===8)tb+=`<div class="cut">8위</div>`;
-    tb+=`<div class="tr ${r[0]==="kor"?"me":""}"><span class="rk">${i+1}</span><span class="tm"><img class="fl" src="${fl(r[0])}" alt=""><span class="nm">${KO[r[0]]||r[0]}</span> <span style="color:#b7bcae;font-size:11px">${r[4]}조</span></span><span class="v">${r[1]}</span><span class="v">${r[2]>0?"+":""}${r[2]}</span><span class="v">${r[3]}</span></div>`;});
+  t.forEach((r,i)=>{if(i===8)tb+=`<div class="cut"></div>`;tb+=`<div class="tr ${r[0]==="kor"?"me":""}"><span class="rk">${i+1}</span><span class="tm"><img class="fl" src="${fl(r[0])}" alt=""><span class="nm">${KO[r[0]]||r[0]}</span> <span style="color:#b7bcae;font-size:11px">${r[4]}</span></span><span class="v">${r[1]}</span><span class="v">${r[2]>0?"+":""}${r[2]}</span><span class="v">${r[3]}</span></div>`;});
   document.getElementById("tbl").innerHTML=tb;
   document.getElementById("upd").textContent="업데이트 "+new Date().toLocaleTimeString("ko-KR");
 }
-// 시뮬레이터 조작
 function clr(i,start){const m=M[i];if(start){m.applied=true;m.sim={hs:0,as:0};}else{m.applied=false;m.sim=null;}render();}
 function stp(i,side,d){const m=M[i];if(!m.sim)m.sim={hs:0,as:0};const k=side==="h"?"hs":"as";m.sim[k]=Math.max(0,m.sim[k]+d);m.applied=true;render();}
-
-// ===== 실시간 (ESPN) =====
 async function pull(){
-  try{
-    const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard",{cache:"no-store"});
-    const d=await r.json();
-    for(const ev of (d.events||[])){const c=ev.competitions[0].competitors;
-      const home=c.find(x=>x.homeAway==="home"),away=c.find(x=>x.homeAway==="away");
-      if(!home||!away)continue;
-      const ha=home.team.abbreviation.toLowerCase(),aa=away.team.abbreviation.toLowerCase();
-      const m=M.find(x=>(x.h===ha&&x.a===aa)||(x.h===aa&&x.a===ha)); if(!m)continue;
-      const st=ev.status.type.state; m.state=st; m.detail=ev.status.type.shortDetail||"";
-      // 점수 홈/원정을 우리 m.h/m.a 기준으로 정렬
-      const hs=+home.score||0, as=+away.score||0;
-      if(m.h===ha){m.hs=hs;m.as=as;}else{m.hs=as;m.as=hs;}
-    }
-  }catch(e){console.warn("espn fail",e);}
+  try{const r=await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard",{cache:"no-store"});const d=await r.json();
+    for(const ev of (d.events||[])){const c=ev.competitions[0].competitors;const home=c.find(x=>x.homeAway==="home"),away=c.find(x=>x.homeAway==="away");if(!home||!away)continue;
+      const ha=home.team.abbreviation.toLowerCase(),aa=away.team.abbreviation.toLowerCase();const m=M.find(x=>(x.h===ha&&x.a===aa)||(x.h===aa&&x.a===ha));if(!m)continue;
+      m.state=ev.status.type.state;m.detail=ev.status.type.shortDetail||"";m.date=ev.date;const hs=+home.score||0,as=+away.score||0;if(m.h===ha){m.hs=hs;m.as=as;}else{m.hs=as;m.as=hs;}}
+  }catch(e){console.warn("espn",e);}
   render();
 }
-pull(); setInterval(pull,30000);
+// confetti
+(function(){const c=document.getElementById("conf");const cols=["#f4c430","#fff","#36e07e","#ff5b5b"];let h="";for(let i=0;i<14;i++){h+=`<i style="left:${Math.random()*100}%;background:${cols[i%4]};animation-duration:${3+Math.random()*3}s;animation-delay:${-Math.random()*5}s"></i>`;}c.innerHTML=h;})();
+pull();setInterval(pull,30000);
 </script>
 </body></html>
