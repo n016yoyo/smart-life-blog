@@ -149,6 +149,12 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
     <h2>이거 어떻게 만들었나 (코드 0줄)</h2>
     <p class="desc">개발 안 배웠어요. 컴퓨터에 클로드 코드(Claude Code)만 깔고 말로 시켰습니다</p>
     <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:16px;box-shadow:0 10px 26px -18px rgba(0,0,0,.5)">
+      <div style="background:#eef6f0;border:1px solid #cfe7d8;border-radius:12px;padding:12px 13px;margin-bottom:13px;font-size:13px;color:#15301f;line-height:1.6">
+        <b style="color:#0a7d3c">준비물 (이거 두 개면 끝, 개발 지식 0)</b><br>
+        1. <b>클로드 코드</b>(Claude Code) , 설치하고 Anthropic 계정으로 로그인. 코딩은 클로드가 다 함.<br>
+        2. <b>클라우드플레어</b>(Cloudflare) 무료 계정 , 배포용. 클로드가 "올려줘" 하면 로그인만 해주면 됨.<br>
+        <span style="color:#6b665e;font-size:12px">※ 데이터(ESPN API)는 키·가입 없이 무료. 깃허브도 필요 없어요.</span>
+      </div>
       <ol style="margin:0;padding-left:20px;font-size:13.5px;color:#43403a;line-height:1.7">
         <li><b>데이터</b> , ESPN 무료 월드컵 API(키 없이)로 실시간 점수·순위를 30초마다 불러오게.</li>
         <li><b>계산</b> , 조 3위 12팀 중 상위 8팀 진출, 한국 위로 오는 3위가 1팀 이하면 진출. 동률은 승점→골득실→다득점.</li>
@@ -157,12 +163,38 @@ body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#061
       </ol>
       <div style="margin-top:14px;border:1px solid #322c25;border-radius:12px;overflow:hidden">
         <div style="display:flex;justify-content:space-between;align-items:center;background:#0a7d3c;color:#fff;font-size:12.5px;font-weight:800;padding:9px 13px"><span>클로드한테 이렇게 시켰어요 (복붙)</span><button onclick="navigator.clipboard.writeText(document.getElementById('mk').textContent).then(()=>{this.textContent='복사됨 ✓'})" style="background:#fff;color:#0a7d3c;border:0;border-radius:8px;padding:6px 14px;font-weight:800;font-size:12.5px;cursor:pointer">복사</button></div>
-<pre id="mk" style="margin:0;background:#1e1b17;color:#e8e2d6;padding:14px;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace">ESPN 무료 월드컵 API(scoreboard·standings)로 한국 32강 진출확률 실시간 계산 사이트 만들어줘.
-- 조 3위 12팀 중 상위 8팀 진출. 한국(A조 3위) 위로 올라오는 3위가 1팀 이하면 진출.
-- 동률은 승점 → 골득실 → 다득점 순.
-- 내일 경기 점수가 들어오면 30초마다 자동 갱신하고, 경기별로 한국에 미치는 영향(핵심/무관)을 표시해줘.
-- 국가명은 한글, 국기 넣고, 모바일에서 잘 보이게.
-- 다 되면 클라우드플레어 페이지에 무료로 올려줘.</pre>
+<pre id="mk" style="margin:0;background:#1e1b17;color:#e8e2d6;padding:14px;font-size:12px;line-height:1.65;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace">2026 북중미 월드컵 "대한민국 32강 진출확률" 실시간 계산 사이트를 단일 HTML 파일로 만들어줘. 외부 라이브러리 없이 순수 JS, 모바일 우선.
+
+[데이터 = ESPN 무료 API, 키 없이 브라우저에서 바로 fetch (CORS 열려있음)]
+- 실시간 점수: https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard
+  → events[].competitions[0].competitors[].score, status.type.state(pre/in/post), event.date(킥오프 시각)
+- 조별 순위: https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings
+  → children = 12개 조, entries[].stats 에서 points(승점)·pointDifferential(골득실)·pointsFor(득점)
+- 30초마다 자동 갱신.
+
+[진출 규칙]
+- 12개 조 "3위" 팀들 중 성적 상위 8팀이 32강 진출.
+- 한국은 A조 3위(승점3·골득실-1·득점2). A~I조는 종료, J·K·L조만 최종전(6경기) 남음.
+- 한국 위로 이미 6팀 확정 → J·K·L 3위 중 한국보다 위로 오는 팀이 "1팀 이하면 진출, 2팀 이상이면 탈락".
+- 동률 처리 순서: 승점 → 골득실 → 다득점 → 페어플레이(경고·퇴장 적은 팀) → 추첨.
+
+[확률 계산]
+- 남은 경기 스코어를 포아송 분포로 전개(팀 득점기대값 λ = 대회 득점/실점 기반). J·K·L 조는 서로 독립으로 계산.
+- 각 조에서 "그 조 3위가 한국보다 위일 확률"을 구하고, 셋 중 1팀 이하만 위일 확률 = 한국 진출확률(상단 큰 %).
+- 경기마다 "그 경기가 홈승/무/원정승일 때 한국 진출확률"을 각각 계산해 3칸으로 보여줘(다른 경기 입력을 반영해 실시간 변동).
+- 진행중이거나 내가 점수를 입력한 경기는 그 스코어를 확정값으로 넣어 전체 확률을 즉시 갱신.
+
+[경기 영향 분류 = 자동 판별]
+- 확률 스윙이 큰 경기 = "핵심", 특정 조합에서만 당락이 갈리는 경기 = "영향 있음"(어떤 결과 조합에서 갈리는지 한 줄 설명), 어떤 결과든 무관 = "무관" 으로 태그.
+
+[화면 , 모바일 세로 우선]
+- 상단: 한국 진출확률 큰 게이지(%) + 진행바 + 현재 3위 순위.
+- 내일 경기 카드(킥오프 시간 한국시간 표시, 시간순 정렬): 국기 + 국가명 한글 + 경기별 확률 3칸 + 안 끝난 경기는 점수 +/- 시뮬레이터.
+- 12개 조 3위 정렬 표(8위 컷라인 줄, 한국 노란 강조).
+- 월드컵 느낌(그린·골드), 국기 = https://a.espncdn.com/i/teamlogos/countries/500/[국가약자소문자].png
+- 한국·외부유도 줄이게 외부 URL은 화면에 안 박기.
+
+[배포] 다 되면 클라우드플레어 페이지(Cloudflare Pages)에 무료로 올려줘.</pre>
       </div>
     </div>
   </div>
