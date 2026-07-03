@@ -1,0 +1,291 @@
+<meta charset="utf-8">
+<title>Schwarzschild Black Hole — Real-Time Geodesic Raytracer</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden}
+  #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+  canvas{display:block;box-shadow:0 0 80px rgba(0,0,0,.9)}
+  #hud{position:fixed;left:12px;bottom:12px;font:11px/1.5 ui-monospace,Menlo,monospace;
+       color:rgba(255,255,255,.55);pointer-events:none;letter-spacing:.3px}
+</style>
+<div id="wrap"><canvas id="c"></canvas></div>
+<div id="hud">Schwarzschild geodesic raytracing · null-geodesic RK integration · 9:16</div>
+
+<script id="vs" type="x-shader/x-vertex">
+attribute vec2 p;
+void main(){ gl_Position = vec4(p,0.0,1.0); }
+</script>
+
+<script id="fs" type="x-shader/x-fragment">
+precision highp float;
+
+uniform vec2  uRes;
+uniform float uTime;
+uniform float uTanFov;
+uniform vec3  uCamPos;
+uniform vec3  uCamRight;
+uniform vec3  uCamUp;
+uniform vec3  uCamFwd;
+
+// Units: Schwarzschild radius rs = 1.0  (event horizon r = 1.0, photon sphere r = 1.5)
+const int   NSTEPS  = 320;
+const float DISK_IN  = 3.0;   // ISCO = 6M = 3 rs
+const float DISK_OUT = 11.0;
+
+//---------------------------------------------------------------- hash / noise
+float hash13(vec3 p){
+  p = fract(p*0.1031);
+  p += dot(p, p.yzx + 33.33);
+  return fract((p.x + p.y) * p.z);
+}
+float vnoise(vec3 x){
+  vec3 i = floor(x);
+  vec3 f = fract(x);
+  f = f*f*(3.0-2.0*f);
+  float n000 = hash13(i+vec3(0,0,0));
+  float n100 = hash13(i+vec3(1,0,0));
+  float n010 = hash13(i+vec3(0,1,0));
+  float n110 = hash13(i+vec3(1,1,0));
+  float n001 = hash13(i+vec3(0,0,1));
+  float n101 = hash13(i+vec3(1,0,1));
+  float n011 = hash13(i+vec3(0,1,1));
+  float n111 = hash13(i+vec3(1,1,1));
+  float nx00 = mix(n000,n100,f.x);
+  float nx10 = mix(n010,n110,f.x);
+  float nx01 = mix(n001,n101,f.x);
+  float nx11 = mix(n011,n111,f.x);
+  float nxy0 = mix(nx00,nx10,f.y);
+  float nxy1 = mix(nx01,nx11,f.y);
+  return mix(nxy0,nxy1,f.z);
+}
+float fbm(vec3 p){
+  float s = 0.0, a = 0.5;
+  for(int i=0;i<5;i++){ s += a*vnoise(p); p *= 2.03; a *= 0.5; }
+  return s;
+}
+
+//---------------------------------------------------------------- star field (lensed background)
+vec3 starField(vec3 dir){
+  vec3 c = vec3(0.0);
+  for(int k=0;k<3;k++){
+    float scale = 130.0 + float(k)*210.0;
+    vec3 p  = dir*scale;
+    vec3 ip = floor(p);
+    vec3 fp = fract(p)-0.5;
+    float h = hash13(ip + float(k)*27.13);
+    if(h > 0.971){
+      float b = (h-0.971)/0.029;
+      float d = length(fp);
+      float s = smoothstep(0.35,0.0,d)*b;
+      vec3 tint = mix(vec3(0.70,0.80,1.0), vec3(1.0,0.90,0.72), hash13(ip+9.0));
+      c += tint * s * 1.3;
+    }
+  }
+  // faint diffuse milky band + deep space tint
+  float band = fbm(dir*4.0)*fbm(dir*11.0);
+  c += vec3(0.02,0.03,0.05) * band;
+  c += vec3(0.004,0.005,0.010);
+  return c;
+}
+
+//---------------------------------------------------------------- accretion disk emission
+// cx : crossing point in equatorial plane, vel : photon (integration) direction
+vec3 diskEmission(vec3 cx, vec3 vel){
+  float rc = length(cx);
+  float t01 = (rc - DISK_IN)/(DISK_OUT - DISK_IN);
+
+  // differential (Keplerian) rotation for the swirling texture
+  float ang   = atan(cx.z, cx.x);
+  float omega = 1.1 * pow(rc, -1.5);
+  float ca    = ang + omega*uTime;
+
+  vec3 np   = vec3(cos(ca)*rc, sin(ca)*rc, rc)*0.42 + vec3(0.0,0.0,uTime*0.03);
+  float dens = fbm(np);
+  dens = pow(clamp(dens,0.0,1.0), 1.4);
+  // thin filamentary bands
+  dens *= 0.55 + 0.55*fbm(np*vec3(3.0,3.0,1.0)+11.0);
+
+  float edge = smoothstep(0.0,0.12,t01) * smoothstep(1.0,0.72,t01);
+  float alpha = clamp(dens*edge*1.9, 0.0, 1.0);
+
+  // temperature gradient: hot inner -> cool outer
+  vec3 ci = vec3(0.75,0.86,1.00);
+  vec3 cm = vec3(1.00,0.72,0.36);
+  vec3 co = vec3(1.00,0.30,0.10);
+  vec3 dcol = (t01 < 0.5) ? mix(ci,cm, t01/0.5) : mix(cm,co, (t01-0.5)/0.5);
+
+  // relativistic Doppler beaming: orbital velocity vs photon direction
+  vec3  vdir = normalize(cross(vec3(0.0,1.0,0.0), cx)); // prograde tangent
+  float beta = clamp(sqrt(0.5/rc), 0.0, 0.86);          // orbital speed / c
+  float gam  = 1.0/sqrt(1.0-beta*beta);
+  vec3  cd   = normalize(vel);
+  float dfac = 1.0/(gam*(1.0 - beta*dot(vdir, cd)));     // Doppler factor
+  float beam = pow(dfac, 3.0);                           // relativistic beaming ~ D^3
+
+  // blueshift tint on the approaching (brighter) side
+  dcol = mix(dcol, dcol*vec3(0.8,0.9,1.25), clamp(dfac-1.0,0.0,1.0)*0.6);
+
+  // gravitational redshift (dimming) near the hole
+  float grav = sqrt(max(1.0 - 1.0/rc, 0.0));
+
+  vec3 emission = dcol * beam * grav * 2.2;
+  return emission * alpha; // premultiplied; alpha packed via length handled by caller
+}
+
+//---------------------------------------------------------------- main
+void main(){
+  vec2 uv = (gl_FragCoord.xy / uRes) * 2.0 - 1.0;
+  float aspect = uRes.x / uRes.y;
+  vec3 rd = normalize(uCamFwd + uTanFov*(uv.x*aspect*uCamRight + uv.y*uCamUp));
+
+  // photon state (traced backward from camera)
+  vec3 pos = uCamPos;
+  vec3 vel = rd;
+
+  // conserved specific angular momentum magnitude squared (planar geodesic)
+  vec3 hvec = cross(pos, vel);
+  float h2  = dot(hvec, hvec);
+
+  vec3  col      = vec3(0.0);
+  float transmit = 1.0;
+  bool  captured = false;
+
+  for(int i=0;i<NSTEPS;i++){
+    float r2 = dot(pos,pos);
+    float r  = sqrt(r2);
+
+    if(r < 1.0){ captured = true; break; }                 // event horizon rs=1
+    if(r2 > 3600.0 && dot(pos,vel) > 0.0) break;           // escaped outward
+
+    // adaptive step: fine near the hole, coarse far away
+    float dl = clamp(0.09*r, 0.02, 0.55);
+
+    // --- velocity-Verlet integration of the null geodesic ---
+    // GR bending: a = -1.5 * rs * h2 * r_hat / r^4  (rs=1) reproduces
+    //   d2u/dphi2 + u = 1.5 rs u^2  -> photon sphere at r = 1.5 rs
+    vec3 acc  = -1.5 * h2 * pos / pow(r2, 2.5);
+    vec3 pos2 = pos + vel*dl + 0.5*acc*dl*dl;
+    float r2b = dot(pos2,pos2);
+    vec3 acc2 = -1.5 * h2 * pos2 / pow(r2b, 2.5);
+    vec3 vel2 = vel + 0.5*(acc+acc2)*dl;
+
+    // --- accretion disk: detect equatorial plane crossing (y = 0) ---
+    if(pos.y*pos2.y < 0.0){
+      float tt = pos.y/(pos.y - pos2.y);
+      vec3  cx = mix(pos, pos2, tt);
+      float rc = length(cx);
+      if(rc > DISK_IN && rc < DISK_OUT){
+        // reconstruct alpha & emission together
+        // recompute here to fold alpha into transmittance
+        float t01 = (rc - DISK_IN)/(DISK_OUT - DISK_IN);
+        float ang = atan(cx.z, cx.x);
+        float omega = 1.1*pow(rc,-1.5);
+        float ca = ang + omega*uTime;
+        vec3  np = vec3(cos(ca)*rc, sin(ca)*rc, rc)*0.42 + vec3(0.0,0.0,uTime*0.03);
+        float dens = pow(clamp(fbm(np),0.0,1.0),1.4);
+        dens *= 0.55 + 0.55*fbm(np*vec3(3.0,3.0,1.0)+11.0);
+        float edge = smoothstep(0.0,0.12,t01)*smoothstep(1.0,0.72,t01);
+        float alpha = clamp(dens*edge*1.9, 0.0, 1.0);
+
+        vec3 emission = diskEmission(cx, mix(vel,vel2,tt)) / max(alpha,1e-4);
+
+        col      += transmit * emission * alpha;
+        transmit *= (1.0 - alpha);
+        if(transmit < 0.02) break;
+      }
+    }
+
+    pos = pos2;
+    vel = vel2;
+  }
+
+  // thin bright photon ring: emphasize light that grazed the photon sphere
+  // (handled implicitly by strongly-lensed disk crossings above)
+
+  if(!captured){
+    col += transmit * starField(normalize(vel));
+  }
+
+  // tonemap + gamma
+  col *= 1.25;
+  col  = col / (1.0 + col);
+  col  = pow(col, vec3(1.0/2.2));
+
+  gl_FragColor = vec4(col, 1.0);
+}
+</script>
+
+<script>
+(function(){
+  const canvas = document.getElementById('c');
+  const gl = canvas.getContext('webgl', {antialias:false, preserveDrawingBuffer:false});
+  if(!gl){ document.body.innerHTML = '<p style="color:#fff;font-family:sans-serif;padding:20px">WebGL not available.</p>'; return; }
+
+  // internal render buffer locked to 9:16 (1080x1920 aspect). Scale for performance.
+  const RW = 600, RH = 1067; // 9:16 (600/1067 ≈ 0.5623)
+  canvas.width = RW; canvas.height = RH;
+
+  function fit(){
+    let h = window.innerHeight, w = h*9/16;
+    if(w > window.innerWidth){ w = window.innerWidth; h = w*16/9; }
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER,   document.getElementById('vs').textContent));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, document.getElementById('fs').textContent));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw gl.getProgramInfoLog(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const U = n => gl.getUniformLocation(prog, n);
+  const uRes=U('uRes'), uTime=U('uTime'), uTanFov=U('uTanFov'),
+        uCamPos=U('uCamPos'), uCamRight=U('uCamRight'), uCamUp=U('uCamUp'), uCamFwd=U('uCamFwd');
+
+  // vector helpers
+  const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+  const norm=a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l];};
+
+  const t0 = performance.now();
+  function frame(){
+    const t = (performance.now()-t0)*0.001;
+
+    // slow camera orbit near the equatorial plane (Interstellar-style wrap)
+    const a    = t*0.08;
+    const incl = 0.16;              // ~9 degrees above the disk
+    const R    = 18.0;
+    const cp = [ R*Math.cos(a)*Math.cos(incl), R*Math.sin(incl), R*Math.sin(a)*Math.cos(incl) ];
+    const fwd   = norm(sub([0,0,0], cp));
+    const right = norm(cross(fwd, [0,1,0]));
+    const up    = cross(right, fwd);
+
+    gl.viewport(0,0,RW,RH);
+    gl.uniform2f(uRes, RW, RH);
+    gl.uniform1f(uTime, t);
+    gl.uniform1f(uTanFov, 0.52);
+    gl.uniform3fv(uCamPos, cp);
+    gl.uniform3fv(uCamRight, right);
+    gl.uniform3fv(uCamUp, up);
+    gl.uniform3fv(uCamFwd, fwd);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

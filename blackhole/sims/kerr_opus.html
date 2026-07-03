@@ -1,0 +1,426 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kerr Black Hole (a=0.9M) · Geodesic Ray Tracer</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#cfd6e4}
+  #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+  /* 9:16 vertical stage, letterboxed to fit any screen */
+  #stage{position:relative;height:100vh;aspect-ratio:9/16;max-width:100vw}
+  @supports not (aspect-ratio:9/16){ #stage{height:100vh;width:56.25vh} }
+  canvas{display:block;width:100%;height:100%;background:#000;touch-action:none}
+  #hud{position:absolute;left:14px;top:14px;pointer-events:none;line-height:1.35;
+       text-shadow:0 1px 3px #000;font-size:13px;letter-spacing:.2px;opacity:.9}
+  #hud b{font-size:15px;color:#fff;font-weight:700}
+  #hud .s{color:#8b95a7;font-size:11px}
+  #tip{position:absolute;left:14px;bottom:14px;font-size:11px;color:#7a8496;
+       text-shadow:0 1px 3px #000;pointer-events:none}
+  #fps{position:absolute;right:14px;top:14px;font-size:11px;color:#5f6b7e;text-shadow:0 1px 2px #000}
+  #err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+       text-align:center;padding:24px;color:#ff8a8a;font-size:14px}
+</style>
+<div id="wrap"><div id="stage">
+  <canvas id="c"></canvas>
+  <div id="hud">
+    <b>KERR BLACK HOLE</b><br>
+    spin a = 0.90 M<br>
+    <span class="s">null geodesics · Boyer-Lindquist · RK4</span><br>
+    <span class="s">frame dragging · Doppler beaming · lensing</span>
+  </div>
+  <div id="fps">—</div>
+  <div id="tip">drag: orbit &nbsp;·&nbsp; scroll: zoom</div>
+  <div id="err">WebGL not available.</div>
+</div></div>
+
+<script id="vs" type="x-shader/x-vertex">
+attribute vec2 p;
+void main(){ gl_Position = vec4(p,0.0,1.0); }
+</script>
+
+<script id="fs" type="x-shader/x-fragment">
+precision highp float;
+
+uniform vec2  iResolution;
+uniform float iTime;
+uniform float uCamR;
+uniform float uCamInc;
+uniform float uCamAz;
+
+// ---- units: G = c = M = 1 ----
+const float A_SPIN = 0.9;          // black-hole spin a/M
+const int   STEPS  = 360;          // max integration steps
+const float R_ESC  = 60.0;         // escape radius
+const float DISK_OUT = 20.0;       // outer disk radius
+
+// conserved along each geodesic (set per pixel)
+float gE, gL;
+float R_HOR, R_ISCO;
+
+// ---------- hashing / noise ----------
+float hash21(vec2 p){
+  p = fract(p*vec2(123.34,456.21));
+  p += dot(p, p+45.32);
+  return fract(p.x*p.y);
+}
+float vnoise(vec2 p){
+  vec2 i=floor(p), f=fract(p);
+  f=f*f*(3.0-2.0*f);
+  float a=hash21(i), b=hash21(i+vec2(1.0,0.0));
+  float c=hash21(i+vec2(0.0,1.0)), d=hash21(i+vec2(1.0,1.0));
+  return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);
+}
+float fbm(vec2 p){
+  float s=0.0, a=0.5;
+  for(int k=0;k<4;k++){ s+=a*vnoise(p); p*=2.03; a*=0.5; }
+  return s;
+}
+
+// ---------- inverse Kerr metric (contravariant), Boyer-Lindquist ----------
+// returns g^rr, g^thth, g^tt, g^tph, g^phph
+void invMetric(float r, float th,
+               out float grr, out float gthth,
+               out float gtt, out float gtph, out float gphph){
+  float s = sin(th);
+  float c = cos(th);
+  float s2 = max(s*s, 1e-6);          // pole guard
+  float Sigma = r*r + A_SPIN*A_SPIN*c*c;
+  float Delta = max(r*r - 2.0*r + A_SPIN*A_SPIN, 1e-4); // horizon guard
+  float r2a2 = r*r + A_SPIN*A_SPIN;
+  float Abig = r2a2*r2a2 - Delta*A_SPIN*A_SPIN*s2;
+  grr   = Delta/Sigma;
+  gthth = 1.0/Sigma;
+  gtt   = -Abig/(Sigma*Delta);
+  gtph  = -2.0*A_SPIN*r/(Sigma*Delta);
+  gphph = (Delta - A_SPIN*A_SPIN*s2)/(Sigma*Delta*s2);
+}
+
+// twice the super-Hamiltonian for a photon with conserved (gE,gL)
+float twoH(float r, float th, float pr, float pth){
+  float grr,gthth,gtt,gtph,gphph;
+  invMetric(r,th,grr,gthth,gtt,gtph,gphph);
+  return grr*pr*pr + gthth*pth*pth
+       + gtt*gE*gE - 2.0*gtph*gE*gL + gphph*gL*gL;
+}
+
+// phase-space state
+struct St { float r; float th; float ph; float pr; float pth; };
+
+St addS(St y, St d, float k){
+  St o;
+  o.r=y.r+k*d.r; o.th=y.th+k*d.th; o.ph=y.ph+k*d.ph;
+  o.pr=y.pr+k*d.pr; o.pth=y.pth+k*d.pth;
+  return o;
+}
+
+// Hamilton's equations. Momentum derivatives via central differences of 2H.
+St deriv(St y){
+  float grr,gthth,gtt,gtph,gphph;
+  invMetric(y.r,y.th,grr,gthth,gtt,gtph,gphph);
+  St d;
+  d.r  = grr*y.pr;                       // dr/dλ  = ∂H/∂p_r
+  d.th = gthth*y.pth;                    // dθ/dλ  = ∂H/∂p_θ
+  d.ph = -gtph*gE + gphph*gL;            // dφ/dλ  = ∂H/∂p_φ  (p_t=-E, p_φ=L)
+  float hr = 1e-3, ht = 1e-3;
+  d.pr  = -0.5*(twoH(y.r+hr,y.th,y.pr,y.pth) - twoH(y.r-hr,y.th,y.pr,y.pth))/(2.0*hr);
+  d.pth = -0.5*(twoH(y.r,y.th+ht,y.pr,y.pth) - twoH(y.r,y.th-ht,y.pr,y.pth))/(2.0*ht);
+  return d;
+}
+
+St rk4(St y, float h){
+  St k1=deriv(y);
+  St k2=deriv(addS(y,k1,h*0.5));
+  St k3=deriv(addS(y,k2,h*0.5));
+  St k4=deriv(addS(y,k3,h));
+  St o;
+  o.r   = y.r   + h/6.0*(k1.r  +2.0*k2.r  +2.0*k3.r  +k4.r);
+  o.th  = y.th  + h/6.0*(k1.th +2.0*k2.th +2.0*k3.th +k4.th);
+  o.ph  = y.ph  + h/6.0*(k1.ph +2.0*k2.ph +2.0*k3.ph +k4.ph);
+  o.pr  = y.pr  + h/6.0*(k1.pr +2.0*k2.pr +2.0*k3.pr +k4.pr);
+  o.pth = y.pth + h/6.0*(k1.pth+2.0*k2.pth+2.0*k3.pth+k4.pth);
+  return o;
+}
+
+// ---------- disk emission with relativistic Doppler + gravitational shift ----------
+vec3 tempColor(float T){
+  vec3 cool = vec3(1.00,0.42,0.12);
+  vec3 mid  = vec3(1.00,0.83,0.55);
+  vec3 hot  = vec3(0.72,0.82,1.00);
+  T = clamp(T,0.0,2.0);
+  if(T<1.0) return mix(cool,mid,T);
+  return mix(mid,hot,clamp(T-1.0,0.0,1.0));
+}
+
+vec3 diskEmission(float r, float ph){
+  // Keplerian angular velocity of equatorial prograde circular orbit
+  float Om = 1.0/(pow(r,1.5) + A_SPIN);
+  // equatorial covariant metric (θ=π/2, Σ=r², sin=1)
+  float Delta = max(r*r - 2.0*r + A_SPIN*A_SPIN, 1e-4);
+  float gtt   = -(1.0 - 2.0/r);
+  float gtph  = -2.0*A_SPIN/r;
+  float Abig  = (r*r+A_SPIN*A_SPIN)*(r*r+A_SPIN*A_SPIN) - Delta*A_SPIN*A_SPIN;
+  float gphph = Abig/(r*r);
+  float denom = -(gtt + 2.0*Om*gtph + Om*Om*gphph);
+  float ut = 1.0/sqrt(max(denom,1e-4));      // time component of orbit 4-velocity
+  float b  = gL/gE;                          // photon impact parameter
+  // redshift factor g = ν_obs / ν_emit  (blue on approaching side, red on receding)
+  float gsh = 1.0/(ut*(1.0 - Om*b));
+  gsh = clamp(gsh, 0.25, 3.0);
+
+  // radial emissivity: zero at ISCO inner edge, ~r^-2 falloff
+  float x = r/R_ISCO;
+  float prof = pow(1.0/x, 2.0) * (1.0 - sqrt(R_ISCO/max(r,R_ISCO)));
+  prof = max(prof, 0.0);
+
+  // turbulent texture (brightness modulation only; geometry stays exact)
+  float ang = ph;
+  float tex = 0.55 + 0.55*fbm(vec2(r*1.3, ang*2.0 + iTime*0.25))
+                   + 0.25*fbm(vec2(r*4.0, ang*5.0 - iTime*0.4));
+  tex = clamp(tex,0.0,1.6);
+
+  // temperature ~ r^-3/4 (standard thin disk), shifted by g
+  float T = pow(1.0/x, 0.75) * gsh;
+  vec3 base = tempColor(T);
+
+  // relativistic beaming: bolometric intensity ∝ g^3
+  float beam = pow(gsh, 3.0);
+
+  vec3 col = base * prof * tex * beam;
+  // extra colour push from Doppler
+  col = mix(col, col*vec3(0.72,0.86,1.30), clamp((gsh-1.0)*1.4,0.0,1.0));
+  col = mix(col, col*vec3(1.30,0.78,0.55), clamp((1.0-gsh)*1.4,0.0,1.0));
+  return col * 1.7;
+}
+
+// ---------- background star field (sampled by the bent, escaped ray) ----------
+vec3 starField(vec3 d){
+  d = normalize(d);
+  float u = atan(d.z, d.x);
+  float v = asin(clamp(d.y,-1.0,1.0));
+  vec3 col = vec3(0.006,0.009,0.022);
+  // faint nebula
+  col += vec3(0.05,0.03,0.09) * pow(fbm(vec2(u,v)*2.2), 3.0);
+  // stars in a few cell layers
+  for(int k=0;k<3;k++){
+    float sc = 70.0*pow(1.8,float(k));
+    vec2 g = vec2(u,v)*sc;
+    vec2 id = floor(g), f = fract(g);
+    float h = hash21(id + float(k)*31.7);
+    if(h>0.90){
+      vec2 c = vec2(hash21(id+3.1), hash21(id+7.7));
+      float dd = length(f-c);
+      float br = smoothstep(0.10,0.0,dd) * (h-0.90)/0.10;
+      vec3 tint = mix(vec3(0.8,0.85,1.0), vec3(1.0,0.9,0.75), hash21(id+9.2));
+      col += tint * br * (1.2 - 0.3*float(k));
+    }
+  }
+  return col;
+}
+
+void main(){
+  vec2 frag = gl_FragCoord.xy;
+  vec2 uv = (frag - 0.5*iResolution) / iResolution.y;
+
+  // --- constants derived from spin ---
+  R_HOR  = 1.0 + sqrt(max(1.0 - A_SPIN*A_SPIN, 0.0));
+  {
+    float a = A_SPIN;
+    float Z1 = 1.0 + pow(1.0-a*a, 1.0/3.0)*(pow(1.0+a,1.0/3.0)+pow(1.0-a,1.0/3.0));
+    float Z2 = sqrt(3.0*a*a + Z1*Z1);
+    R_ISCO = 3.0 + Z2 - sqrt(max((3.0-Z1)*(3.0+Z1+2.0*Z2),0.0)); // prograde ISCO
+  }
+
+  // --- camera position (Boyer-Lindquist) ---
+  float rc  = uCamR;
+  float thc = uCamInc;
+  float az  = uCamAz;
+
+  float sc = sin(thc), cc = cos(thc);
+  float Sig  = rc*rc + A_SPIN*A_SPIN*cc*cc;
+  float Del  = rc*rc - 2.0*rc + A_SPIN*A_SPIN;
+  float Abig = (rc*rc+A_SPIN*A_SPIN)*(rc*rc+A_SPIN*A_SPIN) - Del*A_SPIN*A_SPIN*sc*sc;
+  float omega = 2.0*A_SPIN*rc/Abig;             // frame-dragging (ZAMO) angular vel
+  float alpha = sqrt(Sig*Del/Abig);             // lapse
+  float gphph_cov = Abig*sc*sc/Sig;
+  float gtt_cov   = -(1.0 - 2.0*rc/Sig);
+  float gtph_cov  = -2.0*A_SPIN*rc*sc*sc/Sig;
+  float sqrtgrr   = sqrt(Sig/Del);
+  float sqrtgthth = sqrt(Sig);
+  float sqrtgphph = sqrt(max(gphph_cov,1e-6));
+
+  // --- pixel ray direction in the ZAMO orthonormal frame ---
+  // forward = -r̂ (toward hole), right = +φ̂, up = -θ̂ (screen up -> north)
+  float fov = radians(46.0);
+  float t = tan(fov*0.5);
+  vec3 nloc = normalize(vec3(-1.0, -uv.y*t, uv.x*t)); // (n_r, n_θ, n_φ)
+
+  // contravariant photon 4-momentum from ZAMO tetrad, local energy = 1
+  float ptU  = 1.0/alpha;
+  float prU  = nloc.x / sqrtgrr;
+  float pthU = nloc.y / sqrtgthth;
+  float pphU = omega/alpha + nloc.z / sqrtgphph;
+
+  // lower to conserved quantities
+  float pr  = (Sig/Del) * prU;                  // p_r
+  float pth = Sig * pthU;                        // p_θ
+  float p_t = gtt_cov*ptU + gtph_cov*pphU;
+  float p_ph= gtph_cov*ptU + gphph_cov*pphU;
+  gE = -p_t;
+  gL =  p_ph;
+
+  St y;
+  y.r=rc; y.th=thc; y.ph=az; y.pr=pr; y.pth=pth;
+
+  // --- integrate the geodesic ---
+  vec3 col = vec3(0.0);
+  bool captured=false, escaped=false;
+  float prevCos = cos(y.th);
+  float prevR   = y.r;
+
+  for(int i=0;i<STEPS;i++){
+    float h = clamp(0.024*(y.r - R_HOR), 0.006, 0.42);
+    St yp = y;
+    y = rk4(y, h);
+
+    if(y.r < R_HOR + 0.04){ captured=true; break; }
+    if(y.r > R_ESC){ escaped=true; break; }
+
+    // equatorial-plane crossing -> optically-thin disk sample
+    float cCos = cos(y.th);
+    if(prevCos*cCos < 0.0){
+      float f = prevCos/(prevCos - cCos);
+      float rHit  = mix(yp.r, y.r, f);
+      float phHit = mix(yp.ph, y.ph, f);
+      if(rHit > R_ISCO && rHit < DISK_OUT){
+        col += diskEmission(rHit, phHit);
+      }
+    }
+    prevCos = cCos;
+    prevR = y.r;
+  }
+
+  // --- background (lensed star field) only if the ray escaped ---
+  if(escaped){
+    St d = deriv(y);
+    float sr=sin(y.th), cr=cos(y.th), sp=sin(y.ph), cp=cos(y.ph);
+    vec3 rhat  = vec3(sr*cp, sr*sp, cr);
+    vec3 thhat = vec3(cr*cp, cr*sp, -sr);
+    vec3 phhat = vec3(-sp, cp, 0.0);
+    float er  = d.r;
+    float eth = y.r * d.th;
+    float eph = y.r * sr * d.ph;
+    vec3 dir = normalize(er*rhat + eth*thhat + eph*phhat);
+    col += starField(dir);
+  }
+
+  // --- tonemap ---
+  col *= 1.15;
+  col = col/(col+vec3(1.0));            // Reinhard
+  col = pow(col, vec3(1.0/2.2));        // gamma
+  // gentle vignette
+  float vig = smoothstep(1.25, 0.35, length(uv));
+  col *= mix(0.78, 1.0, vig);
+
+  gl_FragColor = vec4(col, 1.0);
+}
+</script>
+
+<script>
+(function(){
+  var canvas = document.getElementById('c');
+  var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if(!gl){ document.getElementById('err').style.display='flex'; return; }
+
+  function compile(type, src){
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
+      console.error(gl.getShaderInfoLog(s));
+    }
+    return s;
+  }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, document.getElementById('vs').textContent));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, document.getElementById('fs').textContent));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){
+    console.error(gl.getProgramInfoLog(prog));
+    document.getElementById('err').style.display='flex';
+    return;
+  }
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes  = gl.getUniformLocation(prog, 'iResolution');
+  var uTime = gl.getUniformLocation(prog, 'iTime');
+  var uR    = gl.getUniformLocation(prog, 'uCamR');
+  var uInc  = gl.getUniformLocation(prog, 'uCamInc');
+  var uAz   = gl.getUniformLocation(prog, 'uCamAz');
+
+  // internal 9:16 render resolution (kept modest: geodesic integration is heavy)
+  var RH = 900, RW = Math.round(RH*9/16);
+  canvas.width = RW; canvas.height = RH;
+  gl.viewport(0,0,RW,RH);
+
+  // --- camera state / controls ---
+  var camR = 9.5;
+  var incTarget = 78*Math.PI/180;   // near edge-on: shows D-shadow + disk best
+  var azOff = 0.0;
+  var dragging=false, lx=0, ly=0;
+
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+  canvas.addEventListener('pointerdown', function(e){
+    dragging=true; lx=e.clientX; ly=e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', function(e){
+    if(!dragging) return;
+    var dx=(e.clientX-lx), dy=(e.clientY-ly);
+    lx=e.clientX; ly=e.clientY;
+    azOff -= dx*0.006;
+    incTarget = clamp(incTarget - dy*0.005, 22*Math.PI/180, 158*Math.PI/180);
+  });
+  canvas.addEventListener('pointerup', function(){ dragging=false; });
+  canvas.addEventListener('pointercancel', function(){ dragging=false; });
+  canvas.addEventListener('wheel', function(e){
+    e.preventDefault();
+    camR = clamp(camR + e.deltaY*0.006, 4.5, 20.0);
+  }, {passive:false});
+
+  var fpsEl = document.getElementById('fps');
+  var t0 = performance.now(), fLast = t0, frames=0;
+  var running = true;
+  document.addEventListener('visibilitychange', function(){
+    running = !document.hidden;
+    if(running){ fLast = performance.now(); requestAnimationFrame(frame); }
+  });
+
+  function frame(now){
+    if(!running) return;
+    var t = (now - t0)*0.001;
+    var az = azOff + t*0.10;                 // slow automatic orbit
+
+    gl.uniform2f(uRes, RW, RH);
+    gl.uniform1f(uTime, t);
+    gl.uniform1f(uR, camR);
+    gl.uniform1f(uInc, incTarget);
+    gl.uniform1f(uAz, az);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+    frames++;
+    if(now - fLast > 500){
+      var fps = frames*1000/(now-fLast);
+      fpsEl.textContent = fps.toFixed(0)+' fps  ·  '+RW+'×'+RH;
+      frames=0; fLast=now;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

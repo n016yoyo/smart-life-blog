@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FABLE 5 · Kerr Black Hole</title>
+<style>
+  html,body{margin:0;padding:0;background:#000;height:100%;overflow:hidden}
+  canvas{display:block;width:100vw;height:100vh}
+  #err{color:#f66;font:14px monospace;padding:20px;display:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="err"></div>
+<script>
+// 커(Kerr) 블랙홀 실시간 렌더러. 스핀 a=0.9M, 보이어-린드퀴스트 좌표 해밀토니안을 셰이더에서 직접 수치적분.
+// H = 1/2 g^{uv} p_u p_v = 0 (널 측지선). 보존량 p_t=-E, p_phi=Lz. 힘은 H의 중심차분(dH/dr, dH/dtheta).
+// 프레임 드래깅·비대칭(D자형) 그림자는 방정식에서 저절로 나옴(가짜 왜곡 아님).
+// URL 파라미터: ?s=스케일 ?steps=적분스텝 ?t=시간고정. window.seekTo(t초) = 캡처용 결정적 시킹.
+const Q = new URLSearchParams(location.search);
+const SCALE = parseFloat(Q.get("s") || "1");
+const STEPS = parseInt(Q.get("steps") || "320");
+const cv = document.getElementById("c");
+const gl = cv.getContext("webgl", { antialias: false, preserveDrawingBuffer: true });
+if (!gl) { document.getElementById("err").style.display = "block"; document.getElementById("err").textContent = "WebGL unavailable"; }
+
+const VERT = "attribute vec2 aP; void main(){ gl_Position = vec4(aP, 0.0, 1.0); }";
+
+const FRAG = `
+precision highp float;
+uniform vec2 uRes;
+uniform float uTime;
+#define STEPS_N ${STEPS}
+#define A_SPIN 0.9
+#define R_HOR 1.4359
+#define R_IN 2.5
+#define R_OUT 11.0
+
+float hash13(vec3 p){ p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }
+float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+float vnoise(vec2 p){
+  vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  float a = hash12(i), b = hash12(i + vec2(1.0, 0.0)), c = hash12(i + vec2(0.0, 1.0)), d = hash12(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+float fbm(vec2 p){
+  float v = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++){ v += a * vnoise(p); p = p * 2.03 + vec2(11.7, 9.2); a *= 0.5; }
+  return v;
+}
+vec2 rot2(vec2 p, float a){ float c = cos(a), s = sin(a); return vec2(c * p.x - s * p.y, s * p.x + c * p.y); }
+
+// 커 역계량 성분으로 해밀토니안. p = (pt, pr, pth, pph)
+float ham(float r, float th, vec4 p){
+  float a = A_SPIN;
+  float ct = cos(th);
+  float st = max(abs(sin(th)), 1e-3);
+  float sig = r * r + a * a * ct * ct;
+  float del = r * r - 2.0 * r + a * a;
+  float r2a2 = r * r + a * a;
+  float gtt = -(r2a2 * r2a2 - a * a * del * st * st) / (sig * del);
+  float gtp = -2.0 * a * r / (sig * del);
+  float gpp = (del - a * a * st * st) / (sig * del * st * st);
+  float grr = del / sig;
+  float gth = 1.0 / sig;
+  return 0.5 * (gtt * p.x * p.x + 2.0 * gtp * p.x * p.w + gpp * p.w * p.w + grr * p.y * p.y + gth * p.z * p.z);
+}
+
+// 해밀턴 방정식 우변. 위치미분은 해석식, 운동량미분은 중심차분
+void geo(float r, float th, vec4 p, out float dr, out float dth, out float dph, out float dpr, out float dpth){
+  float a = A_SPIN;
+  float ct = cos(th);
+  float st = max(abs(sin(th)), 1e-3);
+  float sig = r * r + a * a * ct * ct;
+  float del = r * r - 2.0 * r + a * a;
+  float gtp = -2.0 * a * r / (sig * del);
+  float gpp = (del - a * a * st * st) / (sig * del * st * st);
+  dr = (del / sig) * p.y;
+  dth = p.z / sig;
+  dph = gpp * p.w + gtp * p.x;
+  float e = 2e-3;
+  dpr = -(ham(r + e, th, p) - ham(r - e, th, p)) / (2.0 * e);
+  dpth = -(ham(r, th + e, p) - ham(r, th - e, p)) / (2.0 * e);
+}
+
+vec3 blToCart(float r, float th, float ph){
+  float sr = sqrt(r * r + A_SPIN * A_SPIN);
+  return vec3(sr * sin(th) * cos(ph), r * cos(th), sr * sin(th) * sin(ph));
+}
+
+vec3 stars(vec3 d){
+  vec3 col = vec3(0.0);
+  for (int L = 0; L < 2; L++){
+    float sc = (L == 0) ? 170.0 : 330.0;
+    vec3 g = d * sc; vec3 id = floor(g); vec3 f = fract(g) - 0.5;
+    float h = hash13(id);
+    float m = step(0.9955, h);
+    float b = smoothstep(0.4, 0.0, length(f)) * m * (0.3 + 0.7 * fract(h * 113.7));
+    vec3 tint = mix(vec3(1.0, 0.85, 0.7), vec3(0.75, 0.85, 1.0), fract(h * 57.3));
+    col += b * tint * ((L == 0) ? 1.0 : 0.55);
+  }
+  col += vec3(0.045, 0.055, 0.09) * fbm(d.xy * 3.0 + vec2(7.1, 2.3)) * fbm(d.zy * 2.5 + 4.7) * 2.2;
+  return col;
+}
+
+vec4 diskShade(vec3 hit, float rBL, vec3 nv, float time){
+  float r = rBL;
+  float edge = smoothstep(R_IN, R_IN + 0.45, r) * (1.0 - smoothstep(R_OUT - 2.6, R_OUT, r));
+  if (edge < 0.002) return vec4(0.0);
+  float omega = 1.0 / (pow(r, 1.5) + A_SPIN);
+  vec2 p2 = rot2(hit.xz, time * omega * 6.0);
+  float n = fbm(p2 * 0.85) * 0.65 + fbm(p2 * 2.6) * 0.35;
+  float bands = 0.72 + 0.28 * sin(r * 6.5 + n * 7.0);
+  float hot = pow(R_IN / r, 2.0);
+  float tt = clamp((r - R_IN) / (R_OUT - R_IN), 0.0, 1.0);
+  vec3 c = mix(vec3(1.6, 1.35, 1.05), vec3(1.25, 0.5, 0.14), smoothstep(0.0, 0.7, tt));
+  float beta = clamp(omega * sqrt(r * r + A_SPIN * A_SPIN), 0.05, 0.85);
+  vec3 tang = normalize(vec3(-hit.z, 0.0, hit.x));
+  float gamma = 1.0 / sqrt(1.0 - beta * beta);
+  float dop = 1.0 / (gamma * (1.0 + beta * dot(tang, nv)));
+  float g = sqrt(max(1.0 - 2.0 / max(r, 2.01), 0.0));
+  float I = hot * bands * (0.55 + 0.65 * n) * pow(dop, 3.0) * g * edge * 2.4;
+  c = mix(c, vec3(0.75, 0.9, 1.35), clamp((dop - 1.05) * 1.2, 0.0, 0.5));
+  c = mix(c, vec3(1.3, 0.45, 0.2), clamp((0.95 - dop) * 1.2, 0.0, 0.5));
+  float alpha = edge * clamp(0.55 + 0.5 * n, 0.0, 1.0);
+  return vec4(c * I, alpha);
+}
+
+void main(){
+  vec2 uv = (2.0 * gl_FragCoord.xy - uRes) / uRes.y;
+  float t = uTime;
+  float az = 0.6 + 0.05 * t;
+  float RC = 20.0 - 3.0 * smoothstep(0.0, 40.0, t);
+  float hgt = 2.3 + 0.5 * sin(t * 0.07);
+  vec3 ro = vec3(RC * cos(az), hgt, RC * sin(az));
+  vec3 fw = normalize(vec3(0.0, 0.3, 0.0) - ro);
+  vec3 rt = normalize(cross(fw, vec3(0.0, 1.0, 0.0)));
+  vec3 up = cross(rt, fw);
+  vec3 rd = normalize(fw * 1.35 + rt * uv.x + up * uv.y);
+
+  // 카메라 위치 카르테시안 -> 보이어-린드퀴스트
+  float a = A_SPIN;
+  float rho2 = dot(ro, ro);
+  float r2 = 0.5 * (rho2 - a * a + sqrt((rho2 - a * a) * (rho2 - a * a) + 4.0 * a * a * ro.y * ro.y));
+  float r = sqrt(r2);
+  float th = acos(clamp(ro.y / r, -1.0, 1.0));
+  float ph = atan(ro.z, ro.x);
+
+  // 초기 운동량: 원거리 구면근사로 공변성분 구성 후 널 조건으로 E 결정
+  float stq = sin(th), ctq = cos(th), cpq = cos(ph), spq = sin(ph);
+  vec3 er = vec3(stq * cpq, ctq, stq * spq);
+  vec3 eth = vec3(ctq * cpq, -stq, ctq * spq);
+  vec3 eph = vec3(-spq, 0.0, cpq);
+  float pr = dot(rd, er);
+  float pth = r * dot(rd, eth);
+  float pph = r * stq * dot(rd, eph);
+  // g^{tt}E^2 - 2 g^{ph t} E pph + (나머지) = 0 의 양수근
+  float ct0 = cos(th), st0 = max(abs(sin(th)), 1e-3);
+  float sig0 = r * r + a * a * ct0 * ct0;
+  float del0 = r * r - 2.0 * r + a * a;
+  float r2a20 = r * r + a * a;
+  float gtt0 = -(r2a20 * r2a20 - a * a * del0 * st0 * st0) / (sig0 * del0);
+  float gtp0 = -2.0 * a * r / (sig0 * del0);
+  float gpp0 = (del0 - a * a * st0 * st0) / (sig0 * del0 * st0 * st0);
+  float restC = gpp0 * pph * pph + (del0 / sig0) * pr * pr + (1.0 / sig0) * pth * pth;
+  float Bq = -2.0 * gtp0 * pph;
+  float disc = max(Bq * Bq - 4.0 * gtt0 * restC, 0.0);
+  float E = (-Bq - sqrt(disc)) / (2.0 * gtt0);
+  vec4 p = vec4(-E, pr, pth, pph);
+
+  vec3 col = vec3(0.0); float trans = 1.0;
+  float minR = 1e4; bool escaped = false;
+  vec3 curC = blToCart(r, th, ph);
+  vec3 prevC = curC;
+  float dr1, dth1, dph1, dpr1, dpth1, dr2, dth2, dph2, dpr2, dpth2;
+  for (int i = 0; i < STEPS_N; i++){
+    if (!(r > 0.0)) break;
+    minR = min(minR, r);
+    if (r < R_HOR + 0.02) break;
+    if (r > 48.0 && dr1 > 0.0 && i > 2){ escaped = true; break; }
+    float dl = clamp(0.05 * r, 0.02, 0.5);
+    geo(r, th, p, dr1, dth1, dph1, dpr1, dpth1);
+    float rm = r + 0.5 * dl * dr1, thm = th + 0.5 * dl * dth1;
+    vec4 pm = vec4(p.x, p.y + 0.5 * dl * dpr1, p.z + 0.5 * dl * dpth1, p.w);
+    geo(rm, thm, pm, dr2, dth2, dph2, dpr2, dpth2);
+    r += dl * dr2; th += dl * dth2; ph += dl * dph2;
+    p.y += dl * dpr2; p.z += dl * dpth2;
+    prevC = curC;
+    curC = blToCart(r, th, ph);
+    if (prevC.y * curC.y < 0.0){
+      float f = prevC.y / (prevC.y - curC.y);
+      vec3 hit = mix(prevC, curC, f);
+      float rr = length(hit.xz);
+      float rBL = sqrt(max(rr * rr - a * a, 0.01));
+      if (rBL > R_IN - 0.6 && rBL < R_OUT + 0.4){
+        vec4 dsk = diskShade(hit, rBL, normalize(curC - prevC), t);
+        col += trans * dsk.rgb;
+        trans *= (1.0 - dsk.a * 0.9);
+        if (trans < 0.02) break;
+      }
+    }
+  }
+  if (escaped){ col += trans * stars(normalize(curC - prevC)); }
+  col += vec3(1.0, 0.62, 0.3) * 0.2 * exp(-max(minR - R_HOR - 0.35, 0.0) * 1.5) * step(0.05, trans);
+  col = 1.0 - exp(-col * 1.7);
+  col = pow(col, vec3(0.86));
+  float vg = 1.0 - 0.35 * pow(length(uv * vec2(0.75, 0.55)), 2.2);
+  col *= max(vg, 0.0);
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+function mkShader(type, src){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+const prog = gl.createProgram();
+gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VERT));
+gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FRAG));
+gl.linkProgram(prog);
+if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+const aP = gl.getAttribLocation(prog, "aP");
+gl.enableVertexAttribArray(aP);
+gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
+const uRes = gl.getUniformLocation(prog, "uRes");
+const uTime = gl.getUniformLocation(prog, "uTime");
+
+function resize(){
+  const dpr = (window.devicePixelRatio || 1) * SCALE;
+  cv.width = Math.max(2, Math.round(innerWidth * dpr));
+  cv.height = Math.max(2, Math.round(innerHeight * dpr));
+  gl.viewport(0, 0, cv.width, cv.height);
+}
+window.addEventListener("resize", resize);
+resize();
+
+function draw(t){
+  gl.uniform2f(uRes, cv.width, cv.height);
+  gl.uniform1f(uTime, t);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  gl.finish();
+}
+
+let manual = false;
+const start = performance.now();
+function loop(now){
+  if (!manual) draw((now - start) / 1000);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+window.seekTo = function(t){ manual = true; draw(t); return t; };
+const t0 = Q.get("t");
+if (t0 !== null) window.seekTo(parseFloat(t0));
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>페이블5 vs 옵퍼스, 블랙홀 원샷 대결 (실측) | AI TIGER MASK</title>
+<meta name="description" content="같은 주문 한 줄로 클로드 페이블5와 옵퍼스 4.8에게 블랙홀 시뮬레이터를 만들게 했습니다. 라운드2 회전 블랙홀에서 옵퍼스는 검은 화면, 페이블5만 그려냈어요. 실제 결과물을 라이브로 돌려보고, 쓴 프롬프트 전문도 복붙하세요.">
+<meta property="og:title" content="AI 두 개한테 블랙홀을 만들라고 시켰습니다 (실측 대결)">
+<meta property="og:description" content="같은 주문 한 줄, 수정 기회 없음. 옵퍼스는 검은 화면 · 페이블5는 인터스텔라. 라이브 체험 + 프롬프트 전문 공개.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e;--ok:#2d9e6b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#191524,#0b0912);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.rulebox{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.rulebox h2{font-size:16px;margin-bottom:8px}
+.rulebox li{font-size:14px;color:#43403a;margin:4px 0 4px 18px}
+.lead{margin:30px 0 10px;text-align:center}
+.lead .rnd{display:inline-block;background:var(--ink);color:#ffe23a;font-weight:900;font-size:13px;letter-spacing:2px;padding:6px 16px;border-radius:999px}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em;margin-top:10px}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.duel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.pane{position:relative;min-width:0;border-radius:16px;overflow:hidden;border:2px solid #d8d0c2;background:#000}
+.pane.win{border-color:var(--o);box-shadow:0 6px 24px rgba(217,119,87,.25)}
+.pane img{width:100%;max-width:100%;display:block;aspect-ratio:9/16;object-fit:cover}
+.pane .nm{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:8px}
+.pane.win .nm b{color:var(--o)}
+.pane .vd{position:absolute;right:7px;bottom:47px;font-weight:900;font-size:12.5px;letter-spacing:.5px;padding:3px 9px;border-radius:8px;border:2px solid;background:rgba(10,8,14,.8);transform:rotate(-5deg)}
+.vd.ok{color:#37d58e;border-color:#37d58e}.vd.bad{color:#ff7b66;border-color:#ff7b66}
+.pane .live{display:block;text-align:center;background:#241e30;color:#fff;font-size:12.5px;font-weight:800;padding:10px 4px;text-decoration:none}
+.pane .live span{color:var(--o)}
+.verdict{margin-top:12px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:13px 16px;font-size:14px;color:#43403a}
+.verdict b{color:var(--o)}
+.note{margin-top:8px;font-size:12.5px;color:var(--dim)}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:var(--bad);margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol{margin-left:18px}.how li{font-size:14px;color:#43403a;margin:5px 0}
+.how code{background:#efe7db;border-radius:6px;padding:1px 7px;font-size:12.5px}
+.split{margin:22px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.half{min-width:0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px;text-align:center}
+.half.hot{border-color:var(--o);background:#fff7f3}
+.half .t{font-size:12px;font-weight:800;color:var(--dim);letter-spacing:1px}
+.half .m{font-size:17px;font-weight:900;margin-top:5px}
+.half.hot .m{color:var(--o)}
+.half p{font-size:12.5px;color:#4b473f;margin-top:5px}
+.src{margin:24px 0 0;font-size:12.5px;color:var(--dim);border-top:1px dashed #d8d0c2;padding-top:12px}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--ink);color:#fff;font-weight:800;font-size:14px;padding:13px 26px;border-radius:999px;text-decoration:none}
+.foot{margin-top:34px;text-align:center;font-size:12.5px;color:var(--dim)}
+.foot a{color:var(--dim)}
+@media (max-width:420px){.pane .live{font-size:11.5px}}
+</style>
+</head><body>
+<header>
+  <div class="b">AI TIGER MASK · 실측 실험</div>
+  <h1>AI 두 개한테<br>블랙홀을 만들라고 시켰습니다</h1>
+  <div class="sub">클로드 페이블5 vs 옵퍼스 4.8 · 같은 주문 · 딱 한 번</div>
+  <div class="chips">
+    <span class="chip">주문 <b>한 줄</b></span>
+    <span class="chip">수정 기회 <b>0번</b></span>
+    <span class="chip">실패 화면도 <b>그대로 공개</b></span>
+  </div>
+</header>
+<div class="wrap">
+
+  <div class="rulebox">
+    <h2>대결 규칙</h2>
+    <ul>
+      <li>두 모델에게 <b>완전히 같은 주문</b>을 한 번만 보냈어요. 파일 하나를 원샷으로 작성, 테스트·수정 금지.</li>
+      <li>결과물은 손대지 않고 그대로 촬영했습니다. 아래 "라이브로 돌려보기"가 그 원본이에요.</li>
+      <li>블랙홀 물리는 진짜입니다. 아인슈타인 일반상대성이론 방정식을 코드로 직접 풀게 했어요.</li>
+    </ul>
+  </div>
+
+  <div class="lead">
+    <span class="rnd">ROUND 1 · 블랙홀</span>
+    <h2>그냥 블랙홀은 둘 다 만들었어요</h2>
+    <p>인정할 건 인정해야죠. 이 난이도에선 격차가 없었습니다.</p>
+  </div>
+  <div class="duel">
+    <div class="pane win">
+      <img src="img/fable_r1.jpg" alt="페이블5가 만든 블랙홀: 강착원반과 포톤 링이 선명한 인터스텔라풍 렌더">
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span>
+      <a class="live" href="sims/fable.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기 <span>(폰 OK)</span></a>
+    </div>
+    <div class="pane">
+      <img src="img/opus_r1.jpg" alt="옵퍼스 4.8이 만든 블랙홀: 형태는 갖췄지만 색이 워시아웃된 렌더">
+      <span class="nm">OPUS 4.8</span><span class="vd ok">PASS</span>
+      <a class="live" href="sims/opus.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기</a>
+    </div>
+  </div>
+  <div class="verdict">판정: <b>무승부.</b> 페이블 쪽이 색감·포톤 링이 더 풍부하긴 하지만, 둘 다 "휘어진 빛"을 제대로 계산했습니다.</div>
+
+  <div class="lead">
+    <span class="rnd">ROUND 2 · 회전 블랙홀</span>
+    <h2>난이도를 올리자 격차가 벌어졌습니다</h2>
+    <p>회전하는 커(Kerr) 블랙홀. 물리 난이도가 한 단계 위입니다.</p>
+  </div>
+  <div class="duel">
+    <div class="pane win">
+      <img src="img/fable_r2.jpg" alt="페이블5가 만든 회전 블랙홀: 비대칭 그림자와 렌즈된 원반이 보이는 렌더">
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span>
+      <a class="live" href="sims/kerr_fable.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기 <span>(폰 OK)</span></a>
+    </div>
+    <div class="pane">
+      <img src="img/opus_r2.jpg" alt="옵퍼스 4.8이 만든 회전 블랙홀: 검은 화면에 0fps 표시만 뜬 실패 화면">
+      <span class="nm">OPUS 4.8</span><span class="vd bad">FAIL · 0fps</span>
+      <a class="live" href="sims/kerr_opus.html" target="_blank" rel="noopener">▶ 진짜 검은 화면인지 직접 확인</a>
+    </div>
+  </div>
+  <div class="verdict">판정: <b>페이블5 승.</b> 옵퍼스는 30초를 기다려도 검은 화면에 0fps였습니다(위 링크에서 직접 확인 가능). 페이블5는 비대칭 그림자까지 그려냈어요.</div>
+  <p class="note">위 결과물 4개 전부, 우리가 한 글자도 안 고친 원샷 원본입니다.</p>
+
+  <div class="lead">
+    <h2>둘에게 보낸 주문 전문</h2>
+    <p>이걸 그대로 복붙하면 여러분 클로드도 블랙홀을 만들어 줍니다.</p>
+  </div>
+  <div class="box">
+    <div class="bar">ROUND 1 프롬프트 (블랙홀) <button class="copy" data-t="p1">전체 복사</button></div>
+    <pre id="p1">웹브라우저에서 실시간으로 돌아가는 블랙홀 렌더러를 HTML 파일 하나로 만들어줘. 조건:
+1) 일반상대성이론 슈바르츠실트 시공간에서 광자 측지선을 실제 수치적분으로 계산하는 레이트레이싱(가짜 렌즈 왜곡 필터 금지)
+2) 인터스텔라처럼 얇은 강착원반이 블랙홀 위아래로 휘어 감겨 보일 것, 포톤 링 표현
+3) 배경 별들이 중력렌즈로 왜곡될 것
+4) 도플러 빔잉으로 원반 한쪽이 더 밝을 것
+5) WebGL 셰이더 실시간 렌더링, 외부 라이브러리·외부 리소스 금지
+6) 카메라는 천천히 궤도를 돌 것, 9:16 세로(1080x1920) 화면 기준</pre>
+  </div>
+  <div class="box">
+    <div class="bar">ROUND 2 프롬프트 (회전 블랙홀) <button class="copy" data-t="p2">전체 복사</button></div>
+    <pre id="p2">회전하는 커(Kerr) 블랙홀 렌더러를 HTML 파일 하나로 만들어줘. 조건:
+1) 커 시공간(스핀 a=0.9M)의 광자 측지선을 실제 수치적분으로 풀 것(보이어-린드퀴스트 좌표의 해밀토니안 방정식 또는 동등 수준). 슈바르츠실트에 소용돌이 텍스처 입히는 가짜 금지
+2) 프레임 드래깅이 실제로 보일 것: 그림자가 비대칭(D자형)이고 포톤링이 한쪽으로 쏠릴 것
+3) 강착원반(ISCO 안쪽 비움)·도플러 빔잉·배경별 중력렌즈 포함
+4) WebGL 셰이더 실시간, 외부 리소스 금지, 9:16 세로 1080x1920 기준, 카메라 느린 궤도</pre>
+  </div>
+
+  <div class="warn">
+    <h3>⚠️ 정직하게: 페이블도 완벽하진 않았어요</h3>
+    <p>라운드2 페이블 결과물에는 세로줄 흠집(극축 좌표 특이점)이 남아 있습니다. 원샷 기준이라 그대로 공개해요. "한 번 더 고쳐줘"라고 하면 지워지지만, 그건 원샷이 아니니까요.</p>
+  </div>
+
+  <div class="split">
+    <div class="half hot"><div class="t">어려운 설계·수학·물리</div><div class="m">페이블5</div><p>이번 실험처럼 한 방이 필요한 일</p></div>
+    <div class="half"><div class="t">반복 작업·수정·잡일</div><div class="m">소넷</div><p>싸고 빠른 모델로 충분한 일</p></div>
+  </div>
+
+  <div class="how">
+    <h2>따라 하는 법 (1분)</h2>
+    <ol>
+      <li>클로드 코드(Claude Code)를 켜요. 설치가 처음이면 <a href="../claude-code-guide/">비개발자 완전 정복 가이드</a> 참고.</li>
+      <li>위 <b>전체 복사</b>를 눌러 프롬프트를 그대로 붙여넣어요.</li>
+      <li>클로드가 만들어 준 <code>HTML 파일</code>을 더블클릭하면 끝. 브라우저에서 블랙홀이 돌아갑니다.</li>
+      <li>모델 선택이 되면 페이블5로. 라운드2(회전 블랙홀)는 다른 모델로는 이 페이지처럼 실패할 수 있어요.</li>
+    </ol>
+  </div>
+
+  <div class="src">
+    실험 조건: 2026-07-03, 두 모델 모두 원샷(테스트·수정 금지), 동일 프롬프트, 헤드리스 크로미움 동일 조건 촬영. 옵퍼스 라운드2는 8초·30초 대기 재촬영에서도 동일하게 검은 화면(0fps 자체 표시)이었습니다.
+  </div>
+
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">이런 실험 매주 보기 @aitigermask</a>
+  </div>
+
+  <p class="foot"><a href="/smart-life-blog/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>
+document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
+  navigator.clipboard.writeText(document.getElementById(b.dataset.t).textContent).then(()=>{b.textContent="복사됨!";setTimeout(()=>b.textContent="전체 복사",1400)});
+}));
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"blackhole"})}).catch(()=>{});
+</script>
+</body></html>
