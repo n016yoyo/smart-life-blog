@@ -93,12 +93,12 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   <div class="duel">
     <div class="pane win" data-sim="sims/fable.html">
       <video autoplay muted loop playsinline poster="img/fable_r1.jpg" src="vid/fable_r1.mp4" aria-label="페이블5가 만든 블랙홀: 강착원반과 포톤 링이 선명한 인터스텔라풍 렌더, 궤도 무빙"></video>
-      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>LIVE</b> 준비중…</span>
       <a class="live" href="sims/fable.html" target="_blank" rel="noopener">새 탭에서 크게 <span>(폰 OK)</span></a>
     </div>
     <div class="pane" data-sim="sims/opus.html">
       <video autoplay muted loop playsinline poster="img/opus_r1.jpg" src="vid/opus_r1.mp4" aria-label="옵퍼스 4.8이 만든 블랙홀: 형태는 갖췄지만 색이 워시아웃된 렌더"></video>
-      <span class="nm">OPUS 4.8</span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <span class="nm">OPUS 4.8</span><span class="vd ok">PASS</span><span class="go">▶ <b>LIVE</b> 준비중…</span>
       <a class="live" href="sims/opus.html" target="_blank" rel="noopener">새 탭에서 크게</a>
     </div>
   </div>
@@ -112,12 +112,12 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   <div class="duel">
     <div class="pane win" data-sim="sims/kerr_fable.html">
       <video autoplay muted loop playsinline poster="img/fable_r2.jpg" src="vid/fable_r2.mp4" aria-label="페이블5가 만든 회전 블랙홀: 비대칭 그림자와 렌즈된 원반이 보이는 렌더, 궤도 무빙"></video>
-      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>LIVE</b> 준비중…</span>
       <a class="live" href="sims/kerr_fable.html" target="_blank" rel="noopener">새 탭에서 크게 <span>(폰 OK)</span></a>
     </div>
     <div class="pane" data-sim="sims/kerr_opus.html">
       <video autoplay muted loop playsinline poster="img/opus_r2.jpg" src="vid/opus_r2.mp4" aria-label="옵퍼스 4.8이 만든 회전 블랙홀: 검은 화면에 0fps 표시만 뜬 실패 화면"></video>
-      <span class="nm">OPUS 4.8</span><span class="vd bad">FAIL · 0fps</span><span class="go">▶ <b>탭</b>해서 검은 화면 직접 확인</span>
+      <span class="nm">OPUS 4.8</span><span class="vd bad">FAIL · 0fps</span><span class="go">▶ <b>LIVE</b>로 검은 화면 직접 확인</span>
       <a class="live" href="sims/kerr_opus.html" target="_blank" rel="noopener">새 탭에서 크게</a>
     </div>
   </div>
@@ -178,17 +178,35 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   <p class="foot"><a href="/smart-life-blog/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
 </div>
 <script>
-// 카드 탭 = 그 자리에서 원샷 원본 시뮬을 실시간 실행(iframe 스왑). 영상/포스터는 미리보기.
-document.querySelectorAll(".pane[data-sim]").forEach(p=>{
-  p.addEventListener("click",e=>{
-    if(e.target.closest("a"))return;
+// 시뮬을 페이지에 직접 심기: 화면에 보이는 카드는 자동으로 원샷 원본을 실시간 렌더(iframe),
+// 스크롤로 벗어나면 루프영상 프리뷰로 복귀(폰 발열·버벅임 방지, 동시 실행 최소화).
+(()=>{
+  const vids=new Map();
+  const toLive=p=>{
     if(p.querySelector("iframe"))return;
-    const v=p.querySelector("video"), f=document.createElement("iframe");
-    f.src=p.dataset.sim; f.setAttribute("loading","lazy"); f.setAttribute("allow","fullscreen");
+    const v=p.querySelector("video"); if(!v)return;
+    vids.set(p,v);
+    const f=document.createElement("iframe");
+    f.src=p.dataset.sim; f.setAttribute("allow","fullscreen"); f.title="원샷 원본 실시간 렌더";
     v.replaceWith(f);
-    const go=p.querySelector(".go"); if(go)go.textContent="LIVE · 실시간 렌더링 중";
-  });
-});
+    const go=p.querySelector(".go"); if(go)go.innerHTML="<b>LIVE</b> · 실시간 렌더링 중";
+  };
+  const toVideo=p=>{
+    const f=p.querySelector("iframe"); if(!f)return;
+    const v=vids.get(p); if(!v)return;
+    f.replaceWith(v); v.play&&v.play().catch(()=>{});
+    const go=p.querySelector(".go"); if(go)go.innerHTML="▶ 스크롤하면 <b>실시간 렌더</b>";
+  };
+  const panes=document.querySelectorAll(".pane[data-sim]");
+  if("IntersectionObserver" in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting&&e.intersectionRatio>=0.55)toLive(e.target);
+      else if(!e.isIntersecting)toVideo(e.target);
+    }),{threshold:[0,0.55]});
+    panes.forEach(p=>io.observe(p));
+  }
+  panes.forEach(p=>p.addEventListener("click",e=>{ if(!e.target.closest("a"))toLive(p); }));
+})();
 document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
   navigator.clipboard.writeText(document.getElementById(b.dataset.t).textContent).then(()=>{b.textContent="복사됨!";setTimeout(()=>b.textContent="전체 복사",1400)});
 }));
