@@ -25,7 +25,10 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 .duel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .pane{position:relative;min-width:0;border-radius:16px;overflow:hidden;border:2px solid #d8d0c2;background:#000}
 .pane.win{border-color:var(--o);box-shadow:0 6px 24px rgba(217,119,87,.25)}
-.pane img{width:100%;max-width:100%;display:block;aspect-ratio:9/16;object-fit:cover}
+.pane video{width:100%;max-width:100%;display:block;aspect-ratio:9/16;object-fit:cover;background:#000}
+.pane iframe{width:100%;display:block;aspect-ratio:9/16;border:0;background:#000}
+.pane .go{position:absolute;left:7px;bottom:47px;background:rgba(10,8,14,.8);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.25);pointer-events:none}
+.pane .go b{color:#ffd23a}
 .pane .nm{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:8px}
 .pane.win .nm b{color:var(--o)}
 .pane .vd{position:absolute;right:7px;bottom:47px;font-weight:900;font-size:12.5px;letter-spacing:.5px;padding:3px 9px;border-radius:8px;border:2px solid;background:rgba(10,8,14,.8);transform:rotate(-5deg)}
@@ -77,7 +80,7 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
     <h2>대결 규칙</h2>
     <ul>
       <li>두 모델에게 <b>완전히 같은 주문</b>을 한 번만 보냈어요. 파일 하나를 원샷으로 작성, 테스트·수정 금지.</li>
-      <li>결과물은 손대지 않고 그대로 촬영했습니다. 아래 "라이브로 돌려보기"가 그 원본이에요.</li>
+      <li>결과물은 손대지 않았습니다. 아래 카드를 탭하면 그 원본이 <b>그 자리에서 실시간 렌더링</b>돼요.</li>
       <li>블랙홀 물리는 진짜입니다. 아인슈타인 일반상대성이론 방정식을 코드로 직접 풀게 했어요.</li>
     </ul>
   </div>
@@ -88,15 +91,15 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
     <p>인정할 건 인정해야죠. 이 난이도에선 격차가 없었습니다.</p>
   </div>
   <div class="duel">
-    <div class="pane win">
-      <img src="img/fable_r1.jpg" alt="페이블5가 만든 블랙홀: 강착원반과 포톤 링이 선명한 인터스텔라풍 렌더">
-      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span>
-      <a class="live" href="sims/fable.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기 <span>(폰 OK)</span></a>
+    <div class="pane win" data-sim="sims/fable.html">
+      <video autoplay muted loop playsinline poster="img/fable_r1.jpg" src="vid/fable_r1.mp4" aria-label="페이블5가 만든 블랙홀: 강착원반과 포톤 링이 선명한 인터스텔라풍 렌더, 궤도 무빙"></video>
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <a class="live" href="sims/fable.html" target="_blank" rel="noopener">새 탭에서 크게 <span>(폰 OK)</span></a>
     </div>
-    <div class="pane">
-      <img src="img/opus_r1.jpg" alt="옵퍼스 4.8이 만든 블랙홀: 형태는 갖췄지만 색이 워시아웃된 렌더">
-      <span class="nm">OPUS 4.8</span><span class="vd ok">PASS</span>
-      <a class="live" href="sims/opus.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기</a>
+    <div class="pane" data-sim="sims/opus.html">
+      <video autoplay muted loop playsinline poster="img/opus_r1.jpg" src="vid/opus_r1.mp4" aria-label="옵퍼스 4.8이 만든 블랙홀: 형태는 갖췄지만 색이 워시아웃된 렌더"></video>
+      <span class="nm">OPUS 4.8</span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <a class="live" href="sims/opus.html" target="_blank" rel="noopener">새 탭에서 크게</a>
     </div>
   </div>
   <div class="verdict">판정: <b>무승부.</b> 페이블 쪽이 색감·포톤 링이 더 풍부하긴 하지만, 둘 다 "휘어진 빛"을 제대로 계산했습니다.</div>
@@ -107,15 +110,15 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
     <p>회전하는 커(Kerr) 블랙홀. 물리 난이도가 한 단계 위입니다.</p>
   </div>
   <div class="duel">
-    <div class="pane win">
-      <img src="img/fable_r2.jpg" alt="페이블5가 만든 회전 블랙홀: 비대칭 그림자와 렌즈된 원반이 보이는 렌더">
-      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span>
-      <a class="live" href="sims/kerr_fable.html" target="_blank" rel="noopener">▶ 라이브로 돌려보기 <span>(폰 OK)</span></a>
+    <div class="pane win" data-sim="sims/kerr_fable.html">
+      <video autoplay muted loop playsinline poster="img/fable_r2.jpg" src="vid/fable_r2.mp4" aria-label="페이블5가 만든 회전 블랙홀: 비대칭 그림자와 렌즈된 원반이 보이는 렌더, 궤도 무빙"></video>
+      <span class="nm"><b>FABLE 5</b></span><span class="vd ok">PASS</span><span class="go">▶ <b>탭</b>하면 실시간 렌더</span>
+      <a class="live" href="sims/kerr_fable.html" target="_blank" rel="noopener">새 탭에서 크게 <span>(폰 OK)</span></a>
     </div>
-    <div class="pane">
-      <img src="img/opus_r2.jpg" alt="옵퍼스 4.8이 만든 회전 블랙홀: 검은 화면에 0fps 표시만 뜬 실패 화면">
-      <span class="nm">OPUS 4.8</span><span class="vd bad">FAIL · 0fps</span>
-      <a class="live" href="sims/kerr_opus.html" target="_blank" rel="noopener">▶ 진짜 검은 화면인지 직접 확인</a>
+    <div class="pane" data-sim="sims/kerr_opus.html">
+      <video autoplay muted loop playsinline poster="img/opus_r2.jpg" src="vid/opus_r2.mp4" aria-label="옵퍼스 4.8이 만든 회전 블랙홀: 검은 화면에 0fps 표시만 뜬 실패 화면"></video>
+      <span class="nm">OPUS 4.8</span><span class="vd bad">FAIL · 0fps</span><span class="go">▶ <b>탭</b>해서 검은 화면 직접 확인</span>
+      <a class="live" href="sims/kerr_opus.html" target="_blank" rel="noopener">새 탭에서 크게</a>
     </div>
   </div>
   <div class="verdict">판정: <b>페이블5 승.</b> 옵퍼스는 30초를 기다려도 검은 화면에 0fps였습니다(위 링크에서 직접 확인 가능). 페이블5는 비대칭 그림자까지 그려냈어요.</div>
@@ -175,6 +178,17 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   <p class="foot"><a href="/smart-life-blog/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
 </div>
 <script>
+// 카드 탭 = 그 자리에서 원샷 원본 시뮬을 실시간 실행(iframe 스왑). 영상/포스터는 미리보기.
+document.querySelectorAll(".pane[data-sim]").forEach(p=>{
+  p.addEventListener("click",e=>{
+    if(e.target.closest("a"))return;
+    if(p.querySelector("iframe"))return;
+    const v=p.querySelector("video"), f=document.createElement("iframe");
+    f.src=p.dataset.sim; f.setAttribute("loading","lazy"); f.setAttribute("allow","fullscreen");
+    v.replaceWith(f);
+    const go=p.querySelector(".go"); if(go)go.textContent="LIVE · 실시간 렌더링 중";
+  });
+});
 document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
   navigator.clipboard.writeText(document.getElementById(b.dataset.t).textContent).then(()=>{b.textContent="복사됨!";setTimeout(()=>b.textContent="전체 복사",1400)});
 }));
