@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드코드 세션, 픽셀 사무실로 보기 — Pixel Agents + CloudCLI 설치 가이드 | AI TIGER MASK</title>
+<meta name="description" content="여러 클로드코드 세션을 귀여운 픽셀 캐릭터 사무실로 한눈에 보고, 캐릭터 클릭하면 바로 이어서 프롬프트 치는 법. Pixel Agents + CloudCLI 무료 설치 가이드.">
+<meta property="og:title" content="클로드코드 세션, 픽셀 사무실로 보기">
+<meta property="og:description" content="캐릭터 클릭하면 바로 이어서 프롬프트. Pixel Agents + CloudCLI 무료 설치 가이드.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:540px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut)}
+
+.steps{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+.step .body{flex:1;padding-top:4px}
+.step .body strong{font-size:14.5px}
+.step .body p{font-size:13.5px;color:var(--mut);margin-top:2px}
+
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.badge.new{border-color:var(--acc);color:var(--acc);background:#fff7f3}
+
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>클로드코드 세션,<br><span style="color:var(--acc)">픽셀 사무실</span>로 보기</h1>
+  <p class="sub">에이전트 여러 개 굴리면서 뭐가 뭔지 몰랐던 거, 이제 귀여운 캐릭터 사무실로 한눈에 봅니다.<br>캐릭터 클릭하면 그 자리에서 바로 이어서 프롬프트까지.</p>
+  <div class="chips">
+    <span class="chip">클로드코드 <b>필수</b></span>
+    <span class="chip">둘 다 <b>무료</b></span>
+    <span class="chip">Windows·Linux·macOS</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">뭔데</a>
+    <a href="#ready">준비물</a>
+    <a href="#pixel-agents">Pixel Agents 설치</a>
+    <a href="#cloudcli">CloudCLI 설치</a>
+    <a href="#connect">둘이 연결</a>
+    <a href="#remote">다른 기기</a>
+    <a href="#check">확인</a>
+    <a href="#trouble">문제 생기면</a>
+  </div>
+
+  <!-- 뭔데 -->
+  <div class="sec" id="what">
+    <div class="sec-label">INTRO</div>
+    <h2>이게 뭔데?</h2>
+    <p>클로드코드 세션 여러 개 켜놓으면 어느 게 뭐 하는지 못 찾잖아요. 이 조합 하나면 세션들이 귀여운 캐릭터로 사무실에 서서 지금 뭐 하는지(생각 중인지, 다 끝났는지) 한눈에 보이고, 캐릭터를 클릭하면 그 세션이랑 브라우저에서 바로 이어서 얘기할 수 있습니다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>🏢 Pixel Agents</h3>
+        <p>클로드코드 세션이 몇 개 떠 있는지, 뭘 하고 있는지 픽셀아트 사무실 화면으로 보여주는 도구. 포트 3100.</p>
+      </div>
+      <div class="card">
+        <h3>💬 CloudCLI</h3>
+        <p>캐릭터를 클릭했을 때 그 세션을 이어서 대화할 수 있는 웹 기반 클로드코드 UI. 포트 3001.</p>
+      </div>
+    </div>
+    <div class="hl">둘 다 로그인 후 켜두면 재부팅해도 자동 실행되도록 등록합니다. 아래 순서 그대로 따라오면 됩니다.</div>
+  </div>
+
+  <!-- 준비물 -->
+  <div class="sec" id="ready">
+    <div class="sec-label">STEP 0</div>
+    <h2>사전 준비물 확인</h2>
+    <p>터미널 열고 이것부터 확인.</p>
+    <div class="copybox">
+      <div class="bar"><span>버전 확인</span><button class="copybtn" onclick="copy(this,'c1')">복사</button></div>
+      <pre id="c1">node --version   # v20 이상이면 OK
+npm --version</pre>
+    </div>
+    <p>Node·npm이 없으면 nvm으로 설치:</p>
+    <div class="copybox">
+      <div class="bar"><span>nvm 설치</span><button class="copybtn" onclick="copy(this,'c2')">복사</button></div>
+      <pre id="c2">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+source ~/.zshrc
+nvm install --lts</pre>
+    </div>
+  </div>
+
+  <!-- Pixel Agents 설치 -->
+  <div class="sec" id="pixel-agents">
+    <div class="sec-label">STEP 1</div>
+    <h2>Pixel Agents 설치</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="body">
+          <strong>저장소 클론 + 빌드</strong>
+          <div class="copybox">
+            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c3')">복사</button></div>
+            <pre id="c3">mkdir -p ~/apps
+cd ~/apps
+git clone https://github.com/pixel-agents-hq/pixel-agents.git
+cd pixel-agents
+npm install
+npm run build</pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="body">
+          <strong>수동 실행해서 확인</strong>
+          <div class="copybox">
+            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c4')">복사</button></div>
+            <pre id="c4">node dist/cli.js --port 3100</pre>
+          </div>
+          <p><code>http://localhost:3100</code> 열었을 때 픽셀아트 사무실 화면이 보이면 성공.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div class="body">
+          <strong>Claude Code 훅 연결(필수)</strong>
+          <p>Pixel Agents 화면에서 <strong>Settings → Instant Detection(Hooks)</strong> 켜기. 이게 켜져야 이후 여는 모든 클로드코드 세션이 자동으로 캐릭터로 나타납니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CloudCLI 설치 -->
+  <div class="sec" id="cloudcli">
+    <div class="sec-label">STEP 2</div>
+    <h2>CloudCLI 설치</h2>
+    <p>세션을 클릭했을 때 이어서 대화할 수 있게 해주는 웹 UI(<code>@cloudcli-ai/cloudcli</code> 패키지).</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="body">
+          <strong>전역 설치</strong>
+          <div class="copybox">
+            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c5')">복사</button></div>
+            <pre id="c5">npm install -g @cloudcli-ai/cloudcli</pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="body">
+          <strong>실행</strong>
+          <div class="copybox">
+            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c6')">복사</button></div>
+            <pre id="c6">cloudcli</pre>
+          </div>
+          <p>브라우저로 열면 최초 1회 계정 생성 화면 나옵니다(로컬 전용, single-user).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 연결 -->
+  <div class="sec" id="connect">
+    <div class="sec-label">STEP 3</div>
+    <h2>Pixel Agents ↔ CloudCLI 연결</h2>
+    <p><code>http://localhost:3100</code> 접속 → Settings 열기 → <strong>Remote Session Viewer URL</strong>에 아래 입력:</p>
+    <div class="copybox">
+      <div class="bar"><span>Remote Session Viewer URL</span><button class="copybtn" onclick="copy(this,'c7')">복사</button></div>
+      <pre id="c7">http://localhost:3001</pre>
+    </div>
+    <div class="hl">저장되면 사무실 화면에서 캐릭터 클릭할 때마다 그 세션이 새 탭으로 열려서 <strong>바로 이어서 프롬프트</strong> 칠 수 있습니다.</div>
+  </div>
+
+  <!-- 다른 기기 -->
+  <div class="sec" id="remote">
+    <div class="sec-label">OPTIONAL</div>
+    <h2>다른 기기에서 접속하고 싶다면</h2>
+    <p>같은 와이파이 아니어도 휴대폰·다른 PC에서 접속하려면 <a href="https://tailscale.com/download" target="_blank" rel="noopener">Tailscale</a> 설치 후 로그인. 그러면 이 PC에 <code>100.x.x.x</code> 고정 IP가 생겨서 <code>http://100.x.x.x:3100</code>으로 접속 가능합니다.</p>
+  </div>
+
+  <!-- 확인 -->
+  <div class="sec" id="check">
+    <div class="sec-label">CHECKLIST</div>
+    <h2>확인 체크리스트</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ localhost:3100 사무실 화면</span>
+      <span class="badge ok">✓ Settings → Hooks 켜짐</span>
+      <span class="badge ok">✓ localhost:3001 CloudCLI 로드</span>
+      <span class="badge ok">✓ Remote Session Viewer URL 저장됨</span>
+    </div>
+    <p>지금 실행 중인 클로드코드 세션이 사무실 화면에 캐릭터로 보이는지 확인하면 끝.</p>
+  </div>
+
+  <!-- 문제 -->
+  <div class="sec" id="trouble">
+    <div class="sec-label">TROUBLESHOOT</div>
+    <h2>문제 생기면</h2>
+    <table>
+      <tr><th>증상</th><th>확인할 것</th></tr>
+      <tr><td>캐릭터가 안 보임</td><td>Settings의 Instant Detection(Hooks) 켜져 있는지 확인</td></tr>
+      <tr><td>포트 충돌</td><td>3100·3001이 이미 쓰이는 중이면 다른 포트로 재실행(<code>--port</code>)</td></tr>
+      <tr><td>다른 기기 연결 안 됨</td><td>Remote Session Viewer URL을 Tailscale IP로 바꿨는지 확인</td></tr>
+    </table>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 더 많은 팁 보기 @aitigermask</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>Pixel Agents + CloudCLI 설치 가이드 · 2026</p>
+    <p style="margin-top:6px"><a href="https://n016yoyo.github.io/smart-life-blog/">← 홈으로</a></p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"pixel-agents-guide"})}).catch(()=>{});</script>
+</body>
+</html>
