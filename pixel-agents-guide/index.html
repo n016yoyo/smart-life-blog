@@ -69,6 +69,9 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 .badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
 .badge.new{border-color:var(--acc);color:var(--acc);background:#fff7f3}
 
+.shot{width:100%;border-radius:14px;border:1px solid var(--line);margin:12px 0;box-shadow:0 4px 16px rgba(30,25,15,.08);display:block}
+.shot-cap{font-size:12px;color:var(--mut);text-align:center;margin-top:-6px}
+
 .cta{text-align:center;margin-top:32px}
 .cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
 .foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
@@ -115,104 +118,55 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
         <p>캐릭터를 클릭했을 때 그 세션을 이어서 대화할 수 있는 웹 기반 클로드코드 UI. 포트 3001.</p>
       </div>
     </div>
-    <div class="hl">둘 다 로그인 후 켜두면 재부팅해도 자동 실행되도록 등록합니다. 아래 순서 그대로 따라오면 됩니다.</div>
+    <div class="hl">둘 다 로그인 후 켜두면 재부팅해도 자동 실행되도록 등록합니다. 아래 <strong>프롬프트를 그대로 복붙</strong>하면 Claude Code가 설치부터 실행까지 다 해줍니다. 터미널 명령어를 몰라도 됩니다.</div>
   </div>
 
   <!-- 준비물 -->
   <div class="sec" id="ready">
-    <div class="sec-label">STEP 0</div>
-    <h2>사전 준비물 확인</h2>
-    <p>터미널 열고 이것부터 확인.</p>
+    <div class="sec-label">STEP 0 · 복붙</div>
+    <h2>사전 준비물</h2>
+    <p>새 컴퓨터에 <strong>Claude Code만</strong> 깔린 상태 기준입니다. 아래 프롬프트 하나로 Node 버전 확인부터 필요하면 설치까지 끝냅니다.</p>
     <div class="copybox">
-      <div class="bar"><span>버전 확인</span><button class="copybtn" onclick="copy(this,'c1')">복사</button></div>
-      <pre id="c1">node --version   # v20 이상이면 OK
-npm --version</pre>
-    </div>
-    <p>Node·npm이 없으면 nvm으로 설치:</p>
-    <div class="copybox">
-      <div class="bar"><span>nvm 설치</span><button class="copybtn" onclick="copy(this,'c2')">복사</button></div>
-      <pre id="c2">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-source ~/.zshrc
-nvm install --lts</pre>
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c1')">복사</button></div>
+      <pre id="c1">새 컴퓨터에 Claude Code만 있어. node --version으로 버전을 확인해줘. v20 이상이면 그냥 넘어가고, 없거나 낮으면 nvm을 설치해서 최신 LTS Node를 깔아줘.</pre>
     </div>
   </div>
 
   <!-- Pixel Agents 설치 -->
   <div class="sec" id="pixel-agents">
-    <div class="sec-label">STEP 1</div>
+    <div class="sec-label">STEP 1 · 복붙</div>
     <h2>Pixel Agents 설치</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="n">1</div>
-        <div class="body">
-          <strong>저장소 클론 + 빌드</strong>
-          <div class="copybox">
-            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c3')">복사</button></div>
-            <pre id="c3">mkdir -p ~/apps
-cd ~/apps
-git clone https://github.com/pixel-agents-hq/pixel-agents.git
-cd pixel-agents
-npm install
-npm run build</pre>
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <div class="body">
-          <strong>수동 실행해서 확인</strong>
-          <div class="copybox">
-            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c4')">복사</button></div>
-            <pre id="c4">node dist/cli.js --port 3100</pre>
-          </div>
-          <p><code>http://localhost:3100</code> 열었을 때 픽셀아트 사무실 화면이 보이면 성공.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">3</div>
-        <div class="body">
-          <strong>Claude Code 훅 연결(필수)</strong>
-          <p>Pixel Agents 화면에서 <strong>Settings → Instant Detection(Hooks)</strong> 켜기. 이게 켜져야 이후 여는 모든 클로드코드 세션이 자동으로 캐릭터로 나타납니다.</p>
-        </div>
-      </div>
+    <p>세션이 몇 개 떠 있는지, 뭘 하고 있는지 픽셀아트 사무실 화면으로 보여주는 도구예요.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c3')">복사</button></div>
+      <pre id="c3">~/apps 폴더에 https://github.com/pixel-agents-hq/pixel-agents 저장소를 클론해줘. 그 폴더에서 npm install, npm run build까지 실행하고, 끝나면 node dist/cli.js --port 3100 으로 백그라운드에서 실행해줘. 다 되면 http://localhost:3100 에서 픽셀아트 사무실 화면이 뜨는지 확인해줘.</pre>
     </div>
+    <img class="shot" src="img/running.jpg" alt="Pixel Agents 설치 커맨드가 실제로 실행되는 화면">
+    <p class="shot-cap">설치 커맨드가 실제로 도는 화면 (LEOYANG 세션)</p>
+    <img class="shot" src="img/office.jpg" alt="Pixel Agents 사무실 화면, 여러 캐릭터가 Thinking/Done 상태">
+    <p class="shot-cap">설치 끝나면 이렇게 보입니다 (세션마다 캐릭터, Thinking·Done 상태 표시)</p>
+    <div class="hl"><strong>Settings → Instant Detection(Hooks)</strong>도 켜주세요(브라우저에서 직접 클릭, 이것만 사람이 해야 해요). 이게 켜져야 이후 여는 모든 클로드코드 세션이 자동으로 캐릭터로 나타납니다.</div>
   </div>
 
   <!-- CloudCLI 설치 -->
   <div class="sec" id="cloudcli">
-    <div class="sec-label">STEP 2</div>
+    <div class="sec-label">STEP 2 · 복붙</div>
     <h2>CloudCLI 설치</h2>
-    <p>세션을 클릭했을 때 이어서 대화할 수 있게 해주는 웹 UI(<code>@cloudcli-ai/cloudcli</code> 패키지).</p>
-    <div class="steps">
-      <div class="step">
-        <div class="n">1</div>
-        <div class="body">
-          <strong>전역 설치</strong>
-          <div class="copybox">
-            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c5')">복사</button></div>
-            <pre id="c5">npm install -g @cloudcli-ai/cloudcli</pre>
-          </div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="n">2</div>
-        <div class="body">
-          <strong>실행</strong>
-          <div class="copybox">
-            <div class="bar"><span>터미널</span><button class="copybtn" onclick="copy(this,'c6')">복사</button></div>
-            <pre id="c6">cloudcli</pre>
-          </div>
-          <p>브라우저로 열면 최초 1회 계정 생성 화면 나옵니다(로컬 전용, single-user).</p>
-        </div>
-      </div>
+    <p>세션을 클릭했을 때 이어서 대화할 수 있게 해주는 웹 UI(<code>@cloudcli-ai/cloudcli</code> 패키지)예요.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c5')">복사</button></div>
+      <pre id="c5">@cloudcli-ai/cloudcli 패키지를 npm으로 전역 설치해줘. 설치되면 cloudcli 명령으로 실행해줘. 콘솔에 뜨는 Server URL을 알려줘.</pre>
     </div>
+    <img class="shot" src="img/cloudcli.jpg" alt="CloudCLI 채팅 화면, 세션과 바로 대화하는 모습">
+    <p class="shot-cap">캐릭터 클릭하면 이 화면으로 넘어와서 바로 이어서 대화합니다</p>
+    <p>처음 브라우저로 열면 계정 생성 화면이 뜹니다(로컬 전용 single-user라 원하는 아이디·비밀번호로 만들면 돼요).</p>
   </div>
 
   <!-- 연결 -->
   <div class="sec" id="connect">
-    <div class="sec-label">STEP 3</div>
+    <div class="sec-label">STEP 3 · 직접</div>
     <h2>Pixel Agents ↔ CloudCLI 연결</h2>
-    <p><code>http://localhost:3100</code> 접속 → Settings 열기 → <strong>Remote Session Viewer URL</strong>에 아래 입력:</p>
+    <p>여기만 브라우저에서 사람이 직접 클릭해야 해요. <code>http://localhost:3100</code> 접속 → Settings 열기 → <strong>Remote Session Viewer URL</strong>에 아래 입력:</p>
     <div class="copybox">
       <div class="bar"><span>Remote Session Viewer URL</span><button class="copybtn" onclick="copy(this,'c7')">복사</button></div>
       <pre id="c7">http://localhost:3001</pre>
