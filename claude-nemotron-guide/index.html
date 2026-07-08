@@ -95,6 +95,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#install">설치</a>
     <a href="#nemotron">Nemotron으로 실행</a>
     <a href="#evidence">실제 응답</a>
+    <a href="#othermodels">다른 모델은?</a>
     <a href="#risk">주의할 점</a>
     <a href="#check">확인</a>
   </div>
@@ -172,6 +173,19 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <div class="a">A. 로컬에서 무료로 고성능 코딩 모델을 실행해 API 비용 없이 프라이빗하게 개발할 수 있어서입니다.</div>
     </div>
     <p style="font-size:12.5px;color:var(--mut)">동일 NVIDIA 키·동일 모델을 쓰는 프록시라 Nemo Code로 붙여도 같은 품질의 답을 받습니다.</p>
+  </div>
+
+  <!-- 다른 모델 실측 -->
+  <div class="sec" id="othermodels">
+    <div class="sec-label">TESTED</div>
+    <h2>다른 무료 모델도 되나요? (실측)</h2>
+    <p>NVIDIA API 카탈로그엔 Nemotron 말고도 모델이 많습니다. <code>NEMO_MODEL</code> 값만 바꾸면 다른 모델도 시도할 수 있어서, 대형 모델인 <strong>z-ai/glm-5.2</strong>도 저희가 직접 백엔드로 호출해봤습니다.</p>
+    <table>
+      <tr><th>모델</th><th>결과</th><th>비고</th></tr>
+      <tr><td>nvidia/nemotron-3-ultra-550b-a55b</td><td><span class="badge ok" style="padding:3px 9px;font-size:12px">✓ 안정</span></td><td>약 16초, 항상 응답</td></tr>
+      <tr><td>z-ai/glm-5.2</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">⚠ 불안정</span></td><td>1회는 78초만에 성공, 재시도 시 125초에서 NVIDIA쪽 자체 타임아웃(524)으로 실패</td></tr>
+    </table>
+    <div class="hl warn">GLM 5.2처럼 크고 무거운 모델은 무료 API에서 응답이 아예 안 올 때가 있습니다(대기열이 길거나 타임아웃). 클로드코드 대체용으로는 <strong>Nemotron처럼 검증된, 응답이 꾸준히 빠른 모델</strong>을 쓰는 걸 권장합니다. <code>NEMO_MODEL</code>을 바꿔 다른 모델을 시도해볼 순 있지만, 매번 직접 속도·성공률을 확인하고 쓰세요.</div>
   </div>
 
   <!-- 주의 -->
