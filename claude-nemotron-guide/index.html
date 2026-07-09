@@ -94,6 +94,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#key">NVIDIA 키 발급</a>
     <a href="#install">설치</a>
     <a href="#nemotron">Nemotron으로 실행</a>
+    <a href="#pickmodel">모델 골라 부르기</a>
     <a href="#evidence">실제 응답</a>
     <a href="#othermodels">다른 모델은?</a>
     <a href="#risk">주의할 점</a>
@@ -160,6 +161,29 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <tr><td>Haiku</td><td>minimaxai/minimax-m2.7</td><td>고정(빠른 작업용)</td></tr>
     </table>
     <p style="font-size:12.5px;color:var(--mut)">모델 ID는 NVIDIA 쪽에서 수시로 바뀔 수 있어요. 안 잡히면 <code>clawdworks models</code>로 현재 목록을 다시 확인하세요.</p>
+  </div>
+
+  <!-- 명령어 → 모델 -->
+  <div class="sec" id="pickmodel">
+    <div class="sec-label">STEP 3.5 · 골라 부르기</div>
+    <h2>터미널에서 어떤 명령어로 어떤 모델을 부르나</h2>
+    <p>모델을 바꾸는 스위치는 딱 하나, <code>NEMO_MODEL</code> 환경변수입니다. <strong>clawdworks를 실행하기 전에 이 값만 바꾸면</strong> 그 모델로 붙습니다. 원리는 똑같고 모델 ID만 갈아끼우면 돼요.</p>
+    <table>
+      <tr><th>부를 모델</th><th>용도</th><th>터미널에 이렇게 (그다음 clawdworks 실행)</th></tr>
+      <tr><td>Nemotron (기본·안정)</td><td>코딩·범용, 빠름</td><td><code>export NEMO_MODEL=nvidia/nemotron-3-super-120b-a12b</code></td></tr>
+      <tr><td>Nemotron Ultra (대형)</td><td>더 무거운 추론, 품질 우선</td><td><code>export NEMO_MODEL=nvidia/nemotron-3-ultra-550b-a55b</code></td></tr>
+      <tr><td>GLM 5.2 (실험·불안정)</td><td>시도용, 아래 경고 참고</td><td><code>export NEMO_MODEL=z-ai/glm-5.2</code></td></tr>
+    </table>
+    <p>값을 바꾼 뒤 <code>clawdworks run "질문"</code>(한 번만 물어보기)으로 실행하면 방금 지정한 그 모델이 답합니다. 다른 모델도 <code>clawdworks models</code>로 ID를 확인해 같은 방식으로 부르면 돼요.</p>
+    <div class="hl"><strong>한 단어로 부르고 싶다면(alias):</strong> 매번 export 치기 귀찮으면 아래를 <code>~/.zshrc</code>(맥) 또는 <code>~/.bashrc</code>(리눅스)에 넣어두세요. 저장 후 새 터미널에서 한 단어로 원하는 모델에 바로 붙습니다.
+      <div class="copybox" style="margin-top:10px">
+        <div class="bar"><span>~/.zshrc 에 추가</span><button class="copybtn" onclick="copy(this,'c-alias')">복사</button></div>
+        <pre id="c-alias">alias cc-nemo='NEMO_MODEL=nvidia/nemotron-3-super-120b-a12b clawdworks'
+alias cc-ultra='NEMO_MODEL=nvidia/nemotron-3-ultra-550b-a55b clawdworks'
+alias cc-glm='NEMO_MODEL=z-ai/glm-5.2 clawdworks'</pre>
+      </div>
+      이러면 <code>cc-nemo run "파이썬 함수 짜줘"</code> 한 줄로 Nemotron이, <code>cc-ultra run "..."</code>면 대형 모델이 답합니다.
+    </div>
   </div>
 
   <!-- 실제 응답 증거 -->
