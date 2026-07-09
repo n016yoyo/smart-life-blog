@@ -166,24 +166,30 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
   <!-- 명령어 → 모델 -->
   <div class="sec" id="pickmodel">
     <div class="sec-label">STEP 3.5 · 골라 부르기</div>
-    <h2>터미널에서 어떤 명령어로 어떤 모델을 부르나</h2>
-    <p>모델을 바꾸는 스위치는 딱 하나, <code>NEMO_MODEL</code> 환경변수입니다. <strong>clawdworks를 실행하기 전에 이 값만 바꾸면</strong> 그 모델로 붙습니다. 원리는 똑같고 모델 ID만 갈아끼우면 돼요.</p>
+    <h2>터미널에서 claude-nemotron / claude-glm / claude-minimax 로 골라 부르기</h2>
+    <p>릴스에서 본 것처럼, 터미널에 <strong>명령어 한 단어</strong>로 원하는 모델을 부를 수 있어요. 설치는 STEP 2에서 이미 한 번 끝났고(모델마다 다시 깔 필요 없음), 여기선 그 위에 <strong>명령어 3개(alias)</strong>만 얹습니다. 모델을 바꾸는 스위치는 <code>NEMO_MODEL</code> 하나라, 각 모델을 미리 묶어두면 됩니다.</p>
     <table>
-      <tr><th>부를 모델</th><th>용도</th><th>터미널에 이렇게 (그다음 clawdworks 실행)</th></tr>
-      <tr><td>Nemotron (기본·안정)</td><td>코딩·범용, 빠름</td><td><code>export NEMO_MODEL=nvidia/nemotron-3-super-120b-a12b</code></td></tr>
-      <tr><td>Nemotron Ultra (대형)</td><td>더 무거운 추론, 품질 우선</td><td><code>export NEMO_MODEL=nvidia/nemotron-3-ultra-550b-a55b</code></td></tr>
-      <tr><td>GLM 5.2 (실험·불안정)</td><td>시도용, 아래 경고 참고</td><td><code>export NEMO_MODEL=z-ai/glm-5.2</code></td></tr>
+      <tr><th>명령어</th><th>부르는 모델</th><th>언제 쓰나</th><th>실측 상태</th></tr>
+      <tr><td><code>claude-nemotron</code></td><td>nvidia/nemotron-3-ultra-550b-a55b</td><td>코딩·범용 (기본)</td><td><span class="badge ok" style="padding:3px 9px;font-size:12px">✓ 잘 됨</span> 4~16초, 가끔 순간 혼잡(재시도)</td></tr>
+      <tr><td><code>claude-glm</code></td><td>z-ai/glm-5.2</td><td>한국어·다국어 긴 답</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">△ 느림</span> 20초대에 되기도, 혼잡하면 실패도</td></tr>
+      <tr><td><code>claude-minimax</code></td><td>minimaxai/minimax-m2.7</td><td>길고 복잡한 추론</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">△ 생각형</span> 사고를 많이 함, 짧은 답엔 과함</td></tr>
     </table>
-    <p>값을 바꾼 뒤 <code>clawdworks run "질문"</code>(한 번만 물어보기)으로 실행하면 방금 지정한 그 모델이 답합니다. 다른 모델도 <code>clawdworks models</code>로 ID를 확인해 같은 방식으로 부르면 돼요.</p>
-    <div class="hl"><strong>한 단어로 부르고 싶다면(alias):</strong> 매번 export 치기 귀찮으면 아래를 <code>~/.zshrc</code>(맥) 또는 <code>~/.bashrc</code>(리눅스)에 넣어두세요. 저장 후 새 터미널에서 한 단어로 원하는 모델에 바로 붙습니다.
+    <div class="hl"><strong>이 3개 명령어 만들기(alias):</strong> 아래를 <code>~/.zshrc</code>(맥) 또는 <code>~/.bashrc</code>(리눅스)에 붙여넣고 저장하세요. 새 터미널을 열면 세 명령어가 바로 잡힙니다.
       <div class="copybox" style="margin-top:10px">
         <div class="bar"><span>~/.zshrc 에 추가</span><button class="copybtn" onclick="copy(this,'c-alias')">복사</button></div>
-        <pre id="c-alias">alias cc-nemo='NEMO_MODEL=nvidia/nemotron-3-super-120b-a12b clawdworks'
-alias cc-ultra='NEMO_MODEL=nvidia/nemotron-3-ultra-550b-a55b clawdworks'
-alias cc-glm='NEMO_MODEL=z-ai/glm-5.2 clawdworks'</pre>
+        <pre id="c-alias">alias claude-nemotron='NEMO_MODEL=nvidia/nemotron-3-ultra-550b-a55b clawdworks'
+alias claude-glm='NEMO_MODEL=z-ai/glm-5.2 clawdworks'
+alias claude-minimax='NEMO_MODEL=minimaxai/minimax-m2.7 clawdworks'</pre>
       </div>
-      이러면 <code>cc-nemo run "파이썬 함수 짜줘"</code> 한 줄로 Nemotron이, <code>cc-ultra run "..."</code>면 대형 모델이 답합니다.
     </div>
+    <p>이제 터미널에서 <strong>명령어만 바꿔</strong> 부르면 그 모델이 답합니다. 예:</p>
+    <table>
+      <tr><th>이렇게 치면</th><th>일어나는 일</th></tr>
+      <tr><td><code>claude-nemotron run "파이썬 함수 짜줘"</code></td><td>Nemotron이 코드로 답</td></tr>
+      <tr><td><code>claude-glm run "이 문단 자연스러운 한국어로 다듬어줘"</code></td><td>GLM이 한국어로 답(조금 느림)</td></tr>
+      <tr><td><code>claude-minimax run "이 로직 단계별로 길게 설명해줘"</code></td><td>MiniMax가 길게 추론해서 답</td></tr>
+    </table>
+    <div class="hl warn">셋 다 <strong>같은 NVIDIA 키·같은 무료 한도</strong>를 씁니다. 무료 API라 GLM·MiniMax는 혼잡하면 느리거나 응답이 안 올 수 있으니, 일상 코딩은 가장 안정적인 <code>claude-nemotron</code>을 기본으로 두고 필요할 때만 나머지를 부르세요. 모델 ID가 안 잡히면 <code>clawdworks models</code>로 현재 목록을 확인해 alias의 ID를 맞춰주세요.</div>
   </div>
 
   <!-- 실제 응답 증거 -->
@@ -203,13 +209,14 @@ alias cc-glm='NEMO_MODEL=z-ai/glm-5.2 clawdworks'</pre>
   <div class="sec" id="othermodels">
     <div class="sec-label">TESTED</div>
     <h2>다른 무료 모델도 되나요? (실측)</h2>
-    <p>NVIDIA API 카탈로그엔 Nemotron 말고도 모델이 많습니다. <code>NEMO_MODEL</code> 값만 바꾸면 다른 모델도 시도할 수 있어서, 대형 모델인 <strong>z-ai/glm-5.2</strong>도 저희가 직접 백엔드로 호출해봤습니다.</p>
+    <p>위 3개 명령어(<code>claude-nemotron</code>·<code>claude-glm</code>·<code>claude-minimax</code>)가 부르는 모델을 저희가 오늘 NVIDIA API로 직접 호출해 실측한 결과입니다(조작 없음, 무료 API라 시점마다 변동 있음).</p>
     <table>
-      <tr><th>모델</th><th>결과</th><th>비고</th></tr>
-      <tr><td>nvidia/nemotron-3-ultra-550b-a55b</td><td><span class="badge ok" style="padding:3px 9px;font-size:12px">✓ 안정</span></td><td>약 16초, 항상 응답</td></tr>
-      <tr><td>z-ai/glm-5.2</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">⚠ 불안정</span></td><td>1회는 78초만에 성공, 재시도 시 125초에서 NVIDIA쪽 자체 타임아웃(524)으로 실패</td></tr>
+      <tr><th>명령어 / 모델</th><th>결과</th><th>실측 비고</th></tr>
+      <tr><td><code>claude-nemotron</code><br>nvidia/nemotron-3-ultra-550b-a55b</td><td><span class="badge ok" style="padding:3px 9px;font-size:12px">✓ 잘 됨</span></td><td>4~16초에 응답. 가끔 순간 혼잡(503)으로 한 번 튕겨도 재시도하면 붙음. 가장 안정적</td></tr>
+      <tr><td><code>claude-glm</code><br>z-ai/glm-5.2</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">△ 느림</span></td><td>오늘은 20초대에 한국어로 정상 응답. 과거엔 125초에서 NVIDIA쪽 타임아웃(524)으로 실패도. 변동이 큼</td></tr>
+      <tr><td><code>claude-minimax</code><br>minimaxai/minimax-m2.7</td><td><span class="badge warn" style="padding:3px 9px;font-size:12px">△ 생각형</span></td><td>응답 자체는 빠름(3~4초). 다만 답하기 전 '사고(reasoning)'를 많이 해서, 답 길이를 넉넉히 줘야 최종 답이 나옴(짧은 질문엔 과함). 길고 복잡한 작업에 적합</td></tr>
     </table>
-    <div class="hl warn">GLM 5.2처럼 크고 무거운 모델은 무료 API에서 응답이 아예 안 올 때가 있습니다(대기열이 길거나 타임아웃). 클로드코드 대체용으로는 <strong>Nemotron처럼 검증된, 응답이 꾸준히 빠른 모델</strong>을 쓰는 걸 권장합니다. <code>NEMO_MODEL</code>을 바꿔 다른 모델을 시도해볼 순 있지만, 매번 직접 속도·성공률을 확인하고 쓰세요.</div>
+    <div class="hl warn">셋 다 무료 API라 시점·혼잡도에 따라 느리거나 응답이 안 올 수 있습니다. 일상 코딩은 가장 꾸준한 <code>claude-nemotron</code>을 기본으로, GLM·MiniMax는 용도에 맞을 때만 부르세요. 모델 ID는 NVIDIA 쪽에서 수시로 바뀌니 안 잡히면 <code>clawdworks models</code>로 확인해 alias의 ID를 맞추면 됩니다.</div>
   </div>
 
   <!-- 주의 -->
