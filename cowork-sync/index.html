@@ -1,11 +1,11 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>폰이랑 PC가 같은 대화로 이어져요 (Claude Cowork 모바일·웹) | AI TIGER MASK</title>
-<meta name="description" content="Claude Cowork가 모바일과 웹으로 확장됐어요. PC에서 하던 대화를 폰에서 그대로 이어받는 실시간 싱크. 어떻게 되는지, 지금은 뭐가 되고 뭐가 안 되는지 정리했어요.">
+<meta name="description" content="Claude Cowork가 모바일과 웹으로 확장됐어요. PC에서 하던 대화를 폰에서 그대로 이어받는 실시간 싱크. 실제 화면 스샷으로 초보자도 따라 하는 설정법 3단계.">
 <meta property="og:title" content="폰이랑 PC가 같은 대화로 이어져요 (Claude Cowork 모바일·웹)">
-<meta property="og:description" content="PC에서 하던 Claude 대화를 폰에서 그대로 이어받는 실시간 싱크. 아직 베타라 안 되는 것도 솔직하게 정리.">
+<meta property="og:description" content="PC에서 하던 Claude 대화를 폰에서 그대로 이어받는 실시간 싱크. 실제 화면 스샷으로 따라 하는 설정법 3단계 + 베타 한계 솔직 정리.">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/cowork-sync/vid/poster.jpg">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/cowork-sync/img/step3_phone.jpg">
 <meta name="theme-color" content="#f4efe6">
 <style>
 :root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
@@ -18,25 +18,27 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
 .chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
 .chip b{color:var(--o)}
-.demo{margin:26px 0 4px;text-align:center}
-.demo .vwrap{position:relative;margin:0 auto;max-width:340px;border-radius:22px;overflow:hidden;box-shadow:0 24px 60px -26px rgba(0,0,0,.5);background:#000}
-.demo video{display:block;width:100%;height:auto}
-.demo .cap{font-size:12.5px;color:var(--dim);margin-top:12px}
 .who{margin:26px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
 .who h2{font-size:16px;margin-bottom:7px}
 .who p{font-size:14px;color:#43403a}
 .who p+p{margin-top:8px}
 .who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
-.lead{margin:28px 0 8px;text-align:center}
+.lead{margin:30px 0 6px;text-align:center}
 .lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
 .lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
-.steps{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
-.step{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
-.step .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
-.step h3{font-size:15.5px;margin-bottom:3px}
-.step p{font-size:13.5px;color:#4b473f}
+.steps{margin:16px 0 0;display:flex;flex-direction:column;gap:16px}
+.step{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:18px;padding:16px 16px 18px;box-shadow:0 14px 34px -24px rgba(0,0,0,.4)}
+.stephead{display:flex;gap:13px;align-items:flex-start}
+.step .n{flex:none;width:36px;height:36px;border-radius:11px;background:var(--o);color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center}
+.step h3{font-size:16px;margin-bottom:3px;letter-spacing:-.01em}
+.step .d{font-size:13.7px;color:#4b473f}
+.step .d b{color:#a2482f}
 .step code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
-.warn{margin:24px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.shot{margin-top:13px;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.1);background:#0e0e0a}
+.shot img{display:block;width:100%;height:auto}
+.shot.phone{max-width:300px;margin-left:auto;margin-right:auto}
+.tip{margin-top:11px;font-size:12.5px;color:var(--dim);background:#faf6ee;border:1px solid #ece3d2;border-radius:10px;padding:9px 12px}
+.warn{margin:26px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
 .warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
 .warn p{font-size:13.5px;color:#5c4b47}
 .warn p+p{margin-top:7px}
@@ -56,28 +58,44 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 </header>
 <div class="wrap">
 
-  <div class="demo">
-    <div class="vwrap">
-      <video controls playsinline preload="metadata" poster="vid/poster.jpg" src="vid/reel.mp4" aria-label="데스크톱과 모바일에서 같은 Claude 대화가 동시에 뜨는 데모 영상"></video>
-    </div>
-    <p class="cap">데스크톱에서 하던 대화가 폰에도 똑같이. 소리를 켜고 보세요.</p>
-  </div>
-
   <div class="who">
     <h2>Claude Cowork가 뭐냐면</h2>
     <p>Claude에게 작업을 맡기고 알아서 진행하게 두는 기능이에요. 원래는 PC(데스크톱)에서만 됐는데, 이제 <b>모바일과 웹으로 확장</b>됐습니다.</p>
     <p>핵심은 <b>같은 대화가 기기 사이에서 이어진다</b>는 거예요. PC에서 시작한 대화를, 폰을 켜면 그 자리 그대로 이어받습니다. 따로 옮기거나 복붙할 필요가 없어요.</p>
-    <p class="note">※ 이 페이지는 Anthropic이 공개한 안내를 바탕으로, 실제로 써보며 확인한 내용을 한국어로 정리한 거예요. 아직 베타라 세부 동작은 업데이트될 수 있습니다.</p>
+    <p class="note">※ 아래 스샷은 실제 Claude 앱 화면(한국어 설정)이에요. 아직 베타라 메뉴 이름·위치는 업데이트로 조금씩 바뀔 수 있습니다.</p>
   </div>
 
   <div class="lead">
-    <h2>쓰는 법, 딱 세 개</h2>
-    <p>어렵지 않아요. 계정 하나면 끝</p>
+    <h2>따라 하는 설정법, 3단계</h2>
+    <p>계정 하나만 있으면 돼요. 스샷 보면서 그대로</p>
   </div>
   <div class="steps">
-    <div class="step"><div class="n">1</div><div><h3>폰에도 같은 계정으로 로그인</h3><p>PC에서 쓰던 그 계정 그대로 Claude 앱(또는 웹)에 로그인해요. 이게 두 화면을 이어주는 열쇠예요.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h3>PC에서 작업만 던져두면</h3><p>평소처럼 데스크톱에서 Claude에게 일을 시켜두고 자리를 떠도 돼요. 진행은 계속됩니다.</p></div></div>
-    <div class="step"><div class="n">3</div><div><h3>폰으로 이어받아 확인</h3><p>밖에서 폰을 켜면 그 대화가 그대로 떠 있어요. 이어서 지시하거나 결과만 확인하고 끝낼 수도 있죠.</p></div></div>
+
+    <div class="step">
+      <div class="stephead"><div class="n">1</div><div>
+        <h3>데스크톱 앱에서 "발송" 열기</h3>
+        <div class="d">PC의 Claude 앱 왼쪽 메뉴에서 <b>발송(베타)</b>을 눌러요. Claude에게 작업을 맡겨두는 곳이에요. (영어 버전은 Dispatch)</div>
+      </div></div>
+      <div class="shot"><img src="img/step1_sidebar.jpg" alt="Claude 데스크톱 앱 왼쪽 메뉴. 발송(베타) 항목이 보임" loading="lazy"></div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="n">2</div><div>
+        <h3>설정에서 "모바일 알림" 켜기</h3>
+        <div class="d">같은 화면의 설정에서 <b>모바일 알림</b> 토글을 켜두세요. 그래야 자리를 비워도 폰으로 진행 상황 알림이 와요.</div>
+      </div></div>
+      <div class="shot"><img src="img/step2_settings.jpg" alt="Claude 설정 패널. 모바일 알림 토글이 켜져 있음" loading="lazy"></div>
+    </div>
+
+    <div class="step">
+      <div class="stephead"><div class="n">3</div><div>
+        <h3>폰에서 열면 그 대화가 그대로</h3>
+        <div class="d">밖에서 폰의 Claude 앱을 <b>같은 계정으로</b> 열면, PC에서 하던 대화가 똑같이 떠 있어요. 이어서 지시하거나 결과만 확인하고 끝낼 수도 있죠.</div>
+      </div></div>
+      <div class="shot phone"><img src="img/step3_phone.jpg" alt="폰 Claude 앱. 데스크톱에서 하던 대화가 그대로 이어져 있음" loading="lazy"></div>
+      <div class="tip">💡 같은 계정 로그인이 두 화면을 잇는 열쇠예요. 알림을 켜두면 폰이 알아서 "이거 끝났어요" 하고 알려줍니다.</div>
+    </div>
+
   </div>
 
   <div class="warn">
@@ -87,7 +105,7 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
   </div>
 
   <div class="src">
-    출처: Claude Cowork의 모바일·웹 확장 안내 (Anthropic 공식 <a href="https://www.youtube.com/watch?v=XNbc2HhL7J4" target="_blank" rel="noopener">Claude Cowork: coming to mobile and web</a> 영상). 위 데모 영상은 그 기능을 우리가 직접 재현해 만든 거예요.
+    출처: Claude Cowork의 모바일·웹 확장 안내 (Anthropic 공식 <a href="https://www.youtube.com/watch?v=XNbc2HhL7J4" target="_blank" rel="noopener">Claude Cowork: coming to mobile and web</a> 영상). 위 스샷은 그 기능을 실제로 켜서 확인한 화면이에요.
   </div>
 
   <div class="cta">
