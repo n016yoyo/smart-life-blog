@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>네이버 블로그가 혼자 써진다 — Claude로 자동 글쓰기 만드는 법 | AI TIGER MASK</title>
+<meta name="description" content="크롬이 실제 네이버 스마트에디터에서 제목·본문을 사람 속도로 타이핑하고 사진까지 자동으로 넣는 자동화를, Claude Code로 만드는 법. 복붙 프롬프트 + 실제 데모 영상 + 실전 함정 포함.">
+<meta property="og:title" content="네이버 블로그가 혼자 써진다 — Claude 자동 글쓰기">
+<meta property="og:description" content="크롬이 실제 네이버 에디터에서 혼자 타이핑·사진삽입·임시저장까지. 복붙 프롬프트로 따라 만들기.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.demo{margin:26px 0 4px}
+.demo video{width:100%;max-width:340px;display:block;margin:0 auto;border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1)}
+.demo .cap{text-align:center;color:#9a8f7e;font-size:12.5px;font-style:italic;margin-top:10px}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>네이버 블로그가 <span style="color:var(--acc)">혼자</span> 써진다</h1>
+  <p class="sub">크롬이 실제 스마트에디터에서 제목·본문을 사람 속도로 타이핑하고, 사진까지 자동으로 넣습니다. 시킨 건 세 마디, 만든 건 Claude Code.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">네이버 계정 <b>부계정 권장</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+  <div class="demo">
+    <video src="demo.mp4" autoplay muted loop playsinline></video>
+    <div class="cap">실제 네이버 에디터에서 자동으로 타이핑되는 화면 (배속)</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">뭔데</a>
+    <a href="#honest">먼저, 정직하게</a>
+    <a href="#ready">준비물</a>
+    <a href="#cookie">쿠키 넣기</a>
+    <a href="#install">설치·실행</a>
+    <a href="#traps">실전 함정 6</a>
+    <a href="#safe">안전 수칙</a>
+    <a href="#check">확인</a>
+  </div>
+
+  <!-- 뭔데 -->
+  <div class="sec" id="what">
+    <div class="sec-label">INTRO</div>
+    <h2>이게 뭔데?</h2>
+    <p>블로그를 매일 쓰는 건 진짜 고됩니다. 그래서 <strong>Claude Code에게 브라우저 조종을 맡겼습니다.</strong> Claude가 짠 코드가 크롬을 열고, 실제 네이버 스마트에디터에 들어가서 제목과 본문을 한 글자씩(사람 속도로) 타이핑하고, 준비한 이미지를 문단 사이에 자동으로 끼워 넣고, <strong>임시저장까지</strong> 합니다.</p>
+    <div class="hl"><strong>동작 원리:</strong> Claude Code → (자동화 스크립트) → 브라우저 조종 도구 Playwright → 진짜 크롬 창 → 네이버 에디터에서 키보드·마우스를 사람처럼 조작. 네이버 입장에선 "누가 손으로 쓰는 것"과 구분이 안 됩니다.</div>
+  </div>
+
+  <!-- 정직하게 -->
+  <div class="sec" id="honest">
+    <div class="sec-label">READ FIRST</div>
+    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <p>자동화는 <strong>임시저장까지</strong>입니다. <strong>발행 버튼은 사람이</strong> 누르세요. 두 가지 이유예요.</p>
+    <ul>
+      <li><strong>사고 방지</strong> — 검토 없이 자동 발행하면 오타·잘못된 사진·이상한 문장이 그대로 공개됩니다. 초안은 AI, 최종 확인은 사람 — 이게 안전합니다.</li>
+      <li><strong>계정 보호</strong> — 대량 자동 발행은 네이버가 스팸으로 볼 수 있습니다. 하루 1~2건, 검토 후 발행이 안전한 습관입니다.</li>
+    </ul>
+    <div class="hl warn"><strong>네이버 공식 "글쓰기 API"는 없습니다.</strong> (2026년 현재 오픈 API는 검색만 제공) 그래서 이 방법은 실제 에디터를 자동으로 조작하는 방식이고, 그만큼 <strong>부계정으로 시작</strong>하기를 권합니다.</div>
+  </div>
+
+  <!-- 준비물 -->
+  <div class="sec" id="ready">
+    <div class="sec-label">STEP 0 · 복붙</div>
+    <h2>사전 준비물</h2>
+    <p>새 컴퓨터에 <strong>Claude Code만</strong> 깔린 상태 기준입니다. 나머지는 아래 프롬프트 하나로 Claude가 알아서 설치합니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c0')">복사</button></div>
+      <pre id="c0">네이버 블로그 자동 글쓰기를 만들 거야. node 18 이상이 있는지 확인하고, 없으면 설치해줘. 그리고 브라우저 자동화용 playwright-core를 설치해줘. 크로미움은 시스템에 있는 걸 쓸 거야.</pre>
+    </div>
+    <div class="badge-row">
+      <span class="badge ok">✓ Claude Code</span>
+      <span class="badge ok">✓ Node 18+</span>
+      <span class="badge ok">✓ 크롬(또는 크로미움)</span>
+      <span class="badge">네이버 부계정</span>
+    </div>
+  </div>
+
+  <!-- 쿠키 -->
+  <div class="sec" id="cookie">
+    <div class="sec-label">STEP 1 · 5분</div>
+    <h2>네이버 로그인, 한 번만 넘겨주기</h2>
+    <p>자동화가 "로그인된 나"로 동작하려면 로그인 정보(쿠키)를 한 번 넘겨주면 됩니다. 매번 할 필요 없이 처음 한 번뿐이에요.</p>
+    <ol>
+      <li>크롬에서 <code>naver.com</code> 접속 → <strong>로그인</strong> ("로그인 상태 유지" 체크)</li>
+      <li><strong>F12</strong> → 상단 <strong>Application</strong> 탭 → 왼쪽 <strong>Cookies → https://www.naver.com</strong></li>
+      <li>필터 칸에 <code>NID</code> 입력 → <strong>NID_AUT</strong>, <strong>NID_SES</strong> 두 값 복사</li>
+      <li>Claude Code에게 그 두 값을 주고 "쿠키 저장해줘"라고 하면, 안전한 곳(.gitignore 경로)에 보관합니다.</li>
+    </ol>
+    <div class="trap">
+      <div class="t">⚠ 함정 1 · NID가 안 보이면</div>
+      <p>필터에 <code>NID</code> 쳤는데 아무것도 없다면, 그 창이 <strong>로그인 안 된 상태</strong>입니다. NID_AUT·NID_SES는 로그인하는 순간 생기는 쿠키라, 로그인부터 하고 다시 확인하세요.</p>
+    </div>
+    <div class="hl warn"><strong>NID_AUT·NID_SES는 사실상 아이디+비번급입니다.</strong> 공개 채팅방·저장소에 올리지 말고, 부계정으로 쓰세요.</div>
+  </div>
+
+  <!-- 설치 실행 -->
+  <div class="sec" id="install">
+    <div class="sec-label">STEP 2 · 복붙</div>
+    <h2>글감 주고, 실행하기</h2>
+    <p>어떤 글을 쓸지 Claude에게 알려주고, 한 줄로 실행합니다. 글 내용·사진은 Claude가 생성하게 하거나, 직접 준비한 걸 넣어도 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c1')">복사</button></div>
+      <pre id="c1">이 주제로 네이버 블로그 초안을 써줘: (여기에 주제).
+그리고 이 자동화 규칙 세 가지로 실행해줘.
+하나, 브라우저를 열어 실제 네이버 스마트에디터에 들어가 줘.
+둘, 제목과 본문을 사람 속도로(한 글자씩) 타이핑하고, 문단 사이에 사진을 자동으로 넣어 줘.
+셋, 발행은 하지 말고 임시저장까지만 해줘. 전 과정은 영상으로 녹화해 줘.</pre>
+    </div>
+    <div class="hl ok"><strong>결과:</strong> 크롬이 뜨고 → 제목이 또박또박 쳐지고 → 본문이 촤르륵 → 사진이 척척 들어가고 → 임시저장(저장 카운트가 올라감). 끝나면 <code>out/</code> 폴더에 전 과정 녹화 영상이 저장됩니다.</p>
+    <p>발행은 네이버 블로그 앱이나 웹에서 <strong>초안을 열어 검토한 뒤 발행 버튼만</strong> 누르면 됩니다.</p>
+  </div>
+
+  <!-- 함정 -->
+  <div class="sec" id="traps">
+    <div class="sec-label">우리가 먼저 밟은 지뢰</div>
+    <h2>실전 함정 6가지</h2>
+    <p>직접 만들면서 실제로 막혔던 지점들입니다. Claude에게 "이 함정 조심해서 해줘"라고 같이 주면 시행착오가 줄어요.</p>
+
+    <div class="trap"><div class="t">1 · "취소"가 "취소선"을 누른다</div>
+      <p>팝업 닫기 버튼을 <code>"취소" 포함</code>으로 찾으면, 에디터 툴바의 <strong>"취소선"</strong> 버튼을 눌러서 본문이 전부 취소선으로 써집니다. <strong>정확히 일치</strong>(text-is)로 찾게 하세요.</p></div>
+
+    <div class="trap"><div class="t">2 · 글쓰기 진입 URL은 딱 하나만 통과</div>
+      <p>구형 진입점(<code>GoBlogWrite.naver</code> 등)은 재로그인으로 튕깁니다. <strong><code>blog.naver.com/{내아이디}/postwrite</code></strong> 이 신형 주소만 바로 열립니다.</p></div>
+
+    <div class="trap"><div class="t">3 · "작성 중인 글 복구" 팝업</div>
+      <p>에디터 열면 이전 임시저장 복구 팝업이 뜹니다. 팝업 <strong>안에서만</strong> "취소"(=새로 쓰기)를 누르게 하세요(함정 1과 세트).</p></div>
+
+    <div class="trap"><div class="t">4 · 쿠키 하나라도 형식 틀리면 전체 실패</div>
+      <p>쿠키에 도메인 값이 빠지면 "domain/path pair" 에러로 전부 안 들어갑니다. 하나씩 넣어 보며 범인을 찾게 하세요.</p></div>
+
+    <div class="trap"><div class="t">5 · 녹화하려면 ffmpeg 연결</div>
+      <p>Playwright 화면 녹화는 자체 ffmpeg를 요구합니다. 시스템 ffmpeg를 심볼릭 링크로 걸어주면 됩니다(Claude가 처리).</p></div>
+
+    <div class="trap"><div class="t">6 · 자동화 후엔 녹화를 프레임 단위로 확인</div>
+      <p>스크린샷 한 장으론 "언제부터 꼬였는지" 모릅니다. 녹화를 몇 초 간격으로 잘라 눈으로 확인하면 문제 지점이 바로 보입니다.</p></div>
+  </div>
+
+  <!-- 안전 -->
+  <div class="sec" id="safe">
+    <div class="sec-label">SAFETY</div>
+    <h2>안전하게 오래 쓰는 법</h2>
+    <table>
+      <tr><th>항목</th><th>권장</th></tr>
+      <tr><td>계정</td><td>부계정으로 시작, 익숙해지면 본계정</td></tr>
+      <tr><td>발행</td><td>자동 저장 + <strong>사람이 검토 후 발행</strong></td></tr>
+      <tr><td>빈도</td><td>하루 1~2건 (대량 자동발행 X)</td></tr>
+      <tr><td>속도</td><td>사람 속도 타이핑(delay) 유지 = 봇 티 안 남</td></tr>
+      <tr><td>쿠키</td><td>gitignore 경로 보관, 공개 금지</td></tr>
+    </table>
+  </div>
+
+  <!-- 확인 -->
+  <div class="sec" id="check">
+    <div class="sec-label">CHECK</div>
+    <h2>제대로 됐는지 확인</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ 크롬이 자동으로 뜬다</span>
+      <span class="badge ok">✓ 제목·본문이 저절로 쳐진다</span>
+      <span class="badge ok">✓ 사진이 문단 사이에 들어간다</span>
+      <span class="badge ok">✓ 저장 카운트가 올라간다</span>
+      <span class="badge ok">✓ out 폴더에 녹화 영상</span>
+    </div>
+    <p style="margin-top:14px">여기까지 되면, 이제 매일 쓰던 시간을 검토 몇 분으로 줄일 수 있습니다.</p>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 만드는 영상 보기 →</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>네이버 블로그 자동 글쓰기 가이드 · 2026 · 직접 만들며 기록</p>
+    <p style="margin-top:4px">브라우저 자동화=Playwright(Apache-2.0). 네이버·Claude는 각 사 소유·비제휴. 자동화는 본인 계정 책임 하에.</p>
+    <p style="margin-top:6px"><a href="https://n016yoyo.github.io/smart-life-blog/">← 홈으로</a></p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+// 조회수: 이 페이지 뷰 +1 후 값 표시
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-blog-auto-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent='—'; });
+</script>
+</body>
+</html>
