@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>네이버 블로그가 혼자 써진다 — Claude로 자동 글쓰기 만드는 법 | AI TIGER MASK</title>
-<meta name="description" content="크롬이 실제 네이버 스마트에디터에서 제목·본문을 사람 속도로 타이핑하고 사진까지 자동으로 넣는 자동화를, Claude Code로 만드는 법. 복붙 프롬프트 + 실제 데모 영상 + 실전 함정 포함.">
+<meta name="description" content="크롬이 실제 네이버 스마트에디터에서 제목·본문을 사람 속도로 타이핑하고 사진까지 자동으로 넣는 자동화를, Claude Code로 만드는 법. 글감 자동 선정(유튜브 트렌드 점수화)까지. 복붙 프롬프트 + 실전 함정 포함.">
 <meta property="og:title" content="네이버 블로그가 혼자 써진다 — Claude 자동 글쓰기">
 <meta property="og:description" content="크롬이 실제 네이버 에디터에서 혼자 타이핑·사진삽입·임시저장까지. 복붙 프롬프트로 따라 만들기.">
 <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
@@ -86,6 +86,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#ready">준비물</a>
     <a href="#cookie">쿠키 넣기</a>
     <a href="#install">설치·실행</a>
+    <a href="#topic">글감 자동 선정</a>
     <a href="#traps">실전 함정 6</a>
     <a href="#safe">안전 수칙</a>
     <a href="#check">확인</a>
@@ -161,6 +162,38 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
     <div class="hl ok"><strong>결과:</strong> 크롬이 뜨고 → 제목이 또박또박 쳐지고 → 본문이 촤르륵 → 사진이 척척 들어가고 → 임시저장(저장 카운트가 올라감). 끝나면 <code>out/</code> 폴더에 전 과정 녹화 영상이 저장됩니다.</p>
     <p>발행은 네이버 블로그 앱이나 웹에서 <strong>초안을 열어 검토한 뒤 발행 버튼만</strong> 누르면 됩니다.</p>
+  </div>
+
+  <!-- 글감 자동 선정 -->
+  <div class="sec" id="topic">
+    <div class="sec-label">STEP 3 · 업그레이드</div>
+    <h2>글감도 자동으로 찾아요</h2>
+    <p>위에서는 글감을 사람이 줬죠. 여기서 한 단계 더: <strong>"오늘 뭐 쓰지"까지 Claude가 정하게</strong> 합니다. 원리는 간단해요. 이번 주 유튜브에서 터진 영상들을 전부 긁어와서, 내 주제와 맞는 글감에 점수를 매기고, 1등을 골라잡습니다.</p>
+
+    <h3>준비: 유튜브 API 키 (무료, 10분)</h3>
+    <p>유튜브 데이터를 공식으로 받아오는 열쇠입니다. 하루 1만 요청까지 무료라 개인용으론 차고 넘칩니다.</p>
+    <ol>
+      <li><code>console.cloud.google.com</code> 접속 → 구글 로그인 → 새 프로젝트 만들기</li>
+      <li>상단 검색에 <strong>YouTube Data API v3</strong> → <strong>사용(Enable)</strong></li>
+      <li>왼쪽 <strong>사용자 인증 정보</strong> → <strong>+ 사용자 인증 정보 만들기 → API 키</strong></li>
+      <li>키를 복사해서 Claude Code에게 "유튜브 API 키야, 안전한 곳에 저장해줘"</li>
+    </ol>
+
+    <h3>복붙 프롬프트</h3>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c2')">복사</button></div>
+      <pre id="c2">유튜브 API 키로 "글감 자동 선정"을 만들어줘.
+하나, 이번 주에 올라온 내 주제 관련 유튜브 영상을 조회수 순으로 최대한 많이 수집해줘. (내 주제: 여기에 입력)
+둘, 제목에 내 독자가 반응하는 신호어가 들어가면 가점을 줘. (내 신호어: 예시로 무료·돈·초보·따라하기, 내 니치에 맞게 바꿔줘)
+셋, 점수 순으로 줄 세워서 1등을 이번 글감으로 선정하고, 왜 선정했는지 근거(점수·조회수)를 파일로 남겨줘.
+넷, 선정된 글감으로 위에서 만든 블로그 자동 글쓰기를 이어서 실행해줘. 발행은 하지 말고.</pre>
+    </div>
+
+    <p>실제로 돌리면 이런 화면이 나옵니다. 이번 주 영상 174건을 훑어서 점수를 매긴 실측 결과예요.</p>
+    <img src="topic_rank.jpg" alt="이번 주 유튜브 트렌드 174건을 점수화한 실제 터미널 출력" style="width:100%;border-radius:12px;border:1px solid var(--line);margin:10px 0" loading="lazy">
+
+    <div class="hl warn"><strong>신호어는 반드시 내 니치로 바꾸세요.</strong> 위 예시(무료·돈·따라하기)는 저희 채널 독자 기준입니다. 점수 기준이 곧 "내 독자가 뭘 클릭하는가"라서, 이걸 자기 독자에 맞게 잡는 게 이 자동화의 절반입니다.</div>
+    <div class="hl ok"><strong>팩트 주의:</strong> 글감이 뉴스성이면(예: 새 AI 출시) 본문 팩트는 공식 문서·실측으로 확인하고 쓰게 하세요. 검토 없이 발행하면 틀린 글이 그대로 나갑니다. 그래서 발행은 끝까지 사람 몫.</div>
   </div>
 
   <!-- 함정 -->
