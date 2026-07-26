@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>서로이웃 순회를 글 읽고 댓글 달게 , Claude 자동화 만드는 법 | AI TIGER MASK</title>
+<meta name="description" content="복붙 인사 댓글 말고, 본문을 끝까지 읽고 그 내용을 짚는 댓글을 자동으로. 공감까지. Claude Code로 만드는 법 + 실전 함정 5가지 + 실제 실행 로그.">
+<meta property="og:title" content="서로이웃 순회를 글 읽고 댓글 달게 , Claude 자동화">
+<meta property="og:description" content="본문 3,257자를 통째로 읽고 그 내용을 짚는 댓글. 복붙 봇과 갈리는 지점.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>서로이웃 순회를 <span style="color:var(--acc)">글 읽고</span> 댓글 달게</h1>
+  <p class="sub">"잘 보고 갑니다" 같은 복붙 댓글 말고, 본문을 끝까지 읽고 그 내용을 짚는 댓글. 공감까지 자동. 시킨 건 명령 한 줄, 만든 건 Claude Code.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">네이버 계정 <b>부계정 권장</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">이게 뭔데?</a>
+    <a href="#honest">정직하게 짚고 갑니다</a>
+    <a href="#prep">준비물</a>
+    <a href="#login">로그인 한 번</a>
+    <a href="#run">명령 한 줄</a>
+    <a href="#result">실제 실행 결과</a>
+    <a href="#traps">실전 함정 5가지</a>
+    <a href="#safe">안전하게 오래 쓰는 법</a>
+  </div>
+
+  <div class="sec" id="what">
+    <div class="sec-label">WHAT</div>
+    <h2>이게 뭔데?</h2>
+    <p>네이버 블로그를 키우려면 서로이웃 글에 들러 공감을 누르고 댓글을 답니다. 손으로 하면 한 곳당 1분, 이웃이 39곳이면 39분입니다. 매일이요.</p>
+    <p>그래서 자동화 도구를 찾으면 대부분 <b>아무 글에나 같은 인사말을 붙이는 봇</b>입니다. 받는 사람도 압니다. 그게 티가 나는 순간 이웃 관리가 아니라 스팸이 됩니다.</p>
+    <div class="hl">
+      <strong>이 가이드가 만드는 것은 다릅니다.</strong> 크롬이 이웃 새글을 모으고 → <b>본문을 통째로 읽고</b> → 그 내용을 짚은 댓글을 Claude가 써서 → 공감과 함께 답니다. 글을 안 읽으면 나올 수 없는 문장이 나옵니다.
+    </div>
+  </div>
+
+  <div class="sec" id="honest">
+    <div class="sec-label">HONEST</div>
+    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ 글 읽기·댓글 작성·공감 자동</span>
+      <span class="badge warn">△ 몇 곳을 돌지는 사람이 정함</span>
+      <span class="badge warn">△ 댓글 내용은 사람이 검토 권장</span>
+    </div>
+    <p>과장 없이 씁니다. 이건 <b>사람 대신 읽고 쓰는 도구</b>지, 계정을 방치해도 되는 도구가 아닙니다. 처음에는 <code>--dry</code>(댓글 생성만 하고 등록 안 함)로 몇 번 돌려 문장 품질을 눈으로 보고, 마음에 들 때 등록을 켜세요.</p>
+    <div class="hl warn">
+      <strong>속도를 올리려고 병렬로 돌리지 마세요.</strong> 남의 블로그를 도는 자동화에서 방문 간격은 성능이 아니라 <b>계정 안전장치</b>입니다. 이 가이드는 방문마다 3~5초를 일부러 쉽니다.
+    </div>
+  </div>
+
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물은 딱 하나</h2>
+    <table>
+      <tr><th>준비물</th><th>설명</th></tr>
+      <tr><td>Claude Code</td><td>이 도구를 만들어줄 주인공. 설치만 하면 됩니다. <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
+      <tr><td>네이버 계정</td><td>서로이웃이 맺어져 있는 계정. <b>부계정 권장</b></td></tr>
+      <tr><td>코딩 지식</td><td>필요 없습니다. 아래 프롬프트를 그대로 붙여넣으면 됩니다.</td></tr>
+    </table>
+    <p>따로 살 것도, 결제할 것도 없습니다.</p>
+  </div>
+
+  <div class="sec" id="login">
+    <div class="sec-label">STEP 1</div>
+    <h2>네이버 로그인, 처음 한 번만</h2>
+    <p>자동화가 매번 로그인을 물어보면 쓸모가 없습니다. 한 번 로그인한 상태를 파일로 저장해두고 계속 씁니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
+      <pre id="p1">네이버에 로그인한 상태를 파일로 저장하는 스크립트를 만들어줘.
+
+- Playwright로 크롬을 띄우고 headless는 끄기(내가 직접 로그인할 수 있게)
+- 내가 로그인을 마칠 때까지 기다렸다가, 로그인 완료를 감지하면
+  storageState를 naver_state.json 으로 저장
+- 그 파일은 .gitignore 에 넣어서 절대 커밋되지 않게 해줘
+
+★중요: 저장할 때 NID_AUT 와 NID_SES 쿠키가 실제로 들어있는지 먼저 확인하고,
+없으면 파일을 덮어쓰지 말고 경고만 출력해줘.</pre>
+    </div>
+    <div class="hl warn">
+      <strong>왜 저 ★가 중요하냐면</strong> , 네이버 로그인 쿠키는 만료값이 -1인 <b>세션 쿠키</b>라 브라우저를 닫으면 사라집니다. 이걸 모르고 종료 후에 저장하면 <b>실행할 때마다 로그인이 지워집니다.</b> 저는 이걸 모르고 한동안 로그아웃 상태로 돌렸습니다.
+    </div>
+  </div>
+
+  <div class="sec" id="run">
+    <div class="sec-label">STEP 2</div>
+    <h2>그다음부턴 명령 한 줄</h2>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div>
+      <pre id="p2">네이버 서로이웃 순회 자동화를 만들어줘.
+
+동작 순서
+1) 저장해둔 naver_state.json 으로 로그인 상태를 복원하고
+   https://section.blog.naver.com/BlogHome.naver 에서 이웃 새글 목록을 수집
+2) 위에서부터 N개 글을 방문해서, 각 글의 본문 전체를 텍스트로 읽기
+   (요약 말고 전문. .se-main-container 또는 #postViewArea)
+3) 읽은 제목·본문을 Claude Code CLI(claude -p)에 넘겨 댓글 한 줄 생성
+   규칙: 35자 이내 / 글에 실제로 나온 구체적 내용을 하나 짚을 것 /
+        "잘 보고 가요" 같은 아무 글에나 붙는 인사 댓글 금지
+4) 공감(하트) 누르고, 생성된 댓글 등록
+5) 다음 글까지 3~5초 랜덤 대기
+
+옵션
+--dry      댓글을 생성만 하고 등록은 안 함(처음엔 이걸로 확인)
+--nolike   공감도 누르지 않음
+--rec      전 과정 화면 녹화
+
+실행 결과(방문수·읽은 글자수·댓글·공감)를 JSON으로 저장해줘.</pre>
+    </div>
+    <p>Claude가 코드를 다 짜면, 이후엔 이 한 줄입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>실행</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div>
+      <pre id="p3">node neighbor_round.js 3 --dry</pre>
+    </div>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">EVIDENCE</div>
+    <h2>실제로 돌린 결과</h2>
+    <p>영상에 나온 화면은 전부 실제 실행 기록입니다. 아래는 그 실행의 터미널 출력 그대로입니다.</p>
+    <pre style="border-radius:12px">11:49:38 이웃 새글 목록 열기
+11:49:43 이웃 새글 39건 수집
+11:49:43 방문 1/3: 윤여정의 새로운 드라마 추천~ 윤여정 배우가 다시
+11:49:46   읽음 1489자
+11:50:02   댓글안: 송강호가 연하남 닥터 김이라니 이 조합 꼭 봐야겠어요
+11:50:04   ♥ 공감 완료
+11:50:16   💬 댓글 등록 완료
+11:50:20 방문 2/3: 정주행 필수 드라마 추천! 이번 포스팅은 넷플릭스를
+11:50:23   읽음 3257자
+11:50:45   댓글안: 사약 마시고 무명배우로 부활이라니, 멋진신세계 찜했어요
+11:50:48   ♥ 공감 완료
+11:50:59   💬 댓글 등록 완료
+11:51:04 방문 3/3: 시간 여행 한국 드라마 모아보기~ 달의연인 보보경심
+11:51:07   읽음 1154자
+11:51:24   댓글안: 철인왕후 라면 만드는 장면 저도 그게 제일 웃겼어요
+11:51:26   ♥ 공감 완료
+11:51:38   💬 댓글 등록 완료
+11:51:42 끝. 방문 3 / 공감 3 / 댓글 3</pre>
+    <div class="hl ok">
+      <strong>"철인왕후 라면 만드는 장면"</strong> 같은 문장은 글을 읽지 않으면 쓸 수 없습니다. 이게 복붙 봇과 갈리는 지점입니다.
+    </div>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>실전 함정 5가지</h2>
+    <p>직접 만들면서 실제로 막혔던 것들입니다. 미리 알면 몇 시간을 아낍니다.</p>
+
+    <div class="trap">
+      <div class="t">1 · 댓글창이 DOM에 아예 없다</div>
+      <p>페이지를 열어도 댓글 입력창을 못 찾습니다. 네이버는 <code>PostView</code> iframe 안의 <code>a.btn_comment</code>를 <b>눌러야</b> 댓글 영역을 로드합니다. 그 전에는 존재하지 않습니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">2 · click이 타임아웃난다</div>
+      <p>입력창을 찾아도 <code>click()</code>이 8초 타임아웃으로 실패합니다. 다른 요소에 가려져 있기 때문입니다. <code>focus()</code> 후 <code>fill()</code>이 훨씬 견고합니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">3 · 실행할수록 로그인이 지워진다</div>
+      <p>위에서 말한 세션 쿠키 함정입니다. 저장 전에 <code>NID_AUT</code>·<code>NID_SES</code>가 있는지 확인하고, 없으면 <b>덮어쓰지 않게</b> 막아야 합니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">4 · 본문을 "요약"해서 읽으면 티가 난다</div>
+      <p>본문 앞 몇 줄만 넘기면 댓글이 뻔해집니다. 전문을 넘겨야 구체적인 장면·수치를 짚습니다. 실제로 1,154자부터 3,257자까지 통째로 넘겼습니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">5 · 공감을 두 번 누르면 취소된다</div>
+      <p>하트는 토글입니다. 이미 공감한 글에 또 누르면 <b>취소</b>됩니다. 누르기 전에 버튼 class에 <code>on</code>이 있는지 확인하세요.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="safe">
+    <div class="sec-label">SAFE</div>
+    <h2>안전하게 오래 쓰는 법</h2>
+    <ul>
+      <li><b>부계정으로 시작하세요.</b> 자동화는 본인 계정 책임입니다.</li>
+      <li><b>하루 방문 수를 적당히.</b> 한 번에 수십 곳을 도는 것보다 매일 몇 곳이 안전합니다.</li>
+      <li><b>대기 시간을 줄이지 마세요.</b> 3~5초 간격은 느린 게 아니라 안전장치입니다.</li>
+      <li><b>처음엔 <code>--dry</code>로.</b> 댓글 문장이 마음에 들 때까지 등록은 끄고 확인하세요.</li>
+      <li><b>가끔 눈으로 확인하세요.</b> 내가 단 댓글이 실제로 어떻게 보이는지 직접 보는 게 제일 확실합니다.</li>
+    </ul>
+    <div class="hl">
+      이웃 관리는 결국 <strong>관계</strong>입니다. 이 도구는 시간을 아껴줄 뿐, 성의를 대신하지는 않습니다. 그래서 "글을 읽고 쓴다"는 조건을 절대 빼지 않았습니다.
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 만드는 영상 보기 →</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>네이버 서로이웃 순회 자동화 가이드 · 2026 · 직접 만들며 기록</p>
+    <p style="margin-top:4px">브라우저 자동화=Playwright(Apache-2.0). 네이버·Claude는 각 사 소유·비제휴. 자동화는 본인 계정 책임 하에.</p>
+    <p style="margin-top:6px">
+      <a href="https://n016yoyo.github.io/smart-life-blog/naver-blog-auto-guide/">← 글쓰기 자동화 가이드</a> ·
+      <a href="https://n016yoyo.github.io/smart-life-blog/">홈으로</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-neighbor-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+</script>
+</body>
+</html>
