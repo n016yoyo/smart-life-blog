@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>네이버 블로그 3단 자동화, 발행·글감·이웃 댓글까지 | AI TIGER MASK</title>
+<meta name="description" content="글 쓰기, 글감 고르기, 이웃 댓글까지 세 단계를 Claude Code로 자동화하는 순서. 단계별 복붙 프롬프트와 실제 실행 로그, 발행 전 사람이 확인할 것까지 한 장에 정리했습니다.">
+<meta property="og:title" content="네이버 블로그 3단 자동화, 발행·글감·이웃 댓글까지">
+<meta property="og:description" content="1단 발행, 2단 글감 선정, 3단 이웃 댓글. 만드는 순서대로 복붙 프롬프트와 실측 결과.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin:14px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.step .n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:var(--acc);color:#fff;font-weight:800;font-size:15px;margin-bottom:8px}
+.step h3{font-size:17px;font-weight:800;margin:2px 0 4px;letter-spacing:-.01em}
+.step .meta{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+.more{display:inline-block;margin-top:6px;font-size:13px;font-weight:800;color:var(--acc);text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:8px 14px;background:#fff7f3}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>네이버 블로그, <span style="color:var(--acc)">세 단계</span>로 나눠 자동화</h1>
+  <p class="sub">블로그가 어려운 게 아니라 시간이 없는 겁니다. 글 쓰기, 글감 고르기, 이웃 댓글. 이 세 가지를 순서대로 Claude Code에게 넘기는 지도입니다.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">네이버 계정 <b>부계정 권장</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#map">3단 지도</a>
+    <a href="#order">만드는 순서</a>
+    <a href="#prep">공통 준비물</a>
+    <a href="#s1">1단 발행</a>
+    <a href="#s2">2단 글감</a>
+    <a href="#s3">3단 이웃 댓글</a>
+    <a href="#result">실제 결과</a>
+    <a href="#honest">정직하게</a>
+    <a href="#check">확인</a>
+  </div>
+
+  <!-- 지도 -->
+  <div class="sec" id="map">
+    <div class="sec-label">MAP</div>
+    <h2>뭘 세 개로 나눴나</h2>
+    <p>블로그 한 편을 올리는 일은 사실 세 가지 다른 일입니다. 한 번에 다 자동화하려니까 어려운 거지, 나눠 놓으면 각각은 프롬프트 한 장짜리입니다.</p>
+    <table>
+      <tr><th>단계</th><th>손으로 하면</th><th>자동화하면</th></tr>
+      <tr><td><b>1단 · 발행</b></td><td>글 하나에 한두 시간</td><td>크롬이 실제 스마트에디터에 사람 속도로 타이핑, 사진 삽입, 임시저장</td></tr>
+      <tr><td><b>2단 · 글감</b></td><td>"오늘 뭐 쓰지"로 한참</td><td>한 주치 유튜브 트렌드를 모아 내 니치 신호어로 점수화, 1등만 남김</td></tr>
+      <tr><td><b>3단 · 이웃</b></td><td>이웃 39곳이면 39분</td><td>본문을 끝까지 읽고 그 내용을 짚은 댓글, 공감까지</td></tr>
+    </table>
+    <div class="hl"><strong>공통 원리는 하나입니다.</strong> Claude Code가 짠 코드가 진짜 크롬을 열어 사람처럼 조작합니다. 네이버에 글쓰기 공식 API가 없어서(2026년 현재 오픈 API는 검색만) 이 방식을 씁니다.</div>
+  </div>
+
+  <!-- 순서 -->
+  <div class="sec" id="order">
+    <div class="sec-label">ORDER</div>
+    <h2>만드는 순서는 1 → 3 → 2</h2>
+    <p>번호 순서대로 만들지 않아도 됩니다. 실제로 편한 순서는 이겁니다.</p>
+    <ol>
+      <li><b>1단 발행을 먼저.</b> 로그인 넘겨주기, 에디터 진입, 팝업 처리 같은 기본 벽을 여기서 다 넘습니다. 나머지 두 개는 이 위에 얹힙니다.</li>
+      <li><b>그다음 3단 이웃 댓글.</b> 글을 매일 못 올려도 이웃 관리는 매일 필요합니다. 체감 절약이 제일 큽니다.</li>
+      <li><b>마지막에 2단 글감.</b> 유튜브 API 키를 새로 받아야 해서 준비물이 하나 늘어납니다. 앞의 둘이 돌아간 뒤에 붙이세요.</li>
+    </ol>
+    <div class="hl warn"><strong>세 개를 한 프롬프트로 시키지 마세요.</strong> 어디서 막혔는지 알 수 없어집니다. 하나가 끝까지 돌아가는 걸 눈으로 본 다음 다음 것으로 넘어가는 편이 결국 빠릅니다.</div>
+  </div>
+
+  <!-- 준비물 -->
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>세 단계가 같이 쓰는 준비물</h2>
+    <table>
+      <tr><th>준비물</th><th>설명</th></tr>
+      <tr><td>Claude Code</td><td>이 도구들을 대신 만들어줄 주인공. 설치만 하면 됩니다. <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
+      <tr><td>네이버 계정</td><td>이웃이 맺어져 있는 계정. <b>부계정 권장</b></td></tr>
+      <tr><td>로그인 저장</td><td>한 번 로그인한 상태를 파일로 저장해 세 단계가 같이 씁니다(아래 프롬프트)</td></tr>
+      <tr><td>코딩 지식</td><td>필요 없습니다. 아래 상자를 그대로 붙여넣으면 됩니다.</td></tr>
+    </table>
+    <p>로그인 저장은 처음 한 번만 하고, 1·2·3단이 이 파일 하나를 같이 씁니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p0')">복사</button></div>
+      <pre id="p0">네이버에 로그인한 상태를 파일로 저장하는 스크립트를 만들어줘.
+
+- Playwright로 크롬을 띄우고 headless는 끄기(내가 직접 로그인할 수 있게)
+- 내가 로그인을 마칠 때까지 기다렸다가, 로그인 완료를 감지하면
+  storageState를 naver_state.json 으로 저장
+- 그 파일은 .gitignore 에 넣어서 절대 커밋되지 않게 해줘
+
+★중요: 저장할 때 NID_AUT 와 NID_SES 쿠키가 실제로 들어있는지 먼저 확인하고,
+없으면 파일을 덮어쓰지 말고 경고만 출력해줘.</pre>
+    </div>
+    <div class="hl warn"><strong>왜 저 ★가 중요하냐면</strong>, 네이버 로그인 쿠키는 만료값이 -1인 <b>세션 쿠키</b>라 브라우저를 닫으면 사라집니다. 이걸 모르고 종료 후에 저장하면 실행할 때마다 로그인이 지워집니다. 저희도 한동안 로그아웃 상태로 돌렸습니다.</div>
+  </div>
+
+  <!-- 1단 -->
+  <div class="sec" id="s1">
+    <div class="sec-label">STEP 1</div>
+    <h2>1단, 크롬이 대신 타이핑합니다</h2>
+    <div class="step">
+      <div class="n">1</div>
+      <h3>제목·본문을 한 글자씩, 사진까지 넣고 임시저장</h3>
+      <div class="meta">난이도 보통 · 처음 만드는 데 30분쯤</div>
+      <p>Claude가 짠 코드가 크롬을 열고 실제 스마트에디터에 들어가서, 제목과 본문을 사람 속도로 타이핑하고 문단 사이에 사진을 끼워 넣습니다. 네이버 입장에선 누가 손으로 쓰는 것과 구분되지 않습니다.</p>
+      <div class="copybox">
+        <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
+        <pre id="p1">이 주제로 네이버 블로그 초안을 써줘: (여기에 주제).
+그리고 이 자동화 규칙 세 가지로 실행해줘.
+하나, 브라우저를 열어 실제 네이버 스마트에디터에 들어가 줘.
+둘, 제목과 본문을 사람 속도로(한 글자씩) 타이핑하고, 문단 사이에 사진을 자동으로 넣어 줘.
+셋, 발행은 하지 말고 임시저장까지만 해줘. 전 과정은 영상으로 녹화해 줘.</pre>
+      </div>
+      <a class="more" href="https://n016yoyo.github.io/smart-life-blog/naver-blog-auto-guide/">1단 자세히 보기, 쿠키 넣는 법과 실전 함정 6가지 →</a>
+    </div>
+    <div class="hl warn"><strong>발행 버튼은 사람이 누릅니다.</strong> 자동화는 임시저장까지입니다. 검토 없이 자동 발행하면 오타·잘못된 사진이 그대로 공개되고, 대량 자동 발행은 네이버가 스팸으로 볼 수 있습니다.</div>
+  </div>
+
+  <!-- 2단 -->
+  <div class="sec" id="s2">
+    <div class="sec-label">STEP 2</div>
+    <h2>2단, 뭘 쓸지도 숫자로 고릅니다</h2>
+    <div class="step">
+      <div class="n">2</div>
+      <h3>한 주치 유튜브 트렌드를 점수화해 1등 글감만 남기기</h3>
+      <div class="meta">난이도 쉬움 · 유튜브 API 키 발급 10분 필요(무료)</div>
+      <p>1단에서는 글감을 사람이 줬습니다. 여기서 한 단계 더 가면 "오늘 뭐 쓰지"까지 넘길 수 있습니다. 이번 주에 터진 영상을 모아서, 내 독자가 반응하는 신호어가 제목에 들어가면 가점을 주고, 점수 순으로 줄 세워 1등을 고릅니다. 감이 아니라 숫자입니다.</p>
+      <p><b>API 키 받기:</b> <code>console.cloud.google.com</code> 접속 → 새 프로젝트 → <b>YouTube Data API v3</b> 검색 후 사용 설정 → 사용자 인증 정보 → API 키. 하루 1만 요청까지 무료라 개인용으론 넘칩니다.</p>
+      <div class="copybox">
+        <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div>
+        <pre id="p2">유튜브 API 키로 "글감 자동 선정"을 만들어줘.
+하나, 이번 주에 올라온 내 주제 관련 유튜브 영상을 조회수 순으로 최대한 많이 수집해줘. (내 주제: 여기에 입력)
+둘, 제목에 내 독자가 반응하는 신호어가 들어가면 가점을 줘. (내 신호어: 예시로 무료·돈·초보·따라하기, 내 니치에 맞게 바꿔줘)
+셋, 점수 순으로 줄 세워서 1등을 이번 글감으로 선정하고, 왜 선정했는지 근거(점수·조회수)를 파일로 남겨줘.
+넷, 선정된 글감으로 위에서 만든 블로그 자동 글쓰기를 이어서 실행해줘. 발행은 하지 말고.</pre>
+      </div>
+      <a class="more" href="https://n016yoyo.github.io/smart-life-blog/naver-blog-auto-guide/#topic">2단 자세히 보기, 실제 점수표 화면 →</a>
+    </div>
+    <div class="hl warn"><strong>신호어는 반드시 내 니치로 바꾸세요.</strong> 예시(무료·돈·따라하기)는 저희 독자 기준입니다. 점수 기준이 곧 "내 독자가 뭘 클릭하는가"라서, 이걸 자기 독자에 맞게 잡는 게 이 단계의 절반입니다.</div>
+  </div>
+
+  <!-- 3단 -->
+  <div class="sec" id="s3">
+    <div class="sec-label">STEP 3</div>
+    <h2>3단, 이웃 글을 읽고 댓글을 답니다</h2>
+    <div class="step">
+      <div class="n">3</div>
+      <h3>본문 전문을 읽고 그 내용을 짚는 댓글, 공감까지</h3>
+      <div class="meta">난이도 보통 · 처음엔 <code>--dry</code>로 문장만 확인</div>
+      <p>흔한 댓글 봇은 아무 글에나 같은 인사말을 붙입니다. 받는 사람도 압니다. 이건 본문을 <b>통째로</b> 읽고 그 내용을 짚어 씁니다. 글을 안 읽으면 나올 수 없는 문장이 나옵니다.</p>
+      <div class="copybox">
+        <div class="bar"><span>Claude Code에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div>
+        <pre id="p3">네이버 서로이웃 순회 자동화를 만들어줘.
+
+동작 순서
+1) 저장해둔 naver_state.json 으로 로그인 상태를 복원하고
+   https://section.blog.naver.com/BlogHome.naver 에서 이웃 새글 목록을 수집
+2) 위에서부터 N개 글을 방문해서, 각 글의 본문 전체를 텍스트로 읽기
+   (요약 말고 전문. .se-main-container 또는 #postViewArea)
+3) 읽은 제목·본문을 Claude Code CLI(claude -p)에 넘겨 댓글 한 줄 생성
+   규칙: 35자 이내 / 글에 실제로 나온 구체적 내용을 하나 짚을 것 /
+        "잘 보고 가요" 같은 아무 글에나 붙는 인사 댓글 금지
+4) 공감(하트) 누르고, 생성된 댓글 등록
+5) 다음 글까지 3~5초 랜덤 대기
+
+옵션
+--dry      댓글을 생성만 하고 등록은 안 함(처음엔 이걸로 확인)
+--nolike   공감도 누르지 않음
+--rec      전 과정 화면 녹화
+
+실행 결과(방문수·읽은 글자수·댓글·공감)를 JSON으로 저장해줘.</pre>
+      </div>
+      <a class="more" href="https://n016yoyo.github.io/smart-life-blog/naver-neighbor-guide/">3단 자세히 보기, 댓글창 함정 5가지 →</a>
+    </div>
+    <div class="hl warn"><strong>속도를 올리려고 병렬로 돌리지 마세요.</strong> 남의 블로그를 도는 자동화에서 방문 간격은 성능이 아니라 계정 안전장치입니다. 방문마다 3~5초는 일부러 쉽니다.</div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="sec" id="result">
+    <div class="sec-label">EVIDENCE</div>
+    <h2>실제로 돌린 결과</h2>
+    <p>영상에 나온 화면은 전부 실제 실행 기록입니다. 3단 이웃 순회의 터미널 출력 그대로예요.</p>
+    <pre style="border-radius:12px">11:49:38 이웃 새글 목록 열기
+11:49:43 이웃 새글 39건 수집
+11:49:43 방문 1/3: 윤여정의 새로운 드라마 추천~ 윤여정 배우가 다시
+11:49:46   읽음 1489자
+11:50:02   댓글안: 송강호가 연하남 닥터 김이라니 이 조합 꼭 봐야겠어요
+11:50:04   ♥ 공감 완료
+11:50:16   💬 댓글 등록 완료
+11:50:20 방문 2/3: 정주행 필수 드라마 추천! 이번 포스팅은 넷플릭스를
+11:50:23   읽음 3257자
+11:50:45   댓글안: 사약 마시고 무명배우로 부활이라니, 멋진신세계 찜했어요
+11:50:48   ♥ 공감 완료
+11:50:59   💬 댓글 등록 완료
+11:51:04 방문 3/3: 시간 여행 한국 드라마 모아보기~ 달의연인 보보경심
+11:51:07   읽음 1154자
+11:51:24   댓글안: 철인왕후 라면 만드는 장면 저도 그게 제일 웃겼어요
+11:51:26   ♥ 공감 완료
+11:51:38   💬 댓글 등록 완료
+11:51:42 끝. 방문 3 / 공감 3 / 댓글 3</pre>
+    <div class="hl ok"><strong>"철인왕후 라면 만드는 장면"</strong> 같은 문장은 글을 읽지 않으면 쓸 수 없습니다. 이게 복붙 봇과 갈리는 지점입니다. 2단 글감 선정은 같은 주에 유튜브 174건을 모아 점수를 매긴 결과이고, 그 화면은 <a href="https://n016yoyo.github.io/smart-life-blog/naver-blog-auto-guide/#topic">1·2단 가이드</a>에 있습니다.</div>
+  </div>
+
+  <!-- 정직하게 -->
+  <div class="sec" id="honest">
+    <div class="sec-label">HONEST</div>
+    <h2>정직하게 짚고 갑니다</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ 타이핑·사진삽입·임시저장 자동</span>
+      <span class="badge ok">✓ 글감 점수화 자동</span>
+      <span class="badge ok">✓ 이웃 글 읽기·댓글·공감 자동</span>
+      <span class="badge warn">△ 발행 버튼은 사람이</span>
+      <span class="badge warn">△ 몇 곳을 돌지는 사람이 정함</span>
+    </div>
+    <table>
+      <tr><th>항목</th><th>권장</th></tr>
+      <tr><td>계정</td><td>부계정으로 시작, 익숙해지면 본계정</td></tr>
+      <tr><td>발행</td><td>자동 저장 + <b>사람이 검토 후 발행</b></td></tr>
+      <tr><td>빈도</td><td>하루 1~2건, 대량 자동발행은 금물</td></tr>
+      <tr><td>속도</td><td>사람 속도 타이핑·방문 간격 유지</td></tr>
+      <tr><td>쿠키</td><td>gitignore 경로 보관, 공개 금지</td></tr>
+    </table>
+    <div class="hl warn"><strong>글감이 뉴스성이면</strong>(예: 새 AI 출시) 본문 팩트는 공식 문서로 확인하고 쓰게 하세요. 검토 없이 발행하면 틀린 글이 그대로 나갑니다. 그래서 발행은 끝까지 사람 몫입니다.</div>
+  </div>
+
+  <!-- 확인 -->
+  <div class="sec" id="check">
+    <div class="sec-label">CHECK</div>
+    <h2>제대로 됐는지 확인</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ 크롬이 자동으로 뜬다</span>
+      <span class="badge ok">✓ 제목·본문이 저절로 쳐진다</span>
+      <span class="badge ok">✓ 저장 카운트가 올라간다</span>
+      <span class="badge ok">✓ 글감 점수표가 파일로 남는다</span>
+      <span class="badge ok">✓ 댓글이 본문 내용을 짚는다</span>
+    </div>
+    <p style="margin-top:14px">여기까지 되면 매일 쓰던 두세 시간이 검토 몇 분으로 줄어듭니다. 준비물은 딱 하나, 코딩은 0줄입니다.</p>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 만드는 영상 보기 →</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>네이버 블로그 3단 자동화 지도 · 2026 · 직접 만들며 기록</p>
+    <p style="margin-top:4px">브라우저 자동화=Playwright(Apache-2.0). 네이버·Claude는 각 사 소유·비제휴. 자동화는 본인 계정 책임 하에.</p>
+    <p style="margin-top:6px"><a href="https://n016yoyo.github.io/smart-life-blog/">← 홈으로</a></p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+// 조회수: 이 페이지 뷰 +1 후 값 표시
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-3step-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent='…'; });
+</script>
+</body>
+</html>
