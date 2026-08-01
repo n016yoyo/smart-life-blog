@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>댓글에 키워드 달면 자료가 자동으로 간다, Claude로 댓글 자동응대 봇 만드는 법 | AI TIGER MASK</title>
+<meta name="description" content="내 게시물에 댓글이 달리면 공개 답글이 자동으로 달리고, 그 사람 DM으로 자료 카드까지 자동 발송. 월 구독료 0원으로 Claude Code와 만드는 법. 실제로 계정이 한 번 정지됐던 함정 6가지 포함.">
+<meta property="og:title" content="댓글 자동응대 봇, 월 0원으로 만들기">
+<meta property="og:description" content="댓글 키워드 → 공개 답글 + DM 자료 카드 자동 발송. 구독료 없이 Claude Code로 직접.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.flow{background:#1e1b17;color:#e8e2d6;border-radius:14px;padding:16px 18px;margin:12px 0;font-size:13px;line-height:1.9;font-family:ui-monospace,Menlo,Consolas,monospace;overflow-x:auto}
+.flow b{color:var(--acc)}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>댓글 하나 달리면, <span style="color:var(--acc)">답글도 DM도</span> 자동으로</h1>
+  <p class="sub">내 게시물에 키워드 댓글이 달리면 공개 답글이 붙고, 그 사람 DM으로 자료 카드까지 날아갑니다. 구독료는 0원. 만든 건 Claude Code.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">인스타 <b>프로 계정</b></span>
+    <span class="chip">월 구독료 <b>0원</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">뭔데</a>
+    <a href="#honest">먼저, 정직하게</a>
+    <a href="#ready">준비물</a>
+    <a href="#token">토큰 받기</a>
+    <a href="#server">무료 서버 올리기</a>
+    <a href="#hook">웹훅 연결</a>
+    <a href="#rules">키워드 규칙</a>
+    <a href="#traps">함정 6</a>
+    <a href="#safe">안전 수칙</a>
+    <a href="#check">확인</a>
+  </div>
+
+  <!-- 뭔데 -->
+  <div class="sec" id="what">
+    <div class="sec-label">INTRO</div>
+    <h2>이게 뭔데?</h2>
+    <p>릴스 하나가 터지면 댓글이 수백, 수천 개씩 달립니다. 거기에 일일이 답하고, 자료 링크를 한 명씩 DM으로 보내는 건 사람이 할 수 있는 일이 아니에요. 그래서 <strong>그 일을 전부 넘겼습니다.</strong></p>
+    <div class="flow">
+누군가 댓글에 <b>"클로드"</b> 라고 씀
+  ↓  (0.5초)
+<b>공개 답글</b> 자동으로 달림 , "DM 확인해 주세요"
+  ↓
+그 사람 <b>DM</b>으로 자료 카드 발송 , 제목·설명·[지금 열기] 버튼
+  ↓
+버튼 누르면 가이드 페이지로
+    </div>
+    <p>사람이 하는 일은 <strong>키워드와 보낼 링크를 한 번 정해두는 것</strong>뿐입니다. 그다음부터는 자는 동안에도 돌아갑니다.</p>
+    <div class="hl ok"><strong>월 구독료가 왜 0원이냐면:</strong> 이런 걸 해주는 상용 서비스(매니챗 같은)는 보통 유료 플랜이 월 15달러부터 시작하고, 연락처가 늘수록 요금이 올라갑니다. 여기서 쓰는 건 클라우드플레어 워커의 <strong>무료 한도</strong>(하루 10만 요청)라, 개인 계정 규모에서는 요금이 나올 일이 거의 없습니다.</div>
+  </div>
+
+  <!-- 정직하게 -->
+  <div class="sec" id="honest">
+    <div class="sec-label">READ FIRST</div>
+    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <p>이건 블로그 자동화보다 <strong>확실히 무겁습니다.</strong> 시작 전에 이 세 가지를 알고 들어가세요.</p>
+    <ul>
+      <li><strong>인스타 프로 계정이어야 합니다.</strong> 개인 계정은 API 자체가 안 열립니다. 프로필 설정에서 프로(비즈니스 또는 크리에이터) 계정으로 바꾸면 되고, 무료입니다.</li>
+      <li><strong>"항상 켜져 있는 주소"가 필요합니다.</strong> 인스타가 댓글이 달렸다고 알려줄 곳이 있어야 하거든요. 내 노트북은 껐다 켜니까 안 되고, 그래서 무료 서버를 하나 씁니다. 이것도 Claude Code가 대신 올려줍니다.</li>
+      <li><strong>내 계정에만 쓸 거면 메타 앱 심사는 필요 없습니다.</strong> 남의 계정까지 관리하는 서비스를 만들 게 아니라면, 본인 계정 한 개는 심사 없이 바로 됩니다. 이게 생각보다 큰 진입장벽 하나가 사라지는 지점이에요.</li>
+    </ul>
+    <div class="hl warn"><strong>그리고 이건 꼭 읽으세요.</strong> 저는 이걸 만들다가 <strong>계정이 한 번 정지당했습니다.</strong> 영구는 아니고 본인 확인으로 풀렸지만, 며칠을 날렸어요. 원인은 코드가 아니라 <strong>DM에 넣은 링크 주소</strong>였습니다. 자세한 건 아래 <a href="#traps" style="color:var(--acc);font-weight:700">함정 1</a>에 적어뒀는데, 거기부터 읽고 시작하셔도 됩니다.</div>
+  </div>
+
+  <!-- 준비물 -->
+  <div class="sec" id="ready">
+    <div class="sec-label">STEP 0 · 준비</div>
+    <h2>준비물</h2>
+    <p>새 컴퓨터에 <strong>Claude Code만</strong> 깔린 상태 기준입니다. 나머지는 아래 프롬프트로 Claude가 알아서 깔아줍니다.</p>
+    <div class="badge-row">
+      <span class="badge ok">✓ Claude Code</span>
+      <span class="badge ok">✓ 인스타 프로 계정</span>
+      <span class="badge">메타 개발자 계정(무료)</span>
+      <span class="badge">클라우드플레어 계정(무료)</span>
+    </div>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c0')">복사</button></div>
+      <pre id="c0">인스타그램 댓글 자동응대 봇을 만들 거야. 클라우드플레어 워커로 올릴 거니까 node 18 이상이 있는지 확인하고 없으면 설치해줘. 그리고 wrangler(클라우드플레어 배포 도구)를 설치하고 로그인까지 진행해줘. 로그인은 브라우저가 열리면 내가 누를게.</pre>
+    </div>
+  </div>
+
+  <!-- 토큰 -->
+  <div class="sec" id="token">
+    <div class="sec-label">STEP 1 · 15분</div>
+    <h2>인스타가 "너 맞아?" 하고 물어볼 열쇠 받기</h2>
+    <p>내 계정을 대신 조작하려면 열쇠(액세스 토큰)가 있어야 합니다. 발급은 메타 개발자 사이트에서 하고, 한 번만 하면 됩니다.</p>
+    <ol>
+      <li><code>developers.facebook.com</code> 접속 → 로그인 → <strong>내 앱 → 앱 만들기</strong></li>
+      <li>사용 사례에서 <strong>Instagram</strong> 관련 항목을 고르고, 제품에서 <strong>Instagram</strong>을 추가합니다.</li>
+      <li>내 인스타 프로 계정을 연결하고, 권한에서 <strong>댓글 관리</strong>와 <strong>메시지</strong> 관련 항목을 켭니다.</li>
+      <li>토큰을 하나 생성합니다. 여기서 나오는 <strong>앱 ID</strong>, <strong>앱 시크릿</strong>, <strong>액세스 토큰</strong> 세 개를 복사해 두세요.</li>
+    </ol>
+    <div class="hl"><strong>화면이 자꾸 바뀝니다.</strong> 메타 개발자 콘솔은 몇 달에 한 번씩 메뉴 이름이 바뀌어요. 못 찾겠으면 화면을 캡처해서 Claude Code에 붙여넣고 "여기서 뭘 눌러야 해?"라고 물어보는 게 제일 빠릅니다.</div>
+    <div class="hl warn"><strong>처음 받는 토큰은 짧게 삽니다(보통 1시간).</strong> 그대로 쓰면 한 시간 뒤에 봇이 죽어요. 반드시 <strong>장기 토큰으로 교환</strong>해야 하고, 그것도 60일마다 갱신이 필요합니다. 아래 프롬프트에 갱신 자동화까지 들어 있습니다.</div>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c1')">복사</button></div>
+      <pre id="c1">방금 받은 인스타그램 토큰이야. (여기에 붙여넣기)
+이걸 장기 토큰으로 교환해줘. 그리고 만료되기 전에 자동으로 갱신되도록,
+하루 한 번 도는 예약 작업에 토큰 갱신을 넣어줘.
+앱 ID·앱 시크릿·토큰은 코드에 그대로 적지 말고 비밀값으로 따로 저장해줘.</pre>
+    </div>
+  </div>
+
+  <!-- 서버 -->
+  <div class="sec" id="server">
+    <div class="sec-label">STEP 2 · 복붙</div>
+    <h2>항상 켜져 있는 주소 하나 만들기</h2>
+    <p>인스타가 "댓글 달렸어요"라고 알려줄 곳입니다. 클라우드플레어 워커는 무료 한도가 넉넉하고, 신용카드도 안 넣습니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c2')">복사</button></div>
+      <pre id="c2">클라우드플레어 워커 프로젝트를 하나 만들어서 배포해줘. 요구사항은 이거야.
+
+하나, 인스타그램 웹훅을 받는 주소를 만들어줘. 인스타가 처음에 검증 요청을 보내는데,
+     내가 정한 검증 문자열과 맞으면 통과시켜야 해.
+둘, 인스타가 보낸 요청이 진짜인지 서명으로 확인하고, 아니면 거절해줘.
+셋, 키워드와 보낼 링크를 저장할 공간(KV)을 하나 붙여줘.
+넷, 배포하고 나서 최종 주소를 알려줘.
+
+★주소 이름에 instagram, verification, login, verify, secure, account 이 단어들은
+절대 넣지 마. 나중에 이 주소를 DM으로 보낼 건데, 저 단어가 들어가면
+인스타가 피싱으로 보고 계정을 막아버려. 중립적인 이름으로 지어줘.</pre>
+    </div>
+    <div class="hl ok"><strong>결과:</strong> <code>https://내가지은이름.workers.dev</code> 같은 주소가 하나 생깁니다. 이게 앞으로 봇의 집입니다.</div>
+  </div>
+
+  <!-- 웹훅 -->
+  <div class="sec" id="hook">
+    <div class="sec-label">STEP 3 · 5분</div>
+    <h2>인스타에 "댓글 달리면 여기로 알려줘" 등록</h2>
+    <ol>
+      <li>메타 개발자 콘솔의 Instagram 제품 안에서 <strong>웹훅(Webhooks)</strong> 설정으로 들어갑니다.</li>
+      <li>콜백 주소에 방금 만든 주소를, 검증 문자열에 STEP 2에서 정한 값을 넣습니다.</li>
+      <li>구독 항목에서 <strong>comments</strong>를 켭니다. DM 답장까지 받고 싶으면 <strong>messages</strong>도 같이 켜세요.</li>
+      <li>저장하면 인스타가 곧바로 검증 요청을 한 번 보냅니다. 초록 체크가 뜨면 연결된 겁니다.</li>
+    </ol>
+    <div class="trap">
+      <div class="t">⚠ 검증이 계속 실패한다면</div>
+      <p>십중팔구 <strong>검증 문자열이 서로 다른 것</strong>입니다. 콘솔에 넣은 값과 서버에 저장한 값이 글자 하나까지 같아야 해요. 앞뒤 공백도 자주 범인입니다.</p>
+    </div>
+  </div>
+
+  <!-- 규칙 -->
+  <div class="sec" id="rules">
+    <div class="sec-label">STEP 4 · 복붙</div>
+    <h2>키워드 규칙 정하기</h2>
+    <p>"어떤 단어가 오면 무엇을 보낼지"만 정하면 끝입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c3')">복사</button></div>
+      <pre id="c3">키워드 규칙을 만들어줘.
+
+규칙 하나: 댓글에 "클로드"가 들어오면
+ - 공개 답글: 링크 없이, DM 확인해 달라는 말만. 문구는 5~6개 만들어서 매번 다르게 나가게.
+ - DM: 자료 카드 하나. 제목, 한 줄 설명, [지금 열기] 버튼.
+ - 버튼이 열 주소: (여기에 내 가이드 페이지 주소)
+
+그리고 이 세 가지를 꼭 지켜줘.
+하나, 같은 댓글을 두 번 처리하지 않게 처리한 댓글 번호를 기록해줘.
+둘, 내 계정이 단 댓글과 대댓글은 건너뛰어줘.
+셋, DM 발송이나 답글 중 하나라도 실패하면 완료로 치지 말고 잠시 뒤 다시 시도해줘.
+    실패가 3번 넘으면 그만두고 나한테 알려줘.</pre>
+    </div>
+    <div class="hl"><strong>공개 답글에는 링크를 넣지 마세요.</strong> 댓글창에 링크가 반복해서 달리는 계정은 인스타가 유난히 싫어합니다. 링크는 DM으로만 보내는 게 안전합니다.</div>
+  </div>
+
+  <!-- 함정 -->
+  <div class="sec" id="traps">
+    <div class="sec-label">★ 실전</div>
+    <h2>제가 실제로 밟은 함정 6개</h2>
+    <p>여기가 이 글의 진짜 알맹이입니다. 전부 제 계정에서 실제로 터졌던 것들이에요.</p>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 1 · 링크 주소 한 단어에 계정이 정지됐다</div>
+      <p>서버 주소에 <code>instagram</code>과 <code>verification</code>이라는 단어가 들어가 있었습니다. 그 주소를 DM으로 보냈더니, 인스타가 <strong>피싱 링크로 보고 계정을 막았습니다.</strong> 짧은 주소로 줄여 보낸 것(단축 링크)도 의심을 키웠고요.</p>
+      <p><strong>해결:</strong> 링크를 중립적인 도메인으로 전부 옮겼습니다. 그리고 단축 링크는 전부 버리고 전체 주소를 그대로 보냅니다. <strong>DM에 나가는 어떤 주소에도</strong> instagram, verification, login, verify, secure, account 같은 단어를 넣지 마세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 2 · DM은 아무 때나 보낼 수 있는 게 아니다</div>
+      <p>인스타 DM에는 규칙이 있습니다. <strong>상대가 나에게 먼저 말을 걸었어야</strong> 자유롭게 보낼 수 있고, 그것도 24시간 안에서만입니다.</p>
+      <p><strong>해결:</strong> 댓글에 대한 답장으로 보내는 경로는 이 24시간 제한을 받지 않습니다. 그래서 <strong>항상 이 경로를 먼저 시도하고</strong>, 안 되면 일반 DM으로 내려가게 만들어야 합니다. 순서를 반대로 하면 대부분 실패합니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 3 · 버튼이 조용히 사라진다</div>
+      <p>댓글 답장 DM에는 <strong>빠른 답장 버튼이 안 붙습니다.</strong> 그런데 인스타 API는 에러를 주지 않고 성공했다고 답합니다. 버튼만 소리 없이 버려져서, 받는 사람 화면에는 "아래 버튼을 눌러주세요"라는 <strong>글자만</strong> 남습니다.</p>
+      <p><strong>해결:</strong> 이 경로에는 카드 형태를 쓰고, 카드도 막히면 글자와 주소로 자동으로 내려가게 만들어 두세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 4 · 인터넷이 한 번 끊겼는데 댓글이 통째로 사라졌다</div>
+      <p>발송 코드에 예외 처리가 없었습니다. 네트워크가 잠깐 끊긴 순간 처리기가 통째로 죽었고, <strong>DM도 답글도 없이</strong> 그 댓글이 처리 완료로 기록됐습니다. 그 사람은 영영 자료를 못 받았고요.</p>
+      <p><strong>해결:</strong> 바깥 서비스를 부르는 모든 자리에 예외 처리를 넣고, "처리했다" 표시는 <strong>DM과 답글이 둘 다 성공한 뒤에만</strong> 찍으세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 5 · 재시도를 예약 작업에 맡기지 마라</div>
+      <p>실패하면 다음 예약 작업 때 다시 하게 짰는데, 그게 하루 한 번이었습니다. 결국 <strong>재시도가 최대 24시간 뒤</strong>에 일어났어요. 자료 받으려던 사람은 이미 떠났습니다.</p>
+      <p><strong>해결:</strong> 잠깐 끊긴 정도는 <strong>그 요청 안에서</strong> 세 번쯤 다시 시도해서 끝내세요. 예약 작업은 그래도 놓친 것만 줍는 최후 그물로 두면 됩니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 함정 6 · 기록을 믿지 말고 지금 상태를 봐라</div>
+      <p>팔로우한 사람만 자료를 받게 만들었는데, "예전에 받아 간 기록"이 있으면 통과시켰습니다. 그랬더니 <strong>언팔로우한 사람이 옛날 기록만으로 그냥 통과</strong>했습니다.</p>
+      <p><strong>해결:</strong> 지금 이 순간 팔로워인지만 보고 판단하세요. 과거 기록은 "지난번에 보내드린 그 링크예요" 같은 <strong>문구를 바꾸는 데만</strong> 쓰는 게 맞습니다.</p>
+    </div>
+  </div>
+
+  <!-- 안전 -->
+  <div class="sec" id="safe">
+    <div class="sec-label">SAFETY</div>
+    <h2>계정 안 잃는 습관</h2>
+    <table>
+      <tr><th>하지 말 것</th><th>왜</th></tr>
+      <tr><td>단축 링크</td><td>어디로 가는지 안 보여서 스팸 신호로 잡힙니다. 전체 주소를 그대로 보내세요</td></tr>
+      <tr><td>공개 답글에 링크</td><td>댓글창 링크 반복은 제재 대상입니다. 링크는 DM으로만</td></tr>
+      <tr><td>답글 문구 하나로 돌려쓰기</td><td>똑같은 문장이 수백 번 달리면 봇으로 보입니다. 5~6개를 돌려쓰세요</td></tr>
+      <tr><td>같은 계정으로 반복 테스트</td><td>같은 사람에게 반복 발송하면 발송 기능이 잠깁니다. 테스트는 부계정으로, 하루 한 번만</td></tr>
+      <tr><td>한 번에 대량 발송</td><td>한 번 도는 데 처리할 인원에 상한을 두세요. 저는 15명으로 잡았습니다</td></tr>
+    </table>
+    <div class="hl warn"><strong>발송이 갑자기 안 되면 당황하지 마세요.</strong> 과거 위반 이력이 있으면 메타가 DM 발송만 일시적으로 잠급니다. 읽기와 답글은 멀쩡한데 발송만 막히는 상태예요. <strong>시간이 지나면 자동으로 풀립니다.</strong> 그동안 계속 찔러보면 오히려 기간이 늘어나니, 하루 한 번만 확인하고 기다리세요.</div>
+  </div>
+
+  <!-- 확인 -->
+  <div class="sec" id="check">
+    <div class="sec-label">CHECK</div>
+    <h2>잘 됐는지 확인</h2>
+    <ol>
+      <li>내 최근 게시물에 <strong>부계정으로</strong> 키워드 댓글을 답니다.</li>
+      <li>몇 초 안에 공개 답글이 달리는지 봅니다.</li>
+      <li>부계정 DM함(또는 메시지 요청함)에 카드가 왔는지 봅니다. 팔로우 안 한 계정은 <strong>요청함</strong>으로 들어갑니다.</li>
+      <li>같은 댓글에 답글이 두 번 달리지 않는지 확인합니다.</li>
+    </ol>
+    <div class="hl ok">네 개가 다 통과하면 끝입니다. 이제 릴스에 "댓글에 ○○ 남겨주세요"라고 넣기만 하면, 나머지는 봇이 합니다.</div>
+  </div>
+
+  <!-- 다음 -->
+  <div class="sec" id="next">
+    <div class="sec-label">NEXT</div>
+    <h2>같이 보면 좋은 것</h2>
+    <div class="card">
+      <h3><a href="https://n016yoyo.github.io/smart-life-blog/naver-blog-auto-guide/">네이버 블로그가 혼자 써진다 →</a></h3>
+      <p>브라우저가 실제 에디터에서 제목·본문을 타이핑하고 사진까지 넣는 자동화. 같은 방식으로 Claude Code가 만듭니다.</p>
+    </div>
+    <div class="card">
+      <h3><a href="https://n016yoyo.github.io/smart-life-blog/claude-code-guide/">Claude Code 처음이라면 →</a></h3>
+      <p>설치부터 첫 주에 뭘 해볼지까지. 개발 안 해봤어도 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 만드는 영상 보기 →</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>인스타 댓글 자동응대 봇 가이드 · 2026 · 직접 만들며 기록</p>
+    <p style="margin-top:4px">Instagram·Meta·Cloudflare·Claude는 각 사 소유이며 본 문서와 제휴 관계가 없습니다. 자동화는 본인 계정 책임 하에 운영하세요.</p>
+    <p style="margin-top:6px"><a href="https://n016yoyo.github.io/smart-life-blog/">← 홈으로</a></p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"ig-comment-bot-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent='-'; });
+</script>
+</body>
+</html>
