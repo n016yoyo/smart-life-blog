@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>릴스 꿀팁 따라 해도 안 될 때, 내 계정을 클로드로 재는 순서 | AI TIGER MASK</title>
-<meta name="description" content="조회수 말고 도달·공유·시청유지를 재세요. 릴스 47편을 Claude Code에 던져 상위 8편과 하위 8편이 뭐가 달랐는지 직접 갈라낸 순서와 프롬프트 전문.">
+<meta name="description" content="조회수 말고 도달·공유·시청유지를 재세요. 릴스 47편을 Claude Code에 던져 갈라낸 순서와 프롬프트 전문. 고쳐도 소용없던 것과 실제로 고친 것 세 가지까지.">
 <meta property="og:title" content="내 릴스를 클로드로 재는 순서">
 <meta property="og:description" content="꿀팁을 따라 해도 안 되는 이유는 재는 지표가 틀려서입니다. 47편 실측으로 찾은 세 가지.">
 <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
@@ -87,6 +87,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#step2">② 클로드에 던지기</a>
     <a href="#step3">③ 세 가지 재기</a>
     <a href="#result">제 실측 결과</a>
+    <a href="#fix">④ 뭘 고치나</a>
     <a href="#traps">함정 4</a>
     <a href="#next">다음 편에 적용</a>
   </div>
@@ -188,7 +189,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <h3>셋 , 시청유지</h3>
       <p>평균 몇 초 봤는지입니다. 초반에 죽는지 끝까지 가는지가 여기서 드러납니다.</p>
     </div>
-    <div class="hl"><strong>적는 곳은 아무데나 좋습니다.</strong> 메모장이든 스프레드시트든, 편마다 네 줄이면 됩니다. 날짜 / 도달 / 공유 / 시청유지. 이게 다음 분석의 재료가 됩니다.</div>
+    <div class="hl"><strong>적는 곳은 아무데나 좋습니다.</strong> 메모장이든 스프레드시트든, 편마다 다섯 줄이면 됩니다. 날짜 / 도달 / 공유 / 저장 / 시청유지. 저장은 공유와 거의 같은 신호였으니(도달과의 관계 0.46 대 0.48) 같이 적어두세요. 이게 다음 분석의 재료가 됩니다.</div>
+    <div class="hl warn"><strong>좋아요와 댓글은 굳이 안 적어도 됩니다.</strong> 제 데이터에선 도달과 거의 무관했습니다. 왜 그런지는 <a href="#fix" style="color:var(--acc)">④ 뭘 고치나</a>에 숫자로 적어뒀습니다.</div>
   </div>
 
   <div class="sec" id="result">
@@ -209,6 +211,90 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <div><div class="n">1,119</div><div class="l">단독 34편 평균 도달</div></div>
     </div>
     <p>2편·3편으로 이어지는 편은 거의 안 퍼졌습니다. 앞 편을 안 본 사람에게는 걸 이유가 없기 때문으로 보입니다. 그래서 지금은 <strong>모든 편을 그 편만 봐도 완결되게</strong> 만듭니다.</p>
+  </div>
+
+  <div class="sec" id="fix">
+    <div class="sec-label">ACTION</div>
+    <h2>④ 그래서 뭘 고치나</h2>
+    <p>여기가 진짜입니다. 재기만 하고 끝나면 숫자만 예뻐집니다. 제가 <strong>고치려다 그만둔 것</strong>부터 적습니다. 그게 시간을 제일 많이 아껴줬거든요.</p>
+
+    <h3>가. 고쳐봐야 소용없던 것</h3>
+    <p>시리즈 편을 빼고 단독 34편만 놓고, 제작할 때 제가 만질 수 있는 값들이 도달과 관계있는지 봤습니다. 숫자는 순위상관이고 <strong>0에 가까우면 관계가 없다</strong>는 뜻입니다.</p>
+    <table>
+      <tr><th>흔히 고치라는 것</th><th>도달과의 관계</th><th>읽는 법</th></tr>
+      <tr><td>영상 길이</td><td>-0.10</td><td>관계 없음</td></tr>
+      <tr><td>장면 수</td><td>-0.12</td><td>관계 없음</td></tr>
+      <tr><td>훅 문장 길이</td><td>-0.04</td><td>관계 없음</td></tr>
+      <tr><td>업로드 시간대</td><td>+0.15</td><td>거의 없음</td></tr>
+      <tr><td>자막 호흡</td><td>+0.16</td><td>거의 없음</td></tr>
+      <tr><td>한 줄 글자 수</td><td>-0.17</td><td>거의 없음</td></tr>
+      <tr><td>해시태그 개수</td><td>판단 불가</td><td>47편 전부 5개라 비교할 게 없었음</td></tr>
+    </table>
+    <p>편집을 다듬어서 될 일이 아니었습니다. 34편이라 못 박을 수는 없지만, 적어도 <strong>여기에 시간을 더 쓸 이유는 없다</strong>는 건 알았습니다. 저는 이 표를 보고 컷 편집 붙잡던 걸 그만뒀습니다.</p>
+
+    <h3>나. 늘려봐야 소용없던 것</h3>
+    <p>반응 지표도 다 같지 않았습니다. 도달 대비 비율로 바꿔서 도달과의 관계를 봤습니다.</p>
+    <table>
+      <tr><th>지표</th><th>도달과의 관계</th><th></th></tr>
+      <tr><td>시청유지</td><td><strong>+0.61</strong></td><td>같이 오름</td></tr>
+      <tr><td>공유율</td><td><strong>+0.48</strong></td><td>같이 오름</td></tr>
+      <tr><td>저장율</td><td><strong>+0.46</strong></td><td>같이 오름</td></tr>
+      <tr><td>좋아요율</td><td>+0.21</td><td>거의 무관</td></tr>
+      <tr><td>댓글율</td><td>+0.05</td><td><strong>무관</strong></td></tr>
+    </table>
+    <div class="hl warn"><strong>댓글이 도달과 아무 관계가 없었습니다.</strong> 댓글 1,499개를 받은 편도 있는데도요. "댓글 달아주세요"를 유도해서 도달을 늘리려던 계획은 접었습니다. 댓글은 DM을 보내려고 받는 것이지, 도달을 늘리려고 받는 게 아니었습니다. <strong>좋아요도 마찬가지입니다.</strong></div>
+
+    <h3>다. 그래서 실제로 고친 것 세 가지</h3>
+    <p>전부 다음 편에 바로 하는 <strong>동작</strong>입니다. "잘 만들어라" 같은 건 안 적었습니다.</p>
+
+    <div class="card">
+      <h3>고침 1 , 후속편을 없앤다</h3>
+      <p>제목에서 "2편"·"EP3"를 뺍니다. 앞 편을 안 본 사람도 그 편만 보고 끝나게 다시 씁니다. 이어지는 얘기가 하고 싶으면 <strong>같은 소재로 다른 편을 만들되 서로를 몰라도 되게</strong> 만듭니다.</p>
+      <p style="color:var(--mut);font-size:12.5px;margin-top:6px">근거: 시리즈 9편 도달 115 · 단독 34편 도달 1,119</p>
+    </div>
+
+    <div class="card">
+      <h3>고침 2 , 훅 첫 줄을 "지금 바로 쓸 수 있는 것"으로 바꾼다</h3>
+      <p>신기한 얘기 말고, 보는 사람의 <strong>돈·한도·구독료</strong>를 첫 줄에 올립니다. 공유가 된 편과 한 번도 안 된 편의 첫 줄을 나란히 놓으니 갈리는 지점이 보였습니다.</p>
+      <table>
+        <tr><th>공유된 편의 첫 줄</th><th>공유 0인 편의 첫 줄</th></tr>
+        <tr><td>제 네이버 블로그는 혼자 써집니다</td><td>클로드 이번 업데이트, 진짜 미쳤어요</td></tr>
+        <tr><td>주간 한도 50% 증량, 7/13 종료</td><td>다들 페이블5 얘기만 하죠?</td></tr>
+        <tr><td>값은 그대로인데 성능은 두 배</td><td>AI 1등 두 회사가 싸우는데</td></tr>
+        <tr><td>세 배 비싼 모델, 돈값 할까?</td><td>월리를 찾아라, 시켜봤어요</td></tr>
+        <tr><td>구독 끊고 무료로 쓰는 법</td><td>이 촛불, 입김에 진짜 꺼져요</td></tr>
+      </table>
+      <p>왼쪽은 <strong>내 돈이 걸린 것</strong>이거나 <strong>내가 따라 할 수 있는 것</strong>입니다. 오른쪽은 구경거리고요. 구경은 재밌지만 남한테 보내지는 않습니다.</p>
+      <div class="hl warn" style="margin-top:10px"><strong>단, 이건 필요조건이지 충분조건이 아닙니다.</strong> 같은 "한도" 소재로 한 편은 공유 16, 다른 한 편은 공유 1이었습니다. 소재가 상한을 정할 뿐, 소재만 맞다고 되는 건 아니었습니다.</div>
+    </div>
+
+    <div class="card">
+      <h3>고침 3 , 정지 스크린샷을 움직이는 실제 화면으로 바꾼다</h3>
+      <p>화면을 캡처해서 붙이는 대신 <strong>실제로 돌아가는 걸 녹화해서</strong> 넣습니다. 제작 변수 중에 유일하게 방향이 보인 게 이거였습니다.</p>
+      <p style="color:var(--mut);font-size:12.5px;margin-top:6px">근거: 움직이는 실화면이 들어간 18편 평균 도달 1,553 · 안 들어간 12편 705 (상관 도달 +0.28 · 공유 +0.37)</p>
+      <p style="margin-top:8px">상관이 0.28이면 강한 건 아닙니다. 그래도 <strong>제작 변수 중에서는 이것 하나만 0이 아니었습니다.</strong> 편집을 다듬는 것보다는 여기에 시간을 쓰는 게 낫다고 판단했습니다.</p>
+    </div>
+
+    <h3>라. 내 데이터로 개선점을 뽑는 프롬프트</h3>
+    <p>위 세 가지는 <strong>제 계정</strong>의 답입니다. 본인 답은 본인 숫자에서 나와야 하니, 개선점까지 뽑아내는 프롬프트를 하나 더 붙입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>개선점 뽑기 , 그대로 복사</span><button class="copybtn" onclick="cp(this,'p2')">복사</button></div>
+      <pre id="p2">reels.csv로 이어서 분석해라. 결론을 미리 정해주지 않는다.
+
+1. 시리즈 편을 빼고 단독 편만 남겨라. (시리즈는 별도로 평균만 알려줘)
+2. 내가 제작 때 조절할 수 있는 값(길이·장면 수·훅 길이·업로드 시각 등)과
+   도달의 순위상관을 전부 계산해서, 0에 가까운 것부터 알려줘라.
+   "이건 고쳐도 소용없다"를 먼저 알고 싶다.
+3. 반응 지표는 개수 말고 도달 대비 비율로 바꿔서 도달과의 관계를 봐라.
+   좋아요·댓글·공유·저장 중 실제로 같이 움직이는 게 뭔지 알려줘라.
+4. 공유가 된 편과 한 번도 안 된 편의 제목을 두 열로 나란히 뽑아줘라.
+   내가 직접 읽고 판단하겠다.
+
+마지막에 다음 편에 바로 할 동작 3개를 적어라.
+전부 동사로 끝내라. "잘 만들어라" 같은 건 빼고,
+"제목에서 2편을 뺀다"처럼 그대로 실행 가능한 문장으로.</pre>
+    </div>
+    <div class="hl ok"><strong>마지막 문단이 핵심입니다.</strong> 클로드는 안 시키면 "훅을 강화하세요" 같은 걸 줍니다. 그건 개선점이 아니라 감상입니다. <strong>동사로 끝내라</strong>고 못 박아야 내일 할 수 있는 게 나옵니다.</div>
   </div>
 
   <div class="sec" id="traps">
