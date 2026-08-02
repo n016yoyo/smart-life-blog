@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>릴스 꿀팁 따라 해도 안 될 때, 내 계정을 클로드로 재는 순서 | AI TIGER MASK</title>
+<meta name="description" content="조회수 말고 도달·공유·시청유지를 재세요. 팔로워 876명 계정의 릴스 47편을 Claude Code에 던져 상위 8편과 하위 8편이 뭐가 달랐는지 직접 갈라낸 순서와 프롬프트 전문.">
+<meta property="og:title" content="내 릴스를 클로드로 재는 순서">
+<meta property="og:description" content="꿀팁을 따라 해도 안 되는 이유는 재는 지표가 틀려서입니다. 47편 실측으로 찾은 세 가지.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px;margin-top:0}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.flow{background:#1e1b17;color:#e8e2d6;border-radius:14px;padding:16px 18px;margin:12px 0;font-size:13px;line-height:1.9;font-family:ui-monospace,Menlo,Consolas,monospace;overflow-x:auto}
+.flow b{color:var(--acc)}
+.big{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.big div{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:center}
+.big .n{font-size:30px;font-weight:800;color:var(--acc);line-height:1.1}
+.big .l{font-size:12.5px;color:var(--mut);margin-top:5px}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>꿀팁 따라 했는데 <span style="color:var(--acc)">조회수 그대로</span>라면</h1>
+  <p class="sub">문제는 편집이 아니라 재는 지표입니다. 팔로워 천 명 안팎인 제 계정에서 릴스 47편을 클로드한테 던져, 상위 8편과 하위 8편이 뭐가 달랐는지 직접 갈라낸 순서입니다.</p>
+  <div class="chips">
+    <span class="chip">인스타 <b>프로 계정</b></span>
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">걸리는 시간 <b>10분</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#why">왜 안 되나</a>
+    <a href="#honest">먼저, 정직하게</a>
+    <a href="#ready">준비물</a>
+    <a href="#step1">① 인사이트 받기</a>
+    <a href="#step2">② 클로드에 던지기</a>
+    <a href="#step3">③ 세 가지 재기</a>
+    <a href="#result">제 실측 결과</a>
+    <a href="#traps">함정 4</a>
+    <a href="#next">다음 편에 적용</a>
+  </div>
+
+  <div class="sec" id="why">
+    <div class="sec-label">INTRO</div>
+    <h2>꿀팁을 따라 해도 안 되는 이유</h2>
+    <p>인스타에는 릴스 조언이 넘칩니다. 훅을 3초 안에 넣어라, 알고리즘을 학습시켜라, 업로드 시간을 맞춰라. 저도 다 따라 했습니다. 그런데 어떤 편은 <strong>백 명도 안 봤습니다.</strong></p>
+    <p>이유는 간단했습니다. <strong>제가 조회수만 보고 있었기 때문입니다.</strong> 조회수는 결과지 원인이 아닙니다. 원인은 그 앞에 있습니다.</p>
+    <div class="flow">
+<b>도달</b> (몇 명한테 퍼졌나)
+  ↓  인스타가 이걸 보고 더 밀지 말지 정함
+<b>시청유지</b> (평균 몇 초 봤나)
+  ↓
+<b>공유·저장</b> (남한테 보낼 만했나)
+  ↓
+<b>조회수</b>  ← 우리가 보통 보는 건 여기 하나뿐
+    </div>
+    <p>편집을 아무리 고쳐도 도달이 안 나오면 아무도 못 봅니다. 그래서 <strong>내 계정 숫자부터 재야</strong> 합니다. 남의 꿀팁은 남의 계정에서 나온 겁니다.</p>
+  </div>
+
+  <div class="sec" id="honest">
+    <div class="sec-label">READ FIRST</div>
+    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <div class="hl warn"><strong>제 팔로워는 천 명 안팎입니다.</strong> 십만 계정 만드는 법이 아닙니다. 여기서 다음 칸으로 가려는 사람에게 맞는 방법이고, 제가 실제로 쓴 것만 적었습니다.</div>
+    <div class="hl warn"><strong>이건 상관이지 인과가 아닙니다.</strong> 47편은 통계로 결론 내기엔 작은 수입니다. "이렇게 하면 터진다"가 아니라 "제 계정에선 이 세 개가 갈렸다"입니다. 그대로 믿지 말고 <strong>본인 계정에서 다시 재보세요.</strong> 그게 이 글의 요점입니다.</div>
+    <div class="hl ok"><strong>대신 방법은 그대로 씁니다.</strong> 프롬프트 전문을 아래에 붙여뒀습니다. 복사해서 본인 데이터에 던지면 됩니다. 코드는 한 줄도 안 씁니다.</div>
+  </div>
+
+  <div class="sec" id="ready">
+    <div class="sec-label">STEP 0</div>
+    <h2>준비물</h2>
+    <div class="card">
+      <h3>1. 인스타 프로 계정</h3>
+      <p>개인 계정은 도달·시청유지가 안 보입니다. 설정 → 계정 유형에서 <strong>프로페셔널 계정</strong>으로 바꾸면 바로 보입니다. 무료고 되돌릴 수 있습니다.</p>
+    </div>
+    <div class="card">
+      <h3>2. Claude Code</h3>
+      <p>설치가 처음이면 <a href="https://n016yoyo.github.io/smart-life-blog/claude-code-guide/" style="color:var(--acc)">클로드 코드 가이드</a>를 먼저 보세요. 터미널에 <code>claude</code> 한 줄이면 됩니다.</p>
+    </div>
+    <div class="card">
+      <h3>3. 릴스 10편 이상</h3>
+      <p>너무 적으면 위아래를 가를 수가 없습니다. 20편 넘으면 훨씬 선명해집니다.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="step1">
+    <div class="sec-label">STEP 1</div>
+    <h2>① 인사이트를 파일로 받기</h2>
+    <p>클로드한테 던지려면 숫자가 <strong>파일</strong>로 있어야 합니다. 방법은 두 가지입니다.</p>
+    <h3>가장 쉬운 길: 손으로 표 만들기</h3>
+    <p>인스타 앱 → 프로페셔널 대시보드 → 콘텐츠에서 릴스를 하나씩 열어 아래 숫자를 옮겨 적습니다. 20편이면 15분쯤 걸립니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>reels.csv , 이 형식 그대로</span><button class="copybtn" onclick="cp(this,'csv')">복사</button></div>
+      <pre id="csv">날짜,제목,시리즈,조회수,도달,시청유지초,좋아요,댓글,저장,공유
+07-19,블로그가 혼자 써집니다,단독,14356,10205,10.7,97,1499,295,102
+07-25,글감까지 혼자 찾습니다,단독,2451,1857,13.1,22,278,51,13
+07-06,스포티파이 2편,시리즈,37,26,9.7,2,0,2,0</pre>
+    </div>
+    <div class="hl"><strong>시리즈 칸을 꼭 넣으세요.</strong> 2편·EP3처럼 앞 편을 봐야 이해되는 편이면 "시리즈", 그 편만 봐도 되면 "단독"으로 적습니다. 제 계정에선 <strong>이게 제일 크게 갈린 변수</strong>였는데, 칸을 안 만들면 클로드도 못 찾습니다.</div>
+    <h3>자동으로 받는 길</h3>
+    <p>메타 그래프 API로 인사이트를 통째로 내려받을 수도 있습니다. 다만 앱 등록·토큰 발급이 필요해서 처음이라면 위쪽 손 입력이 훨씬 빠릅니다.</p>
+  </div>
+
+  <div class="sec" id="step2">
+    <div class="sec-label">STEP 2</div>
+    <h2>② 클로드한테 던지되, 답을 정해주지 마세요</h2>
+    <p>여기가 이 방법의 전부입니다. 흔한 실수는 <strong>답을 미리 정해놓고 확인만 시키는 것</strong>입니다. "훅이 중요하지?"라고 물으면 클로드는 훅이 중요하다고 답합니다. 그럼 아무것도 못 배웁니다.</p>
+    <div class="hl warn"><strong>제가 실제로 저질렀던 실수입니다.</strong> 프롬프트에 "갈림길은 첫 8초"라는 결론을 미리 박아놓고 숫자만 채우게 했습니다. 그럴듯한 답이 나왔죠. 그런데 결론을 빼고 다시 물었더니 <strong>정반대</strong>가 나왔습니다. 잘된 편은 실제 화면이 평균 <strong>7.4초</strong>에 등장했고, 안 된 편이 오히려 <strong>3.4초</strong>로 빨랐습니다. 저는 하마터면 잘못된 걸 고칠 뻔했습니다.</div>
+    <div class="copybox">
+      <div class="bar"><span>그대로 복사해서 쓰세요</span><button class="copybtn" onclick="cp(this,'p1')">복사</button></div>
+      <pre id="p1">reels.csv는 내 인스타 릴스 실측 성과다.
+
+게시한 지 3일이 안 된 편은 수치가 아직 안 익었으니 제외해라.
+남은 편을 조회수 기준으로 상위 8편과 하위 8편으로 갈라라.
+
+두 그룹이 실제로 다른 점을 데이터에서 직접 찾아 상위 3개만 골라라.
+내가 답을 정해주지 않는다. 네가 찾아라.
+
+각 줄은 "항목: 상위 vs 하위" 형식으로 3줄만, 설명 없이 출력해라.</pre>
+    </div>
+    <p>터미널에서 <code>claude</code>를 켜고 위 내용을 붙여넣으면 끝입니다. 파일은 같은 폴더에 두세요.</p>
+    <div class="hl ok"><strong>한 번 더 물어보세요.</strong> 답이 나오면 이렇게 되묻습니다. <em>"이 세 개가 서로 같은 변수는 아니야? 상관계수도 같이 보여줘."</em> 제 경우엔 세 개 중 두 개가 사실상 한 덩어리였습니다. 이걸 안 물었으면 엉뚱한 걸 고칠 뻔했습니다.</div>
+  </div>
+
+  <div class="sec" id="step3">
+    <div class="sec-label">STEP 3</div>
+    <h2>③ 다음 편부터 이 세 가지만 재기</h2>
+    <p>클로드가 뭘 짚어주든, 최소한 이 세 개는 편마다 적어두세요. 세 번만 쌓여도 패턴이 보입니다.</p>
+    <div class="card">
+      <h3>하나 , 도달</h3>
+      <p>몇 명한테 퍼졌는지입니다. 조회수보다 이게 먼저입니다. <strong>도달이 안 나오면 내용은 볼 기회조차 없습니다.</strong></p>
+    </div>
+    <div class="card">
+      <h3>둘 , 공유</h3>
+      <p>남한테 보낼 만했는지입니다. 제 계정에선 이게 제일 깔끔하게 갈렸습니다. 잘된 8편은 전부 공유됐고, 안 된 8편은 <strong>한 번도 공유되지 않았습니다.</strong></p>
+    </div>
+    <div class="card">
+      <h3>셋 , 시청유지</h3>
+      <p>평균 몇 초 봤는지입니다. 초반에 죽는지 끝까지 가는지가 여기서 드러납니다.</p>
+    </div>
+    <div class="hl"><strong>적는 곳은 아무데나 좋습니다.</strong> 메모장이든 스프레드시트든, 편마다 네 줄이면 됩니다. 날짜 / 도달 / 공유 / 시청유지. 이게 다음 분석의 재료가 됩니다.</div>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">EVIDENCE</div>
+    <h2>제 계정에서 나온 결과</h2>
+    <p>릴스 47편 중 게시 3일이 안 된 4편을 빼고 43편으로 갈랐습니다. 2026년 8월 1일 기준입니다.</p>
+    <table>
+      <tr><th></th><th>상위 8편</th><th>하위 8편</th></tr>
+      <tr><td>도달</td><td><strong>3,615</strong></td><td>47</td></tr>
+      <tr><td>시청유지</td><td><strong>11.3초</strong></td><td>5.8초</td></tr>
+      <tr><td>공유</td><td><strong>8편 전부</strong></td><td>0편</td></tr>
+      <tr><td>저장</td><td><strong>62.6</strong></td><td>0.6</td></tr>
+      <tr><td>시리즈 후속편</td><td>0편</td><td><strong>5편</strong></td></tr>
+    </table>
+    <p>도달 격차가 <strong>76배</strong>입니다. 그리고 그 격차를 가장 크게 설명한 건 편집도 훅도 아니라 <strong>시리즈 후속편이냐 단독편이냐</strong>였습니다.</p>
+    <div class="big">
+      <div><div class="n">115</div><div class="l">시리즈 9편 평균 도달</div></div>
+      <div><div class="n">1,119</div><div class="l">단독 34편 평균 도달</div></div>
+    </div>
+    <p>2편·3편으로 이어지는 편은 거의 안 퍼졌습니다. 앞 편을 안 본 사람에게는 걸 이유가 없기 때문으로 보입니다. 그래서 지금은 <strong>모든 편을 그 편만 봐도 완결되게</strong> 만듭니다.</p>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>제가 빠졌던 함정 4가지</h2>
+    <div class="trap">
+      <div class="t">함정 1 , 갓 올린 편을 섞어 재기</div>
+      <p>게시 몇 시간짜리 릴스는 도달이 한 자리입니다. 그걸 하위 그룹에 넣으면 격차가 부풀려집니다. 저는 이것 때문에 처음에 <strong>118배로 계산했다가 76배로 정정</strong>했습니다. <strong>게시 3일 미만은 빼세요.</strong></p>
+    </div>
+    <div class="trap">
+      <div class="t">함정 2 , 답을 정해주고 물어보기</div>
+      <p>"훅이 중요하지?"라고 물으면 그렇다고 답합니다. 결론을 빼고 "네가 찾아라"로 물어야 진짜가 나옵니다.</p>
+    </div>
+    <div class="trap">
+      <div class="t">함정 3 , 세 개가 사실은 한 개</div>
+      <p>클로드가 세 가지를 짚어줘도 서로 얽혀 있을 수 있습니다. 제 경우 <strong>시리즈 여부·영상 길이·장면 수</strong> 셋이 나왔는데, 되물어 보니 결국 하나였습니다. 시리즈물이 짧게 만들어졌던 것뿐이거든요(시리즈 18.8초 · 단독 32.6초, 장면 11개 대 19개). 길이를 늘린다고 되는 게 아니었습니다.</p>
+    </div>
+    <div class="trap">
+      <div class="t">함정 4 , 기간이 다른 것끼리 비교</div>
+      <p>계정이 크는 중이면 나중에 올린 편이 그냥 유리합니다. 제 시리즈물은 전부 계정 초기에 몰려 있어서, 그 이득이 격차에 섞여 있습니다. 같은 기간끼리도 한 번 갈라보세요.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="next">
+    <div class="sec-label">NEXT</div>
+    <h2>오늘 할 일은 하나입니다</h2>
+    <p>지금 인스타를 열어서 <strong>인사이트에서 도달부터 확인해 보세요.</strong> 프로 계정이면 바로 보입니다. 조회수 옆에 있는 그 숫자입니다.</p>
+    <p>거기서 시작하면 됩니다. 편마다 네 줄씩 적고, 열 편쯤 쌓이면 위 프롬프트를 던지세요.</p>
+    <div class="hl ok"><strong>제 최고 기록은 조회수 14,356회, 도달 10,205입니다.</strong> 팔로워 천 명 안팎짜리 계정에서 나온 숫자예요. 십만 계정 얘기가 아니라, 여기서 다음 칸으로 가는 발판입니다.</div>
+    <div class="cta"><a href="https://www.instagram.com/aitigermask/">인스타에서 다음 편 보기</a></div>
+  </div>
+
+  <div class="foot">
+    <p>AI TIGER MASK , 비개발자를 위한 AI 자동화</p>
+    <p><a href="https://n016yoyo.github.io/smart-life-blog/">다른 가이드 보기</a></p>
+  </div>
+</div>
+
+<script>
+function cp(btn, id){
+  var t = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(t).then(function(){
+    var o = btn.innerText; btn.innerText = "복사됨";
+    setTimeout(function(){ btn.innerText = o; }, 1400);
+  });
+}
+</script>
+</body>
+</html>
