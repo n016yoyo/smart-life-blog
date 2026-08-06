@@ -451,6 +451,9 @@ function cp(btn, id){
     setTimeout(function(){ btn.innerText = o; }, 1400);
   });
 }
+
+// 조회수: 이 페이지 뷰 +1 (2026-08-06 누락분 보정)
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"reel-metrics-guide"})}).catch(function(){});
 </script>
 </body>
 </html>
