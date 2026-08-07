@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>인스타가 안 해주는 언어로 릴스 더빙하기 , Claude 자동화 만드는 법 | AI TIGER MASK</title>
+<meta name="description" content="인스타 릴스 자동번역은 열네 개 언어까지. 그 밖의 예순 개 언어로 내 목소리를 그대로 더빙하는 법. Claude Code로 만드는 법 + 실전 함정 일곱 가지 + 실제 실행 로그.">
+<meta property="og:title" content="인스타가 안 해주는 언어로 릴스 더빙하기">
+<meta property="og:description" content="인스타는 열네 개까지. perso.ai 는 일흔네 개. 차집합 예순 개를 클로드한테 맡겼습니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.gap{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+.gapbox{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.gapbox.win{border:2px solid var(--ok);box-shadow:0 0 0 5px rgba(45,158,107,.08)}
+.gapbox .n{font-size:38px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.gapbox.win .n{color:var(--ok)}
+.gapbox .l{font-size:12.5px;color:var(--mut);margin-top:7px}
+.langs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.lang{font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:#43403a}
+.lang.no{border-color:#e0c9c1;background:#fdf4f1;color:#a35c44}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>인스타가 안 해주는 언어로 <span style="color:var(--acc)">릴스 더빙</span>하기</h1>
+  <p class="sub">인스타 릴스 자동번역은 열네 개 언어까지입니다. 그 밖의 예순 개 언어로, 내 목소리를 그대로 둔 채 더빙하는 법. 시킨 건 요청 파일 한 장, 만든 건 Claude Code.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>필수</b></span>
+    <span class="chip">perso.ai <b>계정</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">이게 뭔데?</a>
+    <a href="#honest">정직하게 짚고 갑니다</a>
+    <a href="#prep">준비물</a>
+    <a href="#ask">요청 파일 한 장</a>
+    <a href="#run">실행</a>
+    <a href="#result">실제 실행 로그</a>
+    <a href="#traps">실전 함정 일곱 가지</a>
+    <a href="#next">여기서 더 하면</a>
+  </div>
+
+  <div class="sec" id="what">
+    <div class="sec-label">WHAT</div>
+    <h2>이게 뭔데?</h2>
+    <p>인스타그램은 릴스를 자동으로 번역해 더빙까지 해줍니다. 공짜고, 설정에서 켜기만 하면 됩니다. 좋은 기능인데 <b>도착 언어가 정해져 있습니다.</b></p>
+    <p>제 계정 설정 화면을 직접 세어보니 <b>정확히 열네 개</b>였습니다. 켜져 있는 게 아홉, 꺼져 있는 게 다섯.</p>
+    <div class="langs">
+      <span class="lang">독일어</span><span class="lang">스페인어</span><span class="lang">영어</span><span class="lang">이탈리아어</span><span class="lang">일본어</span><span class="lang">포르투갈어</span><span class="lang">프랑스어</span><span class="lang">힌디어</span><span class="lang">한국어</span><span class="lang">마라티어</span><span class="lang">뱅골어</span><span class="lang">칸나다어</span><span class="lang">타밀어</span><span class="lang">텔루구어</span>
+    </div>
+    <p>여기 없는 언어로는 아무리 해도 안 나갑니다. 아랍어도, 러시아어도, 히브리어도 없습니다.</p>
+    <div class="gap">
+      <div class="gapbox"><div class="n">열네</div><div class="l">인스타 자동번역 도착어</div></div>
+      <div class="gapbox win"><div class="n">일흔네</div><div class="l">perso.ai 도착어</div></div>
+    </div>
+    <p><a href="https://perso.ai/" target="_blank" rel="noopener">perso.ai</a> 의 언어 목록을 API로 받아 직접 세어보니 자동 감지를 뺀 고유 코드가 <b>일흔네 개</b>였습니다. 인스타의 열네 개는 전부 그 안에 있으니, <b>차집합이 예순 개</b>입니다.</p>
+    <div class="hl">
+      <strong>이 가이드가 만드는 것</strong> , 내 목소리가 담긴 오디오를 올리면, Claude Code가 perso API를 대신 불러 <b>여러 언어로 한 번에</b> 더빙본을 받아옵니다. 번역만 하는 게 아니라 음성을 새로 굽는 단계가 따로 돕니다.
+    </div>
+  </div>
+
+  <div class="sec" id="honest">
+    <div class="sec-label">HONEST</div>
+    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <div class="badge-row">
+      <span class="badge ok">✓ 번역·음성 생성·내려받기 자동</span>
+      <span class="badge ok">✓ 여러 언어 동시 처리</span>
+      <span class="badge warn">△ Free 플랜은 완성본 다운로드 막힘</span>
+      <span class="badge warn">△ 목소리 동일성은 수치로 보장 못 함</span>
+    </div>
+    <p><b>목소리가 "똑같이" 복제된다고는 말하지 않겠습니다.</b> 제가 원본과 더빙본의 스펙트럼 중심(목소리 밝기를 대표하는 값)을 직접 재봤는데, 원본 1651Hz 대 더빙 1718~2149Hz로 <b>언어마다 갈렸습니다.</b> 같다고 주장할 만한 수치가 안 나왔습니다.</p>
+    <p>확실하게 말할 수 있는 건 이겁니다. 실행 화면에 <code>Transcribing</code> → <code>Translating</code> → <code>Generating Voice</code> 단계가 <b>차례로 찍힙니다.</b> 번역문만 뽑는 게 아니라 음성을 새로 굽는 공정이 실제로 돕니다.</p>
+    <div class="hl warn">
+      <strong>Free 플랜이면 완성 더빙 영상은 못 받습니다.</strong> 공식 문서엔 이 얘기가 없고, "받을 수 있다"고 답하는 API 응답까지 옵니다. 그런데 실제로 받으려 하면 <code>FREE_USER_CAN_NOT_DOWNLOAD</code> 로 거절합니다. <b>우회로는 있습니다</b> , 대본 API가 주는 문장별 음성 파일은 안 막혀 있어서, 그걸 받아 이어 붙이면 됩니다.
+    </div>
+  </div>
+
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물</h2>
+    <table>
+      <tr><th>준비물</th><th>설명</th></tr>
+      <tr><td>Claude Code</td><td>이 도구를 만들어줄 주인공. 설치만 하면 됩니다. <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
+      <tr><td>perso.ai 계정</td><td>번역·더빙을 실제로 하는 곳. 로그인 후 개발자 도구에서 인증 토큰을 복사해 둡니다.</td></tr>
+      <tr><td>오디오 파일</td><td>더빙할 내 목소리. <b>오초 이상</b>이어야 합니다(아래 함정 1번).</td></tr>
+      <tr><td>코딩 지식</td><td>필요 없습니다. 아래 요청 파일을 그대로 쓰면 됩니다.</td></tr>
+    </table>
+  </div>
+
+  <div class="sec" id="ask">
+    <div class="sec-label">STEP 1</div>
+    <h2>요청 파일 한 장을 만듭니다</h2>
+    <p>명령을 채팅에 길게 치는 대신 <b>파일 한 장으로 만들어 두면</b> 나중에 그대로 다시 돌릴 수 있고, 무엇을 시켰는지 기록으로 남습니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>ask.txt 로 저장</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
+      <pre id="p1">내 목소리 mp3 를 perso.ai 로 아랍어·히브리어·아르메니아어·조지아어·네팔어·말라얄람어·우르두어·러시아어 여덟 개로 더빙해줘. 목소리는 원본 그대로 복제하고, 나라별 mp3 로 내려받아 _work/langs 에 저장해.</pre>
+    </div>
+    <p>언어는 원하는 대로 바꾸세요. perso 가 지원하는 일흔네 개 중 아무거나 됩니다.</p>
+    <p>그리고 Claude Code 에 이렇게 시킵니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로 붙여넣기</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div>
+      <pre id="p2">ask.txt 에 적은 대로 perso.ai 더빙 자동화를 만들어줘.
+
+동작 순서
+1) 오디오를 업로드한다 (perso 업로드는 3단이다:
+   업로드 URL 요청 → 실제 전송 → 완료 통보. 한 번에 안 된다)
+2) 목표 언어들을 한꺼번에 번역 요청한다.
+   ★언어마다 지원하는 TTS 모델이 다르다. 지원 목록을 먼저 조회해서
+     그 언어가 실제로 지원하는 모델만 지정할 것. 아무거나 넣으면 400 이 난다.
+   ★동시에 세 개까지만 돌린다. 그 이상은 큐에서 밀린다.
+3) 진행률을 5초 간격으로 확인한다.
+   완료 판정은 progressReason === "Completed" 로만 한다.
+4) 문장별 음성(audioUrl)을 받아 언어별 mp3 로 저장한다.
+   ★Free 플랜이면 완성본 download 가 막히므로 이 경로를 쓴다.
+5) 시작·끝 할당량을 찍어서 이번 작업에 얼마가 나갔는지 보여줘.
+
+진행 상황을 단계별로 화면에 출력해줘. 번역 결과 원문도 파일로 남겨줘.</pre>
+    </div>
+  </div>
+
+  <div class="sec" id="run">
+    <div class="sec-label">STEP 2</div>
+    <h2>그다음부턴 두 줄</h2>
+    <p>Claude 가 코드를 다 짜면, 이후엔 이게 전부입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>실행</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div>
+      <pre id="p3">cat ask.txt
+node run_dub.js</pre>
+    </div>
+    <p>첫 줄은 무엇을 시켰는지 화면에 띄우는 것이고, 둘째 줄이 실제 실행입니다.</p>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">EVIDENCE</div>
+    <h2>실제로 돌린 결과</h2>
+    <p>영상에 나온 화면은 전부 실제 실행 기록입니다. 아래는 그 실행의 터미널 출력 그대로입니다.</p>
+    <pre style="border-radius:12px">perso.ai 다국어 더빙
+space 587766 · PRO · 잔여 10600
+소스 polyglot_src.mp3 · 한국어 · 스파크 목소리
+
+[1/4] 업로드
+      mediaSeq=50072 · 5.4초
+
+[2/4] 8개 언어 번역 · 동시 3개씩
+      아랍어
+      히브리어
+      아르메니아어
+      조지아어
+      네팔어
+      말라얄람어
+      우르두어
+      러시아어
+
+[3/4] 생성
+      ── 아랍어 · 히브리어 · 아르메니아어
+         projectSeq 397994 397995 397996
+         397994  Uploading 20%
+         397994  Transcribing 40%
+         397994  Translating 60%
+         397994  Generating Voice 80%
+         397994  Completed 100%
+
+[4/4] 번역 결과
+      아랍어    هذا الفيديو من صنع كلود، والترجمة والدبلجة بواسطة بيرسو AI.
+      히브리어   הסרטון הזה נוצר על ידי קלוד. התרגום והדיבוב נעשו על ידי פרסו AI.
+      러시아어   Это видео создал Клод. Перевод и дубляж выполнены Персо ИИ.
+
+[저장] 언어별 음성 내려받기
+      ar  ar_0.mp3  114KB
+      he  he_0.mp3  101KB
+      ru  ru_0.mp3   86KB
+
+끝. 할당량 10600 → 10560</pre>
+    <div class="hl ok">
+      <strong>여덟 개 언어에 할당량 사십이 들었습니다.</strong> 오디오 오점사 초 한 개 기준입니다. 길이에 비례하니 긴 영상은 더 나갑니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.
+    </div>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>실전 함정 일곱 가지</h2>
+    <p>제가 직접 밟은 것들입니다. 미리 알면 안 밟습니다.</p>
+
+    <div class="trap">
+      <div class="t">⚠ 1 · 오디오가 오 초보다 짧으면 안 올라갑니다</div>
+      <p>짧은 문장 하나만 테스트하려다 계속 거절당했습니다. 소스는 오 초를 넘겨야 합니다. 테스트용이라도 문장 두세 개는 넣으세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 2 · 언어와 TTS 모델 짝이 안 맞으면 거절당합니다</div>
+      <p>좋아 보이는 모델을 전 언어에 일괄로 지정했더니 일부 언어에서 400 이 났습니다. <b>언어마다 지원 모델이 다릅니다.</b> 언어 목록을 먼저 받아서 그 언어가 실제로 지원하는 것만 고르게 해야 합니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 3 · Free 플랜은 완성본을 못 받습니다 (문서에 없음)</div>
+      <p>"받을 수 있다"고 답하는 응답까지 와놓고, 실제로 받으려 하면 <code>FREE_USER_CAN_NOT_DOWNLOAD</code> 입니다. 존재하지 않는 항목을 요청해도 같은 에러가 나와서 "내가 값을 잘못 넣었나" 하고 한참 헤맵니다. <b>에러 본문의 detailCode 를 먼저 보세요.</b> 우회로는 문장별 음성 파일을 받아 이어 붙이는 것입니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 4 · 완료 직후 몇 초는 아직 "안 됐다"고 나옵니다</div>
+      <p>진행률이 100%가 됐다고 바로 받으러 가면 빈손입니다. 완료 판정은 <code>progressReason === "Completed"</code> 로만 하고, 그 뒤에도 몇 초 여유를 두게 시키세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 5 · 한글·태국어·아랍어 글자가 네모(□)로 나옵니다</div>
+      <p>받아온 번역문을 화면이나 이미지에 넣으면 대부분 두부처럼 네모로 깨집니다. 그 문자를 담은 폰트가 없어서입니다. 언어마다 맞는 <b>Noto 폰트를 따로 설치</b>해야 합니다. 저는 일곱 종을 깔았습니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 6 · 언어에 따라 이름을 원어로 안 바꿔줍니다</div>
+      <p>"Claude"를 그 나라 글자로 써주길 기대했는데, 언어에 따라 라틴 문자 그대로 두고 옵니다. 같은 언어인데도 회차마다 다르게 오기도 합니다. <b>결과를 눈으로 확인하고 쓰세요.</b> 저는 조지아어에서 이걸 겪었습니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 7 · 받아온 음성을 이어 붙일 때 소리가 사라집니다</div>
+      <p>perso 가 주는 음성과 내가 만든 음성의 <b>샘플레이트가 다르면</b>(예: 44.1kHz 대 48kHz) 그냥 이어 붙였을 때 일부 구간이 조용히 잘려나갑니다. 에러도 안 납니다. 붙이기 전에 샘플레이트를 하나로 맞추게 시키세요.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="next">
+    <div class="sec-label">NEXT</div>
+    <h2>여기서 더 하면</h2>
+    <p>받아온 언어별 음성을 릴스에 얹으면, 인스타 자동번역이 안 가는 나라에도 내 영상이 그 나라 말로 나갑니다. 릴스 만드는 쪽은 따로 정리해두었습니다.</p>
+    <div class="card">
+      <h3><a href="https://n016yoyo.github.io/smart-life-blog/reel-metrics-guide/">릴스 성과를 숫자로 보는 법 →</a></h3>
+      <p>무엇이 실제로 도달을 갈랐는지 실측으로 확인하는 쪽.</p>
+    </div>
+    <div class="card">
+      <h3><a href="https://n016yoyo.github.io/smart-life-blog/guide/">Claude Code 설치부터 →</a></h3>
+      <p>아직 안 깔았다면 여기부터.</p>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">인스타에서 만드는 영상 보기 →</a>
+  </div>
+
+  <div class="foot" style="margin-top:24px">
+    <p>릴스 다국어 더빙 자동화 가이드 · 2026 · 직접 만들며 기록</p>
+    <p style="margin-top:4px">perso.ai · Instagram · Claude 는 각 사 소유이며 비제휴입니다. 화면에 나온 수치는 전부 직접 실행해 받은 값입니다.</p>
+  </div>
+</div>
+
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"reel-dub-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+</script>
+</body>
+</html>
