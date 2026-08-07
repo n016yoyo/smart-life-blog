@@ -70,11 +70,11 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 <header>
   <div class="brand">AI TIGER MASK</div>
   <h1>서로이웃 신청을 <span style="color:var(--acc)">맞는 곳만</span> 골라서</h1>
-  <p class="sub">아무한테나 걸면 하루 한도만 날립니다. 검색으로 모은 28곳에서 3곳까지 좁히고, 그 사람이 실제로 쓴 글을 읽고 만든 메시지로 신청합니다. 시킨 건 명령 한 줄.</p>
+  <p class="sub">아무한테나 걸면 하루 한도만 날립니다. 검색으로 모은 28곳에서 3곳까지 좁히고, 그 사람이 실제로 쓴 글을 읽고 만든 메시지로 신청합니다. 컴퓨터에 <b>Claude Code만</b> 깔려 있으면 따라올 수 있게 썼습니다.</p>
   <div class="chips">
-    <span class="chip">Claude Code <b>필수</b></span>
-    <span class="chip">네이버 계정 <b>부계정 권장</b></span>
+    <span class="chip">Claude Code <b>이것만</b></span>
     <span class="chip">코딩 <b>0줄</b></span>
+    <span class="chip">복붙 프롬프트 <b>6개</b></span>
   </div>
   <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
 </header>
@@ -83,14 +83,17 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
   <div class="toc">
     <a href="#what">이게 뭔데?</a>
     <a href="#honest">정직하게 짚고 갑니다</a>
-    <a href="#why">한도가 진짜 문제입니다</a>
-    <a href="#prep">준비물</a>
-    <a href="#build">만들기 프롬프트</a>
-    <a href="#run">3단 명령</a>
+    <a href="#why">한도가 진짜 문제</a>
+    <a href="#s0">0. 시작하기</a>
+    <a href="#s1">1. 도구 깔기</a>
+    <a href="#s2">2. 로그인</a>
+    <a href="#s3">3. 만들기</a>
+    <a href="#s4">4. 한도 0으로 시험</a>
+    <a href="#s5">5. 실제 신청</a>
+    <a href="#stuck">막혔을 때</a>
     <a href="#msg">메시지가 갈림길</a>
     <a href="#result">실제 실행 결과</a>
-    <a href="#traps">실전 함정 5가지</a>
-    <a href="#safe">안전하게 오래 쓰는 법</a>
+    <a href="#traps">실전 함정</a>
   </div>
 
   <div class="sec" id="what">
@@ -121,14 +124,14 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
     <div class="trap">
       <div class="t">⚠ 계정 책임은 본인에게 있습니다</div>
-      <p>속도를 올리면 그만큼 위험합니다. 아래 대기 시간 설정은 줄이지 마세요. 부계정으로 먼저 돌려보시길 권합니다.</p>
+      <p>속도를 올리면 그만큼 위험합니다. 아래 대기 시간은 줄이지 마세요. 부계정으로 먼저 돌려보시길 권합니다.</p>
     </div>
   </div>
 
   <div class="sec" id="why">
     <div class="sec-label">WHY</div>
     <h2>한도가 진짜 문제입니다</h2>
-    <p>서로이웃 자동화에서 사람들이 가장 많이 하는 실수는 <strong>일단 많이 거는 것</strong>입니다. 그런데 네이버는 신청 단계를 실제로 호출하는 순간 한도를 깎습니다.</p>
+    <p>서로이웃 자동화에서 가장 많이 하는 실수는 <strong>일단 많이 거는 것</strong>입니다. 그런데 네이버는 신청 단계를 실제로 호출하는 순간 한도를 깎습니다.</p>
     <p>그래서 이 자동화는 순서를 뒤집습니다. <strong>한도를 안 쓰는 조회로 먼저 물어보고</strong>, 되는 곳에만 신청합니다.</p>
     <table>
       <tr><th>단계</th><th>하는 일</th><th>한도</th></tr>
@@ -140,94 +143,221 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <div class="hl ok"><strong>결과:</strong> 안 되는 곳에 헛되이 쓴 한도가 0건입니다. 3단계까지는 아무리 돌려도 한도가 안 깎이니까요.</div>
   </div>
 
-  <div class="sec" id="prep">
-    <div class="sec-label">PREP</div>
-    <h2>준비물은 딱 두 개</h2>
-    <div class="card">
-      <h3>1. Claude Code</h3>
-      <p>새 컴퓨터에 이것만 깔려 있으면 됩니다. 설치법은 <a href="https://n016yoyo.github.io/smart-life-blog/claude-code-guide/">클로드 코드 가이드</a>에 있습니다.</p>
+  <div class="sec" id="s0">
+    <div class="sec-label">STEP 0</div>
+    <h2>시작하기 , 폴더 하나 만들고 클로드 켜기</h2>
+    <p>여기부터는 컴퓨터에 <strong>Claude Code만</strong> 깔려 있다고 치고 갑니다. 다른 건 아무것도 없어도 됩니다.</p>
+    <p>터미널(맥은 터미널, 윈도우는 PowerShell)을 열고 아래를 그대로 붙여넣으세요.</p>
+    <div class="copybox">
+      <div class="bar"><span>터미널에 붙여넣기</span><button class="copybtn" onclick="copy(this,'c0')">복사</button></div>
+      <pre id="c0">mkdir buddy-auto
+cd buddy-auto
+claude</pre>
     </div>
-    <div class="card">
-      <h3>2. 네이버 계정</h3>
-      <p>서로이웃을 걸 계정입니다. 처음 돌릴 때는 부계정을 권합니다.</p>
-    </div>
-    <p style="margin-top:14px">브라우저 자동화 도구(Playwright)는 Claude가 알아서 깔아줍니다. 따로 준비할 게 없습니다.</p>
+    <p>클로드가 켜지면 이제부터는 <strong>아래 프롬프트를 순서대로 붙여넣기만</strong> 하면 됩니다. 터미널에 직접 명령을 칠 일은 더 없습니다.</p>
+    <div class="hl">Claude Code가 아직 없다면 <a href="https://n016yoyo.github.io/smart-life-blog/claude-code-guide/">클로드 코드 설치 가이드</a>를 먼저 보세요. 5분이면 됩니다.</div>
   </div>
 
-  <div class="sec" id="build">
-    <div class="sec-label">BUILD</div>
-    <h2>만들기 , 이 프롬프트 하나</h2>
-    <p>폴더 하나 만들고 그 안에서 <code>claude</code> 를 켠 다음, 아래를 통째로 붙여넣으세요.</p>
+  <div class="sec" id="s1">
+    <div class="sec-label">STEP 1</div>
+    <h2>도구 깔기 , 클로드한테 시킵니다</h2>
+    <p>브라우저를 대신 움직여줄 도구가 필요한데, 그것도 클로드가 깔아줍니다. 뭘 깔지 몰라도 됩니다.</p>
     <div class="copybox">
-      <div class="bar"><span>복붙용 프롬프트</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
-      <pre id="p1">네이버 블로그 서로이웃 신청 자동화를 만들어줘. neighbor_both.js 하나로.
+      <div class="bar"><span>프롬프트 1 · 준비</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
+      <pre id="p1">이 폴더에서 네이버 블로그 자동화를 만들 거야. 먼저 준비만 해줘.
 
-【핵심 설계】
-네이버는 신청 단계를 호출해야 하루 한도가 깎인다.
-그러니 한도를 안 쓰는 조회로 먼저 걸러내고, 통과한 곳에만 신청한다.
+1. node랑 npm이 깔려 있는지 확인해줘. 없으면 내 운영체제에 맞는 방법으로 설치해줘.
+2. 이 폴더에 npm 프로젝트를 만들고 playwright를 설치해줘.
+   브라우저 본체(chromium)까지 받아야 하니 그것도 같이 해줘.
+3. 설치가 끝나면 chromium이 실제로 실행되는지 간단히 테스트해서 알려줘.
+   네이버 첫 화면을 열고 제목을 찍어보는 정도면 충분해.
 
-【1단계 후보 수집】
+각 단계마다 뭘 왜 하는지 한 줄로 설명해주고,
+에러가 나면 멈추지 말고 원인 찾아서 고친 다음 계속 진행해줘.</pre>
+    </div>
+    <div class="hl warn"><strong>여기서 시간이 좀 걸립니다.</strong> 브라우저 본체를 받느라 몇 분 걸릴 수 있어요. "성공했다"고 할 때까지 기다리세요.</div>
+  </div>
+
+  <div class="sec" id="s2">
+    <div class="sec-label">STEP 2</div>
+    <h2>로그인 , 여기가 제일 중요합니다</h2>
+    <p>이 자동화에서 <strong>가장 오래 헤맨 지점</strong>입니다. 먼저 왜 그런지 알고 가세요.</p>
+    <div class="trap">
+      <div class="t">⚠ 브라우저로 로그인하면 "반쪽 세션"이 됩니다</div>
+      <p>자동화가 띄운 브라우저에서 직접 로그인하면, 네이버가 그 세션에 낮은 인증 등급을 줍니다. 그러면 <strong>일반 이웃추가는 되는데 서로이웃 신청만 조용히 막힙니다.</strong> 에러 메시지도 "잘못된 요청" 한 줄이라 코드가 틀린 줄 알고 며칠 날립니다.</p>
+      <p style="margin-top:6px">해결은 하나뿐입니다. <strong>평소 쓰는 크롬에서 로그인한 쿠키를 그대로 가져오는 것.</strong></p>
+    </div>
+    <h3>쿠키 두 개 꺼내오기</h3>
+    <ol>
+      <li>평소 쓰는 크롬에서 네이버에 로그인합니다.</li>
+      <li>네이버 첫 화면에서 <code>F12</code> 를 누릅니다. (맥은 <code>Cmd + Option + I</code>)</li>
+      <li>위쪽 탭에서 <strong>Application</strong> 을 고릅니다.</li>
+      <li>왼쪽 목록에서 <strong>Storage → Cookies → https://www.naver.com</strong> 을 엽니다.</li>
+      <li>목록에서 <code>NID_AUT</code> 를 찾아 <strong>Value</strong> 칸을 복사합니다.</li>
+      <li>같은 방법으로 <code>NID_SES</code> 도 복사합니다.</li>
+    </ol>
+    <div class="hl warn"><strong>이 두 값은 비밀번호와 같습니다.</strong> 남한테 보여주거나 채팅방에 붙여넣지 마세요. 아래 프롬프트는 내 컴퓨터의 클로드한테만 줍니다.</div>
+    <div class="copybox">
+      <div class="bar"><span>프롬프트 2 · 로그인 저장</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div>
+      <pre id="p2">네이버 로그인 세션을 저장하는 set_session.js 를 만들어줘.
+
+내가 크롬 개발자도구에서 꺼낸 쿠키 두 개를 넣으면
+playwright가 쓸 수 있는 세션 파일(creds/naver_state.json)로 저장하는 스크립트야.
+
+  node set_session.js "<NID_AUT값>" "<NID_SES값>"
+
+쿠키는 도메인 .naver.com, path /, httpOnly, secure 로 넣어줘.
+
+그리고 세션이 제대로 살아있는지 검사하는 모드도 같이 만들어줘.
+
+  node set_session.js --check
+
+★검사 방법이 중요해. 단순히 "로그인 됐나"로는 부족해.
+네이버는 만료된 세션을 완전히 막지 않고 반쪽만 막는다.
+읽기나 일반 이웃추가는 되는데 서로이웃 신청 같은 높은 등급만 조용히 거부한다.
+그래서 nid.naver.com 내정보 페이지를 열어보고
+로그인 페이지로 튕기면 "반쪽 세션이라 서로이웃은 막힌다"고 알려줘.
+
+creds 폴더는 .gitignore 에 넣어서 실수로 공유되지 않게 해줘.
+
+만들고 나면 내가 쿠키 값을 줄 테니 그때 실행하자.</pre>
+    </div>
+    <p>클로드가 다 만들었다고 하면, 아까 복사한 쿠키 값을 이렇게 넘겨주세요.</p>
+    <div class="copybox">
+      <div class="bar"><span>프롬프트 3 · 쿠키 넣기</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div>
+      <pre id="p3">쿠키 값이야. 세션 저장하고 바로 --check 로 검사까지 해줘.
+
+NID_AUT = 여기에_붙여넣기
+NID_SES = 여기에_붙여넣기</pre>
+    </div>
+    <div class="hl ok">"완전 로그인 세션"이라고 나오면 성공입니다. "반쪽 세션"이라고 나오면 크롬에서 네이버를 <strong>로그아웃했다가 다시 로그인</strong>한 뒤 쿠키를 새로 꺼내오세요.</div>
+  </div>
+
+  <div class="sec" id="s3">
+    <div class="sec-label">STEP 3</div>
+    <h2>만들기 , 본체 프롬프트</h2>
+    <p>이게 제일 긴 프롬프트인데, 길어야 하는 이유가 있습니다. 짧게 시키면 클로드가 "일단 많이 거는" 흔한 방식으로 만들어버립니다. 한도를 아끼는 순서와 대기 시간을 못 박아야 그대로 나옵니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>프롬프트 4 · 본체</span><button class="copybtn" onclick="copy(this,'p4')">복사</button></div>
+      <pre id="p4">neighbor_both.js 를 만들어줘. 네이버 서로이웃 신청 자동화야.
+아까 저장한 creds/naver_state.json 세션을 쓴다.
+
+【핵심 설계 , 이 순서를 반드시 지켜】
+네이버는 신청 단계를 실제로 호출해야 하루 한도가 깎인다.
+그러니 한도를 안 쓰는 조회로 먼저 다 걸러내고, 통과한 곳에만 신청한다.
+
+【1단계 후보 수집 , 한도 안 씀】
 m.search.naver.com 블로그 탭에서 아래 키워드로 검색해 블로그 아이디를 모은다.
   "서이추 환영 AI", "서로이웃 환영 자동화", "클로드 코드 자동화", "AI 블로그 자동화"
+※ 이 키워드는 내 주제에 맞게 나중에 바꿀 거니까 파일 맨 위에 상수로 빼줘.
 페이지 이동 사이에 1.4~2.4초 랜덤 대기.
 
 【2단계 RSS 필터 , 한도 안 씀】
 각 후보의 블로그 RSS를 읽어 세 가지를 본다.
-  1) 최근 글이 14일 안에 있나 (없으면 휴면으로 제외)
-  2) 협찬·체험단 같은 광고 문구가 있나 (있으면 제외)
+  1) 최근 글이 14일 안에 있나. 없으면 휴면으로 제외
+  2) 협찬·체험단 같은 광고 문구가 있나. 있으면 제외
   3) 최근 글 제목에 내 주제어가 2편 이상 나오나
      주제어: 클로드|Claude|바이브코딩|노코드|자동화|프롬프트|n8n|메이크닷컴
-     제목 2편이 안 되면, 본문에 강신호 5회 + 약신호 2회여도 통과시킨다.
+     제목 2편이 안 되면, 본문에 강신호 5회 + 약신호 2회여도 통과시킨다
+제외할 때마다 이유를 로그에 남겨. "휴면(37일)" 처럼.
 
-【3단계 사전확인 , 한도 안 씀】
-BuddyAdd 폼이 열리는지만 확인한다. 확인 버튼은 누르지 않는다.
+【3단계 사전확인 , 한도 안 씀 ★이게 핵심】
+BuddyAdd 폼이 열리는지만 확인한다. 확인 버튼은 절대 누르지 않는다.
 여기까지 통과한 곳만 4단계로 넘긴다.
 
 【4단계 신청 , 여기서 한도 씀】
-RSS에서 가져온 최근 글 제목 3편 + 본문 발췌 400자를 너에게 주면
+2단계에서 가져온 최근 글 제목 3편 + 본문 발췌 400자를 너에게 주면
 그 사람이 실제로 다룬 것 하나를 짚어 한 문장을 지어라.
   예: "OO로 △△하는 편 잘 봤어요, 저는 □□ 쪽 기록 중인데 서로이웃 신청드려요"
-제목을 따옴표로 그대로 옮기는 건 금지. 복붙 티가 나서 안 받아준다.
-신청과 신청 사이에 12~25초 랜덤 대기. 사람 속도로.
+★제목을 따옴표로 그대로 옮기는 건 금지. 복붙 티가 나서 안 받아준다.
+신청과 신청 사이에 12~25초 랜덤 대기. 사람 속도로. 병렬 금지.
 
 【실행 모드 3개】
   node neighbor_both.js --check     세션 상태만 검사
   node neighbor_both.js             후보 발굴 + 사전확인까지 (한도 0)
-  node neighbor_both.js --go 3      실제 신청 3건
+  node neighbor_both.js --go 3      실제 신청 3건. 숫자는 내가 정한다
 
 【기록】
 out/both_buddy.json 에 누가·언제·무슨 메시지로 나갔는지 남긴다.
 같은 블로그에 두 번 걸지 않게 이 파일을 먼저 읽고 거른다.
 
-로그인은 내가 직접 할 테니, 처음 한 번 브라우저를 띄워주고
-로그인 끝나면 세션을 저장해서 다음부터 재사용해라.</pre>
+【화면 출력】
+각 단계마다 진행 상황을 한 줄씩 찍어줘. 몇 곳 모았고 몇 곳 걸렀는지.
+마지막에 "검색 28곳 → RSS 9곳 → 사전확인 3곳" 처럼 깔때기를 요약해줘.
+
+다 만들면 --check 부터 돌려서 잘 되는지 보여줘.</pre>
     </div>
-    <div class="hl"><strong>왜 이렇게 길게 쓰나?</strong> 짧게 시키면 Claude가 "일단 많이 거는" 흔한 방식으로 만듭니다. 한도를 아끼는 순서와 대기 시간을 명시해야 그대로 만들어줍니다.</div>
   </div>
 
-  <div class="sec" id="run">
-    <div class="sec-label">RUN</div>
-    <h2>돌리는 건 명령 세 개</h2>
-    <h3>처음 한 번 , 로그인</h3>
+  <div class="sec" id="s4">
+    <div class="sec-label">STEP 4</div>
+    <h2>한도 0으로 먼저 시험합니다</h2>
+    <p>바로 신청하지 마세요. 신청 없이 후보만 뽑아보는 모드가 있습니다. 여기는 몇 번을 돌려도 한도가 안 깎입니다.</p>
     <div class="copybox">
-      <div class="bar"><span>세션 저장</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div>
-      <pre id="p2">node neighbor_both.js --check</pre>
-    </div>
-    <p>브라우저가 뜨면 직접 로그인하세요. 한 번만 하면 세션이 저장돼 다음부터는 안 물어봅니다.</p>
+      <div class="bar"><span>프롬프트 5 · 시험 실행</span><button class="copybtn" onclick="copy(this,'p5')">복사</button></div>
+      <pre id="p5">신청 없이 후보만 뽑는 모드로 돌려줘.
 
-    <h3>평소 , 한도 안 쓰고 후보만 보기</h3>
-    <div class="copybox">
-      <div class="bar"><span>발굴만</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div>
-      <pre id="p3">node neighbor_both.js</pre>
-    </div>
-    <p>여기까지는 신청이 안 나갑니다. 어떤 블로그가 걸러졌는지 이유까지 다 찍힙니다. 마음 편히 여러 번 돌려도 됩니다.</p>
+  node neighbor_both.js
 
-    <h3>실제로 걸 때</h3>
-    <div class="copybox">
-      <div class="bar"><span>신청 3건</span><button class="copybtn" onclick="copy(this,'p4')">복사</button></div>
-      <pre id="p4">node neighbor_both.js --go 3</pre>
+돌린 다음 이것들을 알려줘.
+1. 몇 곳 모았고 단계별로 몇 곳이 남았는지
+2. 걸러진 곳들은 왜 걸러졌는지 이유별로 몇 건씩인지
+3. 최종 통과한 곳들이 정말 내 주제랑 맞는 블로그인지
+   직접 그 블로그를 열어보고 판단해서 알려줘
+
+내 주제는 (여기에 내 블로그 주제를 쓰세요) 야.
+통과한 곳이 주제랑 안 맞으면 검색 키워드나 주제어를 고쳐줘.</pre>
     </div>
-    <div class="hl warn"><strong>숫자를 크게 넣지 마세요.</strong> 처음엔 3으로 시작해서 며칠 지켜보고 늘리세요. 한 번에 수십 건은 계정에 좋을 게 없습니다.</div>
+    <div class="hl"><strong>여기서 키워드를 다듬는 게 핵심입니다.</strong> 통과한 3곳이 내 주제랑 안 맞으면 신청해도 안 받아줍니다. 맞을 때까지 이 단계를 반복하세요. 공짜입니다.</div>
+  </div>
+
+  <div class="sec" id="s5">
+    <div class="sec-label">STEP 5</div>
+    <h2>실제로 걸어봅니다</h2>
+    <p>후보가 마음에 들면 그때 신청합니다. 처음엔 <strong>3건</strong>으로 시작하세요.</p>
+    <div class="copybox">
+      <div class="bar"><span>프롬프트 6 · 실제 신청</span><button class="copybtn" onclick="copy(this,'p6')">복사</button></div>
+      <pre id="p6">이제 실제로 신청해줘. 3건만.
+
+  node neighbor_both.js --go 3
+
+돌린 다음, 나간 메시지 3개를 그대로 보여줘.
+그리고 각 메시지가 그 블로그가 실제로 쓴 글을 짚고 있는지
+해당 블로그를 열어서 대조해줘.
+제목을 그냥 따옴표로 옮긴 것처럼 보이는 게 있으면 알려줘.</pre>
+    </div>
+    <div class="hl warn"><strong>숫자를 크게 넣지 마세요.</strong> 며칠 지켜보고 수락이 오는 걸 확인한 뒤에 늘리세요. 한 번에 수십 건은 계정에 좋을 게 없습니다.</div>
+  </div>
+
+  <div class="sec" id="stuck">
+    <div class="sec-label">STUCK</div>
+    <h2>막혔을 때 , 이걸 붙여넣으세요</h2>
+    <p>가장 흔한 증상 세 가지입니다. 증상만 알면 클로드가 고칩니다.</p>
+    <table>
+      <tr><th>증상</th><th>진짜 원인</th></tr>
+      <tr><td>서로이웃만 "잘못된 요청"</td><td>반쪽 세션. 쿠키 다시 꺼내기</td></tr>
+      <tr><td>후보가 0곳</td><td>검색 키워드가 내 주제랑 안 맞음</td></tr>
+      <tr><td>전부 "니치 약함"으로 걸러짐</td><td>주제어 목록이 너무 좁음</td></tr>
+    </table>
+    <div class="copybox">
+      <div class="bar"><span>프롬프트 7 · 진단</span><button class="copybtn" onclick="copy(this,'p7')">복사</button></div>
+      <pre id="p7">안 되는데 원인을 찾아줘. 순서대로 확인해줘.
+
+1. 먼저 node set_session.js --check 로 세션부터 봐줘.
+   ★서로이웃만 막히는 증상이면 십중팔구 이거야.
+   네이버는 만료 세션을 반쪽만 막아서, 읽기랑 일반 이웃추가는 되는데
+   서로이웃 신청만 조용히 거부한다. 코드를 의심하기 전에 이것부터.
+   반쪽 세션이면 크롬에서 네이버 로그아웃했다 다시 로그인하고
+   쿠키를 새로 꺼내오라고 알려줘.
+
+2. 세션이 멀쩡하면, 어느 단계에서 몇 곳이 남는지 단계별로 찍어줘.
+   검색에서 0곳이면 키워드 문제, RSS에서 다 걸러지면 주제어 문제야.
+
+3. 걸러진 이유를 세어서 가장 많은 이유 3개를 알려줘.
+   그 이유에 맞게 조건을 어떻게 고치면 좋을지 제안해줘.
+
+추측하지 말고 실제로 돌려보고 화면에 찍힌 걸로 판단해줘.</pre>
+    </div>
   </div>
 
   <div class="sec" id="msg">
@@ -267,37 +397,25 @@ out/both_buddy.json 에 누가·언제·무슨 메시지로 나갔는지 남긴�
     <div class="sec-label">TRAPS</div>
     <h2>실전 함정 5가지</h2>
     <div class="trap">
-      <div class="t">1. 신청부터 걸면 한도가 녹습니다</div>
+      <div class="t">1. 반쪽 세션 , 제일 오래 잡아먹습니다</div>
+      <p>서로이웃만 안 되고 다른 건 다 되면 코드를 뜯지 마세요. 세션입니다. 저는 그룹 설정·메시지 인코딩·헤드리스 탐지까지 다 파본 다음에야 알았습니다. <strong>서로이웃만 막히면 무조건 쿠키부터.</strong></p>
+    </div>
+    <div class="trap">
+      <div class="t">2. 신청부터 걸면 한도가 녹습니다</div>
       <p>휴면 블로그에 걸어도 한도는 똑같이 깎입니다. 사전확인 단계를 빼먹지 마세요. 이 자동화의 존재 이유가 그 단계입니다.</p>
     </div>
     <div class="trap">
-      <div class="t">2. 제목만 보고 니치를 판단하면 헛짚습니다</div>
+      <div class="t">3. 제목만 보고 니치를 판단하면 헛짚습니다</div>
       <p>제목에 "AI"가 한 번 들어갔다고 AI 블로그가 아닙니다. 그래서 제목 <strong>2편 이상</strong>을 조건으로 걸었습니다. 한 번 언급은 통과 못 합니다.</p>
     </div>
     <div class="trap">
-      <div class="t">3. 대기 시간을 줄이면 계정이 위험합니다</div>
+      <div class="t">4. 대기 시간을 줄이면 계정이 위험합니다</div>
       <p>신청 사이 12~25초는 안전장치입니다. 속도가 답답해도 줄이지 마세요. 병렬로 여러 개를 동시에 거는 것도 금지입니다.</p>
-    </div>
-    <div class="trap">
-      <div class="t">4. 같은 블로그에 두 번 걸립니다</div>
-      <p>기록 파일을 안 만들면 어제 건 데를 오늘 또 겁니다. <code>out/both_buddy.json</code> 을 먼저 읽고 거르게 하세요.</p>
     </div>
     <div class="trap">
       <div class="t">5. 본문 읽기가 실패하면 조용히 제목 복붙으로 내려갑니다</div>
       <p>제가 실제로 겪은 겁니다. 예비 경로를 만들어두면 편한데, 그게 하필 하지 말라던 방식이었어요. 기록 파일을 가끔 열어서 어떤 문장이 나갔는지 직접 확인하세요.</p>
     </div>
-  </div>
-
-  <div class="sec" id="safe">
-    <div class="sec-label">SAFE</div>
-    <h2>안전하게 오래 쓰는 법</h2>
-    <ul>
-      <li>처음엔 <code>--go 3</code> 으로 시작. 며칠 지켜보고 천천히 늘립니다.</li>
-      <li>부계정으로 먼저 돌려보고, 괜찮으면 본계정으로 옮깁니다.</li>
-      <li>대기 시간은 절대 줄이지 않습니다. 이게 유일한 안전장치입니다.</li>
-      <li>기록 파일을 주에 한 번은 열어봅니다. 이상한 문장이 나가고 있는지 눈으로 확인합니다.</li>
-      <li>수락률이 낮으면 신청 수를 늘리지 말고 <strong>메시지를 고치세요.</strong> 갈림길은 거기입니다.</li>
-    </ul>
     <div class="hl">
       <strong>이건 네이버 자동화 시리즈의 한 조각입니다.</strong> 글 쓰는 것, 글감 고르는 것, 이웃 글에 댓글 다는 것도 각각 있습니다. 아래 링크에서 이어보세요.
     </div>
