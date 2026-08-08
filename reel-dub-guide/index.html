@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>인스타가 안 해주는 언어로 릴스 더빙하기 , Claude 자동화 만드는 법 | AI TIGER MASK</title>
-<meta name="description" content="인스타 릴스 자동번역은 열네 개 언어까지. 그 밖의 예순 개 언어로 내 목소리를 그대로 더빙하는 법. Claude Code로 만드는 법 + 실전 함정 아홉 가지 + 실제 실행 로그.">
+<meta name="description" content="인스타 릴스 자동번역은 열네 개 언어까지. 그 밖의 예순 개 언어로 내 목소리를 그대로 더빙하는 법. Claude Code로 만드는 법 + 실전 함정 열한 가지 + 실제 실행 로그.">
 <meta property="og:title" content="인스타가 안 해주는 언어로 릴스 더빙하기">
 <meta property="og:description" content="인스타는 열네 개까지. perso.ai 는 일흔네 개. 차집합 예순 개를 클로드한테 맡겼습니다.">
 <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
@@ -100,7 +100,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#run">4 · 실행</a>
     <a href="#stuck">막혔을 때</a>
     <a href="#result">실제 실행 로그</a>
-    <a href="#traps">실전 함정 아홉 가지</a>
+    <a href="#traps">실전 함정 열한 가지</a>
   </div>
 
   <div class="sec" id="what">
@@ -113,8 +113,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
     <p>여기 없는 언어로는 아무리 해도 안 나갑니다. 아랍어도, 러시아어도, 히브리어도 없습니다.</p>
     <div class="gap">
-      <div class="gapbox"><div class="n">열네</div><div class="l">인스타 자동번역 도착어</div></div>
-      <div class="gapbox win"><div class="n">일흔네</div><div class="l">perso.ai 도착어</div></div>
+      <div class="gapbox"><div class="n">14</div><div class="l">인스타 자동번역 도착어</div></div>
+      <div class="gapbox win"><div class="n">74</div><div class="l">perso.ai 도착어</div></div>
     </div>
     <p><a href="https://perso.ai/" target="_blank" rel="noopener">perso.ai</a> 의 언어 목록을 API로 받아 직접 세어보니 자동 감지를 뺀 고유 코드가 <b>일흔네 개</b>였습니다. 인스타의 열네 개는 전부 그 안에 있으니, <b>차집합이 예순 개</b>입니다.</p>
     <div class="hl">
@@ -137,7 +137,18 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <p><b>목소리가 "똑같이" 복제된다고는 말하지 않겠습니다.</b> 제가 원본과 더빙본의 스펙트럼 중심(목소리 밝기를 대표하는 값)을 직접 재봤는데, 원본 1651Hz 대 더빙 1718~2149Hz로 <b>언어마다 갈렸습니다.</b> 같다고 주장할 만한 수치가 안 나왔습니다.</p>
     <p>확실하게 말할 수 있는 건 이겁니다. 실행 화면에 <code>Transcribing</code> → <code>Translating</code> → <code>Generating Voice</code> 단계가 <b>차례로 찍힙니다.</b> 번역문만 뽑는 게 아니라 음성을 새로 굽는 공정이 실제로 돕니다.</p>
     <div class="hl warn">
-      <strong>돈 얘기도 하겠습니다.</strong> perso.ai 는 <b>미디어 일 초에 할당량 일</b>이 나가고, 목표 언어 수만큼 곱해집니다. 삼십 초 릴스를 세 개 언어로 하면 구십입니다. 무료 플랜은 번역·음성 생성까지는 되는데 <b>완성본 내려받기가 막힙니다</b>(우회로는 함정 3번). 유료로 올리면 풀립니다.
+      <strong>돈 얘기도 하겠습니다.</strong> perso.ai 는 <b>미디어 1초에 할당량 1</b>이 나가고, <b>목표 언어 수만큼 곱해집니다.</b> 립싱크까지 걸면 2배입니다.
+    </div>
+    <table>
+      <tr><th>만들 것</th><th>1편당</th><th>10,800으로</th></tr>
+      <tr><td>30초 릴스 · 1개 언어</td><td>30</td><td>360편</td></tr>
+      <tr><td>30초 릴스 · 3개 언어</td><td>90</td><td>120편</td></tr>
+      <tr><td>30초 릴스 · 8개 언어</td><td>240</td><td>45편</td></tr>
+      <tr><td>30초 릴스 · 1개 언어 · 립싱크</td><td>60</td><td>180편</td></tr>
+    </table>
+    <p>제가 실제로 돌린 건 <b>5.4초 오디오 × 8개 언어 = 할당량 40</b>이었습니다(10,600 → 10,560). 계산상 43인데 40이 빠졌으니 반올림 단위가 있는 듯합니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.</p>
+    <div class="hl warn">
+      <strong>무료 플랜은 완성본 내려받기가 막힙니다</strong>(우회로는 함정 3번). 유료로 올리면 풀립니다. 무료와 유료는 <b>동시 처리 개수도 다릅니다</b> , 무료 1개, 유료 3개. 여덟 개 언어를 무료로 돌리면 한 줄로 서서 훨씬 오래 걸립니다.
     </div>
   </div>
 
@@ -219,14 +230,22 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 
 동작 순서
 1) 오디오를 업로드한다.
-   ★업로드는 3단이다: 업로드 주소 요청 → 실제 전송 → 완료 통보.
-     한 번에 안 된다.
+   ★업로드는 3단이다. 더빙 요청에 파일을 바로 못 붙인다.
+     (1) 업로드용 임시 주소를 받는다 (30분만 유효)
+     (2) 그 주소로 파일을 직접 올린다. perso 서버가 아니라 저장소로 간다.
+         받은 주소를 그대로 써라. 호스트를 코드에 박아넣지 마라, 바뀐다.
+     (3) 올린 주소를 perso 에 통보해서 mediaSeq 를 받는다
+   ★403 이 나면 임시 주소가 만료된 거다. (1)부터 다시.
    ★오디오가 5초보다 짧으면 거절당한다. 먼저 길이를 재고,
      짧으면 진행하지 말고 나한테 알려줘.
 2) 목표 언어들을 번역 요청한다.
    ★언어마다 지원하는 음성 모델이 다르다. 언어 목록을 먼저 조회해서
      그 언어가 실제로 지원하는 모델만 지정할 것. 아무거나 넣으면 400 이 난다.
-   ★동시에 3개까지만 돌린다. 그 이상은 큐에서 밀린다.
+   ★같은 언어 코드가 목록에 여러 번 나온다(영어 US·UK 처럼).
+     코드만 보고 집지 말고 지역 표시까지 확인해라. 지원 모델이 서로 다르다.
+   ★요청 하나가 프로젝트를 여러 개 만든다. 응답이 배열로 온다.
+     하나만 보고 끝내면 나머지 언어를 통째로 놓친다. 전부 각각 확인해라.
+   ★동시에 3개까지만 돌린다(무료는 1개). 그 이상은 큐에서 밀린다.
 3) 진행률을 5초 간격으로 확인한다.
    ★완료 판정은 progressReason 이 "Completed" 인 것으로만 한다.
      진행률 100%만 보고 받으러 가면 아직 빈손이다.
@@ -332,7 +351,7 @@ space 587766 · PRO · 잔여 10600
 
   <div class="sec" id="traps">
     <div class="sec-label">TRAPS</div>
-    <h2>실전 함정 아홉 가지</h2>
+    <h2>실전 함정 열한 가지</h2>
     <p>제가 직접 밟은 것들입니다. 위 프롬프트에는 이미 다 들어가 있으니 그대로 쓰면 안 밟습니다. 그래도 왜 그런지는 알아두세요.</p>
 
     <div class="trap">
@@ -356,26 +375,36 @@ space 587766 · PRO · 잔여 10600
     </div>
 
     <div class="trap">
-      <div class="t">⚠ 5 · 한글·태국어·아랍어 글자가 네모(□)로 나옵니다</div>
+      <div class="t">⚠ 5 · 응답이 한 겹 감싸져 오는 게 있고 아닌 게 있습니다</div>
+      <p>어떤 응답은 <code>{ result: { ... } }</code> 로 감싸져 오고 어떤 건 그냥 옵니다. 문서 예시는 안 감싸진 모양인데 실제로는 감싸져 오는 게 섞여 있습니다. <b>값이 자꾸 비어 보이면(undefined) 이걸 먼저 의심하세요.</b> 저는 "받을 게 하나도 없다"는 잘못된 결론까지 갔다가 되돌아왔습니다. 클로드에게 "새 엔드포인트는 먼저 한 번 찍어보고 어느 쪽인지 확인해줘"라고 시키면 됩니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 6 · 잘못 걸었을 때 취소가 안 됩니다</div>
+      <p>대기열에 있는 동안만 취소됩니다. 그런데 대기열이 비어 있으면 요청하자마자 바로 처리가 시작돼서, 만들자마자 취소해도 거절당하는 일이 흔합니다. <b>"잘못 걸면 취소하면 되지"라고 생각하고 설계하지 마세요.</b> 할당량은 이미 나갑니다. 언어 목록을 확정한 다음에 돌리세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 7 · 한글·태국어·아랍어 글자가 네모(□)로 나옵니다</div>
       <p>받아온 번역문을 화면이나 이미지에 넣으면 대부분 두부처럼 네모로 깨집니다. 그 문자를 담은 폰트가 없어서입니다. 언어마다 맞는 <b>Noto 폰트를 따로 설치</b>해야 합니다. 저는 일곱 종을 깔았습니다. 이것도 클로드에게 "이 언어 글자가 네모로 나온다"고 말하면 알아서 깝니다.</p>
     </div>
 
     <div class="trap">
-      <div class="t">⚠ 6 · 언어에 따라 이름을 원어로 안 바꿔줍니다</div>
+      <div class="t">⚠ 8 · 언어에 따라 이름을 원어로 안 바꿔줍니다</div>
       <p>"Claude"를 그 나라 글자로 써주길 기대했는데, 언어에 따라 라틴 문자 그대로 두고 옵니다. 같은 언어인데도 회차마다 다르게 오기도 합니다. <b>결과를 눈으로 확인하고 쓰세요.</b> 저는 조지아어에서 이걸 겪었습니다.</p>
     </div>
 
     <div class="trap">
-      <div class="t">⚠ 7 · 받아온 음성을 이어 붙일 때 소리가 사라집니다</div>
+      <div class="t">⚠ 9 · 받아온 음성을 이어 붙일 때 소리가 사라집니다</div>
       <p>perso 가 주는 음성과 내가 만든 음성의 <b>샘플레이트가 다르면</b>(예: 44.1kHz 대 48kHz) 그냥 이어 붙였을 때 일부 구간이 조용히 잘려나갑니다. 에러도 안 납니다. 붙이기 전에 샘플레이트를 하나로 맞추게 시키세요.</p>
     </div>
     <div class="trap">
-      <div class="t">⚠ 8 · 언어에 따라 회차마다 다른 답이 옵니다</div>
+      <div class="t">⚠ 10 · 언어에 따라 회차마다 다른 답이 옵니다</div>
       <p>같은 문장, 같은 언어인데 어제는 그 나라 글자로 오고 오늘은 라틴 문자로 옵니다. 저는 조지아어에서 겪었습니다. <b>결과를 파일로 남겨두고 눈으로 확인한 뒤 쓰세요.</b> 화면에 내보낼 거라면 더더욱요. 클로드에게 "번역 결과 원문도 파일로 남겨줘"라고 시키면 나중에 대조할 수 있습니다.</p>
     </div>
 
     <div class="trap">
-      <div class="t">⚠ 9 · 받아온 음성을 영상에 얹을 때 국기 이미지를 조심하세요</div>
+      <div class="t">⚠ 11 · 받아온 음성을 영상에 얹을 때 국기 이미지를 조심하세요</div>
       <p>나라별 화면을 만들면서 국기에 테두리와 그림자를 일괄로 씌우면, <b>네팔에서 깨집니다.</b> 네팔 국기는 세계에서 유일하게 사각형이 아니라(삼각기 두 개) 투명한 부분에 흰 상자가 그대로 드러납니다. 네팔만 실루엣을 따라가는 그림자(<code>drop-shadow</code>)를 쓰면 됩니다.</p>
     </div>
 
