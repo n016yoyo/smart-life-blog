@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>블로그 답글 자동화 , 핵심은 "안 다는 것"입니다 | AI TIGER MASK</title>
+<meta name="description" content="자동 답글은 다는 게 아니라 안 다는 게 핵심입니다. 재고와 가격을 지어내 거래 약속이 나갈 뻔했습니다. 거르는 규칙 셋 + 복붙 프롬프트 + 실제로 걸린 함정 다섯.">
+<meta property="og:title" content="블로그 답글 자동화 , 핵심은 안 다는 것">
+<meta property="og:description" content="댓글 92건 중 3건에만 답글. 지어낸 말 0건. 거르는 규칙부터 세웁니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>블로그 답글 자동화, 핵심은 <span style="color:var(--acc)">안 다는 것</span>입니다</h1>
+  <p class="sub">댓글에 답글을 자동으로 답니다. 그런데 만들면서 배운 건 반대쪽이었습니다. 잘 다는 것보다 <b>안 달 곳을 먼저 정하는 것</b>이 전부였습니다. 컴퓨터에 <b>Claude Code만</b> 깔려 있으면 따라올 수 있게 썼습니다.</p>
+  <div class="chips">
+    <span class="chip">Claude Code <b>이것만</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+    <span class="chip">복붙 프롬프트 <b>다섯 개</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">이게 뭔데?</a>
+    <a href="#honest">사고가 날 뻔했습니다</a>
+    <a href="#rules">거르는 규칙 셋</a>
+    <a href="#s0">0. 시작하기</a>
+    <a href="#s1">1. 도구 깔기</a>
+    <a href="#s2">2. 로그인</a>
+    <a href="#s3">3. 만들기</a>
+    <a href="#s4">4. 안 달고 문장만 뽑기</a>
+    <a href="#s5">5. 실제 등록</a>
+    <a href="#traps">실전 함정 다섯</a>
+    <a href="#result">실제 실행 결과</a>
+  </div>
+
+  <div class="sec" id="what">
+    <div class="sec-label">이게 뭔데?</div>
+    <h2>내 블로그 댓글을 읽고, 답할 곳에만 답글을 답니다</h2>
+    <p>네이버 블로그 관리 화면에서 내 글에 달린 댓글을 모읍니다. 그중 <b>내가 지어내지 않고 답할 수 있는 것</b>만 남기고, 나머지는 사람이 답하도록 넘깁니다. 남은 것에만 Claude가 답글 문장을 만들어 실제로 등록합니다.</p>
+    <p>브라우저를 실제로 띄워서 사람이 하듯 누릅니다. 별도 계정 연동이나 앱 등록이 필요 없습니다.</p>
+  </div>
+
+  <div class="sec" id="honest">
+    <div class="sec-label">정직하게</div>
+    <h2>먼저, 사고가 날 뻔한 이야기부터</h2>
+    <p>처음 돌렸을 때 십 년 전에 쓴 카드 판매글에 이런 댓글이 있었습니다.</p>
+    <div class="hl">커쇼 가격 좀 알 수 있을까요?</div>
+    <p>자동이 이렇게 답을 만들었습니다.</p>
+    <div class="hl warn">쪽지로 조건 보내드릴게요<br>골드슈미트는 남아있고 랜디 존슨만 나갔어요</div>
+    <p><b>재고도 가격도 저는 모릅니다.</b> 자연스러운 문장을 만들려다 지어낸 것입니다. 그대로 올라갔으면 제 이름으로 거래 약속이 나갔습니다.</p>
+    <p>여기가 갈림길입니다. 자동 답글의 위험은 <b>어색한 문장</b>이 아니라 <b>그럴듯한 거짓말</b>입니다. 어색하면 사람이 알아채지만, 그럴듯하면 아무도 안 잡습니다.</p>
+  </div>
+
+  <div class="sec" id="rules">
+    <div class="sec-label">핵심</div>
+    <h2>그래서 답글을 달기 전에, 안 다는 규칙부터 정합니다</h2>
+    <p><b>하나. 확인해야 아는 걸 물으면 답하지 않습니다.</b> 재고, 가격, 입금, 배송, 거래, 예약, 환불. 이건 사람이 답할 몫입니다. 모델은 모른다고 말하는 대신 만들어 냅니다.</p>
+    <p><b>둘. 사백 일 지난 글은 건너뜁니다.</b> 십 년 전 글에 오늘 답글이 붙는 건 그 자체로 이상합니다. 그리고 옛 글일수록 지금은 사실이 아닌 내용을 묻습니다.</p>
+    <p><b>셋. 공식 블로그가 붙은 업체 계정은 뺍니다.</b> 홍보 댓글에 답하면 그쪽만 노출을 가져갑니다.</p>
+    <p>이렇게 거르고 나면 인사와 후기 댓글이 남습니다. <b>여기는 내가 아는 내용이라 지어낼 게 없습니다.</b></p>
+  </div>
+
+  <div class="sec" id="s0">
+    <div class="sec-label">0</div>
+    <h2>시작하기, 폴더 하나 만들고 클로드 켜기</h2>
+    <p>터미널을 열고 그대로 칩니다. 폴더 이름은 아무거나 괜찮습니다.</p>
+    <div class="copybox"><div class="bar"><span>명령</span><button class="copybtn" onclick="copy(this,'c0')">복사</button></div><pre id="c0">mkdir reply-auto
+cd reply-auto
+claude</pre></div>
+    <p>이제부터는 <b>클로드에게 말로 시킵니다.</b> 아래 회색 상자를 그대로 붙여 넣으면 됩니다.</p>
+  </div>
+
+  <div class="sec" id="s1">
+    <div class="sec-label">1</div>
+    <h2>도구 깔기, 클로드한테 시킵니다</h2>
+    <div class="copybox"><div class="bar"><span>프롬프트 (그대로 복사해서 클로드에게 붙여넣기)</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div><pre id="p1">이 폴더에서 네이버 블로그 댓글 답글 자동화를 만들 거야. 먼저 준비만 해줘.
+
+1) node 와 npm 이 있는지 확인하고 없으면 설치 방법을 알려줘
+2) npm init -y 하고 playwright 를 설치해줘
+3) 브라우저는 새로 받지 말고 이미 시스템에 있는 chromium 이 있는지 먼저 찾아줘.
+   있으면 그 경로를 executablePath 로 쓰도록 메모해두고, 없을 때만 playwright 브라우저를 받아줘
+4) .gitignore 를 만들어서 세션 파일과 out 폴더가 올라가지 않게 해줘
+
+설치가 끝나면 무엇이 깔렸는지 한 줄로 알려줘.</pre></div>
+    <div class="hl ok">시스템 chromium 을 먼저 찾게 하는 이유는 용량입니다. playwright 브라우저를 새로 받으면 수백 메가가 나갑니다.</div>
+  </div>
+
+  <div class="sec" id="s2">
+    <div class="sec-label">2</div>
+    <h2>로그인, 여기가 제일 중요합니다</h2>
+    <p>자동화가 내 블로그 관리 화면에 들어가려면 로그인 상태가 필요합니다. <b>비밀번호를 코드에 넣지 않습니다.</b> 한 번 로그인한 브라우저 상태를 파일로 저장해 두고 그걸 재사용합니다.</p>
+    <div class="copybox"><div class="bar"><span>프롬프트 (그대로 복사해서 클로드에게 붙여넣기)</span><button class="copybtn" onclick="copy(this,'p2')">복사</button></div><pre id="p2">네이버 로그인 세션을 저장하는 set_session.js 를 만들어줘.
+
+- playwright 로 브라우저를 눈에 보이게(headless: false) 띄운다
+- naver.com 로그인 페이지를 연다
+- 내가 직접 손으로 로그인할 때까지 기다린다(엔터를 누르면 다음으로 진행)
+- 로그인이 끝나면 storageState 를 .naver_state.json 으로 저장한다
+- --check 옵션을 주면 저장된 세션으로 admin.blog.naver.com 에 들어가
+  로그인이 살아있는지만 확인하고 결과를 한 줄로 알려준다
+
+비밀번호는 코드 어디에도 넣지 마. 내가 브라우저에서 직접 친다.</pre></div>
+    <p>만들어졌으면 이렇게 돌립니다. 브라우저가 뜨면 평소처럼 로그인하고, 터미널로 돌아와 엔터를 칩니다.</p>
+    <div class="copybox"><div class="bar"><span>명령</span><button class="copybtn" onclick="copy(this,'c2')">복사</button></div><pre id="c2">node set_session.js
+node set_session.js --check</pre></div>
+    <div class="hl ok">세션은 몇 주 지나면 만료됩니다. 어느 날 갑자기 로그인 화면이 찍히면 이 명령을 다시 돌리면 됩니다.</div>
+  </div>
+
+  <div class="sec" id="s3">
+    <div class="sec-label">3</div>
+    <h2>만들기, 본체 프롬프트</h2>
+    <p>이게 핵심입니다. <b>거르는 규칙을 먼저 말하고, 답글 만들기는 나중에 말합니다.</b> 순서를 바꾸면 모델이 "잘 답하는 것"에 최적화되어 거르는 쪽이 느슨해집니다.</p>
+    <div class="copybox"><div class="bar"><span>프롬프트 (그대로 복사해서 클로드에게 붙여넣기)</span><button class="copybtn" onclick="copy(this,'p3')">복사</button></div><pre id="p3">reply_round.js 를 만들어줘. 내 네이버 블로그 댓글에 답글을 다는 자동화인데,
+가장 중요한 건 "안 다는 것"이야. 거르는 규칙부터 지켜줘.
+
+[수집]
+- 저장된 .naver_state.json 세션으로 브라우저를 연다
+- admin.blog.naver.com/<내아이디>/userfilter/commentlist 에서
+  내 글에 달린 댓글 목록을 모은다
+- 각 댓글의 원문 글로 들어가 댓글 전체와 그 글의 작성일을 읽는다
+
+[거르는 규칙 , 하나라도 걸리면 답글을 만들지 않는다]
+1. 확인해야 아는 것을 묻는 댓글: 가격, 얼마, 금액, 구매, 구입, 판매, 재고,
+   남아있, 팔렸, 입금, 계좌, 택배, 배송, 거래, 주문, 예약, 환불, 교환.
+   이런 말이 들어있으면 무조건 건너뛴다. 사람이 답할 몫이다.
+2. 글 작성일이 400일보다 오래된 글
+3. 댓글 쓴 사람의 블로그가 업체 계정인 경우.
+   rss.blog.naver.com/<그사람아이디>.xml 을 받아 채널 제목에
+   공식 블로그, 스토어, 고객센터, 주식회사 같은 말이 있으면 뺀다
+4. 내가 쓴 댓글, 이미 내 답글이 달린 댓글
+
+[답글 만들기 , 위를 통과한 것만]
+- 각 댓글에 맞춰 두 문장 안쪽으로 짧게
+- ★모르는 사실을 만들어내지 말 것. 숫자, 가격, 재고, 일정은 절대 쓰지 않는다
+- 인사 댓글에는 인사로, 후기 댓글에는 그 내용을 받아서
+
+[안전장치]
+- 기본은 등록하지 않고 문장만 뽑아 보여주는 모드(dry)
+- --go <숫자> 를 줘야 그 개수만큼 실제로 등록한다
+- 등록 사이에 몇 초 쉰다
+- 결과를 out/reply_round.json 에 남긴다.
+  건너뛴 것은 왜 건너뛰었는지 사유도 같이 적는다
+
+먼저 dry 로 돌아가게 만들어줘. 등록은 내가 확인하고 나서 켤게.</pre></div>
+  </div>
+
+  <div class="sec" id="s4">
+    <div class="sec-label">4</div>
+    <h2>안 달고 문장만 먼저 뽑습니다</h2>
+    <div class="copybox"><div class="bar"><span>명령</span><button class="copybtn" onclick="copy(this,'c4')">복사</button></div><pre id="c4">node reply_round.js</pre></div>
+    <p>여기서 <b>반드시 눈으로 읽습니다.</b> 특히 이 두 가지를 봅니다.</p>
+    <p><b>①건너뛴 것들이 정말 건너뛸 것이었나.</b> 사유가 같이 찍힙니다. 답해도 됐을 인사 댓글까지 걸렀다면 규칙이 너무 넓은 것입니다.</p>
+    <p><b>②남은 문장에 내가 모르는 사실이 들어있나.</b> 숫자, 날짜, 가격이 보이면 그건 지어낸 것입니다. 그런 문장이 하나라도 있으면 등록하지 말고 프롬프트의 거르는 규칙을 고칩니다.</p>
+    <div class="hl ok">저는 이 단계에서 거래 문의 세 건을 잡았습니다. 이 단계를 건너뛰었으면 그대로 나갔습니다.</div>
+  </div>
+
+  <div class="sec" id="s5">
+    <div class="sec-label">5</div>
+    <h2>확인했으면 실제로 등록합니다</h2>
+    <p>개수를 정해서 조금씩 켭니다. 처음부터 전부 돌리지 않습니다.</p>
+    <div class="copybox"><div class="bar"><span>명령</span><button class="copybtn" onclick="copy(this,'c5')">복사</button></div><pre id="c5">node reply_round.js --go 3</pre></div>
+    <p>등록된 뒤에는 블로그에 직접 들어가 눈으로 확인합니다. <b>내 이름으로 나간 글입니다.</b> 자동이 썼다고 책임이 옮겨가지 않습니다.</p>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">함정</div>
+    <h2>실제로 걸린 함정 다섯</h2>
+    <p>여기부터는 만들면서 실제로 막혔던 것들입니다. 클로드에게 그대로 말해주면 한 번에 넘어갑니다.</p>
+    <p><b>①댓글 수가 계속 0으로 나옵니다.</b> 글 페이지의 첫 번째 댓글 버튼은 화면에 안 보이는 플로팅 버튼이라 눌러도 아무 일이 없습니다. <code>a.btn_comment._cmtList</code> 를 눌러야 댓글창이 열립니다.</p>
+    <p><b>②작성일이 전부 "날짜불명"으로 나옵니다.</b> 날짜 후보를 한 번에 넘기면(querySelector 에 쉼표로 나열) 화면 순서상 앞에 있는 <b>빈 칸</b>이 먼저 잡힙니다. 후보를 <b>하나씩 순서대로</b> 확인해서 값이 있는 것을 쓰게 해야 합니다.</p>
+    <p><b>③답글 입력창에 글자가 안 들어갑니다.</b> 네이버 답글 입력창은 textarea 가 아니라 <code>contenteditable</code> 인 div 입니다(<code>div.u_cbox_text_mention</code>). value 를 넣어도 아무 일이 없고, textContent 를 넣은 뒤 input 이벤트를 직접 발생시켜야 등록 버튼이 켜집니다.</p>
+    <p><b>④업체 계정인지 댓글만 봐서는 모릅니다.</b> 댓글 내용은 평범한데 계정이 업체인 경우가 많습니다. 그 사람 블로그의 RSS(<code>rss.blog.naver.com/아이디.xml</code>)를 받아 <b>채널 제목</b>을 보면 대개 드러납니다.</p>
+    <p><b>⑤빠르게 돌리면 안 됩니다.</b> 등록 사이에 몇 초 쉬게 합니다. 속도를 올리려고 간격을 지우지 마세요. 그 간격이 계정 안전장치입니다.</p>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">결과</div>
+    <h2>실제 실행 결과</h2>
+    <p>제 블로그에서 실제로 돌린 결과입니다.</p>
+    <p><b>읽은 댓글 원문 아흔두 건.</b> 글 다섯 개에 달린 댓글 전체입니다.</p>
+    <p><b>실제로 등록된 답글 세 개.</b> 인사와 후기 댓글에만 나갔습니다.</p>
+    <p><b>지어낸 말 영 건.</b> 거래 문의 세 건은 규칙에 걸려 사람 몫으로 남았습니다.</p>
+    <p>아흔두 건 중 세 건이면 적어 보입니다. 그런데 <b>나머지 여든아홉 건은 애초에 자동이 답할 것이 아니었습니다.</b> 자동화의 성과는 많이 답하는 게 아니라, 답하면 안 되는 곳에 손대지 않는 것입니다.</p>
+  </div>
+
+  <div class="foot">
+    <p>만든 사람 · <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">@aitigermask</a></p>
+    <p><a href="../">다른 따라하기 보기</a></p>
+  </div>
+</div>
+<script>
+function copy(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-reply-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+</script>
+</body>
+</html>
