@@ -484,19 +484,53 @@ button{font-family:inherit}
 (function () {
   var ua = navigator.userAgent || "";
   var inApp = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|Threads|DaumApps|everytimeApp/i.test(ua);
+  var isiOS = /iPhone|iPad|iPod/i.test(ua);
+  var isAos = /Android/i.test(ua);
+
+  /* ★인앱 웹뷰는 새 탭을 못 연다 → target 제거(안 그러면 눌러도 무반응) */
   if (inApp) {
     document.querySelectorAll('a[target="_blank"]').forEach(function (a) { a.removeAttribute("target"); });
   }
+
+  /* ★인앱 웹뷰에서는 https 스토어 주소로 이동해도 스토어 **앱**이 안 뜬다(2026-08-10 사장님 확인:
+     가이드 링크는 열리는데 앱 다운로드만 안 떴다). 스토어 전용 스킴으로 바꿔야 넘어간다.
+       iOS      https://apps.apple.com/...        → itms-apps://apps.apple.com/...
+       Android  .../store/apps/details?id=PKG     → market://details?id=PKG          */
+  function storeScheme(href) {
+    if (isiOS && /apps\.apple\.com/i.test(href)) return href.replace(/^https?:/i, "itms-apps:");
+    if (isAos) {
+      var m = href.match(/play\.google\.com\/store\/apps\/details\?id=([A-Za-z0-9._]+)/i);
+      if (m) return "market://details?id=" + m[1];
+    }
+    return null;
+  }
+
   document.addEventListener("click", function (e) {
     var a = e.target && e.target.closest && e.target.closest('a[href]');
     if (!a) return;
     var href = a.getAttribute("href") || "";
     if (!/^https?:/i.test(href)) return;
+
+    /* 스토어 링크: 인앱이면 스킴으로 넘기고, 실패하면 원래 주소로 되돌린다 */
+    if (inApp) {
+      var scheme = storeScheme(href);
+      if (scheme) {
+        e.preventDefault();
+        var t0 = Date.now();
+        location.href = scheme;
+        setTimeout(function () {
+          /* 스토어가 떴으면 이 페이지는 뒤로 밀려 타이머가 늦게 돈다. 그대로면 스킴이 막힌 것 */
+          if (Date.now() - t0 < 2200 && !document.hidden) location.href = href;
+        }, 1200);
+        return;
+      }
+    }
+
     if (a.getAttribute("target") !== "_blank") return;
     var w = null;
     try { w = window.open(href, "_blank", "noopener"); } catch (err) { w = null; }
-    if (!w) { e.preventDefault(); location.href = href; }   // 새 창이 안 열리면 그냥 이동
-    else { e.preventDefault(); }
+    e.preventDefault();
+    if (!w) location.href = href;
   }, true);
 })();
 </script>
