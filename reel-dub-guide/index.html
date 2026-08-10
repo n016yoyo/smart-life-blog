@@ -85,6 +85,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <span class="chip">Claude Code <b>필수</b></span>
     <span class="chip">perso.ai <b>계정</b></span>
     <span class="chip">코딩 <b>0줄</b></span>
+    <span class="chip">자막·클립 <b>완전 무료</b></span>
   </div>
   <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
 </header>
@@ -100,7 +101,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 <div class="wrap">
   <div class="toc">
     <a href="#what">이게 뭔데?</a>
-    <a href="#honest">정직하게 짚고 갑니다</a>
+    <a href="#honest">무료로 어디까지 되나</a>
     <a href="#prep">준비물</a>
     <a href="#key">1 · 설치</a>
     <a href="#setup">2 · 말로 시키기</a>
@@ -135,12 +136,12 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 
   <div class="sec" id="honest">
     <div class="sec-label">HONEST</div>
-    <h2>먼저, 정직하게 짚고 갑니다</h2>
+    <h2>먼저, 돈 얘기부터 하겠습니다</h2>
     <div class="badge-row">
       <span class="badge ok">✓ 번역·음성 생성·내려받기 자동</span>
       <span class="badge ok">✓ 여러 언어 동시 처리</span>
-      <span class="badge ok">✓ 음성만 받으면 무료로도 가능</span>
-      <span class="badge warn">△ 완성 영상 파일은 유료</span>
+      <span class="badge ok">✓ 자막·클립 편집은 계정도 없이 무료</span>
+      <span class="badge warn">△ 완성 영상 파일 내려받기는 유료</span>
       <span class="badge ok">✓ 목소리 성격 유지 (실측 0.2% 차이)</span>
     </div>
     <p><b>목소리가 정말 유지되는지 직접 재봤습니다.</b> 스펙트럼 중심이라는 값이 있습니다. 그 소리가 얼마나 밝은지, 두꺼운지를 대표하는 숫자라고 보시면 됩니다. 사람이 "목소리가 비슷하다"고 느끼는 것과 꽤 붙어 다닙니다.</p>
@@ -167,21 +168,45 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </table>
     <p>제가 실제로 돌린 건 <b>5.4초 오디오 × 8개 언어 = 할당량 40</b>이었습니다(10,600 → 10,560). 그냥 곱하면 43.2인데 40이 빠졌습니다. 5.4를 5로 끊은 값입니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.</p>
     <div class="hl ok">
-      <strong>제가 릴스에 쓴 건 무료 플랜으로도 됩니다.</strong> 영상에 넣은 건 나라별 음성 mp3 여덟 개인데, 그건 대본 API 가 문장마다 주는 파일이라 무료에서 안 막힙니다. 번역문도 같이 받아집니다.
+      <strong>먼저, 계정도 크레딧도 필요 없는 기능들이 있습니다.</strong> 플러그인은 <b>MIT 오픈소스</b>고, 내 컴퓨터에서 도는 단계는 전부 공짜입니다. Perso 서버를 쓰는 것만 크레딧이 나갑니다.
     </div>
     <table>
-      <tr><th>무료 플랜에서</th><th></th></tr>
+      <tr><th>기능</th><th>어디서 도나</th><th>비용</th></tr>
+      <tr><td><b>영상 구간 잘라 숏폼 만들기</b> (9:16 리프레임)</td><td>내 컴퓨터</td><td><b>무료</b> · 계정도 불필요</td></tr>
+      <tr><td><b>자막을 영상에 입히기</b> (폰트·색·위치 지정)</td><td>내 컴퓨터</td><td><b>무료</b> · 계정도 불필요</td></tr>
+      <tr><td><b>갖고 있는 자막 파일 번역</b></td><td>내 컴퓨터 (Claude가 직접)</td><td><b>무료</b> · 계정도 불필요</td></tr>
+      <tr><td>더빙 · 립싱크 · 음원 분리 · 음성 인식</td><td>Perso 서버</td><td>크레딧</td></tr>
+    </table>
+    <p><b>앞의 셋은 제가 직접 돌려봤습니다.</b> 키를 못 읽게 막아놓고 실행했는데 그대로 됐습니다. 릴스 하나를 오 초짜리 세로 클립으로 자르고, 거기에 한글 자막을 구워 넣는 데까지 <b>로그인 창 한 번 안 떴습니다.</b></p>
+    <div class="copybox">
+      <div class="bar"><span>이것만 쓰려면 이렇게</span><button class="copybtn" onclick="copy(this,'p6')">복사</button></div>
+      <pre id="p6">이 영상에서 2분부터 3분까지 잘라서 숏폼으로 만들어줘.
+그리고 이 자막 파일 영상에 입혀줘. 글씨는 아래쪽에 크게.</pre>
+    </div>
+    <p>더빙 자체를 안 쓰더라도 <b>이 셋만으로 릴스 편집이 됩니다.</b> 자막 입히는 게 은근히 손이 많이 가는 일인데 그게 공짜로 해결됩니다.</p>
+
+    <h2 style="margin-top:34px">더빙까지 무료로 되나</h2>
+    <p>여기서부터는 Perso 서버를 쓰니 크레딧이 듭니다. 무료 요금제로 가입해도 크레딧은 조금 줍니다. 그걸로 더빙 자체는 <b>돌아갑니다.</b> 다만 <b>결과물을 내려받는 데서 막힙니다.</b></p>
+    <div class="hl warn">
+      <strong>무료 요금제에서 완성본 다운로드가 거절됩니다.</strong> 제가 무료 계정으로 찔러봤을 때 받은 응답 그대로입니다(2026년 8월 6일).
+      <pre style="margin-top:10px">500 {"code":"VT5003","detailCode":"FREE_USER_CAN_NOT_DOWNLOAD",
+     "message":"Free user cannot download"}</pre>
+      완성 영상도, 묶음 파일도, 자막 파일도 전부 같은 에러였습니다. <b>공식 문서에 없는 제한</b>이라 찔러봐야 알 수 있었습니다.
+    </div>
+    <p>그런데 <b>빠져나갈 구멍이 하나 있습니다.</b> 대본 API가 문장마다 주는 음성 파일은 이 검사에 안 걸립니다. 제가 실제로 받아봤고(200 응답, 67KB·153KB), 그걸 문장 시작 위치에 얹어 더빙본을 조립했습니다. <b>제가 릴스에 쓴 여덟 개 나라 음성이 바로 이 경로로 받은 것입니다.</b></p>
+    <table>
+      <tr><th>무료 요금제로 더빙할 때</th><th></th></tr>
       <tr><td>번역문·원문 텍스트</td><td>✅ 됩니다</td></tr>
-      <tr><td><b>문장별 더빙 음성 mp3</b></td><td>✅ 됩니다 (제가 릴스에 쓴 것)</td></tr>
+      <tr><td><b>문장별 더빙 음성</b></td><td>✅ 됩니다 (제가 릴스에 쓴 것)</td></tr>
       <tr><td>문장 시작 위치·길이</td><td>✅ 됩니다</td></tr>
       <tr><td>완성된 더빙 영상 파일</td><td>❌ 막힙니다</td></tr>
-      <tr><td>배경음 분리본·자막 파일·립싱크</td><td>❌ 막힙니다</td></tr>
+      <tr><td>배경음 분리본·자막 파일</td><td>❌ 막힙니다</td></tr>
     </table>
-    <p>즉 <b>영상을 통째로 받아 그대로 올리고 싶으면 유료</b>가 필요하고, <b>음성만 받아서 직접 편집할 거면 무료로 충분합니다.</b> 저는 후자였습니다. 받은 음성을 제 릴스 편집 파이프라인에 얹었거든요.</p>
     <div class="hl warn">
-      <strong>다만 정직하게 밝힙니다.</strong> 제가 실제로 돌린 계정은 유료였습니다. 무료로 처음부터 끝까지 돌려본 건 아닙니다. 무료일 때 완성본 다운로드가 막힌다는 것과 문장별 음성은 안 막힌다는 건 직접 확인했지만, 무료 계정으로 여덟 개 언어를 한 번에 돌려보지는 않았습니다.
+      <strong>단 이 구멍은 공식 플러그인으로는 못 씁니다.</strong> 플러그인은 막히는 쪽 경로로 저장하고, 문장별 음성으로 우회하는 기능이 없습니다(코드를 열어 확인했습니다). <b>무료 요금제로 더빙 결과를 받으시려면 아래 부록의 API 직접 연동 방식이 필요합니다.</b> 플러그인으로 편하게 쓰실 거면 유료 요금제 쪽이 맞습니다.
     </div>
-    <p>무료와 유료는 <b>동시 처리 개수도 다릅니다.</b> 무료 1개, 유료 3개입니다. 여덟 개 언어를 무료로 돌리면 한 줄로 서서 훨씬 오래 걸립니다.</p>
+    <p>정리하면 이렇습니다. <b>자막·클립 편집만 쓸 거면 계정도 필요 없이 완전 무료</b>이고, <b>더빙 음성만 받아서 직접 편집할 거면 무료 요금제 + API 직접 연동</b>이면 되고, <b>완성 영상을 통째로 받아 그대로 올릴 거면 유료</b>입니다. 저는 가운데였습니다.</p>
+    <p>동시 처리 개수도 다릅니다. <b>무료 한 개, 유료 세 개</b>입니다. 여덟 개 언어를 무료로 돌리면 한 줄로 서서 훨씬 오래 걸립니다.</p>
   </div>
 
   <div class="sec" id="prep">
