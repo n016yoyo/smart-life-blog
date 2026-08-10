@@ -85,7 +85,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <span class="chip">Claude Code <b>필수</b></span>
     <span class="chip">perso.ai <b>계정</b></span>
     <span class="chip">코딩 <b>0줄</b></span>
-    <span class="chip">자막·클립 <b>완전 무료</b></span>
+    <span class="chip">자막·클립 <b>워터마크 없이 무료</b></span>
   </div>
   <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
 </header>
@@ -101,7 +101,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 <div class="wrap">
   <div class="toc">
     <a href="#what">이게 뭔데?</a>
-    <a href="#honest">무료로 어디까지 되나</a>
+    <a href="#free">공짜로 되는 것</a>
+    <a href="#honest">더빙 비용</a>
     <a href="#prep">준비물</a>
     <a href="#key">1 · 설치</a>
     <a href="#setup">2 · 말로 시키기</a>
@@ -134,9 +135,97 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
   </div>
 
+  <div class="sec" id="free">
+    <div class="sec-label">FREE</div>
+    <h2>돈 한 푼 안 내고 되는 것부터</h2>
+    <p>더빙 얘기를 하기 전에 이것부터 말씀드려야겠습니다. 이 플러그인은 <b>MIT 오픈소스</b>고, <b>내 컴퓨터에서 도는 단계는 전부 공짜</b>입니다. 가입도 필요 없습니다. Perso 서버를 쓰는 것만 돈이 나갑니다.</p>
+    <table>
+      <tr><th>이렇게 말하면</th><th>이게 나옵니다</th><th>비용</th></tr>
+      <tr><td>"이 자막 영상에 입혀줘"</td><td>자막이 구워진 영상</td><td><b>무료</b> · 가입 불필요</td></tr>
+      <tr><td>"이 자막 스페인어로 번역해줘"</td><td>타이밍 그대로인 번역 자막</td><td><b>무료</b> · 가입 불필요</td></tr>
+      <tr><td>"2분부터 3분까지 숏츠로 잘라줘"</td><td>9:16 세로 클립</td><td><b>무료</b> · 가입 불필요</td></tr>
+      <tr><td>"이 번역 자막 검수해줘"</td><td>줄 길이·읽는 속도 점검표</td><td><b>무료</b> · 가입 불필요</td></tr>
+      <tr><td>더빙 · 립싱크 · 음원 분리 · 음성 인식</td><td>Perso 서버가 처리</td><td>크레딧</td></tr>
+    </table>
+    <div class="hl ok">
+      <strong>진짜 무료인지 의심스러워서 막아놓고 돌려봤습니다.</strong> 키 파일을 아예 못 읽게 경로를 틀어놓고 실행했는데 그대로 됐습니다. <b>로그인 창이 한 번도 안 떴습니다.</b>
+    </div>
+
+    <h2 style="margin-top:34px">1 · 자막 입히기</h2>
+    <p>영상에 자막을 얹는 건 손이 제일 많이 가는 일입니다. 그게 말 한마디로 끝납니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'f1')">복사</button></div>
+      <pre id="f1">이 영상에 subs.srt 자막 입혀줘. 노란 글씨에 검은 외곽선으로, 아래쪽에 크게.</pre>
+    </div>
+    <p>이렇게 말로 설명해도 되고, <b>준비된 스타일 열두 개</b> 중에 골라도 됩니다.</p>
+    <table>
+      <tr><th>세로 숏폼용 여덟 개</th><td>Clean · Bold Punch · Karaoke · Keyword · Sticker · Neon Yellow · Soft Card · Rainbow</td></tr>
+      <tr><th>가로 영상용 네 개</th><td>Broadcast · Streaming · Lower Bar · Neon</td></tr>
+    </table>
+    <p>제가 Clean, Bold Punch, Karaoke 세 개를 실제로 구워봤습니다. <b>한글도 안 깨집니다.</b> 인코딩이 내 컴퓨터 ffmpeg 에서 끝나서 업로드도 대기열도 없습니다. 자막 파일이 여러 언어면 <b>언어마다 완성본이 하나씩</b> 나옵니다.</p>
+
+    <h2 style="margin-top:34px">2 · 자막 번역</h2>
+    <p>자막 파일을 건네고 원하는 언어들을 말하면 됩니다. 여러 개를 한 번에 시켜도 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'f2')">복사</button></div>
+      <pre id="f2">subs.srt 를 영어·일본어·스페인어로 번역해줘. 자막 뜨는 타이밍은 그대로 두고.</pre>
+    </div>
+    <p>각 자막이 뜨고 사라지는 순간이 원본과 <b>똑같이 유지</b>됩니다. 번역만 하고 끝내는 게 아니라 <b>줄이 너무 길거나 읽기에 너무 빠른 곳이 없는지 검토</b>까지 하고 줍니다.</p>
+
+    <h2 style="margin-top:34px">3 · 숏츠 자르기</h2>
+    <p>긴 영상에서 구간만 말하면 세로 숏츠가 나옵니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'f3')">복사</button></div>
+      <pre id="f3">이 영상에서 2:00부터 3:00까지, 5:10부터 5:40까지 숏츠로 잘라줘.</pre>
+    </div>
+    <p>16:9를 <b>9:16으로 다시 잡아주고</b> 파일명까지 정리해서, 바로 자막 입힐 수 있는 상태로 나옵니다. 제가 릴스 하나를 오 초짜리로 잘라보니 1080x1920으로 정확히 나왔습니다.</p>
+    <div class="hl">
+      <strong>어디를 자를지 모르겠다면</strong> AI에게 고르게 할 수도 있습니다. 훅으로 시작해서 반응이 정점을 찍고 힘이 빠지기 전에 끊는 지점을 잡아줍니다. 다만 <b>이건 대본이 필요해서 음성 인식을 먼저 돌려야 하고, 그 단계는 크레딧이 듭니다.</b> 타임코드를 직접 주면 공짜입니다.
+    </div>
+
+    <h2 style="margin-top:34px">4 · 자막 검수와 교정</h2>
+    <p>이게 의외로 쓸모 있었습니다. 번역 자막이 실제로 읽히는 속도인지 <b>기계가 재줍니다.</b> 제가 일부러 엉망인 자막을 넣어봤더니 이렇게 잡아냈습니다.</p>
+    <pre style="border-radius:12px">[check] FAIL cue 2: timestamp differs from the source
+[check] WARN cue 1: reading speed 20.0 chars/sec (comfortable is ≤17)
+[check] FAIL cue 2: line is 46 chars (max 42)
+[check] FAIL cue 2: reading speed 153.3 chars/sec (cap 21)
+[check] en.srt: 3 FAIL · 1 WARN</pre>
+    <p>한 줄 마흔두 글자(한중일은 스무 자), 초당 열일곱 자가 편한 속도라는 기준으로 봅니다. 고쳐달라고 하면 <b>너무 빠른 자막을 뒤쪽 여백으로 늘리고 짧은 이웃끼리 합쳐서</b> 넷플릭스처럼 다듬습니다. 제 자막도 한 줄이 늘어나 전부 대역 안으로 들어왔습니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'f4')">복사</button></div>
+      <pre id="f4">번역한 자막 읽기 속도 좀 봐줘. 너무 빠른 데 있으면 타이밍 늘려서 고쳐줘.</pre>
+    </div>
+
+    <h2 style="margin-top:34px">이게 다른 데보다 나은가</h2>
+    <p>공짜라고 다 같은 공짜가 아닙니다. 무료 영상 도구는 보통 <b>워터마크를 박거나, 편수를 세거나, 해상도를 깎습니다.</b> 그래서 비슷한 일을 해주는 도구 여섯 개의 공개 요금제를 찾아 비교해봤습니다.</p>
+    <div class="hl ok">
+      <strong>여기 무료 기능에는 그런 게 하나도 없습니다.</strong> 코드를 열어봤는데 <b>워터마크를 넣는 코드가 없고, 길이·편수 제한도 없습니다.</b> 결과 파일 메타데이터에도 perso 흔적이 없습니다. 당연합니다. 내 컴퓨터의 ffmpeg 가 하는 일이라 제한이 붙을 자리가 없습니다. 게다가 <b>MIT 오픈소스</b>라 코드를 직접 열어볼 수 있습니다.
+    </div>
+    <table>
+      <tr><th>도구</th><th>무료로 되는 것</th><th>걸리는 것</th></tr>
+      <tr><td><b>이 플러그인</b></td><td>자막 굽기 · 번역 · 검수 · 숏츠 컷</td><td><b>워터마크 없음 · 편수 무제한 · 길이 무제한 · 가입 불필요</b></td></tr>
+      <tr><td>자막 도구 A</td><td>월 세 편</td><td>워터마크 · 편당 90초 · 200MB</td></tr>
+      <tr><td>더빙 도구 B</td><td>월 세 편, 편당 3분</td><td>워터마크 · 720p</td></tr>
+      <tr><td>편집 도구 C</td><td>AI 크레딧 열 개 (평생)</td><td>워터마크 · 1분 · 720p · 3일 보관</td></tr>
+      <tr><td>편집 도구 D</td><td>자동 자막 월 30분</td><td>워터마크 · 10분 · 720p</td></tr>
+      <tr><td>숏츠 도구 E</td><td>월 60분 분량</td><td>워터마크 · 3일 뒤 삭제 · 9:16만</td></tr>
+      <tr><td>편집 앱 F</td><td>자동 자막 10분 · 1080p · 무제한 내보내기</td><td>유료 기능 쓰면 워터마크</td></tr>
+    </table>
+    <p style="font-size:13px;color:#6B6760">2026년 8월에 각 사 공개 요금제를 찾아본 값입니다. 요금제는 자주 바뀌니 쓰시기 전에 직접 한 번 보세요. 특정 서비스를 깎을 뜻은 없어 이름은 적지 않았습니다.</p>
+    <div class="hl warn">
+      <strong>공정하게 말하면 F는 셉니다.</strong> 워터마크 없이 1080p 로 무제한 내보내집니다. 자동 자막만 필요하시면 그거 쓰셔도 됩니다.
+    </div>
+    <p>다만 갈리는 지점이 있습니다. <b>다른 도구들이 무료로 주는 건 대개 "자막을 만들어주는" 것까지입니다.</b> 만든 자막을 <b>여러 언어로 옮기고, 타이밍을 그대로 유지하고, 읽는 속도까지 재서 고쳐주고, 영상에 구워내는</b> 데까지 편수 제한 없이 해주는 곳은 드뭅니다. 여기 무료 구간이 정확히 그 자리입니다.</p>
+    <p>그리고 이건 편집 프로그램이 아니라 <b>말로 시키는 도구</b>입니다. 창을 띄우고 클릭할 필요가 없어서 <b>폴더 통째로 한 번에</b> 돌릴 수 있습니다. 영상 스무 개에 자막을 입혀야 한다면 이 차이가 큽니다.</p>
+
+    <div class="hl ok">
+      <strong>더빙을 아예 안 쓰셔도 됩니다.</strong> 위 네 가지만으로 릴스 자막 작업이 통째로 해결됩니다. 돈도 계정도 안 듭니다. 더빙은 그 다음에 필요해지면 붙이면 됩니다.
+    </div>
+  </div>
+
   <div class="sec" id="honest">
     <div class="sec-label">HONEST</div>
-    <h2>먼저, 돈 얘기부터 하겠습니다</h2>
+    <h2>더빙은 얼마나 드나</h2>
     <div class="badge-row">
       <span class="badge ok">✓ 번역·음성 생성·내려받기 자동</span>
       <span class="badge ok">✓ 여러 언어 동시 처리</span>
@@ -167,24 +256,6 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <tr><td>30초 릴스 · 1개 언어 · 립싱크</td><td>30<br><span style="font-size:12px;color:#6B6760">립싱크분 현재 무료</span></td><td>360편</td></tr>
     </table>
     <p>제가 실제로 돌린 건 <b>5.4초 오디오 × 8개 언어 = 할당량 40</b>이었습니다(10,600 → 10,560). 그냥 곱하면 43.2인데 40이 빠졌습니다. 5.4를 5로 끊은 값입니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.</p>
-    <div class="hl ok">
-      <strong>먼저, 계정도 크레딧도 필요 없는 기능들이 있습니다.</strong> 플러그인은 <b>MIT 오픈소스</b>고, 내 컴퓨터에서 도는 단계는 전부 공짜입니다. Perso 서버를 쓰는 것만 크레딧이 나갑니다.
-    </div>
-    <table>
-      <tr><th>기능</th><th>어디서 도나</th><th>비용</th></tr>
-      <tr><td><b>영상 구간 잘라 숏폼 만들기</b> (9:16 리프레임)</td><td>내 컴퓨터</td><td><b>무료</b> · 계정도 불필요</td></tr>
-      <tr><td><b>자막을 영상에 입히기</b> (폰트·색·위치 지정)</td><td>내 컴퓨터</td><td><b>무료</b> · 계정도 불필요</td></tr>
-      <tr><td><b>갖고 있는 자막 파일 번역</b></td><td>내 컴퓨터 (Claude가 직접)</td><td><b>무료</b> · 계정도 불필요</td></tr>
-      <tr><td>더빙 · 립싱크 · 음원 분리 · 음성 인식</td><td>Perso 서버</td><td>크레딧</td></tr>
-    </table>
-    <p><b>앞의 셋은 제가 직접 돌려봤습니다.</b> 키를 못 읽게 막아놓고 실행했는데 그대로 됐습니다. 릴스 하나를 오 초짜리 세로 클립으로 자르고, 거기에 한글 자막을 구워 넣는 데까지 <b>로그인 창 한 번 안 떴습니다.</b></p>
-    <div class="copybox">
-      <div class="bar"><span>이것만 쓰려면 이렇게</span><button class="copybtn" onclick="copy(this,'p6')">복사</button></div>
-      <pre id="p6">이 영상에서 2분부터 3분까지 잘라서 숏폼으로 만들어줘.
-그리고 이 자막 파일 영상에 입혀줘. 글씨는 아래쪽에 크게.</pre>
-    </div>
-    <p>더빙 자체를 안 쓰더라도 <b>이 셋만으로 릴스 편집이 됩니다.</b> 자막 입히는 게 은근히 손이 많이 가는 일인데 그게 공짜로 해결됩니다.</p>
-
     <h2 style="margin-top:34px">더빙까지 무료로 되나</h2>
     <p>여기서부터는 Perso 서버를 쓰니 크레딧이 듭니다. 무료 요금제로 가입해도 크레딧은 조금 줍니다. 그걸로 더빙 자체는 <b>돌아갑니다.</b> 다만 <b>결과물을 내려받는 데서 막힙니다.</b></p>
     <div class="hl warn">
