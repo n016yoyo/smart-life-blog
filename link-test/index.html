@@ -1,0 +1,24 @@
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>앱스토어 링크 테스트</title>
+<style>
+ body{margin:0;padding:22px 16px 60px;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;background:#faf8f4;color:#1a1a1a}
+ h1{font-size:19px;margin:0 0 6px} p.sub{margin:0 0 18px;color:#666;font-size:14px;line-height:1.5}
+ a.t{display:block;background:#111;color:#fff;text-decoration:none;padding:16px 18px;border-radius:14px;margin:10px 0;font-size:16px}
+ a.t small{display:block;opacity:.6;font-size:12px;margin-top:5px;word-break:break-all;font-weight:400}
+ .ua{margin-top:24px;font-size:12px;color:#888;word-break:break-all;line-height:1.5}
+</style></head><body>
+<h1>앱스토어 링크 테스트</h1>
+<p class="sub">인스타 프로필 링크로 들어와서 <b>아래 버튼을 하나씩</b> 눌러보세요.<br>
+어느 것이 앱스토어를 여는지만 알려주시면 됩니다.<br>안 되는 건 그냥 아무 일도 안 일어납니다.</p>
+
+<a class="t" href="https://apps.apple.com/kr/app/id6779082478">① 일반 https (현재 방식)<small>https://apps.apple.com/kr/app/id6779082478</small></a>
+<a class="t" href="itms-apps://apps.apple.com/kr/app/id6779082478">② itms-apps 스킴<small>itms-apps://apps.apple.com/kr/app/id6779082478</small></a>
+<a class="t" href="x-safari-https://apps.apple.com/kr/app/id6779082478">③ 사파리로 넘기기<small>x-safari-https://apps.apple.com/kr/app/id6779082478</small></a>
+<a class="t" href="https://apps.apple.com/app/apple-store/id6779082478?mt=8">④ apple-store 경로<small>https://apps.apple.com/app/apple-store/id6779082478?mt=8</small></a>
+<a class="t" href="googlechrome://apps.apple.com/kr/app/id6779082478">⑤ 크롬으로 넘기기<small>googlechrome://... (크롬 깔려 있어야 함)</small></a>
+<a class="t" href="itms-appss://apps.apple.com/kr/app/id6779082478">⑥ itms-appss (애플이 쓰는 것)<small>itms-appss://apps.apple.com/kr/app/id6779082478</small></a>
+
+<div class="ua">지금 브라우저: <span id="ua"></span></div>
+<script>document.getElementById("ua").textContent=navigator.userAgent;</script>
+</body></html>
