@@ -141,10 +141,20 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <span class="badge ok">✓ 여러 언어 동시 처리</span>
       <span class="badge ok">✓ 음성만 받으면 무료로도 가능</span>
       <span class="badge warn">△ 완성 영상 파일은 유료</span>
-      <span class="badge warn">△ 목소리 동일성은 수치로 보장 못 함</span>
+      <span class="badge ok">✓ 목소리 성격 유지 (실측 0.2% 차이)</span>
     </div>
-    <p><b>목소리가 "똑같이" 복제된다고는 말하지 않겠습니다.</b> 제가 원본과 더빙본의 스펙트럼 중심(목소리 밝기를 대표하는 값)을 직접 재봤는데, 원본 1651Hz 대 더빙 1718~2149Hz로 <b>언어마다 갈렸습니다.</b> 같다고 주장할 만한 수치가 안 나왔습니다.</p>
-    <p>확실하게 말할 수 있는 건 이겁니다. 실행 화면에 <code>Transcribing</code> → <code>Translating</code> → <code>Generating Voice</code> 단계가 <b>차례로 찍힙니다.</b> 번역문만 뽑는 게 아니라 음성을 새로 굽는 공정이 실제로 돕니다.</p>
+    <p><b>목소리가 정말 유지되는지 직접 재봤습니다.</b> 스펙트럼 중심이라는 값이 있습니다. 그 소리가 얼마나 밝은지, 두꺼운지를 대표하는 숫자라고 보시면 됩니다. 사람이 "목소리가 비슷하다"고 느끼는 것과 꽤 붙어 다닙니다.</p>
+    <table>
+      <tr><th>무엇을 비교했나</th><th>원본</th><th>더빙</th><th>차이</th></tr>
+      <tr><td><b>목소리만 분리한 트랙끼리</b><br><span style="font-size:12px;color:#6B6760">한국어 → 영어</span></td><td>2323Hz</td><td>2328Hz</td><td><b>0.2%</b></td></tr>
+      <tr><td>완성본끼리 · 광고 30초<br><span style="font-size:12px;color:#6B6760">영어 → 스페인어</span></td><td>1728Hz</td><td>1712Hz</td><td>0.9%</td></tr>
+      <tr><td>완성본끼리 · 인터뷰 109초<br><span style="font-size:12px;color:#6B6760">영어 → 스페인어</span></td><td>1645Hz</td><td>1612Hz</td><td>2.0%</td></tr>
+    </table>
+    <p>맨 윗줄이 가장 깨끗한 비교입니다. 배경음을 걷어내고 <b>목소리 단독 대 목소리 단독</b>으로 잰 거라 다른 게 섞일 자리가 없습니다. 차이가 0.2%면 사실상 같은 음색입니다. 게다가 제 원본은 사람 목소리도 아니고 <b>합성음</b>인데 그 톤까지 그대로 넘어왔습니다.</p>
+    <div class="hl warn">
+      <strong>다만 이렇게 재면 안 됩니다.</strong> 저는 처음에 원본과 더빙본을 그냥 재서 "목소리를 못 살린다"는 결론을 냈다가 되돌렸습니다. 원본에는 배경음이 깔려 있고 더빙본에는 목소리만 있었거든요. <b>배경음이 만든 차이를 목소리 차이로 읽은 것</b>입니다. 이 편에서 여덟 개 언어를 잰 값도 같은 이유로 흩어졌습니다. 1초 남짓 잘라낸 조각을 서로 다른 언어끼리 비교했으니 애초에 성립하지 않는 비교였습니다. <b>조건을 맞춰야 의미가 있습니다.</b>
+    </div>
+    <p>그리고 이건 화면으로도 보입니다. 실행 중에 <code>Transcribing</code> → <code>Translating</code> → <code>Generating Voice</code> 단계가 <b>차례로 찍힙니다.</b> 번역문만 뽑는 게 아니라 음성을 새로 굽는 공정이 실제로 돕니다.</p>
     <div class="hl warn">
       <strong>돈 얘기도 하겠습니다.</strong> perso.ai 는 <b>미디어 1초에 할당량 1</b>이 나가고, <b>목표 언어 수만큼 곱해집니다.</b> 립싱크는 원래 2배인데 <b>현재 무료로 제공 중이라 차감되지 않습니다.</b> 짧은 것도 언어당 최소 1로 올라갑니다. 제가 1.2초짜리를 여덟 개 언어로 돌렸더니 <b>정확히 아홉이 나갔습니다</b>(1회 시험 포함 아홉 번, 10,560 → 10,551).
     </div>
