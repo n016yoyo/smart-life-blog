@@ -511,17 +511,32 @@ button{font-family:inherit}
     var href = a.getAttribute("href") || "";
     if (!/^https?:/i.test(href)) return;
 
-    /* 스토어 링크: 인앱이면 스킴으로 넘기고, 실패하면 원래 주소로 되돌린다 */
+    /* 스토어 링크: 인앱이면 스토어 앱으로 넘긴다.
+       ★안드로이드는 market:// 한 방이면 되는데(2026-08-10 확인), **아이폰만 안 열렸다.**
+         인스타 iOS 웹뷰가 커스텀 스킴 최상위 이동을 막는 경우가 있어서, 단계로 시도한다.
+         ①itms-apps:// 를 클릭 제스처 안에서 바로(제스처가 살아있어야 통과한다)
+         ②안 되면 숨은 iframe 으로 같은 스킴(최상위 이동 차단을 피하는 고전 수법)
+         ③그래도 안 되면 x-safari-https:// 로 사파리를 띄운다(사파리가 스토어로 넘겨준다)
+         ④끝내 안 되면 원래 https , 최소한 스토어 웹페이지는 뜬다 */
     if (inApp) {
       var scheme = storeScheme(href);
       if (scheme) {
         e.preventDefault();
         var t0 = Date.now();
+        var alive = function () { return !document.hidden && Date.now() - t0 < 3200; };
         location.href = scheme;
-        setTimeout(function () {
-          /* 스토어가 떴으면 이 페이지는 뒤로 밀려 타이머가 늦게 돈다. 그대로면 스킴이 막힌 것 */
-          if (Date.now() - t0 < 2200 && !document.hidden) location.href = href;
-        }, 1200);
+        if (isiOS) {
+          setTimeout(function () {
+            if (!alive()) return;
+            var f = document.createElement("iframe");
+            f.style.cssText = "display:none;width:0;height:0;border:0";
+            f.src = scheme;
+            document.body.appendChild(f);
+            setTimeout(function () { try { f.remove(); } catch (x) {} }, 1200);
+          }, 700);
+          setTimeout(function () { if (alive()) location.href = href.replace(/^https:/i, "x-safari-https:"); }, 1600);
+        }
+        setTimeout(function () { if (alive()) location.href = href; }, 2500);
         return;
       }
     }
