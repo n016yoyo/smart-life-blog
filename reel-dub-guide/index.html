@@ -156,7 +156,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
     <p>그리고 이건 화면으로도 보입니다. 실행 중에 <code>Transcribing</code> → <code>Translating</code> → <code>Generating Voice</code> 단계가 <b>차례로 찍힙니다.</b> 번역문만 뽑는 게 아니라 음성을 새로 굽는 공정이 실제로 돕니다.</p>
     <div class="hl warn">
-      <strong>돈 얘기도 하겠습니다.</strong> perso.ai 는 <b>미디어 1초에 할당량 1</b>이 나가고, <b>목표 언어 수만큼 곱해집니다.</b> 립싱크는 원래 2배인데 <b>현재 무료로 제공 중이라 차감되지 않습니다.</b> 짧은 것도 언어당 최소 1로 올라갑니다. 제가 1.2초짜리를 여덟 개 언어로 돌렸더니 <b>정확히 아홉이 나갔습니다</b>(1회 시험 포함 아홉 번, 10,560 → 10,551).
+      <strong>돈 얘기도 하겠습니다.</strong> perso.ai 는 <b>미디어 1초에 할당량 1</b>이 나가고, <b>목표 언어 수만큼 곱해집니다.</b> 립싱크는 원래 2배인데 <b>현재 무료로 제공 중이라 차감되지 않습니다.</b> <b>초 단위로 끊어서 셉니다.</b> 제가 1.224초짜리를 아홉 번 돌렸더니 정확히 아홉이 나갔고(10,560 → 10,551), 5.4초짜리를 여덟 개 언어로 돌렸을 때는 사십이 나갔습니다. 둘 다 소수점을 떼고 초 수 × 언어 수로 맞아떨어집니다.
     </div>
     <table>
       <tr><th>만들 것</th><th>1편당</th><th>10,800으로</th></tr>
@@ -165,7 +165,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
       <tr><td>30초 릴스 · 8개 언어</td><td>240</td><td>45편</td></tr>
       <tr><td>30초 릴스 · 1개 언어 · 립싱크</td><td>30<br><span style="font-size:12px;color:#6B6760">립싱크분 현재 무료</span></td><td>360편</td></tr>
     </table>
-    <p>제가 실제로 돌린 건 <b>5.4초 오디오 × 8개 언어 = 할당량 40</b>이었습니다(10,600 → 10,560). 계산상 43인데 40이 빠졌으니 반올림 단위가 있는 듯합니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.</p>
+    <p>제가 실제로 돌린 건 <b>5.4초 오디오 × 8개 언어 = 할당량 40</b>이었습니다(10,600 → 10,560). 그냥 곱하면 43.2인데 40이 빠졌습니다. 5.4를 5로 끊은 값입니다. 돌리기 전에 얼마 나갈지 미리 계산해주는 API가 따로 있으니 그걸 먼저 부르게 시키세요.</p>
     <div class="hl ok">
       <strong>제가 릴스에 쓴 건 무료 플랜으로도 됩니다.</strong> 영상에 넣은 건 나라별 음성 mp3 여덟 개인데, 그건 대본 API 가 문장마다 주는 파일이라 무료에서 안 막힙니다. 번역문도 같이 받아집니다.
     </div>
@@ -190,7 +190,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <table>
       <tr><th>준비물</th><th>설명</th></tr>
       <tr><td>Claude Code</td><td>이 도구를 만들어줄 주인공. <b>이것만 있으면 됩니다.</b> <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
-      <tr><td>perso.ai 계정</td><td>가입만 해두면 됩니다. 키는 첫 실행 때 브라우저가 열려서 자동으로 잡힙니다. <b>단 서버·SSH 처럼 브라우저가 없는 환경이면 다릅니다</b>(함정 2번).</td></tr>
+      <tr><td><a href="https://perso.ai/kr/ai-dubbing?utm_source=ai_tiger_mask&amp;utm_medium=referral&amp;utm_campaign=ai_tutor_content&amp;utm_content=reel_dub_guide" target="_blank" rel="noopener">perso.ai</a> 계정</td><td>가입만 해두면 됩니다. 키는 첫 실행 때 브라우저가 열려서 자동으로 잡힙니다. <b>단 서버·SSH 처럼 브라우저가 없는 환경이면 다릅니다</b>(함정 2번).</td></tr>
       <tr><td>Node.js</td><td>플러그인이 씁니다. 없으면 클로드한테 깔아달라고 하면 됩니다.</td></tr>
       <tr><td><s>코딩 지식</s></td><td>필요 없습니다. 아래 상자를 복사해서 붙여넣는 게 전부입니다.</td></tr>
     </table>
@@ -462,6 +462,10 @@ node run_dub.js 내오디오.mp3</pre>
     <div class="sec-label">NEXT</div>
     <h2>여기서 더 하면</h2>
     <p>받아온 언어별 음성을 릴스에 얹으면, 인스타 자동번역이 안 가는 나라에도 내 영상이 그 나라 말로 나갑니다. 릴스 만드는 쪽은 따로 정리해두었습니다.</p>
+    <div class="card">
+      <h3><a href="https://perso.ai/kr/ai-dubbing?utm_source=ai_tiger_mask&amp;utm_medium=referral&amp;utm_campaign=ai_tutor_content&amp;utm_content=reel_dub_guide" target="_blank" rel="noopener">perso.ai 더빙 보러 가기 →</a></h3>
+      <p>이 가이드에서 쓴 도구. 가입하고 위 명령 두 줄이면 시작됩니다.</p>
+    </div>
     <div class="card">
       <h3><a href="https://n016yoyo.github.io/smart-life-blog/reel-metrics-guide/">릴스 성과를 숫자로 보는 법 →</a></h3>
       <p>무엇이 실제로 도달을 갈랐는지 실측으로 확인하는 쪽.</p>
