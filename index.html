@@ -511,34 +511,42 @@ button{font-family:inherit}
     var href = a.getAttribute("href") || "";
     if (!/^https?:/i.test(href)) return;
 
-    /* 스토어 링크: 인앱이면 스토어 앱으로 넘긴다.
-       ★안드로이드는 market:// 한 방이면 되는데(2026-08-10 확인), **아이폰만 안 열렸다.**
-         인스타 iOS 웹뷰가 커스텀 스킴 최상위 이동을 막는 경우가 있어서, 단계로 시도한다.
-         ①itms-apps:// 를 클릭 제스처 안에서 바로(제스처가 살아있어야 통과한다)
-         ②안 되면 숨은 iframe 으로 같은 스킴(최상위 이동 차단을 피하는 고전 수법)
-         ③그래도 안 되면 x-safari-https:// 로 사파리를 띄운다(사파리가 스토어로 넘겨준다)
-         ④끝내 안 되면 원래 https , 최소한 스토어 웹페이지는 뜬다 */
-    if (inApp) {
+    /* 스토어 링크
+       ★2026-08-10 실측: 안드로이드는 market:// 로 잘 열린다. **아이폰만 무반응**이었다.
+         원인은 스킴을 더 못 열어서가 아니라 **내가 짠 방식**이었다.
+         preventDefault 를 걸어놓고 `location.href = "itms-apps://…"` 를 바로 대입했는데,
+         iOS 웹뷰에서 이 대입이 예외를 던지면 **그 뒤 폴백 타이머가 등록조차 안 된다.**
+         기본 동작은 이미 막았으니 화면에서는 "아무 일도 안 일어남"이 된다.
+       → 그래서 아이폰에서는 **가로채지 않는다.** 평범한 https 이동으로 두면
+         앱스토어 페이지가 뜨고 거기서 앱으로 넘어간다. 대신 2.2초 뒤에도 그대로면
+         사파리로 여는 버튼을 띄워준다(사용자의 새 탭이라 제스처가 살아 있다). */
+    if (inApp && isAos) {
       var scheme = storeScheme(href);
       if (scheme) {
         e.preventDefault();
         var t0 = Date.now();
-        var alive = function () { return !document.hidden && Date.now() - t0 < 3200; };
-        location.href = scheme;
-        if (isiOS) {
-          setTimeout(function () {
-            if (!alive()) return;
-            var f = document.createElement("iframe");
-            f.style.cssText = "display:none;width:0;height:0;border:0";
-            f.src = scheme;
-            document.body.appendChild(f);
-            setTimeout(function () { try { f.remove(); } catch (x) {} }, 1200);
-          }, 700);
-          setTimeout(function () { if (alive()) location.href = href.replace(/^https:/i, "x-safari-https:"); }, 1600);
-        }
-        setTimeout(function () { if (alive()) location.href = href; }, 2500);
+        setTimeout(function () {                    // 폴백을 **먼저** 예약해 예외에 안 죽게
+          if (!document.hidden && Date.now() - t0 < 3000) { try { location.href = href; } catch (x) {} }
+        }, 1500);
+        try { location.href = scheme; } catch (x) { try { location.href = href; } catch (y) {} }
         return;
       }
+    }
+    if (inApp && isiOS && /apps\.apple\.com/i.test(href)) {
+      var t1 = Date.now();
+      setTimeout(function () {                      // 이동이 막혔으면 직접 열 버튼을 준다
+        if (document.hidden || Date.now() - t1 > 4000) return;
+        if (document.getElementById("openHelp")) return;
+        var d = document.createElement("div");
+        d.id = "openHelp";
+        d.style.cssText = "position:fixed;left:12px;right:12px;bottom:14px;z-index:99999;background:#111;color:#fff;" +
+          "padding:14px 16px;border-radius:14px;font-size:15px;line-height:1.45;box-shadow:0 8px 30px rgba(0,0,0,.35)";
+        d.innerHTML = '앱스토어가 안 열리나요? <a href="' + href + '" style="color:#8ec5ff;text-decoration:underline">여기를 눌러 여세요</a>' +
+          ' <span style="opacity:.6;float:right;padding-left:10px">닫기</span>';
+        d.querySelector("span").onclick = function () { d.remove(); };
+        document.body.appendChild(d);
+      }, 2200);
+      return;                                       // ★가로채지 않는다(기본 이동에 맡긴다)
     }
 
     if (a.getAttribute("target") !== "_blank") return;
