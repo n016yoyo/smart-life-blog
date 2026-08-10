@@ -492,19 +492,6 @@ button{font-family:inherit}
     document.querySelectorAll('a[target="_blank"]').forEach(function (a) { a.removeAttribute("target"); });
   }
 
-  /* ★임시 , 앱스토어 링크 어느 방식이 통하는지 실기기로 가리는 중(2026-08-10).
-     아이폰 인앱에서만 맨 위에 테스트 입구를 띄운다. 확인 끝나면 이 블록을 지운다. */
-  if (inApp && isiOS) {
-    document.addEventListener("DOMContentLoaded", function () {
-      var t = document.createElement("a");
-      t.href = "link-test/";
-      t.textContent = "🔎 앱스토어 링크 테스트 (여기를 눌러주세요)";
-      t.style.cssText = "display:block;background:#2b6cff;color:#fff;text-align:center;padding:14px 12px;" +
-        "font-size:15px;font-weight:700;text-decoration:none;position:sticky;top:0;z-index:99998";
-      document.body.insertBefore(t, document.body.firstChild);
-    });
-  }
-
   /* ★인앱 웹뷰에서는 https 스토어 주소로 이동해도 스토어 **앱**이 안 뜬다(2026-08-10 사장님 확인:
      가이드 링크는 열리는데 앱 다운로드만 안 떴다). 스토어 전용 스킴으로 바꿔야 넘어간다.
        iOS      https://apps.apple.com/...        → itms-apps://apps.apple.com/...
@@ -546,33 +533,37 @@ button{font-family:inherit}
       }
     }
     if (inApp && isiOS && /apps\.apple\.com/i.test(href)) {
-      /* ★2026-08-10 실측 결론: 인스타 아이폰 웹뷰에서는 앱스토어로 **못 넘어간다.**
-           · https://apps.apple.com/... 은 Apple 이 301 로 itms-appss:// 스킴을 돌려주는데(어떤 형태든 동일)
-             웹뷰가 그 스킴 이동을 막는다.
-           · itms-apps:// 를 링크 주소로 직접 줘도 막힌다(사장님 실기기 확인).
-         그래서 되는 척하지 않는다. 누르면 **바로** 여는 방법을 알려준다.
-         3초 헛기다리게 하는 것보다 낫다. */
+      /* ★2026-08-10 실기기 실측(사장님이 인스타 안에서 여섯 방식 전부 눌러봄):
+           ① https  ② itms-apps  ③ x-safari-https  ④ apple-store 경로  ⑥ itms-appss  → 전부 무반응
+           ⑤ googlechrome:// → **이것만 열렸다**
+         즉 인스타 아이폰 웹뷰에서 앱스토어로 나가는 길은 크롬 하나뿐이다.
+         크롬이 없는 사람도 있으니 **한 방에 안 되게 두지 않고** 두 갈래를 같이 준다. */
       e.preventDefault();
       var appId = (href.match(/id(\d+)/) || [])[1] || "";
       var webUrl = "https://apps.apple.com/kr/app/id" + appId;
-      var old = document.getElementById("openHelp");
-      if (old) old.remove();
+      var old = document.getElementById("openHelp"); if (old) old.remove();
       var d = document.createElement("div");
       d.id = "openHelp";
       d.style.cssText = "position:fixed;left:12px;right:12px;bottom:14px;z-index:99999;background:#111;color:#fff;" +
         "padding:16px 18px;border-radius:16px;font-size:15px;line-height:1.55;box-shadow:0 10px 34px rgba(0,0,0,.4)";
       d.innerHTML =
-        '<div style="font-weight:700;margin-bottom:6px">인스타 앱 안에서는 앱스토어가 안 열려요</div>' +
-        '<div style="opacity:.85">오른쪽 위 <b>···</b> → <b>브라우저에서 열기</b> 를 누른 뒤 다시 눌러주세요.</div>' +
+        '<div style="font-weight:700;margin-bottom:4px">인스타 앱 안에서는 앱스토어가 안 열려요</div>' +
+        '<div style="opacity:.8;font-size:13.5px">아이폰만 그렇습니다. 아래 둘 중 하나로 여세요.</div>' +
+        '<a id="opChrome" href="googlechrome://apps.apple.com/kr/app/id' + appId + '" ' +
+        'style="display:block;background:#2b6cff;color:#fff;text-decoration:none;text-align:center;' +
+        'border-radius:10px;padding:12px;margin-top:12px;font-weight:700">크롬으로 열기</a>' +
+        '<div style="margin-top:10px;font-size:13.5px;opacity:.8">크롬이 없으면 ' +
+        '<b>오른쪽 위 ···</b> → <b>브라우저에서 열기</b></div>' +
         '<div style="margin-top:10px">' +
-        '<button id="cpLink" style="background:#2b6cff;color:#fff;border:0;border-radius:9px;padding:9px 14px;font-size:14px">앱 주소 복사</button>' +
+        '<button id="cpLink" style="background:#333;color:#fff;border:0;border-radius:9px;padding:9px 14px;font-size:14px">앱 주소 복사</button>' +
         '<span id="cpClose" style="opacity:.6;float:right;padding:10px 2px">닫기</span></div>';
       document.body.appendChild(d);
       d.querySelector("#cpClose").onclick = function () { d.remove(); };
       d.querySelector("#cpLink").onclick = function () {
         var btn = this;
         try {
-          navigator.clipboard.writeText(webUrl).then(function () { btn.textContent = "복사됐어요"; },
+          navigator.clipboard.writeText(webUrl).then(
+            function () { btn.textContent = "복사됐어요"; },
             function () { prompt("이 주소를 복사하세요", webUrl); });
         } catch (x) { prompt("이 주소를 복사하세요", webUrl); }
       };
