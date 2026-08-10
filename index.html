@@ -492,6 +492,19 @@ button{font-family:inherit}
     document.querySelectorAll('a[target="_blank"]').forEach(function (a) { a.removeAttribute("target"); });
   }
 
+  /* ★임시 , 앱스토어 링크 어느 방식이 통하는지 실기기로 가리는 중(2026-08-10).
+     아이폰 인앱에서만 맨 위에 테스트 입구를 띄운다. 확인 끝나면 이 블록을 지운다. */
+  if (inApp && isiOS) {
+    document.addEventListener("DOMContentLoaded", function () {
+      var t = document.createElement("a");
+      t.href = "link-test/";
+      t.textContent = "🔎 앱스토어 링크 테스트 (여기를 눌러주세요)";
+      t.style.cssText = "display:block;background:#2b6cff;color:#fff;text-align:center;padding:14px 12px;" +
+        "font-size:15px;font-weight:700;text-decoration:none;position:sticky;top:0;z-index:99998";
+      document.body.insertBefore(t, document.body.firstChild);
+    });
+  }
+
   /* ★인앱 웹뷰에서는 https 스토어 주소로 이동해도 스토어 **앱**이 안 뜬다(2026-08-10 사장님 확인:
      가이드 링크는 열리는데 앱 다운로드만 안 떴다). 스토어 전용 스킴으로 바꿔야 넘어간다.
        iOS      https://apps.apple.com/...        → itms-apps://apps.apple.com/...
