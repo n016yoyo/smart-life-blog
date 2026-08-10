@@ -533,20 +533,35 @@ button{font-family:inherit}
       }
     }
     if (inApp && isiOS && /apps\.apple\.com/i.test(href)) {
-      var t1 = Date.now();
-      setTimeout(function () {                      // 이동이 막혔으면 직접 열 버튼을 준다
-        if (document.hidden || Date.now() - t1 > 4000) return;
-        if (document.getElementById("openHelp")) return;
-        var d = document.createElement("div");
-        d.id = "openHelp";
-        d.style.cssText = "position:fixed;left:12px;right:12px;bottom:14px;z-index:99999;background:#111;color:#fff;" +
-          "padding:14px 16px;border-radius:14px;font-size:15px;line-height:1.45;box-shadow:0 8px 30px rgba(0,0,0,.35)";
-        d.innerHTML = '앱스토어가 안 열리나요? <a href="' + href + '" style="color:#8ec5ff;text-decoration:underline">여기를 눌러 여세요</a>' +
-          ' <span style="opacity:.6;float:right;padding-left:10px">닫기</span>';
-        d.querySelector("span").onclick = function () { d.remove(); };
-        document.body.appendChild(d);
-      }, 2200);
-      return;                                       // ★가로채지 않는다(기본 이동에 맡긴다)
+      /* ★2026-08-10 실측: 아이폰 UA 로 https://apps.apple.com/... 를 요청하면
+         Apple 이 **301 로 itms-appss:// 스킴을 돌려준다**(어떤 형태로 줘도 동일. /kr/, ?platform, itunes.com 전부).
+         인스타 iOS 웹뷰는 그 스킴 리디렉션을 막아서 아무 일도 안 일어난다.
+         → 리디렉션을 아예 건너뛰고 **사용자가 직접 누른 링크**로 스킴에 바로 간다.
+           JS 로 대입하면 막히지만, a[href] 로 두면 브라우저가 사용자 제스처로 처리해 통과할 여지가 있다. */
+      var m = href.match(/id(\d+)/);
+      if (m) {
+        a.setAttribute("href", "itms-apps://apps.apple.com/kr/app/id" + m[1]);
+        var t1 = Date.now();
+        setTimeout(function () {                    // 그래도 안 열리면 여는 법을 알려준다
+          if (document.hidden || Date.now() - t1 > 4500) return;
+          if (document.getElementById("openHelp")) return;
+          var d = document.createElement("div");
+          d.id = "openHelp";
+          d.style.cssText = "position:fixed;left:12px;right:12px;bottom:14px;z-index:99999;background:#111;color:#fff;" +
+            "padding:14px 16px;border-radius:14px;font-size:15px;line-height:1.5;box-shadow:0 8px 30px rgba(0,0,0,.35)";
+          d.innerHTML = '앱스토어가 안 열리면 <b>오른쪽 위 ⋯ → 브라우저에서 열기</b> 로 여세요.' +
+            '<div style="margin-top:8px"><button id="cpLink" style="background:#2b6cff;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:14px">주소 복사</button>' +
+            '<span id="cpClose" style="opacity:.6;float:right;padding:9px 2px">닫기</span></div>';
+          document.body.appendChild(d);
+          d.querySelector("#cpClose").onclick = function () { d.remove(); };
+          d.querySelector("#cpLink").onclick = function () {
+            var u = "https://apps.apple.com/kr/app/id" + m[1];
+            try { navigator.clipboard.writeText(u); this.textContent = "복사됨"; }
+            catch (x) { prompt("이 주소를 복사하세요", u); }
+          };
+        }, 2200);
+      }
+      return;                                       // 가로채지 않는다(바뀐 href 로 기본 이동)
     }
 
     if (a.getAttribute("target") !== "_blank") return;
