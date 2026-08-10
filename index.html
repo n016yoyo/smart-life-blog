@@ -475,5 +475,30 @@ button{font-family:inherit}
 })();
 </script>
 <!-- redeploy: Pages 배포 실패 재트리거 2026-07-06 11:29 -->
+<script>
+/* ★인앱 브라우저(인스타·페북·카카오·네이버·스레드)는 새 탭을 못 열어
+   target="_blank" 링크가 "눌러도 아무 반응 없음"이 된다(2026-08-10 사장님 지적,
+   인스타 프로필에서 타고 들어와 스토어 배지가 안 먹혔다).
+   ①인앱이면 target 을 떼어 같은 창에서 이동시키고
+   ②그래도 막히는 경우를 위해 클릭 폴백을 둔다. */
+(function () {
+  var ua = navigator.userAgent || "";
+  var inApp = /Instagram|FBAN|FBAV|KAKAOTALK|NAVER\(inapp|Line\/|Threads|DaumApps|everytimeApp/i.test(ua);
+  if (inApp) {
+    document.querySelectorAll('a[target="_blank"]').forEach(function (a) { a.removeAttribute("target"); });
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (!/^https?:/i.test(href)) return;
+    if (a.getAttribute("target") !== "_blank") return;
+    var w = null;
+    try { w = window.open(href, "_blank", "noopener"); } catch (err) { w = null; }
+    if (!w) { e.preventDefault(); location.href = href; }   // 새 창이 안 열리면 그냥 이동
+    else { e.preventDefault(); }
+  }, true);
+})();
+</script>
 </body>
 </html>
