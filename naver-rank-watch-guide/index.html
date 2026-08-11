@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 블로그가 몇 위인지 매일 폰으로 받기 | AI TIGER MASK</title>
+<meta name="description" content="네이버 검색에서 내 블로그 글이 몇 위인지 매일 자동으로 확인해 텔레그램으로 받는 법. 로그인도, 켜둔 컴퓨터도 필요 없습니다. 코딩은 클로드가 합니다.">
+<meta property="og:title" content="내 블로그가 몇 위인지 매일 폰으로 받기">
+<meta property="og:description" content="검색해서 손으로 찾아 내려가지 마세요. 순위가 바뀌면 폰이 먼저 알려줍니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>내 블로그가 몇 위인지<br><span style="color:var(--acc)">매일 폰으로</span> 받기</h1>
+  <p class="sub">글을 쓰고 나면 검색에서 몇 위인지 궁금한데, 매번 검색창에 치고 목록을 내려서 찾으셨죠. 키워드가 여섯 개면 여섯 번입니다. <b>그걸 안 하는 방법</b>을 정리했습니다. 로그인도, 켜둔 컴퓨터도 필요 없습니다.</p>
+  <div class="chips">
+    <span class="chip">로그인 <b>필요 없음</b></span>
+    <span class="chip">컴퓨터 <b>꺼져 있어도</b></span>
+    <span class="chip">비용 <b>0원</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">무엇이 오는가</a>
+    <a href="#how">원리 한 줄</a>
+    <a href="#trap">먼저 알아야 할 함정</a>
+    <a href="#step1">1. 세는 것 만들기</a>
+    <a href="#step2">2. 폰으로 보내기</a>
+    <a href="#step3">3. 혼자 돌게 하기</a>
+    <a href="#kw">키워드 고르기</a>
+    <a href="#stuck">막히면</a>
+  </div>
+
+  <section class="sec" id="what">
+    <div class="sec-label">RESULT</div>
+    <h2>아침에 이런 게 옵니다</h2>
+    <p>제가 찾아본 게 아니라, 폰에 먼저 도착해 있습니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>실제로 오는 메시지</span></div>
+      <pre>📊 블로그 검색순위
+08월 11일
+
+🥉 3위  ▮▮▮▮▮▮▮▮▯▯
+     기프티콘 관리앱
+
+🥉 3위  ▮▮▮▮▮▮▮▮▯▯
+     품절 재입고 알림 앱
+
+▪️ 5위  ▮▮▮▮▮▮▯▯▯▯
+     재입고 알림
+
+⚫️ 권외
+     기프티콘 유효기간 알림
+     냉장고 재고 앱
+     백화점 상품권 유효기간</pre>
+    </div>
+    <div class="hl"><strong>값어치는 "권외"와 "전날 대비"에 있습니다.</strong> 올라간 건 기분이 좋고, <b>떨어진 건 모르면 그냥 지나갑니다.</b> 손으로 확인하면 떨어졌다는 사실 자체를 모릅니다.</div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="sec-label">HOW</div>
+    <h2>원리는 한 줄입니다</h2>
+    <p>네이버 모바일 검색의 <b>블로그 탭</b> 주소를 그대로 열어서, 결과에 내 글이 <b>몇 번째로 나오는지 세는 것</b>이 전부입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>주소는 이 형태입니다</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>https://m.search.naver.com/search.naver?ssc=tab.m_blog.all&amp;query=검색어</pre>
+    </div>
+    <div class="hl ok"><strong>로그인이 필요 없습니다.</strong> 검색 결과는 누구에게나 열려 있는 화면이라, 아이디도 쿠키도 쓰지 않습니다. 그래서 어디서든 돌릴 수 있습니다.</div>
+  </section>
+
+  <section class="sec" id="trap">
+    <div class="sec-label">TRAP</div>
+    <h2>먼저 알아야 할 함정 하나</h2>
+    <p><b>블로그 탭에는 네이버 블로그만 나오지 않습니다.</b> 티스토리 같은 다른 블로그도 같이 섞여 나옵니다.</p>
+    <p>저는 처음에 <code>blog.naver.com</code> 주소만 셌습니다. 그랬더니 <b>화면에는 제 글이 세 번째인데 알림은 2위</b>라고 왔습니다. 사이에 티스토리 글이 하나 있었는데 그걸 안 세고 있었던 겁니다.</p>
+    <div class="hl warn"><strong>"몇 위"는 세는 방법이 곧 정의입니다.</strong> 화면에 보이는 순서와 코드가 세는 순서가 같은지 꼭 대조하세요. 안 그러면 그럴듯한 숫자가 매일 틀린 채로 옵니다.</div>
+    <p>고친 방법은 간단합니다. 결과 카드의 <b>글 주소</b>(주소 끝이 글번호인 것)를 <b>나온 순서대로</b> 세고, 같은 블로그가 여러 번 나오면 한 번만 셉니다.</p>
+  </section>
+
+  <section class="sec" id="step1">
+    <div class="sec-label">STEP 1</div>
+    <h2>세는 것부터 만듭니다</h2>
+    <p>클로드 코드를 열고 그대로 붙여넣으세요. 함정까지 미리 알려주는 문장이라 한 번에 제대로 나옵니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>네이버 블로그 검색순위를 확인하는 스크립트를 만들어줘.
+
+- 확인할 키워드는 rank_keywords.json 파일에서 읽어와
+- 각 키워드를 이 주소로 검색해:
+  https://m.search.naver.com/search.naver?ssc=tab.m_blog.all&amp;query=키워드
+- 내 블로그 아이디는 (여기에 내 아이디)
+
+★중요: 블로그 탭에는 티스토리 같은 다른 블로그도 섞여 나와.
+그러니 blog.naver.com 만 세면 안 되고, 결과에 나온 "글 주소"를
+나온 순서대로 세야 해. 주소 끝이 글번호인 링크만 결과로 치고,
+같은 블로그가 여러 번 나오면 한 번만 세.
+그래야 화면에 보이는 순서랑 숫자가 같아져.
+
+- 내 글이 없으면 "권외"로 표시해
+- 결과를 날짜별로 rank_history.json 에 쌓아서, 어제와 비교해
+  오른 것/떨어진 것/새로 들어온 것/빠진 것을 알려줘
+- 검색과 검색 사이에는 1초 정도 쉬어. 남의 서비스니까.
+
+먼저 한 번 실행해서 결과를 보여줘.</pre>
+    </div>
+    <div class="hl"><strong>여기서 꼭 확인하세요.</strong> 나온 순위대로 직접 네이버에서 검색해 보고, <b>화면에서 세어봤을 때 같은 자리인지</b> 눈으로 대조하세요. 다르면 위 함정에 걸린 겁니다.</div>
+  </section>
+
+  <section class="sec" id="step2">
+    <div class="sec-label">STEP 2</div>
+    <h2>폰으로 오게 합니다</h2>
+    <p>텔레그램이 제일 쉽습니다. 앱 설치하고 5분이면 됩니다.</p>
+    <ol>
+      <li>텔레그램에서 <code>@BotFather</code> 를 찾아 <code>/newbot</code> , 이름 정하면 <b>토큰</b>을 줍니다</li>
+      <li>내가 만든 그 봇과 대화를 시작합니다(아무 말이나 한 번 보내기)</li>
+      <li>내 <b>챗 아이디</b>가 필요한데, 이건 클로드가 찾아줍니다</li>
+    </ol>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>텔레그램 봇 토큰이 (여기에 토큰) 인데
+내 챗 아이디를 찾아서 알려주고,
+아까 만든 순위 스크립트가 결과를 이 봇으로 보내게 해줘.
+
+- 순위가 높은 것부터 정렬해서 보여주고
+- 어제와 달라진 것에는 표시를 붙여줘(올랐다/떨어졌다)
+- 권외인 키워드는 아래에 따로 모아줘
+- 글자만 주르륵 나오면 잘 안 읽히니까
+  메달·막대 같은 걸로 한눈에 보이게 해줘
+
+보내보고 실제로 도착했는지 확인까지 해줘.</pre>
+    </div>
+    <div class="hl warn"><strong>보냈다고 끝이 아닙니다.</strong> "보냈다"는 로그만 보고 넘어가면 안 오는 걸 모릅니다. 클로드한테 <b>도착 확인까지</b> 시키세요. 저는 이걸 안 해서 조용히 안 가고 있던 적이 있습니다.</div>
+  </section>
+
+  <section class="sec" id="step3">
+    <div class="sec-label">STEP 3</div>
+    <h2>내가 안 켜도 혼자 돌게</h2>
+    <p>여기가 핵심입니다. 컴퓨터를 켜놔야 한다면 결국 안 하게 됩니다.</p>
+    <div class="badge-row">
+      <span class="badge ok">추천 · 클라우드플레어 워커</span>
+      <span class="badge">차선 · 내 컴퓨터 예약 실행</span>
+    </div>
+    <p><b>클라우드플레어 워커</b>는 무료 한도 안에서 하루 몇 번 도는 정도는 돈이 들지 않고, 내 컴퓨터와 무관하게 돕니다. 브라우저 없이 주소만 열면 되는 일이라 워커에서도 그대로 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>이 순위 확인을 클라우드플레어 워커에 올려서
+매일 아침 한 번 자동으로 돌게 해줘.
+
+- 계정은 내가 만들어 둘게. 무료 요금제야
+- 크론으로 한국시간 아침 7시에 한 번
+- 키워드 목록과 어제 기록은 KV 에 저장해
+- 하루에 한 번만 돌게 막아줘(같은 날 두 번 도는 사고 방지)
+- 결과는 아까 그 텔레그램 봇으로
+
+올린 다음, 크론을 기다리지 말고 지금 한 번 강제로 돌려서
+텔레그램에 실제로 오는지까지 확인해줘.</pre>
+    </div>
+    <div class="hl"><strong>"오늘 기록"을 기준으로 삼지 않게 하세요.</strong> 같은 날 두 번 돌리면 <b>아침에 쌓은 오늘 기록이 비교 기준</b>이 돼서, 어제와의 변화가 통째로 사라집니다. 비교는 <b>오늘을 뺀 가장 최근 날</b>과 해야 합니다.</div>
+  </section>
+
+  <section class="sec" id="kw">
+    <div class="sec-label">KEYWORD</div>
+    <h2>어떤 키워드를 넣나</h2>
+    <ul>
+      <li><b>내 글이 실제로 잡히는 것</b>부터 넣습니다. 전부 권외면 볼 맛이 안 납니다</li>
+      <li>같은 주제라도 <b>한 끗 차이로 갈립니다.</b> "기프티콘 관리앱"과 "기프티콘 관리 앱 추천"은 다른 검색어입니다. 둘 다 넣어보고 잡히는 쪽을 남기세요</li>
+      <li>네이버 블로그 관리자의 <b>유입 키워드</b>에 실제로 찍힌 말을 넣는 게 제일 정확합니다</li>
+      <li>여섯 개에서 열 개 정도가 적당합니다. 많을수록 검색 요청도 늘어납니다</li>
+    </ul>
+  </section>
+
+  <section class="sec" id="stuck">
+    <div class="sec-label">STUCK</div>
+    <h2>막히면 이걸 물어보세요</h2>
+    <div class="card"><h3>숫자가 화면과 다릅니다</h3><p>위의 함정입니다. "결과에 나온 글 주소를 나온 순서대로 세라"고 다시 시키고, 네이버 화면과 눈으로 대조하세요.</p></div>
+    <div class="card"><h3>텔레그램에 줄바꿈이 <code>\n</code> 글자로 찍힙니다</h3><p>메시지를 명령어 인자로 넘길 때 생깁니다. "메시지를 파일로 써서 그 파일을 보내게 바꿔줘"라고 하면 됩니다.</p></div>
+    <div class="card"><h3>매일 안 옵니다</h3><p>크론이 실제로 도는지, 그리고 "하루 한 번" 막이가 잘못 걸려 있지 않은지 확인시키세요. "크론을 기다리지 말고 지금 강제로 한 번 돌려줘"가 제일 빠른 확인입니다.</p></div>
+    <div class="card"><h3>순위가 며칠째 그대로입니다</h3><p>정상입니다. 안 변한 것도 정보입니다. 값어치는 <b>떨어졌을 때 바로 아는 것</b>에 있습니다.</p></div>
+  </section>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/">더 많은 자동화 보기 →</a>
+  </div>
+  <div class="foot">
+    <p>만든 사람 · <a href="https://www.instagram.com/aitigermask/">@aitigermask</a></p>
+    <p><a href="../">다른 따라하기 보기</a></p>
+  </div>
+</div>
+<script>
+function cp(btn){
+  var box = btn.closest('.copybox'); var pre = box.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(function(){
+    var o = btn.textContent; btn.textContent = '복사됨!';
+    setTimeout(function(){ btn.textContent = o; }, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-rank-watch-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent='-'; });
+</script>
+</body>
+</html>
