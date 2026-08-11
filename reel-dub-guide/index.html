@@ -101,12 +101,13 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 <div class="wrap">
   <div class="toc">
     <a href="#what">이게 뭔데?</a>
-    <a href="#free">공짜로 되는 것</a>
-    <a href="#honest">더빙 비용</a>
     <a href="#prep">준비물</a>
     <a href="#key">1 · 설치</a>
     <a href="#setup">2 · 말로 시키기</a>
     <a href="#result">실제 실행 로그</a>
+    <a href="#deal">비용과 할인</a>
+    <a href="#free">공짜로 되는 것</a>
+    <a href="#honest">더빙 비용</a>
     <a href="#traps">실전 함정</a>
     <a href="#stuck">막혔을 때</a>
     <a href="#next">여기서 더 하면</a>
@@ -191,10 +192,145 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     </div>
   </div>
 
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물</h2>
+    <table>
+      <tr><th>준비물</th><th>설명</th></tr>
+      <tr><td>Claude Code</td><td>이 도구를 만들어줄 주인공. <b>이것만 있으면 됩니다.</b> <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
+      <tr><td><a href="https://perso.ai/kr/ai-dubbing?utm_source=ai_tiger_mask&amp;utm_medium=referral&amp;utm_campaign=ai_tutor_content&amp;utm_content=reel_dub_guide" target="_blank" rel="noopener">perso.ai</a> 계정</td><td>가입만 해두면 됩니다. 키는 첫 실행 때 브라우저가 열려서 자동으로 잡힙니다. <b>단 서버·SSH 처럼 브라우저가 없는 환경이면 다릅니다</b>(함정 2번).</td></tr>
+      <tr><td>Node.js</td><td>플러그인이 씁니다. 없으면 클로드한테 깔아달라고 하면 됩니다.</td></tr>
+      <tr><td><s>코딩 지식</s></td><td>필요 없습니다. 아래 상자를 복사해서 붙여넣는 게 전부입니다.</td></tr>
+    </table>
+    <p>더빙할 오디오나 영상을 하나 준비하세요. <b>1초만 넘으면 올릴 수 있습니다.</b> 없으면 폰 녹음기로 한두 문장 읽어 만드셔도 됩니다.</p>
+  </div>
+
+  <div class="sec" id="key">
+    <div class="sec-label">STEP 1</div>
+    <h2>설치는 명령 두 줄</h2>
+    <p>Perso 가 공식 플러그인을 냅니다. Claude Code 에 이것만 붙여넣으면 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>터미널에 그대로</span><button class="copybtn" onclick="copy(this,'p0')">복사</button></div>
+      <pre id="p0">claude plugin marketplace add perso-ai/perso-dubbing-plugin
+claude plugin install perso-dubbing@perso-ai</pre>
+    </div>
+    <p>말로 시켜도 됩니다. Claude Code 에 이렇게 던지면 알아서 붙입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>이렇게 시켜도 됩니다</span><button class="copybtn" onclick="copy(this,'p0b')">복사</button></div>
+      <pre id="p0b">https://github.com/perso-ai/perso-dubbing-plugin 이거 설치해줘.</pre>
+    </div>
+    <p>제가 실제로 설치해보니 <code>perso-dubbing 0.8.12</code> 가 깔렸고, 안에 더빙·자막·클립 세 가지가 들어 있었습니다.</p>
+    <div class="hl ok">
+      <strong>API 키를 손으로 넣을 필요가 없습니다.</strong> 서버 작업을 처음 돌릴 때 브라우저가 열려서 로그인 한 번 하면 키가 알아서 저장됩니다. 파일 만들고 복사해 붙이는 과정이 없습니다.
+    </div>
+
+    <div class="sec-label" id="setup">STEP 2</div>
+    <h2>말로 시킵니다</h2>
+    <p>설치가 끝나면 명령어를 외울 필요가 없습니다. 하고 싶은 걸 그냥 말하면 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
+      <pre id="p1">내 목소리 파일 polyglot_src.mp3 를
+아랍어·히브리어·아르메니아어·조지아어·네팔어·말라얄람어·우르두어·러시아어
+여덟 개로 더빙해줘. 원본 파일 옆에 그대로 저장해줘.</pre>
+    </div>
+    <p>업로드, 번역, 음성 생성, 내려받기까지 한 번에 돕니다. 진행 상황도 중간중간 알려줍니다. <b>여덟 개를 한 번에 시키는 게 중요합니다.</b> 언어마다 따로 시키면 같은 파일을 여덟 번 올리게 됩니다.</p>
+    <div class="hl warn">
+      <strong>저장 폴더를 지정하지 마세요.</strong> 저는 처음에 "langs 폴더에 저장해줘"라고 시켰다가 <b>확장자 없는 파일 여덟 개</b>를 받았습니다. 이유는 함정 1번에 적었습니다. 그냥 두면 원본 옆에 언어별로 잘 떨어집니다.
+    </div>
+    <div class="hl">
+      <strong>나오는 건 wav 입니다.</strong> mp3 로 달라고 해도 Perso 쪽이 주는 건 wav 라, 클로드가 받은 뒤에 변환해줍니다. 파일 이름은 <code>원본이름_KOtoAR_Voice+Background_시각.wav</code> 모양입니다.
+    </div>
+    <div class="hl warn">
+      <strong>립싱크는 따로 말해야 합니다.</strong> 더빙만 하면 목소리만 바뀌고 입은 그대로입니다. 입까지 맞추려면 립싱크를 켜달라고 하세요. <b>영상에만 됩니다</b>(오디오 파일은 거절당합니다). 더빙보다 훨씬 오래 걸립니다. 크레딧은 기본적으로 추가로 드는 기능인데 <b>지금은 한시적으로 면제 중</b>입니다.
+    </div>
+
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">EVIDENCE</div>
+    <h2>실제로 돌린 결과</h2>
+    <p>아래는 <b>공식 플러그인으로 돌린 실제 출력</b>입니다. 손으로 쓴 게 아니라 터미널에 찍힌 그대로입니다.</p>
+    <pre style="border-radius:12px">[progress] Translating (ar, he, hy, ka, ne, ml, ur, ru)
+[status] ar 1/1 · he 1/1 · hy 1/1 · ka 1/1 · ne 0/1 · ml 0/1 · ur 0/1 · ru 0/1
+
+  Uploading video...
+  Queue 0/3 — 3 free slots
+  [Input 1] segment 1(ar) submitted
+  Queue 3/3 — 0 free slots
+  [Input 1] segment 1(ar) done
+  Queue 2/3 — 1 free slots
+  [Input 1] segment 1(ml) submitted
+  ...
+  [Input 1] segment 1(ru) done
+
+Done: test_1s.mp3 (ar)
+Done: test_1s.mp3 (he)
+Done: test_1s.mp3 (hy)
+Done: test_1s.mp3 (ka)
+Done: test_1s.mp3 (ne)
+Done: test_1s.mp3 (ml)
+Done: test_1s.mp3 (ur)
+Done: test_1s.mp3 (ru)
+
+Summary: 8 done · 0 failed</pre>
+    <table>
+      <tr><th>잰 것</th><th>값</th></tr>
+      <tr><td>입력</td><td>1.224초 오디오 한 개</td></tr>
+      <tr><td>목표 언어</td><td>여덟 개, 한 명령</td></tr>
+      <tr><td>걸린 시간</td><td>오분 삼십사 초</td></tr>
+      <tr><td>동시 처리</td><td>세 개씩 (PRO 기준, 무료는 한 개)</td></tr>
+      <tr><td>나간 할당량</td><td>아홉 (시험 한 번 포함)</td></tr>
+      <tr><td>결과 형식</td><td>wav · 여덟 개 전부 서로 다른 파일</td></tr>
+    </table>
+    <div class="hl ok">
+      <strong>여덟 개가 진짜 다른 음성인지도 확인했습니다.</strong> 파일 크기가 전부 같길래(1.2초 무압축이라 그렇습니다) 해시를 떠봤더니 여덟 개가 전부 달랐습니다. 눈으로 보이는 것만 믿으면 안 되는 자리였습니다.
+    </div>
+    <p>제가 릴스에 실제로 쓴 건 이것보다 앞선 회차로, 오점사 초 오디오를 여덟 개 언어로 돌려 할당량 사십이 들었습니다.</p>
+  </div>
+
+  <div class="sec" id="deal">
+    <div class="sec-label">COST</div>
+    <h2>그래서 얼마가 드나</h2>
+    <p>여기까지가 실제로 돌아가는 화면입니다. 직접 하시려면 얼마가 드는지 정리하겠습니다.</p>
+    <div class="hl ok">
+      <strong>먼저 공짜로 되는 것부터.</strong> 공식 Skill 을 설치하면 다국어 더빙 외에도 <b>자막 번역·굽기, 숏츠 컷, 자막 검수</b>를 Perso 크레딧 차감 없이 쓸 수 있습니다. 계정도 필요 없습니다. 하나씩 해본 건 <a href="#free">아래에</a> 적었습니다.
+    </div>
+    <p><b>더빙은 다릅니다.</b> Perso 서버가 일하니 크레딧이 나갑니다. <b>미디어 1초에 1 크레딧</b>이고 언어 수만큼 곱해집니다. 30초 영상을 한 가지 언어로 구우면 30 크레딧입니다.</p>
+    <table>
+      <tr><th>요금제</th><th>월</th><th>크레딧</th><th>30초 영상</th><th>편당 최대</th><th>완성본 받기</th></tr>
+      <tr><td>무료</td><td>$0</td><td>가입 시 1회분<br><span style="font-size:12px;color:#6B6760">제 계정은 60</span></td><td>1편</td><td>30초</td><td>❌ 막힘 · 워터마크</td></tr>
+      <tr><td>Starter</td><td>$6.99</td><td>420 (7분)</td><td>14편</td><td>3분</td><td>✅ 1080p</td></tr>
+      <tr><td><b>Creator</b></td><td><b>$29 → $14.50</b></td><td><b>2,400 (40분)</b></td><td><b>80편</b></td><td>15분</td><td>✅</td></tr>
+      <tr><td>Pro</td><td>$99</td><td>10,800 (180분)</td><td>360편</td><td>&mdash;</td><td>✅</td></tr>
+    </table>
+    <p style="font-size:13px;color:#6B6760">2026년 8월 11일에 공개 요금표에서 확인한 값입니다. Starter 는 현재 첫 달 할인과 둘째 달 무료 표기가 따로 붙어 있으니 결제 화면에서 확인하세요.</p>
+
+    <h2 style="margin-top:34px">어느 걸 고르면 되나</h2>
+    <div class="hl">
+      <strong>한 가지 언어로 가끔 만드신다면 Starter 로 충분합니다.</strong> 420 크레딧이면 30초 영상 열네 편입니다. 여기서부터 워터마크가 없어지고 완성본을 받을 수 있습니다. <b>굳이 위 요금제로 올라가실 이유가 없습니다.</b>
+    </div>
+    <div class="hl warn">
+      <strong>여러 언어를 한 번에 하실 거면 얘기가 달라집니다.</strong> 이 가이드가 보여드린 게 그겁니다. 30초를 여덟 개 언어로 구우면 <b>240 크레딧</b>입니다. Starter 의 420 으로는 <b>한 달에 한 번 반</b>이라 첫 달에 바로 막힙니다. Creator 의 2,400 이면 같은 걸 <b>열 번</b> 합니다.
+    </div>
+
+    <h2 style="margin-top:34px">읽으시는 분께 드리는 할인</h2>
+    <div class="hl ok">
+      <p style="margin:0 0 10px;font-size:13px;letter-spacing:.14em;color:#6B6760">CREATOR 월간 첫 결제</p>
+      <p style="margin:0;font-size:34px;font-weight:800;letter-spacing:.04em">AITIGERMASK50</p>
+      <p style="margin:12px 0 0;font-size:20px"><b>50% 할인 · $29 → $14.50</b></p>
+      <p style="margin:6px 0 0;font-size:14px;color:#6B6760">원화로 약 21,000~22,000원. 결제 시점 환율에 따라 달라지고 정확한 금액은 결제 화면에 나옵니다.</p>
+    </div>
+    <p><b>쓰는 법.</b> <a href="https://perso.ai/kr/ai-dubbing?utm_source=ai_tiger_mask&amp;utm_medium=referral&amp;utm_campaign=ai_tutor_content&amp;utm_content=reel_dub_guide" target="_blank" rel="noopener">결제 화면</a>에서 <b>Creator 월간</b>을 고르고 <b>프로모션 코드</b> 칸에 <code>AITIGERMASK50</code> 을 넣으면 됩니다. Creator 월간을 <b>처음 구독하는 분의 첫 결제 1회</b>에 적용됩니다.</p>
+
+    <div class="hl">
+      <strong>이 할인이 왜 이만큼인지 밝혀두겠습니다.</strong> 이 글은 협찬입니다. 제가 받은 건 <b>한 달치 Pro 플랜 하나가 전부</b>입니다. 그리고 <b>이 코드로 결제가 일어나도 저에게 오는 수수료는 없습니다.</b> 원래는 제 몫으로 잡혀 있던 정산이 있었는데, 그걸 빼고 그만큼을 <b>할인율에 얹어달라고 요청</b>했습니다. 그래서 이 숫자가 됐습니다. 제가 더 받을 게 없으니 <b>안 쓰셔도 저는 아쉬울 게 없습니다.</b> 위에서 Starter 로 충분한 경우를 굳이 적어둔 것도 그래서입니다.
+    </div>
+  </div>
+
   <div class="sec" id="free">
     <div class="sec-label">FREE</div>
     <h2>돈 한 푼 안 내고 되는 것부터</h2>
-    <p>더빙 얘기를 하기 전에 이것부터 말씀드려야겠습니다. <b>내 컴퓨터에서 처리되는 단계는 전부 공짜</b>입니다. 가입도 필요 없습니다. Perso 서버가 일하는 것만 돈이 나갑니다.</p>
+    <p>앞에서 한 줄로만 짚었던 공짜 기능들을 하나씩 보여드리겠습니다. <b>내 컴퓨터에서 처리되는 단계는 전부 공짜</b>입니다. 가입도 필요 없습니다. Perso 서버가 일하는 것만 돈이 나갑니다.</p>
     <table>
       <tr><th>이렇게 말하면</th><th>이게 나옵니다</th><th>비용</th></tr>
       <tr><td>"이 자막 영상에 입혀줘"</td><td>자막이 구워진 영상</td><td><b>무료</b> · 가입 불필요</td></tr>
@@ -381,102 +517,6 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <p>동시 처리 개수도 다릅니다. <b>무료 한 개, 유료 세 개</b>입니다. 여덟 개 언어를 무료로 돌리면 한 줄로 서서 훨씬 오래 걸립니다.</p>
   </div>
 
-  <div class="sec" id="prep">
-    <div class="sec-label">PREP</div>
-    <h2>준비물</h2>
-    <table>
-      <tr><th>준비물</th><th>설명</th></tr>
-      <tr><td>Claude Code</td><td>이 도구를 만들어줄 주인공. <b>이것만 있으면 됩니다.</b> <a href="https://n016yoyo.github.io/smart-life-blog/guide/">설치 가이드</a></td></tr>
-      <tr><td><a href="https://perso.ai/kr/ai-dubbing?utm_source=ai_tiger_mask&amp;utm_medium=referral&amp;utm_campaign=ai_tutor_content&amp;utm_content=reel_dub_guide" target="_blank" rel="noopener">perso.ai</a> 계정</td><td>가입만 해두면 됩니다. 키는 첫 실행 때 브라우저가 열려서 자동으로 잡힙니다. <b>단 서버·SSH 처럼 브라우저가 없는 환경이면 다릅니다</b>(함정 2번).</td></tr>
-      <tr><td>Node.js</td><td>플러그인이 씁니다. 없으면 클로드한테 깔아달라고 하면 됩니다.</td></tr>
-      <tr><td><s>코딩 지식</s></td><td>필요 없습니다. 아래 상자를 복사해서 붙여넣는 게 전부입니다.</td></tr>
-    </table>
-    <p>더빙할 오디오나 영상을 하나 준비하세요. <b>1초만 넘으면 올릴 수 있습니다.</b> 없으면 폰 녹음기로 한두 문장 읽어 만드셔도 됩니다.</p>
-  </div>
-
-  <div class="sec" id="key">
-    <div class="sec-label">STEP 1</div>
-    <h2>설치는 명령 두 줄</h2>
-    <p>Perso 가 공식 플러그인을 냅니다. Claude Code 에 이것만 붙여넣으면 됩니다.</p>
-    <div class="copybox">
-      <div class="bar"><span>터미널에 그대로</span><button class="copybtn" onclick="copy(this,'p0')">복사</button></div>
-      <pre id="p0">claude plugin marketplace add perso-ai/perso-dubbing-plugin
-claude plugin install perso-dubbing@perso-ai</pre>
-    </div>
-    <p>말로 시켜도 됩니다. Claude Code 에 이렇게 던지면 알아서 붙입니다.</p>
-    <div class="copybox">
-      <div class="bar"><span>이렇게 시켜도 됩니다</span><button class="copybtn" onclick="copy(this,'p0b')">복사</button></div>
-      <pre id="p0b">https://github.com/perso-ai/perso-dubbing-plugin 이거 설치해줘.</pre>
-    </div>
-    <p>제가 실제로 설치해보니 <code>perso-dubbing 0.8.12</code> 가 깔렸고, 안에 더빙·자막·클립 세 가지가 들어 있었습니다.</p>
-    <div class="hl ok">
-      <strong>API 키를 손으로 넣을 필요가 없습니다.</strong> 서버 작업을 처음 돌릴 때 브라우저가 열려서 로그인 한 번 하면 키가 알아서 저장됩니다. 파일 만들고 복사해 붙이는 과정이 없습니다.
-    </div>
-
-    <div class="sec-label" id="setup">STEP 2</div>
-    <h2>말로 시킵니다</h2>
-    <p>설치가 끝나면 명령어를 외울 필요가 없습니다. 하고 싶은 걸 그냥 말하면 됩니다.</p>
-    <div class="copybox">
-      <div class="bar"><span>Claude Code 에 그대로</span><button class="copybtn" onclick="copy(this,'p1')">복사</button></div>
-      <pre id="p1">내 목소리 파일 polyglot_src.mp3 를
-아랍어·히브리어·아르메니아어·조지아어·네팔어·말라얄람어·우르두어·러시아어
-여덟 개로 더빙해줘. 원본 파일 옆에 그대로 저장해줘.</pre>
-    </div>
-    <p>업로드, 번역, 음성 생성, 내려받기까지 한 번에 돕니다. 진행 상황도 중간중간 알려줍니다. <b>여덟 개를 한 번에 시키는 게 중요합니다.</b> 언어마다 따로 시키면 같은 파일을 여덟 번 올리게 됩니다.</p>
-    <div class="hl warn">
-      <strong>저장 폴더를 지정하지 마세요.</strong> 저는 처음에 "langs 폴더에 저장해줘"라고 시켰다가 <b>확장자 없는 파일 여덟 개</b>를 받았습니다. 이유는 함정 1번에 적었습니다. 그냥 두면 원본 옆에 언어별로 잘 떨어집니다.
-    </div>
-    <div class="hl">
-      <strong>나오는 건 wav 입니다.</strong> mp3 로 달라고 해도 Perso 쪽이 주는 건 wav 라, 클로드가 받은 뒤에 변환해줍니다. 파일 이름은 <code>원본이름_KOtoAR_Voice+Background_시각.wav</code> 모양입니다.
-    </div>
-    <div class="hl warn">
-      <strong>립싱크는 따로 말해야 합니다.</strong> 더빙만 하면 목소리만 바뀌고 입은 그대로입니다. 입까지 맞추려면 립싱크를 켜달라고 하세요. <b>영상에만 됩니다</b>(오디오 파일은 거절당합니다). 더빙보다 훨씬 오래 걸립니다. 크레딧은 기본적으로 추가로 드는 기능인데 <b>지금은 한시적으로 면제 중</b>입니다.
-    </div>
-
-  </div>
-
-  <div class="sec" id="result">
-    <div class="sec-label">EVIDENCE</div>
-    <h2>실제로 돌린 결과</h2>
-    <p>아래는 <b>공식 플러그인으로 돌린 실제 출력</b>입니다. 손으로 쓴 게 아니라 터미널에 찍힌 그대로입니다.</p>
-    <pre style="border-radius:12px">[progress] Translating (ar, he, hy, ka, ne, ml, ur, ru)
-[status] ar 1/1 · he 1/1 · hy 1/1 · ka 1/1 · ne 0/1 · ml 0/1 · ur 0/1 · ru 0/1
-
-  Uploading video...
-  Queue 0/3 — 3 free slots
-  [Input 1] segment 1(ar) submitted
-  Queue 3/3 — 0 free slots
-  [Input 1] segment 1(ar) done
-  Queue 2/3 — 1 free slots
-  [Input 1] segment 1(ml) submitted
-  ...
-  [Input 1] segment 1(ru) done
-
-Done: test_1s.mp3 (ar)
-Done: test_1s.mp3 (he)
-Done: test_1s.mp3 (hy)
-Done: test_1s.mp3 (ka)
-Done: test_1s.mp3 (ne)
-Done: test_1s.mp3 (ml)
-Done: test_1s.mp3 (ur)
-Done: test_1s.mp3 (ru)
-
-Summary: 8 done · 0 failed</pre>
-    <table>
-      <tr><th>잰 것</th><th>값</th></tr>
-      <tr><td>입력</td><td>1.224초 오디오 한 개</td></tr>
-      <tr><td>목표 언어</td><td>여덟 개, 한 명령</td></tr>
-      <tr><td>걸린 시간</td><td>오분 삼십사 초</td></tr>
-      <tr><td>동시 처리</td><td>세 개씩 (PRO 기준, 무료는 한 개)</td></tr>
-      <tr><td>나간 할당량</td><td>아홉 (시험 한 번 포함)</td></tr>
-      <tr><td>결과 형식</td><td>wav · 여덟 개 전부 서로 다른 파일</td></tr>
-    </table>
-    <div class="hl ok">
-      <strong>여덟 개가 진짜 다른 음성인지도 확인했습니다.</strong> 파일 크기가 전부 같길래(1.2초 무압축이라 그렇습니다) 해시를 떠봤더니 여덟 개가 전부 달랐습니다. 눈으로 보이는 것만 믿으면 안 되는 자리였습니다.
-    </div>
-    <p>제가 릴스에 실제로 쓴 건 이것보다 앞선 회차로, 오점사 초 오디오를 여덟 개 언어로 돌려 할당량 사십이 들었습니다.</p>
-  </div>
-
   <div class="sec" id="traps">
     <div class="sec-label">TRAPS</div>
     <h2>실전 함정 여덟 가지</h2>
@@ -580,7 +620,7 @@ Summary: 8 done · 0 failed</pre>
 
   <div class="foot" style="margin-top:24px">
     <p>릴스 다국어 더빙 자동화 가이드 · 2026 · 직접 만들며 기록</p>
-    <p style="margin-top:4px">perso.ai · Instagram · Claude 는 각 사 소유이며 비제휴입니다. 화면에 나온 수치는 전부 직접 실행해 받은 값입니다.</p>
+    <p style="margin-top:4px">perso.ai 는 이 글의 협찬사입니다. Instagram · Claude 는 각 사 소유이며 이 글과 제휴 관계가 없습니다. 화면에 나온 수치는 전부 직접 실행해 받은 값입니다.</p>
   </div>
 </div>
 
