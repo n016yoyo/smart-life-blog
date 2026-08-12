@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>매달 나가는 구독료, 폰으로 받아보기 | AI TIGER MASK</title>
+<meta name="description" content="메일함 여러 개에 흩어진 구독 영수증을 한 번에 모아 매달 얼마 나가는지 합계를 폰으로 받는 법. 어느 메일로 가입했는지 몰라도 됩니다. 코딩은 클로드가 합니다.">
+<meta property="og:title" content="매달 나가는 구독료, 폰으로 받아보기">
+<meta property="og:description" content="어느 메일로 가입했는지 기억 안 나시죠. 메일함을 통째로 훑어 합계만 받아보세요.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>매달 나가는 구독료,<br><span style="color:var(--acc)">폰으로</span> 받아보기</h1>
+  <p class="sub">구독할 때 <b>어느 메일로 가입했는지</b> 기억나세요? 저는 안 났습니다. 그래서 메일함 네 개를 한 번에 훑어 <b>영수증만 모아 합계를 폰으로 받게</b> 만들었습니다. 해보니 매달 <b>19만 원</b>이 나가고 있었습니다.</p>
+  <div class="chips">
+    <span class="chip">메일함 <b>몇 개든</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+    <span class="chip">비용 <b>0원</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">무엇이 오는가</a>
+    <a href="#why">왜 놓치나</a>
+    <a href="#prep">준비물</a>
+    <a href="#step1">1. 메일 연결</a>
+    <a href="#step2">2. 영수증 모으기</a>
+    <a href="#step3">3. 폰으로 받기</a>
+    <a href="#trap">안 잡히는 것</a>
+    <a href="#stuck">막히면</a>
+  </div>
+
+  <section class="sec" id="what">
+    <div class="sec-label">RESULT</div>
+    <h2>이렇게 옵니다</h2>
+    <div class="copybox">
+      <div class="bar"><span>실제로 오는 메시지</span></div>
+      <pre>💳 내 구독료 총정리
+2026년 8월 · 1달러 1,412.17원
+
+Anthropic       155,339원  $110
+Typecast         21,183원  $15
+Cloudflare        7,061원  $5
+iCloud+ 2TB      11,100원
+
+📌 월 196,672원
+📌 연 2,360,064원
+
+💵 달러가 93% (183,582원)
+   환율 100원 오르면 월 13,000원 더</pre>
+    </div>
+    <div class="hl"><strong>합계보다 무서운 건 비중입니다.</strong> 저는 <b>93%가 달러</b>라 환율이 100원 오르면 매달 13,000원이 더 나갑니다. 카드 명세서만 봐서는 이게 안 보입니다.</div>
+  </section>
+
+  <section class="sec" id="why">
+    <div class="sec-label">WHY</div>
+    <h2>왜 놓치게 되나</h2>
+    <p>구독은 <b>가입할 때 쓴 메일함으로만</b> 영수증이 옵니다. 그런데 우리는 서비스마다 다른 메일로 가입합니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>제 경우 , 구독 5개가 메일함 3곳에</span></div>
+      <pre>지메일   3개   Anthropic · Typecast · Cloudflare
+네이버   1개   배민클럽
+네이트   1개   iCloud+
+다음     0개   없음</pre>
+    </div>
+    <div class="hl warn"><strong>지메일만 봐서는 다섯 중 셋뿐이었습니다.</strong> 애플과 배민은 아예 다른 메일함에 있었습니다. "메일 검색해보면 되지"가 안 통하는 이유가 이겁니다.</div>
+  </section>
+
+  <section class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물 두 가지</h2>
+    <ol>
+      <li><b>메일 앱 비밀번호</b> , 각 메일 설정에서 IMAP을 켜고 앱 비밀번호를 발급합니다. 지메일·네이버·다음은 앱 비밀번호, 네이트는 접속 비밀번호를 씁니다</li>
+      <li><b>텔레그램 봇</b> , <code>@BotFather</code>에서 <code>/newbot</code>. 토큰이 나옵니다</li>
+    </ol>
+    <div class="hl"><strong>본 비밀번호는 쓰지 마세요.</strong> 앱 비밀번호는 그 용도로만 쓰이고 언제든 취소할 수 있습니다. 그리고 저장은 <b>내 컴퓨터 안</b>에만 하세요. 남의 서버에 올리는 서비스는 피하시는 게 좋습니다.</div>
+  </section>
+
+  <section class="sec" id="step1">
+    <div class="sec-label">STEP 1</div>
+    <h2>메일함을 연결합니다</h2>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>내 메일함들을 읽을 수 있게 연결해줘.
+
+- 지메일: (주소) / 앱 비밀번호 (여기에)
+- 네이버: (아이디) / 애플리케이션 비밀번호 (여기에)
+- 다음: (아이디) / 앱 비밀번호 (여기에)
+- 네이트: (아이디) / 접속 비밀번호 (여기에)
+
+★비밀번호는 저장소 말고 내 홈 폴더 아래에만 두고,
+파일 권한은 나만 읽을 수 있게 해줘. 화면에도 찍지 마.
+
+연결되면 각 메일함이 실제로 열리는지 확인까지 해줘.</pre>
+    </div>
+    <div class="hl ok"><strong>메일 서버 주소는 클로드가 압니다.</strong> 지메일 <code>imap.gmail.com</code>, 네이버 <code>imap.naver.com</code>, 다음 <code>imap.daum.net</code>, 네이트 <code>imap.nate.com</code> 전부 993 포트입니다.</div>
+  </section>
+
+  <section class="sec" id="step2">
+    <div class="sec-label">STEP 2</div>
+    <h2>영수증만 골라내 금액을 뽑습니다</h2>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>연결한 메일함 전부에서 최근 6개월 결제·구독 메일을 찾아줘.
+
+- 제목에 결제·구독·영수증·청구·receipt·invoice·subscription·payment
+- 발신처(도메인)별로 묶어서, 달을 걸쳐 반복되는 것만 "정기결제"로 추려줘
+- 각각 최근 메일 본문에서 금액을 뽑아줘 (달러도 원화도)
+- 환율은 지금 값을 조회해서 원화로 환산하고, 환율도 같이 적어줘
+
+★금액을 못 찾으면 지어내지 말고 "메일에 금액 없음"으로 둬.
+★통신비·차량 대금처럼 구독이 아닌 건 빼줘.</pre>
+    </div>
+    <div class="hl warn"><strong>한글 제목 검색이 서버에서 막힐 수 있습니다.</strong> 지메일·네이버·다음은 한글로 제목 검색을 하면 <code>SEARCH command error</code>가 납니다. 그때는 "기간만 서버에 맡기고 제목은 받아와서 걸러줘"라고 하면 됩니다.</div>
+  </section>
+
+  <section class="sec" id="step3">
+    <div class="sec-label">STEP 3</div>
+    <h2>폰으로 받습니다</h2>
+    <div class="copybox">
+      <div class="bar"><span>클로드한테 그대로 시키세요</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>위 결과를 텔레그램으로 보내줘. 봇 토큰은 (여기에).
+
+- 서비스별 원화 금액을 세로로 정렬해서
+- 월 합계와 연 합계
+- 달러로 나가는 비중이 몇 퍼센트인지
+- 환율이 100원 오르면 얼마가 더 나가는지
+
+폰에서 한 화면에 들어오게 짧게 만들고,
+글자가 안 밀리게 고정폭으로 정렬해줘.
+보내고 나서 실제로 도착했는지 확인까지.</pre>
+    </div>
+    <div class="hl"><strong>한글은 글자 폭이 두 배라</strong> 그냥 띄어쓰기로 맞추면 줄이 어긋납니다. "고정폭으로"라고 한마디 넣으면 클로드가 알아서 처리합니다.</div>
+  </section>
+
+  <section class="sec" id="trap">
+    <div class="sec-label">TRAP</div>
+    <h2>이건 안 잡힙니다</h2>
+    <div class="card"><h3>끊은 구독</h3><p>해지하면 영수증이 끊깁니다. 대신 "정기 결제가 취소됩니다" 같은 <b>해지 메일</b>이 따로 옵니다. 그것도 같이 찾게 시키세요.</p></div>
+    <div class="card"><h3>무료 체험만 한 것</h3><p>결제가 없으니 영수증도 없습니다. 저는 힉스필드가 그랬습니다. 가입 환영·체험 시작 메일로만 남습니다.</p></div>
+    <div class="card"><h3>금액을 안 적는 곳</h3><p>배민클럽은 "이용료가 결제됐어요"라고만 하고 금액을 안 적습니다. 이런 곳은 <b>금액 미표기</b>로 두는 게 맞습니다. 공개 요금으로 채워 넣으면 그건 추측입니다.</p></div>
+    <div class="card"><h3>카드 명세서 PDF</h3><p>카드사 명세서는 비밀번호가 걸린 PDF로 옵니다. 열 수는 있지만, 제 경우 그 카드는 교통비 전용이라 구독이 하나도 없었습니다. <b>주로 쓰는 카드의 명세서 메일을 켜두면</b> 금액을 안 적는 곳까지 메꿀 수 있습니다.</p></div>
+  </section>
+
+  <section class="sec" id="stuck">
+    <div class="sec-label">STUCK</div>
+    <h2>막히면 이걸 물어보세요</h2>
+    <div class="card"><h3>메일함이 안 열립니다</h3><p>앱 비밀번호를 띄어쓰기 없이 붙여넣었는지, IMAP이 켜져 있는지 확인시키세요. 네이트는 앱 비밀번호가 아니라 접속 비밀번호입니다.</p></div>
+    <div class="card"><h3>결제 메일이 하나도 안 잡힙니다</h3><p>기간을 6개월 이상으로 늘리고, 영어 단어(receipt·invoice)로도 찾게 하세요. 한글만으로는 해외 서비스가 안 걸립니다.</p></div>
+    <div class="card"><h3>금액이 이상합니다</h3><p>영수증 한 통에 여러 항목이 있으면 첫 금액만 집을 수 있습니다. "품목별로 나눠서 보여줘"라고 하세요. 저는 이것 때문에 아이클라우드 11,100원을 3,000원으로 잘못 볼 뻔했습니다.</p></div>
+  </section>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/">더 많은 자동화 보기 →</a>
+  </div>
+  <div class="foot">
+    <p>만든 사람 · <a href="https://www.instagram.com/aitigermask/">@aitigermask</a></p>
+    <p><a href="../">다른 따라하기 보기</a></p>
+  </div>
+</div>
+<script>
+function cp(btn){
+  var box = btn.closest('.copybox'); var pre = box.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(function(){
+    var o = btn.textContent; btn.textContent = '복사됨!';
+    setTimeout(function(){ btn.textContent = o; }, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"subscription-watch-guide"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent='-'; });
+</script>
+</body>
+</html>
