@@ -101,7 +101,7 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
   var stage=document.getElementById('stage'), vBurn=document.getElementById('vBurn'), vBlow=document.getElementById('vBlow'),
       micBtn=document.getElementById('micBtn'), tapBtn=document.getElementById('tapBtn'), againBtn=document.getElementById('againBtn'),
       tip=document.getElementById('tip'), gauge=document.getElementById('gauge'), gaugeLab=document.getElementById('gaugeLab'),
-      done=false, stream=null, raf=0, ax=null;
+      done=false, stream=null, raf=0, ax=null, an=null, buf=null, base=0, hot=0, t0=0;
 
   // 콘페티 (꺼지면 .out 으로 발화)
   var wrap=document.getElementById('confetti'), colors=['#f0c477','#c98f36','#fff5dd','#e8a0b4','#cfe3ff'];
@@ -114,11 +114,30 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
 
   function setGauge(p){ gauge.style.setProperty('--p', p.toFixed(2)); }
 
-  function stopMic(){ if(stream){stream.getTracks().forEach(function(t){t.stop();}); stream=null;} cancelAnimationFrame(raf); }
+  function stopMic(){ if(stream){stream.getTracks().forEach(function(t){t.stop();}); stream=null;} an=null; cancelAnimationFrame(raf); }
+  // ★루프만 멈춘다(마이크는 살려둠) , 다시하기에서 권한을 또 묻지 않으려고
+  function pauseLoop(){ cancelAnimationFrame(raf); }
+  function startLoop(){
+    if(!an) return false;
+    cancelAnimationFrame(raf); hot=0; t0=Date.now();
+    gauge.classList.add('on'); gaugeLab.textContent='후~';
+    (function loop(){
+      if(done) return; raf=requestAnimationFrame(loop);
+      an.getByteTimeDomainData(buf);
+      var sum=0; for(var i=0;i<buf.length;i++){ var v=(buf[i]-128)/128; sum+=v*v; }
+      var rms=Math.sqrt(sum/buf.length);
+      base=base?base*0.97+rms*0.03:rms;                       // 주변 소음 기준선(적응형)
+      var over=rms-Math.max(0.02,base*1.2);
+      setGauge(Math.max(0,Math.min(1,over*7)));               // 세게 불수록 링이 찬다
+      if(rms>Math.max(0.09,base*2.2)){ hot++; if(hot>4) blowOut(); } else hot=Math.max(0,hot-1);
+      if(Date.now()-t0>9000 && tip) tip.textContent='잘 안 되면 아래 버튼을 눌러도 꺼집니다';
+    })();
+    return true;
+  }
 
   function blowOut(){
     if(done) return; done=true;
-    stopMic(); gauge.classList.remove('on'); setGauge(0);
+    pauseLoop(); gauge.classList.remove('on'); setGauge(0);
     // 두 영상이 같은 자리에 겹쳐 있으므로 케이크는 안 흔들리고 불꽃만 바뀐다
     try{ vBlow.currentTime=0; }catch(e){}
     var p=vBlow.play(); if(p&&p.catch) p.catch(function(){});
@@ -131,7 +150,12 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
     stage.classList.remove('out');
     vBlow.pause(); try{ vBlow.currentTime=0; }catch(e){}
     vBurn.play().catch(function(){});
-    tip.textContent='마이크 권한을 허용하면 진짜 입김으로 꺼집니다';
+    if(startLoop()){
+      tip.textContent='다시 화면에 대고 후~ 하고 불어보세요';
+    }else{
+      micBtn.style.display='';                                 // ★마이크가 없으면 버튼을 되살린다
+      tip.textContent='마이크 권한을 허용하면 진짜 입김으로 꺼집니다';
+    }
     // 콘페티 애니메이션 리셋 (클래스만 빼면 다음 번에 다시 안 돈다)
     wrap.querySelectorAll('.cf').forEach(function(el){ el.style.animation='none'; el.offsetHeight; el.style.animation=''; });
   }
@@ -154,24 +178,16 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
       stream=st; if(ax.state==='suspended') ax.resume();
       micBtn.style.display='none';
       tip.textContent='이제 화면에 대고 후~ 하고 불어보세요';
-      gauge.classList.add('on'); gaugeLab.textContent='후~';
-      var src=ax.createMediaStreamSource(st), an=ax.createAnalyser();
-      an.fftSize=512; src.connect(an);
-      var buf=new Uint8Array(an.fftSize), hot=0, base=0, t0=Date.now();
-      (function loop(){
-        if(done) return; raf=requestAnimationFrame(loop);
-        an.getByteTimeDomainData(buf);
-        var sum=0; for(var i=0;i<buf.length;i++){ var v=(buf[i]-128)/128; sum+=v*v; }
-        var rms=Math.sqrt(sum/buf.length);
-        base=base?base*0.97+rms*0.03:rms;                       // 주변 소음 기준선(적응형)
-        var over=rms-Math.max(0.02,base*1.2);
-        setGauge(Math.max(0,Math.min(1,over*7)));               // 세게 불수록 링이 찬다
-        if(rms>Math.max(0.09,base*2.2)){ hot++; if(hot>4) blowOut(); } else hot=Math.max(0,hot-1);
-        if(Date.now()-t0>9000 && tip) tip.textContent='잘 안 되면 아래 버튼을 눌러도 꺼집니다';
-      })();
+      var src=ax.createMediaStreamSource(st); an=ax.createAnalyser();
+      an.fftSize=512; src.connect(an); buf=new Uint8Array(an.fftSize); base=0;
+      startLoop();
     })
     .catch(function(){ tip.textContent='마이크 권한이 없네요, 눌러서 꺼주세요'; });
   });
+
+  // ★마이크를 살려두므로 페이지를 떠날 때는 확실히 끈다
+  window.addEventListener('pagehide', stopMic);
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) pauseLoop(); else if(!done) startLoop(); });
 
   // 자동재생이 막힌 경우 첫 터치에 재생
   ['touchstart','click'].forEach(function(ev){
