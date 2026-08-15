@@ -1,0 +1,182 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>후 불어서 촛불 끄기</title>
+<meta name="description" content="화면에 대고 후 불면 촛불이 꺼집니다. 마이크로 진짜 입김을 감지하는 생일 촛불 페이지.">
+<meta property="og:title" content="후 불어서 촛불 끄기">
+<meta property="og:description" content="화면에 대고 후 불면 촛불이 꺼집니다.">
+<meta property="og:image" content="og.jpg">
+<meta property="og:type" content="website">
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:#07070a;color:#f5efe4;line-height:1.5;overflow:clip}
+.app{position:relative;max-width:560px;margin:0 auto;min-height:100dvh;overflow:clip;background:#07070a}
+.stage{position:relative;width:100%;height:100dvh;overflow:clip}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+#vBlow{opacity:0;transition:opacity .12s linear}
+.stage.out #vBlow{opacity:1}
+/* 위아래 그라데이션 , 글자가 얹혀도 케이크가 안 죽게 */
+.veil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,4,8,.72) 0%,rgba(4,4,8,.12) 26%,rgba(4,4,8,0) 46%,rgba(4,4,8,.55) 78%,rgba(4,4,8,.9) 100%)}
+
+.top{position:absolute;left:0;right:0;top:max(22px,env(safe-area-inset-top));padding:0 22px;text-align:center;z-index:3}
+.eyebrow{font-size:11px;letter-spacing:.22em;font-weight:800;color:#e8c477;opacity:.9}
+h1{margin-top:9px;font-size:clamp(23px,6.6vw,30px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.sub{margin-top:7px;font-size:13px;color:#cfc6b6;opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+
+/* 입김 게이지 , 영상은 입김 세기를 못 담으니 반응은 여기가 담당한다 */
+.gauge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:186px;height:186px;z-index:3;
+  opacity:0;transition:opacity .3s;pointer-events:none}
+.gauge.on{opacity:1}
+.gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+.gauge .trk{fill:none;stroke:rgba(255,255,255,.16);stroke-width:7}
+.gauge .bar{fill:none;stroke:#f0c濃}
+.gauge .bar{stroke:#f2c777;stroke-width:7;stroke-linecap:round;
+  stroke-dasharray:534;stroke-dashoffset:calc(534 - 534 * var(--p,0));transition:stroke-dashoffset .08s linear;
+  filter:drop-shadow(0 0 10px rgba(242,199,119,.6))}
+.gauge .lab{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;font-weight:700;color:#f2c777;letter-spacing:.06em}
+
+.cta{position:absolute;left:0;right:0;bottom:calc(24px + env(safe-area-inset-bottom));padding:0 22px;z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:10px;transition:opacity .3s}
+.stage.out .cta{opacity:0;pointer-events:none}
+button{font-family:inherit;font-size:15px;cursor:pointer;border-radius:26px;padding:14px 26px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.08);color:#f5efe4;backdrop-filter:blur(6px);font-weight:600}
+button.primary{background:linear-gradient(135deg,#f0c477,#c98f36);color:#1c1204;border:none;font-weight:800;width:100%;max-width:320px;
+  box-shadow:0 10px 28px rgba(0,0,0,.45)}
+button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color:rgba(255,255,255,.18);color:#cfc6b6}
+.tip{font-size:12px;color:#b8b0a2;text-align:center;min-height:17px}
+
+.done{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);padding:0 26px;text-align:center;z-index:4;
+  opacity:0;transition:opacity 1s .5s;pointer-events:none}
+.stage.out .done{opacity:1;pointer-events:auto}
+.done .big{font-size:clamp(25px,7.4vw,34px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.75)}
+.done .small{margin-top:10px;font-size:14px;color:#d9d1c2;text-shadow:0 1px 12px rgba(0,0,0,.7)}
+.done .again{margin-top:22px}
+
+#confetti{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:clip}
+.cf{position:absolute;top:-18px;border-radius:2px;opacity:0}
+.stage.out .cf{animation:cfall var(--dur,2.6s) ease-in var(--dly,0s) forwards}
+@keyframes cfall{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:.9;transform:translate(var(--dx,0),105dvh) rotate(var(--rot,540deg))}}
+
+.credit{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:10px;color:#8d8578;z-index:3;padding:0 18px}
+.credit a{color:#a89f90}
+@media (prefers-reduced-motion:reduce){.cf{display:none}}
+</style>
+</head><body>
+<div class="app"><div class="stage" id="stage">
+
+  <video id="vBurn" src="cake_burn.mp4" poster="og.jpg" autoplay muted loop playsinline preload="auto"></video>
+  <video id="vBlow" src="cake_blow.mp4" muted playsinline preload="auto"></video>
+  <div class="veil"></div>
+
+  <div class="top">
+    <div class="eyebrow">MAKE A WISH</div>
+    <h1>후 불어서 촛불을 꺼주세요</h1>
+    <div class="sub">마이크를 켜고 화면에 대고 후 하고 불면 됩니다</div>
+  </div>
+
+  <div class="gauge" id="gauge">
+    <svg viewBox="0 0 186 186"><circle class="trk" cx="93" cy="93" r="85"></circle><circle class="bar" cx="93" cy="93" r="85"></circle></svg>
+    <div class="lab" id="gaugeLab">후~</div>
+  </div>
+
+  <div class="cta" id="cta">
+    <button class="primary" id="micBtn">마이크 켜고 후 불기</button>
+    <button class="ghost" id="tapBtn">그냥 눌러서 끄기</button>
+    <div class="tip" id="tip">마이크 권한을 허용하면 진짜 입김으로 꺼집니다</div>
+  </div>
+
+  <div class="done">
+    <div class="big">소원 비셨죠?</div>
+    <div class="small">생일 축하합니다</div>
+    <div class="again"><button class="ghost" id="againBtn">다시 켜기</button></div>
+  </div>
+
+  <div id="confetti"></div>
+  <div class="credit">사진 <a href="https://www.pexels.com/photo/13063263/" target="_blank" rel="noopener">Shahbaz Ansari / Pexels</a> , 영상은 이 사진으로 만들었습니다</div>
+</div></div>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'), vBurn=document.getElementById('vBurn'), vBlow=document.getElementById('vBlow'),
+      micBtn=document.getElementById('micBtn'), tapBtn=document.getElementById('tapBtn'), againBtn=document.getElementById('againBtn'),
+      tip=document.getElementById('tip'), gauge=document.getElementById('gauge'), gaugeLab=document.getElementById('gaugeLab'),
+      done=false, stream=null, raf=0, ax=null;
+
+  // 콘페티 (꺼지면 .out 으로 발화)
+  var wrap=document.getElementById('confetti'), colors=['#f0c477','#c98f36','#fff5dd','#e8a0b4','#cfe3ff'];
+  for(var i=0;i<80;i++){ var c=document.createElement('div'); c.className='cf';
+    var s=4+Math.random()*7; c.style.width=s+'px'; c.style.height=(s*0.5)+'px';
+    c.style.left=(Math.random()*100)+'%'; c.style.background=colors[i%colors.length];
+    c.style.setProperty('--dur',(2.2+Math.random()*1.8)+'s'); c.style.setProperty('--dly',(Math.random()*0.5)+'s');
+    c.style.setProperty('--dx',((Math.random()-0.5)*30)+'vw'); c.style.setProperty('--rot',(360+Math.random()*540)+'deg');
+    wrap.appendChild(c); }
+
+  function setGauge(p){ gauge.style.setProperty('--p', p.toFixed(2)); }
+
+  function stopMic(){ if(stream){stream.getTracks().forEach(function(t){t.stop();}); stream=null;} cancelAnimationFrame(raf); }
+
+  function blowOut(){
+    if(done) return; done=true;
+    stopMic(); gauge.classList.remove('on'); setGauge(0);
+    // 두 영상이 같은 자리에 겹쳐 있으므로 케이크는 안 흔들리고 불꽃만 바뀐다
+    try{ vBlow.currentTime=0; }catch(e){}
+    var p=vBlow.play(); if(p&&p.catch) p.catch(function(){});
+    stage.classList.add('out');
+    setTimeout(function(){ vBurn.pause(); },160);
+  }
+
+  function relight(){
+    done=false;
+    stage.classList.remove('out');
+    vBlow.pause(); try{ vBlow.currentTime=0; }catch(e){}
+    vBurn.play().catch(function(){});
+    tip.textContent='마이크 권한을 허용하면 진짜 입김으로 꺼집니다';
+    // 콘페티 애니메이션 리셋 (클래스만 빼면 다음 번에 다시 안 돈다)
+    wrap.querySelectorAll('.cf').forEach(function(el){ el.style.animation='none'; el.offsetHeight; el.style.animation=''; });
+  }
+
+  tapBtn.addEventListener('click', blowOut);
+  againBtn.addEventListener('click', relight);
+  window.__blow=blowOut; window.__relight=relight;  // QA·캡처용
+
+  micBtn.addEventListener('click', function(){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+      tip.textContent='이 브라우저는 마이크를 지원하지 않아요, 눌러서 꺼주세요'; return; }
+    // ★iOS: 꺼지는 영상을 탭 제스처 안에서 미리 깨워둔다(안 그러면 첫 재생이 늦다)
+    var pr=vBlow.play(); if(pr&&pr.then) pr.then(function(){ vBlow.pause(); vBlow.currentTime=0; }).catch(function(){});
+    // ★iOS: AudioContext 는 반드시 제스처 안에서 동기 생성(비동기 콜백에서 만들면 suspended)
+    var AC=window.AudioContext||window.webkitAudioContext; if(!ax) ax=new AC();
+    tip.textContent='마이크 켜는 중…';
+    // ★입김은 브라우저가 노이즈로 지워버리므로 오디오 가공을 전부 끈다
+    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})
+    .then(function(st){
+      stream=st; if(ax.state==='suspended') ax.resume();
+      micBtn.style.display='none';
+      tip.textContent='이제 화면에 대고 후~ 하고 불어보세요';
+      gauge.classList.add('on'); gaugeLab.textContent='후~';
+      var src=ax.createMediaStreamSource(st), an=ax.createAnalyser();
+      an.fftSize=512; src.connect(an);
+      var buf=new Uint8Array(an.fftSize), hot=0, base=0, t0=Date.now();
+      (function loop(){
+        if(done) return; raf=requestAnimationFrame(loop);
+        an.getByteTimeDomainData(buf);
+        var sum=0; for(var i=0;i<buf.length;i++){ var v=(buf[i]-128)/128; sum+=v*v; }
+        var rms=Math.sqrt(sum/buf.length);
+        base=base?base*0.97+rms*0.03:rms;                       // 주변 소음 기준선(적응형)
+        var over=rms-Math.max(0.02,base*1.2);
+        setGauge(Math.max(0,Math.min(1,over*7)));               // 세게 불수록 링이 찬다
+        if(rms>Math.max(0.09,base*2.2)){ hot++; if(hot>4) blowOut(); } else hot=Math.max(0,hot-1);
+        if(Date.now()-t0>9000 && tip) tip.textContent='잘 안 되면 아래 버튼을 눌러도 꺼집니다';
+      })();
+    })
+    .catch(function(){ tip.textContent='마이크 권한이 없네요, 눌러서 꺼주세요'; });
+  });
+
+  // 자동재생이 막힌 경우 첫 터치에 재생
+  ['touchstart','click'].forEach(function(ev){
+    document.addEventListener(ev, function once(){ if(vBurn.paused&&!done) vBurn.play().catch(function(){}); }, {once:true,passive:true});
+  });
+})();
+</script>
+</body></html>
