@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>크롬 사이드바에서 클로드가 탭을 대신 정리합니다 | AI TIGER MASK</title>
+<meta name="description" content="크롬 사이드 패널이 Claude Cowork 세션이 됐습니다. 탭 열 개에 청구서를 띄워두고 한 줄만 시키면 클로드가 탭을 열어 읽고 금액을 대조해 시트에 채웁니다. 되는 요금제와 함정까지.">
+<meta property="og:title" content="크롬 사이드바에서 클로드가 탭을 대신 정리합니다">
+<meta property="og:description" content="탭 열 개를 한 줄로. 되는 요금제·설치·프롬프트 원문·함정 네 가지.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>크롬 사이드바에서 <span style="color:var(--acc)">클로드가 탭을</span> 대신 정리합니다</h1>
+  <p class="sub">크롬 사이드 패널이 <b>Claude Cowork 세션</b>이 됐습니다. 청구서 탭 열 개를 띄워두고 한 줄만 시키면, 클로드가 탭을 하나씩 열어 읽고 금액을 대조해 쓰던 시트 양식에 채웁니다. 되는 요금제와 실제로 막히는 지점까지 정리했습니다.</p>
+  <div class="chips">
+    <span class="chip">출처 <b>Anthropic 공식</b></span>
+    <span class="chip">코딩 <b>0줄</b></span>
+    <span class="chip">크롬 <b>전용</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">뭐가 바뀌었나</a>
+    <a href="#plan">내 요금제는 되나</a>
+    <a href="#install">설치</a>
+    <a href="#prompt">한 줄로 시키기</a>
+    <a href="#result">뭘 짚어주나</a>
+    <a href="#traps">함정 네 가지</a>
+    <a href="#src">출처</a>
+  </div>
+
+  <div class="sec" id="what">
+    <div class="sec-label">WHAT CHANGED</div>
+    <h2>사이드 패널을 열면 그게 Cowork 세션입니다</h2>
+    <p>전에는 크롬 확장이 "지금 이 페이지"를 도와주는 도구였습니다. 이제는 사이드 패널을 여는 순간 <b>Cowork 세션</b>이 시작됩니다. 달라지는 건 세 가지입니다.</p>
+    <div class="badge-row">
+      <span class="badge ok">대화가 기록에 남는다</span>
+      <span class="badge ok">스킬·커넥터가 브라우저에서 그대로 동작</span>
+      <span class="badge ok">데스크톱·웹·모바일에서 이어받기</span>
+    </div>
+    <p>탭에서 시작한 일을 데스크톱 앱에서 이어받아 내 컴퓨터 파일을 붙이거나, 지난달 자료를 불러와 "뭐가 달라졌냐"고 물을 수 있습니다.</p>
+    <div class="hl">직접 연동이 있는 서비스는 그걸 쓰는 게 낫습니다. 크롬 확장이 채우는 자리는 <b>사내 대시보드·오래된 시스템·거래처 포털</b>처럼 연동이 없는 웹입니다.</div>
+  </div>
+
+  <div class="sec" id="plan">
+    <div class="sec-label">PLAN</div>
+    <h2>내 요금제는 되나</h2>
+    <table>
+      <tr><th>요금제</th><th>상태</th></tr>
+      <tr><td>Max · Team</td><td>지금 바로 됩니다</td></tr>
+      <tr><td>Pro</td><td>몇 주에 걸쳐 순차 적용</td></tr>
+      <tr><td>Enterprise</td><td>기본 꺼짐. 관리자가 켜고 허용 도메인을 정합니다</td></tr>
+    </table>
+    <div class="hl warn"><strong>크롬 전용입니다.</strong> 다른 크로미움 계열 브라우저(엣지·브레이브 등)와 모바일에서는 동작하지 않습니다.</div>
+  </div>
+
+  <div class="sec" id="install">
+    <div class="sec-label">SETUP</div>
+    <h2>설치는 주소 하나</h2>
+    <ol>
+      <li><code>claude.com/chrome</code> 에서 확장을 설치합니다.</li>
+      <li>크롬 오른쪽 위, 주소창 옆에 생긴 <b>클로드 아이콘</b>을 누릅니다.</li>
+      <li>사이드 패널이 열리면 그게 Cowork 세션입니다. 따로 켤 설정은 없습니다.</li>
+    </ol>
+    <div class="hl">확장은 페이지를 <b>보고 조작</b>합니다. 링크를 누르고, 글자를 입력하고, 페이지를 넘기고, 양식을 채웁니다. 그래서 아래 함정 절을 꼭 읽으세요.</div>
+  </div>
+
+  <div class="sec" id="prompt">
+    <div class="sec-label">PROMPT</div>
+    <h2>한 줄로 시키기</h2>
+    <p>정리하고 싶은 페이지들을 <b>탭으로 미리 열어두는 것</b>이 준비의 전부입니다. 붙여넣기도 업로드도 필요 없습니다. 그다음 사이드 패널에 이렇게 씁니다.</p>
+
+    <div class="copybox">
+      <div class="bar"><span>공식 데모에 나온 원문</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>Run my month-end close on these tabs. Pull each invoice and get it into the monthly report.</pre>
+    </div>
+
+    <div class="copybox">
+      <div class="bar"><span>한국어로 쓸 때</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>지금 열려 있는 탭들로 이번 달 정산을 돌려 줘.
+탭마다 청구서 금액과 마감일을 뽑아서,
+지난달 쓰던 시트와 같은 열·같은 순서로 채워 줘.
+확인이 필요한 항목은 따로 표시해 줘.</pre>
+    </div>
+
+    <div class="hl ok"><strong>왜 "지난달과 같은 열·같은 순서"를 넣나요.</strong> 이 한 마디가 없으면 매달 형식이 달라져서, 결국 사람이 다시 정리하게 됩니다. 쓰던 양식을 그대로 이어받게 하는 게 핵심입니다.</div>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">RESULT</div>
+    <h2>클로드가 하는 일은 셋입니다</h2>
+    <ol>
+      <li><b>열린 탭을 전부 읽습니다.</b> 탭을 하나씩 열어 청구서를 확인합니다.</li>
+      <li><b>금액을 하나하나 대조합니다.</b> 원본 청구서와 숫자를 맞춥니다.</li>
+      <li><b>쓰던 양식에 채웁니다.</b> 지난달 로그와 같은 열, 같은 벤더 순서로 넣습니다.</li>
+    </ol>
+    <p>그 과정에서 사람이 놓치기 쉬운 것을 따로 짚어줍니다. 공식 데모에서 실제로 나온 항목입니다.</p>
+    <table>
+      <tr><th>짚어준 것</th><th>내용</th></tr>
+      <tr><td>연체 한 건</td><td>$526.91 · 7월 17일 마감 · 7월 31일 넘기면 $15 연체료</td></tr>
+      <tr><td>전기·수도</td><td>$431.28 → $612.40 (+42%)</td></tr>
+      <tr><td>택배비</td><td>$604.10 → $918.30 (+52%)</td></tr>
+      <tr><td>확인 요망</td><td>연간 갱신 건이 월 정기결제로 잡히지 않게 표시</td></tr>
+    </table>
+    <div class="hl warn"><strong>이 수치는 앤트로픽 공식 데모의 예시 회사(Plants Shop) 것입니다.</strong> 제가 돌려서 나온 값이 아닙니다. 여러분 장부에서는 당연히 다른 숫자가 나옵니다.</div>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>실제로 막히는 지점 네 가지</h2>
+
+    <div class="trap">
+      <div class="t">⚠ 내 컴퓨터 파일은 브라우저가 못 만집니다</div>
+      <p>확장은 웹 페이지만 봅니다. 내 컴퓨터의 엑셀 파일을 붙이거나 다른 프로그램과 주고받으려면 <b>데스크톱 앱</b>이 필요합니다. 탭에서 시작해 데스크톱에서 이어받는 식으로 씁니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 프롬프트 인젝션 위험이 있습니다</div>
+      <p>클로드가 읽는 웹 페이지 안에 "이렇게 해라"는 지시문을 심어두는 공격입니다. 앤트로픽도 이 위험이 남아 있다고 밝혔고, 그래서 <b>결과가 큰 동작에는 추가 확인</b>을 받게 돼 있습니다. 확인창이 뜨면 그냥 넘기지 말고 읽으세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 크롬이 아니면 안 됩니다</div>
+      <p>엣지·브레이브 같은 다른 크로미움 브라우저와 모바일에서는 동작하지 않습니다. 회사 PC가 크롬이 아니면 이 방법은 못 씁니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">⚠ 탭을 안 열어두면 아무 일도 안 일어납니다</div>
+      <p>"이 탭들로"가 명령의 핵심입니다. 정리하고 싶은 페이지를 <b>미리 다 열어둔 상태</b>에서 시켜야 합니다. 로그인이 필요한 포털이면 로그인까지 해둔 탭이어야 합니다.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="src">
+    <div class="sec-label">SOURCE</div>
+    <h2>출처</h2>
+    <ul>
+      <li>앤트로픽 공식 영상 <b>Claude Cowork is now your Chrome side panel</b> (2026년 8월 12일)</li>
+      <li>앤트로픽 공식 블로그 <b>Claude Cowork comes to the Chrome side panel</b></li>
+    </ul>
+    <div class="hl">이 글의 화면·수치·프롬프트 원문은 전부 위 공식 자료에서 가져왔습니다. <b>제가 측정하거나 실행한 값이 아닙니다.</b> 되는 요금제와 제약도 공식 안내 그대로입니다.</div>
+  </div>
+
+  <div class="cta">
+    <a href="https://n016yoyo.github.io/smart-life-blog/">다른 가이드 보기 →</a>
+  </div>
+  <div class="foot">
+    <p>만든 사람 · <a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">@aitigermask</a></p>
+    <p><a href="../">다른 따라하기 보기</a></p>
+  </div>
+</div>
+<script>
+function cp(btn){
+  var pre = btn.closest('.copybox').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(function(){
+    var o = btn.textContent; btn.textContent = '복사됨!';
+    setTimeout(function(){ btn.textContent = o; }, 1800);
+  });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"cowork-chrome"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+</script>
+</body>
+</html>
