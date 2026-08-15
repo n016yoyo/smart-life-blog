@@ -150,27 +150,32 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
     stage.classList.remove('out');
     vBlow.pause(); try{ vBlow.currentTime=0; }catch(e){}
     vBurn.play().catch(function(){});
-    if(startLoop()){
-      tip.textContent='다시 화면에 대고 후~ 하고 불어보세요';
-    }else{
-      micBtn.style.display='';                                 // ★마이크가 없으면 버튼을 되살린다
-      tip.textContent='마이크 권한을 허용하면 진짜 입김으로 꺼집니다';
-    }
+    micBtn.style.display='';                                   // 실패해도 다시 켤 수 있게 항상 되살린다
+    tip.textContent='마이크 권한을 허용하면 진짜 입김으로 꺼집니다';
     // 콘페티 애니메이션 리셋 (클래스만 빼면 다음 번에 다시 안 돈다)
     wrap.querySelectorAll('.cf').forEach(function(el){ el.style.animation='none'; el.offsetHeight; el.style.animation=''; });
   }
 
   tapBtn.addEventListener('click', blowOut);
-  againBtn.addEventListener('click', relight);
+  againBtn.addEventListener('click', function(){
+    relight();
+    armMic();                                                  // ★같은 클릭 제스처 안에서 다시 받아온다
+  });
   window.__blow=blowOut; window.__relight=relight;  // QA·캡처용
 
-  micBtn.addEventListener('click', function(){
+  // ★마이크 켜기 , 반드시 클릭 제스처 안에서 동기로 호출할 것(iOS 제약)
+  //   ★2026-08-15: 스트림을 살려두고 재사용하는 방식은 iOS 에서 다시하기 때 죽었다(사장님 실측).
+  //     그래서 매번 새로 받아온다. 이미 허용된 권한이면 팝업 없이 즉시 통과한다.
+  function armMic(){
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
       tip.textContent='이 브라우저는 마이크를 지원하지 않아요, 눌러서 꺼주세요'; return; }
-    // ★iOS: 꺼지는 영상을 탭 제스처 안에서 미리 깨워둔다(안 그러면 첫 재생이 늦다)
+    stopMic();                                                  // 옛 스트림·분석기를 확실히 버리고 시작
+    // ★iOS: 꺼지는 영상을 제스처 안에서 미리 깨워둔다(안 그러면 첫 재생이 늦다)
     var pr=vBlow.play(); if(pr&&pr.then) pr.then(function(){ vBlow.pause(); vBlow.currentTime=0; }).catch(function(){});
-    // ★iOS: AudioContext 는 반드시 제스처 안에서 동기 생성(비동기 콜백에서 만들면 suspended)
-    var AC=window.AudioContext||window.webkitAudioContext; if(!ax) ax=new AC();
+    // ★iOS: AudioContext 는 제스처 안에서 동기 생성. 닫혔으면 새로 만든다
+    var AC=window.AudioContext||window.webkitAudioContext;
+    if(!ax || ax.state==='closed') ax=new AC();
+    if(ax.state==='suspended') ax.resume();
     tip.textContent='마이크 켜는 중…';
     // ★입김은 브라우저가 노이즈로 지워버리므로 오디오 가공을 전부 끈다
     navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})
@@ -182,12 +187,16 @@ button.ghost{padding:9px 18px;font-size:13px;background:transparent;border-color
       an.fftSize=512; src.connect(an); buf=new Uint8Array(an.fftSize); base=0;
       startLoop();
     })
-    .catch(function(){ tip.textContent='마이크 권한이 없네요, 눌러서 꺼주세요'; });
-  });
+    .catch(function(){ micBtn.style.display=''; tip.textContent='마이크 권한이 없네요, 눌러서 꺼주세요'; });
+  }
+  micBtn.addEventListener('click', armMic);
+  window.__arm=armMic;
 
   // ★마이크를 살려두므로 페이지를 떠날 때는 확실히 끈다
   window.addEventListener('pagehide', stopMic);
-  document.addEventListener('visibilitychange', function(){ if(document.hidden) pauseLoop(); else if(!done) startLoop(); });
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ stopMic(); if(!done) micBtn.style.display=''; }   // 돌아오면 버튼으로 다시 켠다
+  });
 
   // 자동재생이 막힌 경우 첫 터치에 재생
   ['touchstart','click'].forEach(function(ev){
