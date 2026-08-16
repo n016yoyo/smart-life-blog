@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>인스타 캡션 첫 줄, 검색되는 말로 클로드가 바꿔 줍니다 | AI TIGER MASK</title>
+<meta name="description" content="인스타 알고리즘 글이 시키는 대로 따라 만들었습니다. 네이버·구글 자동완성을 실조회해 실제 검색어를 뽑고, 클로드가 캡션이 답해 주는 것만 골라 첫 줄을 다시 씁니다. 코드 전문과 함정까지.">
+<meta property="og:title" content="인스타 캡션 첫 줄, 검색되는 말로 클로드가 바꿔 줍니다">
+<meta property="og:description" content="자동완성 실조회 21개 → 클로드가 3개 선별 → 첫 줄 재작성. 코드 전문·명령어·함정 네 가지.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>캡션 첫 줄을 <span style="color:var(--acc)">검색되는 말</span>로 바꿉니다</h1>
+  <p class="sub">인스타 알고리즘 글 하나가 시키는 대로 따라 만들었습니다. 네이버·구글 자동완성을 그 자리에서 조회해 <b>사람들이 실제로 치는 말</b>을 모으고, 클로드가 그중 내 글이 답해 주는 것만 골라 첫 줄을 다시 씁니다.</p>
+  <div class="chips">
+    <span class="chip">코드 <b>전문 공개</b></span>
+    <span class="chip">API 키 <b>불필요</b></span>
+    <span class="chip">실행 <b>1분 30초</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#why">왜 첫 줄인가</a>
+    <a href="#prep">준비물</a>
+    <a href="#code">코드 전문</a>
+    <a href="#run">돌려보기</a>
+    <a href="#result">실제 결과</a>
+    <a href="#traps">함정 네 가지</a>
+    <a href="#src">출처</a>
+  </div>
+
+  <div class="sec" id="why">
+    <div class="sec-label">WHY</div>
+    <h2>해시태그가 아니라 첫 줄입니다</h2>
+    <p>출발은 제 생각이 아니라 남의 글입니다. 네이버 블로그 「2026 인스타그램 알고리즘 총정리」(꽃잔, 2026년 7월 4일)가 이렇게 정리해 뒀습니다.</p>
+    <table>
+      <tr><th>예전</th><th>2026</th></tr>
+      <tr><td>해시태그 중심</td><td>검색 키워드 중심</td></tr>
+      <tr><td>좋아요 중심</td><td>저장·공유·DM 중심</td></tr>
+      <tr><td>감성 사진</td><td>문제 해결형 콘텐츠</td></tr>
+      <tr><td>팔로워 노출</td><td>추천 피드 노출</td></tr>
+      <tr><td>예쁜 피드</td><td>게시물 하나의 완성도</td></tr>
+      <tr><td>꾸준한 업로드</td><td>가치 있는 콘텐츠</td></tr>
+    </table>
+    <p>그 글은 <b>제목·첫 문장·캡션·영상 자막·프로필 소개</b>에 실제 검색어를 넣으라고 합니다. 저는 이 주장을 검증하지 않았습니다. 대신 <b>시키는 대로 해봤습니다.</b></p>
+    <div class="hl warn"><strong>미리 밝힙니다.</strong> 이게 실제로 통했는지는 이 글이 판정할 수 없습니다. 릴스를 올린 뒤의 숫자로만 알 수 있고, 그건 보시는 분이 직접 확인하실 몫입니다.</div>
+  </div>
+
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물은 두 개뿐입니다</h2>
+    <div class="badge-row">
+      <span class="badge ok">Node.js 18 이상</span>
+      <span class="badge ok">Claude Code (claude 명령)</span>
+    </div>
+    <p>검색어를 가져오는 곳은 네이버·구글 <b>자동완성</b>입니다. 둘 다 공개 주소라 로그인도, API 키도, 결제도 없습니다.</p>
+    <ul>
+      <li>네이버 <code>ac.search.naver.com/nx/ac</code></li>
+      <li>구글 <code>suggestqueries.google.com/complete/search</code></li>
+    </ul>
+    <p>고르고 문장에 박는 일만 <code>claude -p</code> 가 합니다. Claude Code 를 이미 쓰고 계시면 추가 비용이 없습니다.</p>
+  </div>
+
+  <div class="sec" id="code">
+    <div class="sec-label">CODE</div>
+    <h2>코드 전문</h2>
+    <p><code>caption_seo.js</code> 로 저장하세요. 한 파일이 전부입니다.</p>
+
+    <div class="copybox">
+      <div class="bar"><span>caption_seo.js</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>const fs = require("fs");
+const path = require("path");
+const { execFileSync } = require("child_process");
+
+const argv = process.argv.slice(2);
+const arg = (k, d) =&gt; { const i = argv.indexOf(k); return i &gt; 0 ? argv[i + 1] : d; };
+const SEED = argv.filter(a =&gt; !a.startsWith("--"))[0];
+const MYF = arg("--my");
+if (!SEED || !MYF) { console.error('사용: node caption_seo.js "&lt;씨앗&gt;" --my &lt;캡션파일&gt;'); process.exit(2); }
+
+const raw = fs.readFileSync(MYF, "utf8");
+const body = raw.split("\n").filter(l =&gt; l.trim() &amp;&amp; !l.startsWith("&gt;") &amp;&amp; !l.startsWith("#")).join("\n");
+const first = body.split("\n")[0].trim();
+
+const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126.0 Safari/537.36";
+const sleep = ms =&gt; new Promise(r =&gt; setTimeout(r, ms));
+
+async function naver(q) {
+  const u = "https://ac.search.naver.com/nx/ac?st=100&amp;r_format=json&amp;r_enc=UTF-8&amp;r_unicode=0"
+          + "&amp;t_koreng=1&amp;q_enc=UTF-8&amp;frm=nv&amp;q=" + encodeURIComponent(q);
+  const r = await fetch(u, { headers: { "user-agent": UA, referer: "https://search.naver.com/" } });
+  if (!r.ok) return [];
+  const j = await r.json();
+  return ((j.items || [])[0] || []).map(x =&gt; x[0]).filter(Boolean);
+}
+async function google(q) {
+  // ★ie/oe 를 빼면 한글이 깨져서 온다(latin-1 로 준다)
+  const u = "https://suggestqueries.google.com/complete/search?client=firefox&amp;hl=ko"
+          + "&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=" + encodeURIComponent(q);
+  const r = await fetch(u, { headers: { "user-agent": UA } });
+  if (!r.ok) return [];
+  const b = Buffer.from(await r.arrayBuffer());
+  return (JSON.parse(b.toString("utf8"))[1] || []).filter(Boolean);
+}
+
+(async () =&gt; {
+  const hit = new Map();
+  for (const s of [SEED, SEED + " "]) {
+    for (const [name, fn] of [["n", naver], ["g", google]]) {
+      await sleep(700);                       // 남의 서비스다. 간격을 둔다
+      let list = [];
+      try { list = await fn(s); } catch (e) { console.log(name + " 실패: " + e.message); }
+      list.forEach((kw, i) =&gt; {
+        const e = hit.get(kw) || { kw, n: null, g: null };
+        if (e[name] == null) e[name] = i + 1;
+        hit.set(kw, e);
+      });
+    }
+  }
+  const cands = [...hit.values()]
+    .filter(e =&gt; e.kw.replace(/\s/g, "").length &gt;= 3)
+    .sort((a, b) =&gt; (a.n ?? 99) + (a.g ?? 99) - ((b.n ?? 99) + (b.g ?? 99)));
+  console.log("실검색어 " + cands.length + "개 수집");
+
+  const ask = [
+    "너는 인스타 캡션을 검색되게 고치는 편집자다.",
+    "",
+    "[아래 검색어는 방금 네이버·구글 자동완성에서 실조회한 것이다. 여기 없는 말은 쓰지 마라]",
+    ...cands.slice(0, 24).map(c =&gt; "- " + c.kw + " (네이버 " + (c.n ?? "-") + "위 / 구글 " + (c.g ?? "-") + "위)"),
+    "",
+    "[내 캡션]", body, "",
+    "[할 일]",
+    "1. 위 검색어 중 이 캡션이 실제로 답해 주는 것만 고른다. 최대 3개, 없으면 1개여도 된다.",
+    "   ★캡션에 안 나온 주제(가격·설치 같은 것)는 검색량이 많아도 고르지 마라. 검색하고 들어온 사람이 속는다.",
+    "2. 캡션 첫 줄을 그 검색어가 그대로 들어간 제목으로 다시 쓴다(공백 포함 32자 이내).",
+    "3. 본문은 뜻을 바꾸지 말고, 고른 검색어가 자연스럽게 한 번씩 들어가게만 손본다.",
+    "",
+    "[출력] 아래 JSON 만 출력한다.",
+    '{"picked":["a","b"],"title":"새 첫 줄","caption":"새 캡션 전문"}',
+  ].join("\n");
+  fs.writeFileSync("caption_seo_ask.txt", ask);   // 무엇을 시켰는지 남긴다
+
+  const out = execFileSync("claude", ["-p", ask], { encoding: "utf8", maxBuffer: 1 &lt;&lt; 24, timeout: 180000 });
+  const res = JSON.parse(out.match(/\{[\s\S]*\}/)[0]);
+
+  console.log("전  " + first);
+  console.log("후  " + res.title);
+  for (const kw of res.picked) {
+    const c = hit.get(kw);
+    console.log(" ✔ " + kw + "  네이버 " + (c?.n ?? "-") + "위 · 구글 " + (c?.g ?? "-") + "위");
+  }
+  fs.writeFileSync("caption_seo.json", JSON.stringify({ picked: res.picked, title: res.title, caption: res.caption }, null, 2));
+})();</pre>
+    </div>
+
+    <div class="hl ok"><strong>요청문을 파일로 남기는 게 핵심입니다.</strong> <code>caption_seo_ask.txt</code> 를 열어 보면 클로드에게 무엇을 줬는지 그대로 보입니다. 결과가 이상할 때 고칠 곳이 바로 이 파일입니다.</div>
+  </div>
+
+  <div class="sec" id="run">
+    <div class="sec-label">RUN</div>
+    <h2>돌려보기</h2>
+    <p>캡션을 텍스트 파일 하나로 저장해 두고, 씨앗 키워드 하나만 주면 됩니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>실행</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>node caption_seo.js "클로드 코드" --my my_caption.md</pre>
+    </div>
+    <p>씨앗은 <b>내 글의 주제를 사람들이 검색창에 칠 법한 말</b>로 씁니다. "클로드 코드", "인스타 알고리즘", "제주도 여행 코스"처럼요. 그 말로 자동완성을 두 번(그대로 한 번, 뒤에 공백을 붙여 한 번) 조회해 후보를 넓힙니다.</p>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">RESULT</div>
+    <h2>실제로 이렇게 나왔습니다</h2>
+    <p>2026년 8월 16일에 제 릴스 캡션 하나로 돌린 결과입니다. 꾸민 숫자가 아니라 그날 화면에 찍힌 값 그대로입니다.</p>
+    <table>
+      <tr><th>항목</th><th>값</th></tr>
+      <tr><td>수집한 실검색어</td><td>21개 (네이버 + 구글, 중복 제거)</td></tr>
+      <tr><td>클로드가 남긴 것</td><td>3개</td></tr>
+      <tr><td>클로드 코드</td><td>네이버 1위 · 구글 1위</td></tr>
+      <tr><td>클로드 코드 사용법</td><td>구글 2위</td></tr>
+      <tr><td>클로드 코드 사용방법</td><td>네이버 2위</td></tr>
+      <tr><td>걸린 시간</td><td>108.9초</td></tr>
+    </table>
+    <div class="card">
+      <h3>전</h3>
+      <p>크롬 탭 열 개에 청구서를 띄워두고 한 줄만 시키면 됩니다.</p>
+    </div>
+    <div class="card">
+      <h3>후</h3>
+      <p><b>클로드 코드 사용법</b>, 청구서 정산을 한 줄로</p>
+    </div>
+    <p>바뀐 건 첫 줄 하나입니다. 내용은 그대로 두고, 사람들이 검색창에 실제로 치는 말이 문장 앞으로 왔습니다.</p>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>함정 네 가지</h2>
+
+    <div class="trap">
+      <div class="t">1. 구글 자동완성이 한글을 깨서 준다</div>
+      <p><code>client=firefox</code> 만 붙이면 응답이 latin-1 로 와서 한글이 전부 깨집니다. <code>&amp;ie=UTF-8&amp;oe=UTF-8</code> 을 붙이고, 받은 뒤 <code>Buffer</code> 로 감싸 <code>toString("utf8")</code> 하세요.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">2. "3개 골라"라고 하면 거짓말을 시키게 된다</div>
+      <p>처음엔 무조건 3개를 고르게 했더니, 가격·설치처럼 <b>제 캡션에 없는 주제</b>의 검색어까지 골라 왔습니다. 검색량만 보고 고르면 검색해서 들어온 사람이 속습니다. "캡션이 실제로 답해 주는 것만, 없으면 1개여도 된다"로 바꾸니 정직하게 줄었습니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">3. 간격을 두지 않으면 남의 서비스를 두드리게 된다</div>
+      <p>자동완성은 공개 주소지만 무료로 빌려 쓰는 남의 서버입니다. 조회 사이에 <code>await sleep(700)</code> 을 넣으세요. 네 번 조회에 3초면 충분합니다.</p>
+    </div>
+
+    <div class="trap">
+      <div class="t">4. 시간이 들쭉날쭉하다</div>
+      <p><code>claude -p</code> 한 번에 78초에서 109초까지 걸렸습니다. 같은 요청문이어도 그렇습니다. 자동화에 넣을 거면 타임아웃을 넉넉히(180초) 잡고, 화면 녹화를 계획한다면 끝나는 시점을 예측하지 마세요.</p>
+    </div>
+
+    <div class="hl warn"><strong>인스타 검색 데이터는 못 씁니다.</strong> 인스타 검색창 자동완성은 로그인 세션이 있어야 열리고, 세션 쿠키는 금방 만료됩니다. 그래서 이 도구는 네이버·구글 자동완성을 씁니다. 인스타에서 실제로 어떤 말이 검색되는지와 100% 같지는 않습니다.</div>
+  </div>
+
+  <div class="sec" id="src">
+    <div class="sec-label">SOURCE</div>
+    <h2>출처</h2>
+    <p>이 글이 따라 한 원문은 제 것이 아닙니다.</p>
+    <ul>
+      <li>네이버 블로그 <b>꽃잔</b> 「2026 인스타그램 알고리즘 총정리, 예전 운영방법 통하지 않는 이유」 (2026년 7월 4일)<br>
+        <a href="https://blog.naver.com/ishine75/224336265636">blog.naver.com/ishine75/224336265636</a></li>
+    </ul>
+    <p>위 표와 다섯 가지 변화는 그 글의 정리를 옮긴 것입니다. 그 주장이 맞는지는 저도 모릅니다. 시키는 대로 만들어 봤을 뿐이고, 결과는 올린 릴스의 숫자가 말해 줍니다.</p>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/">인스타에서 만든 과정 보기</a>
+  </div>
+
+  <div class="foot">
+    <a href="../">← 다른 가이드 보기</a> · AI TIGER MASK
+  </div>
+</div>
+
+<script>
+function cp(b){
+  const t = b.closest('.copybox').querySelector('pre').innerText;
+  navigator.clipboard.writeText(t).then(()=>{ const o=b.textContent; b.textContent='복사됨'; setTimeout(()=>b.textContent=o,1200); });
+}
+</script>
+</body>
+</html>
