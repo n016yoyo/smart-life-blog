@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>클로드 워터마크, 내 글에 남나 안 남나 판정표 | AI TIGER MASK</title>
-<meta name="description" content="클로드 워터마크가 내 글에 남는지 공식 문서 기준으로 가르는 판정표. 기사들이 반대로 전한 교정·번역 부분을 원문 인용으로 바로잡고, 개인 특정이 왜 불가능한지, 오늘 뭘 바꾸면 되는지까지.">
+<meta name="description" content="클로드 워터마크가 내 글에 남는지 공식 문서 기준으로 가르는 판정표. 기사가 반대로 전한 교정·번역을 원문 인용으로 바로잡고, 탐지 API는 언제 열리는지, 제미나이·챗지피티는 어떻게 하고 있는지, 오늘 뭘 바꾸면 되는지까지.">
 <meta property="og:title" content="클로드 워터마크, 내 글에 남나 안 남나 판정표">
 <meta property="og:description" content="교정은 거의 안 남고 번역은 남습니다. 기사가 반대로 전한 부분을 공식 원문으로 바로잡은 판정표.">
 <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
@@ -76,7 +76,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
   <div class="chips">
     <span class="chip">공식 문서 <b>원문 인용</b></span>
     <span class="chip">설치 <b>불필요</b></span>
-    <span class="chip">읽는 데 <b>3분</b></span>
+    <span class="chip">다른 AI <b>비교표</b></span>
+    <span class="chip">읽는 데 <b>5분</b></span>
   </div>
   <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
 </header>
@@ -87,6 +88,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <a href="#how">왜 지워지지 않나</a>
     <a href="#table">내 글은 어느 쪽인가</a>
     <a href="#myth">기사가 반대로 전한 것</a>
+    <a href="#when">언제부터·검사는 언제</a>
+    <a href="#others">다른 AI는</a>
     <a href="#cant">이걸로 못 하는 것</a>
     <a href="#today">오늘 할 것</a>
     <a href="#src">출처</a>
@@ -161,6 +164,42 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <div class="hl warn"><strong>2차 보도를 근거로 쓰지 마세요.</strong> 이 페이지에서 딱 하나만 가져가신다면 이겁니다. 기사 요약은 인과를 뒤집기 쉽습니다. 원문은 아래 <a href="#src">출처</a>에 링크가 있고, 세 문장 읽는 데 1분도 안 걸립니다.</div>
   </div>
 
+  <div class="sec" id="when">
+    <div class="sec-label">WHEN</div>
+    <h2>언제부터고, 검사는 언제 되나</h2>
+    <p>두 개를 나눠서 봐야 합니다. <b>표시가 심기는 시점</b>과 <b>남이 그걸 검사할 수 있는 시점</b>은 다릅니다.</p>
+    <table>
+      <tr><th>시점</th><th>무슨 일</th><th>상태</th></tr>
+      <tr><td>2026년 7월</td><td>앤트로픽 포함 <b>약 190곳</b>이 EU 투명성 규약에 서명</td><td>완료</td></tr>
+      <tr><td>2026년 8월 2일</td><td>EU AI법 50조 적용 기준일. 이후 나오는 클로드 모델부터 표시가 들어감</td><td><b>이미 시작</b></td></tr>
+      <tr><td>2026년 8월 14일</td><td>앤트로픽이 원리·한계를 밝힌 공식 문서 공개</td><td>완료</td></tr>
+      <tr><td>8월 2일 이전 모델</td><td>EU법에 유예 기간이 있고, 앤트로픽이 그 모델들에도 표시를 추가하는 중</td><td>진행 중</td></tr>
+      <tr><td>탐지 API</td><td>"곧 제공하겠다"만 있고 <b>날짜가 없습니다</b></td><td><b>아직 없음</b></td></tr>
+    </table>
+    <div class="hl"><strong>공식 문서 원문은 이렇습니다.</strong> <code>"We will soon be offering a watermark detection API. We're in the process of working out the details of its implementation."</code> , 곧 낸다, 방식은 정하는 중. 그게 전부입니다. 언제, 누구에게 열지는 안 적혀 있습니다.</div>
+    <p>그래서 지금 상황을 정리하면 이렇습니다.</p>
+    <div class="badge-row">
+      <span class="badge warn">심기는 중 <b>지금부터</b></span>
+      <span class="badge ok">남이 검사 <b>아직 불가</b></span>
+    </div>
+    <p><b>지금 쓴 글에 표시가 남는데, 그 표시를 나중에 검사할 수 있게 된다</b>는 뜻입니다. 오늘 쓴 글이 반년 뒤에 검사 대상이 될 수 있다는 것이 이 얘기의 핵심입니다. 그래서 "아직 검사 못 하니까 상관없다"가 아니라, <b>지금 쓰는 습관을 바꾸는 게</b> 실질적인 대응입니다.</p>
+  </div>
+
+  <div class="sec" id="others">
+    <div class="sec-label">OTHERS</div>
+    <h2>다른 AI는 어떻게 하고 있나</h2>
+    <p>클로드만의 일이 아닙니다. 같은 EU법을 받는 회사들이 각자 다른 속도로 움직이고 있습니다.</p>
+    <table>
+      <tr><th>서비스</th><th>글(텍스트)</th><th>그 외</th></tr>
+      <tr><td><b>클로드</b><br>(Anthropic)</td><td>8월 2일 이후 모델부터 <b>적용 중</b>. 방식은 구글 딥마인드의 SynthID-Text를 따른 것</td><td>이미지·파일은 C2PA 서명</td></tr>
+      <tr><td><b>제미나이</b><br>(Google)</td><td><b>2024년부터</b> SynthID로 넣고 있었습니다. 이 분야에서 제일 오래됐습니다</td><td>이미지·오디오·영상까지 SynthID</td></tr>
+      <tr><td><b>챗지피티</b><br>(OpenAI)</td><td>연구는 했지만 <b>일반 텍스트에 공개 적용한 것은 확인되지 않습니다</b>(2026년 8월 기준)</td><td>이미지 C2PA, 오디오 SynthID, 소라 영상 C2PA</td></tr>
+    </table>
+    <div class="hl warn"><strong>여기서 오해하기 쉬운 것.</strong> "제미나이는 원래 하고 있었다"는 건 <b>클로드가 유별난 게 아니라 늦게 합류했다</b>는 뜻입니다. 반대로 "챗지피티는 안 한다"는 것도 영원한 게 아닙니다 , 같은 규약에 서명했고 텍스트로 넓히겠다고 밝혔습니다. <b>서비스를 갈아타는 것은 대응이 아닙니다.</b></div>
+    <p>그리고 검사 쪽을 보면 구글이 한발 앞서 있습니다. SynthID Detector라는 확인 포털을 열었는데, 텍스트 검사는 <b>대기자 명단</b>을 거쳐야 하고 언론인·연구자에게 먼저 열렸습니다. 구글 스스로 "완벽하지 않고 우회될 수 있다"고 밝혔고, <b>다른 언어로 번역하거나 통째로 다시 쓰면 확신도가 크게 떨어진다</b>고 적었습니다 , 클로드 문서가 말하는 한계와 같은 얘기입니다.</p>
+    <div class="hl ok"><strong>바꿔 말하면 업계 기준이 이렇게 잡히는 중입니다.</strong> ①AI가 만든 글에는 표시를 넣는다 ②그 표시로 사람을 특정하지는 않는다 ③전면 재작성이면 사라진다. 세 회사 문서가 같은 방향입니다.</div>
+  </div>
+
   <div class="sec" id="cant">
     <div class="sec-label">LIMITS</div>
     <h2>이걸로 못 하는 것</h2>
@@ -177,21 +216,39 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 
   <div class="sec" id="today">
     <div class="sec-label">TODO</div>
-    <h2>오늘 할 것</h2>
-    <p>제출용 글, 그러니까 과제·기고·심사에 내는 글만 신경 쓰면 됩니다. 습관 하나면 끝납니다.</p>
+    <h2>오늘 실제로 할 것</h2>
+    <p>결론부터. 신경 쓸 글은 <b>제출용</b>뿐입니다. 과제, 기고, 심사, 입찰, 지원서처럼 "AI로 썼냐"를 따질 사람이 있는 글. 나머지는 그냥 쓰시면 됩니다.</p>
+
+    <h3>1. 내 글을 세 칸으로 나눈다</h3>
+    <p>한 번만 해두면 됩니다. 앞으로 쓰는 글이 어느 칸인지 자동으로 보입니다.</p>
+    <table>
+      <tr><th>칸</th><th>예</th><th>할 일</th></tr>
+      <tr><td><b>상관없음</b></td><td>블로그, 메모, 업무 메일, 코드 주석, SNS</td><td>없음. 그냥 쓰세요</td></tr>
+      <tr><td><b>조심</b></td><td>외국어로 내는 글, 클로드가 번역한 문서</td><td>번역본을 내 문장으로 한 번 더 손보기</td></tr>
+      <tr><td><b>제출용</b></td><td>과제·기고·심사·지원서</td><td>아래 2번 습관</td></tr>
+    </table>
+
+    <h3>2. 제출용은 "초안만 맡기고 본문은 내가 쓴다"</h3>
     <div class="card">
-      <h3>1. 초안만 클로드한테 맡긴다</h3>
-      <p>구조 잡기, 자료 정리, 방향 여러 개 뽑기까지는 그대로 쓰세요. 여기는 아무 문제 없습니다.</p>
+      <h3>이렇게 하세요</h3>
+      <p>① 클로드에게 <b>구조·목차·자료 정리·방향 세 가지</b>를 뽑게 한다 → ② 그 화면을 <b>보면서</b> 빈 문서에 내 말로 쓴다 → ③ 다 쓴 뒤 클로드에게 오탈자·문법만 봐 달라고 한다.</p>
+      <p>③이 안전한 이유는 이 글 위쪽 판정표에 있습니다. <b>교정은 붙을 자리가 거의 없습니다.</b> 위험한 건 ②를 건너뛰고 클로드가 쓴 문장을 그대로 옮기는 것뿐입니다.</p>
     </div>
-    <div class="card">
-      <h3>2. 제출본은 내 문장으로 다시 쓴다</h3>
-      <p>초안을 보면서 내 말로 옮겨 적는 겁니다. 부분 수정이 아니라 다시 쓰는 것이어야 합니다. 그러면 표시가 남을 자리 자체가 없습니다.</p>
-    </div>
-    <div class="card">
-      <h3>3. 번역은 특히 조심한다</h3>
-      <p>내 글이라도 클로드가 번역하면 그 번역문의 단어는 클로드가 고른 겁니다. 외국어로 제출할 글이면 번역본을 한 번 더 손보세요.</p>
-    </div>
-    <div class="hl ok"><strong>일상 글은 그냥 쓰세요.</strong> 블로그, 메모, 업무 메일, 코드 주석까지 걱정할 이유가 없습니다. 표시가 있다고 해서 잘못된 것도 아니고, 누가 썼는지 밝혀지지도 않습니다.</div>
+    <div class="hl warn"><strong>하지 말 것: 복붙 후 몇 군데만 고치기.</strong> 제일 많이 하는 방식인데 원리상 제일 안 지워집니다. 나머지 단어의 선택 흔적이 그대로 남습니다. "적당히 고쳤으니 괜찮겠지"가 정확히 안 되는 방법입니다.</div>
+
+    <h3>3. 소속 규정을 먼저 확인한다</h3>
+    <p>기술보다 이게 먼저입니다. 학교·회사·공모전마다 AI 사용 규정이 다릅니다. <b>대부분은 "쓰지 마라"가 아니라 "썼으면 밝혀라"입니다.</b> 밝히고 쓰면 표시가 남든 말든 문제가 되지 않습니다. 규정이 없으면 그것도 확인해 두세요 , 나중에 생겼을 때 소급되는 경우가 있습니다.</p>
+
+    <h3>4. "워터마크 제거" 도구에 돈 쓰지 않는다</h3>
+    <p>벌써 나와 있습니다. 원리상 확실히 없애는 방법은 <b>모든 단어를 바꾸는 것</b>뿐이고, 그건 그냥 다시 쓰는 겁니다. 돌려서 지워졌는지 확인할 방법도 아직 없습니다 , 탐지 도구가 일반에 열려 있지 않으니까요. <b>지워졌다고 확인해 줄 수 없는 서비스에 돈을 내는 상황</b>이라는 뜻입니다.</p>
+
+    <h3>5. 오늘 안 해도 되는 것</h3>
+    <ul>
+      <li><b>구독 취소</b> , 제미나이는 2024년부터 하고 있었고 챗지피티도 같은 규약에 서명했습니다. 갈아타도 같은 자리입니다</li>
+      <li><b>예전에 쓴 글 찾아 고치기</b> , 8월 2일 이전 모델은 유예 기간이고, 개인 특정도 안 됩니다</li>
+      <li><b>검사 서비스 미리 결제</b> , 아직 공식 탐지 API가 없습니다</li>
+    </ul>
+    <div class="hl ok"><strong>한 줄로.</strong> 제출용 글의 <b>마지막 본문 한 줄까지 내가 쓴다.</b> 이것 하나면 됩니다. 나머지는 평소처럼 쓰세요.</div>
   </div>
 
   <div class="sec" id="src">
@@ -202,7 +259,9 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
         <a href="https://www.anthropic.com/news/claude-text-watermark">anthropic.com/news/claude-text-watermark</a><br>
         위 인용문 세 개와 한계 설명은 전부 이 문서에서 그대로 가져왔습니다.</li>
       <li>커뮤니티 반응 , 8월 10~16일 <b>r/ClaudeAI · r/technology · r/europe · r/claude</b> 의 워터마크 글을 공식 임베드로 실캡처했습니다. 댓글이 제일 많은 글 <b>973개</b>(업보트 3.7K), 업보트가 제일 많은 글 <b>9.1K</b>(r/europe).</li>
-      <li>회사 답변 , 앤트로픽은 취소가 늘어나는 추세는 보지 못했다고 밝혔습니다(Business Insider 보도). <b>이 한 줄은 2차 보도</b>이고, 나머지는 공식 문서 원문입니다.</li>
+      <li>회사 답변 , 앤트로픽은 취소가 늘어나는 추세는 보지 못했다고 밝혔습니다(Business Insider 보도). <b>이 한 줄은 2차 보도</b>입니다.</li>
+      <li>다른 AI 현황 , 구글 SynthID(제미나이 텍스트, 2024년부터)와 SynthID Detector 포털의 대기자 명단·한계 설명, OpenAI의 이미지 C2PA·오디오 SynthID 적용은 각 사 공개 자료와 그에 대한 보도를 종합했습니다. <b>클로드 부분만 1차 출처(위 첫 링크)이고 다른 회사 부분은 2차입니다.</b> 회사별 최신 상태는 각 사 공지를 확인하세요.</li>
+      <li>EU AI법 50조 · 2026년 7월 투명성 규약 서명 약 190곳 , 앤트로픽 공식 문서에 적힌 그대로입니다.</li>
     </ul>
     <p>맞는지 직접 확인하고 싶으시면 첫 번째 링크만 열어 보세요. 제가 요약한 것보다 원문이 짧습니다.</p>
   </div>
