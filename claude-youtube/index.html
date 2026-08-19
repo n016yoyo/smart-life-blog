@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드에게 유튜브 화면까지 보여주기 , 코드 전문 | AI TIGER MASK</title>
+<meta name="description" content="클로드는 유튜브 자막은 읽지만 화면은 못 봅니다. 자막을 정리하고 화면을 30초마다 떠서 한 장으로 붙여주는 도구. 코드 전문, 실제 실행 기록, 403 뚫는 법까지.">
+<meta property="og:title" content="클로드에게 유튜브 화면까지 보여주기">
+<meta property="og:description" content="자막은 읽는데 화면은 못 봅니다. 코드 전문 + 실제 실행 기록.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>클로드에게 유튜브 <span style="color:var(--acc)">화면까지</span> 보여주기</h1>
+  <p class="sub">클로드는 유튜브 자막은 읽습니다. 그런데 화면은 못 봅니다. 슬라이드도, 이름 자막도, 띄워놓은 코드도 안 보입니다. 그걸 떠서 같이 넘겨주는 도구입니다.</p>
+  <div class="chips">
+    <span class="chip">코드 <b>전문 공개</b></span>
+    <span class="chip">키 <b>불필요</b></span>
+    <span class="chip">비용 <b>0원</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#why">왜 반쪽만 읽히나</a>
+    <a href="#prep">준비물</a>
+    <a href="#code">코드 전문</a>
+    <a href="#run">돌려보기</a>
+    <a href="#result">실제 실행 기록</a>
+    <a href="#traps">막히는 곳</a>
+    <a href="#next">더 나가기</a>
+  </div>
+
+  <div class="sec" id="why">
+    <div class="sec-label">WHY</div>
+    <h2>왜 반쪽만 읽히나</h2>
+    <p>클로드에게 유튜브 링크를 주고 요약시키면 꽤 그럴듯한 답이 옵니다. 실제로 자막을 받아 읽기 때문입니다. 그런데 <b>영상 자체는 못 봅니다.</b> 모델이 영상 입력을 받지 않습니다.</p>
+    <p>그래서 <b>화면에만 있고 말로는 안 한 것</b>이 통째로 빠집니다.</p>
+    <ul>
+      <li>발표 슬라이드의 제목과 항목</li>
+      <li>화면 아래 뜨는 이름·직함 자막 (지금 누가 말하는지)</li>
+      <li>띄워놓은 코드, 대시보드, 그래프</li>
+      <li>손으로 가리키는 것, 화이트보드</li>
+    </ul>
+    <div class="hl"><strong>발표자가 "여기 보시면"이라고만 하고 넘어간 것들입니다.</strong> 자막에는 "여기 보시면"만 남습니다. 정작 무엇을 보라는 건지는 화면에 있고, 그 화면을 클로드는 못 봅니다.</div>
+    <div class="hl ok"><strong>개발을 몰라도 됩니다.</strong> 아래 코드를 클로드 코드에게 그대로 저장시키고 명령만 치면 됩니다. 필요한 것(yt-dlp)도 클로드가 깔아줍니다.</div>
+  </div>
+
+  <div class="sec" id="prep">
+    <div class="sec-label">PREP</div>
+    <h2>준비물</h2>
+    <table>
+      <tr><th>무엇</th><th>왜 필요한가</th></tr>
+      <tr><td><b>Node.js</b></td><td>코드를 돌리는 프로그램입니다. 없으면 <a href="https://nodejs.org" style="color:var(--acc)">nodejs.org</a> 에서 LTS 를</td></tr>
+      <tr><td><b>yt-dlp</b></td><td>유튜브에서 자막·영상을 받아옵니다. 클로드에게 "yt-dlp 깔아줘"라고 하면 됩니다</td></tr>
+      <tr><td><b>ffmpeg</b></td><td>화면을 뜨고 한 장으로 붙일 때만 씁니다(<code>--화면</code> 옵션). 자막만 쓸 거면 없어도 됩니다</td></tr>
+    </table>
+    <p>가입도, 결제도, 키 발급도 없습니다.</p>
+  </div>
+
+  <div class="sec" id="code">
+    <div class="sec-label">CODE</div>
+    <h2>코드 전문 , 파일 하나</h2>
+    <p>폴더를 하나 만들고 <code>brief.js</code> 로 저장하세요.</p>
+    <div class="copybox">
+      <div class="bar"><span>brief.js</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>// 유튜브 영상을 클로드가 &quot;읽고 보게&quot; 만든다.
+//   사용: node brief.js &quot;&lt;유튜브 주소&gt;&quot; [언어] [--화면]
+//     node brief.js &quot;https://youtu.be/xxxx&quot;            , 자막만(빠름)
+//     node brief.js &quot;https://youtu.be/xxxx&quot; ko --화면   , 자막 + 화면 몽타주
+//     node brief.js &quot;https://youtu.be/xxxx&quot; en --화면
+//
+// 하는 일
+//   ① 자막 받기 → 중복·태그 걷어내기 → 분 단위로 묶기 → out/&lt;영상id&gt;.md
+//   ② `--화면` 이면 프레임을 일정 간격으로 떠서 타일로 붙인다 → out/&lt;영상id&gt;_screens/
+//      ★클로드는 영상을 못 본다. 자막을 줘도 **화면에 뭐가 떠 있었는지는 모른다.**
+//        슬라이드·코드·데모 화면이 중요한 영상은 이 몽타주가 있어야 제대로 읽는다.
+// ★API 키도 계정도 필요 없다. yt-dlp 가 공개 자막을 그대로 받아온다.
+const fs = require(&quot;fs&quot;), path = require(&quot;path&quot;), { execFileSync } = require(&quot;child_process&quot;);
+
+const url = process.argv[2];
+const lang = (process.argv[3] || &quot;ko&quot;).replace(/^--.*/, &quot;&quot;) || &quot;ko&quot;;
+const wantScreens = process.argv.includes(&quot;--화면&quot;) || process.argv.includes(&quot;--screens&quot;);
+if (!url) {
+  console.log(`사용: node brief.js &quot;&lt;유튜브 주소&gt;&quot; [언어]
+
+  node brief.js &quot;https://youtu.be/xxxx&quot;       , 한국어 자막
+  node brief.js &quot;https://youtu.be/xxxx&quot; en    , 영어 자막
+
+★yt-dlp 가 필요합니다. 없으면: pip install -U yt-dlp  (또는 클로드에게 &quot;yt-dlp 깔아줘&quot;)`);
+  process.exit(0);
+}
+
+const OUT = path.join(__dirname, &quot;out&quot;);
+const TMP = path.join(__dirname, &quot;.tmp&quot;);
+fs.mkdirSync(OUT, { recursive: true });
+fs.rmSync(TMP, { recursive: true, force: true });
+fs.mkdirSync(TMP, { recursive: true });
+
+// ★쿠키가 있으면 쓴다 , 유튜브가 영상 다운로드에 403 을 내는 경우가 있다(자막은 대개 그냥 된다)
+const COOKIES = [path.join(__dirname, &quot;.yt_cookies.txt&quot;), path.join(__dirname, &quot;../scrape/.yt_cookies.txt&quot;)]
+  .find(p =&gt; fs.existsSync(p));
+// ★★유튜브는 **미디어 바이트**에만 서명 검사를 건다. 그래서 경로를 둘로 나눈다(2026-08-19 실측).
+//   자막·메타 = 일반 yt-dlp, **쿠키 없이**. 쿠키를 붙이면 인증 경로로 가서 PO token 을 요구하고 실패한다.
+//   영상     = self-contained 바이너리 + 쿠키 + deno EJS 솔버. 이게 없으면 403.
+const BIN_MEDIA = fs.existsSync(process.env.HOME + &quot;/.local/bin/yt-dlp_linux&quot;)
+  ? process.env.HOME + &quot;/.local/bin/yt-dlp_linux&quot; : &quot;yt-dlp&quot;;
+const ytEnv = { ...process.env, PATH: `${process.env.HOME}/.deno/bin:${process.env.PATH}` };
+
+// 메타·자막 , 익명이 정답
+const yt = (args) =&gt; execFileSync(&quot;yt-dlp&quot;, args, { encoding: &quot;utf8&quot;, maxBuffer: 1 &lt;&lt; 28 });
+// 영상 , 쿠키 + EJS
+const ytMedia = (args) =&gt; execFileSync(BIN_MEDIA,
+  [...(COOKIES ? [&quot;--cookies&quot;, COOKIES] : []), &quot;--remote-components&quot;, &quot;ejs:github&quot;, ...args],
+  { encoding: &quot;utf8&quot;, maxBuffer: 1 &lt;&lt; 28, env: ytEnv });
+
+// ── 1. 제목·길이 먼저
+let title = &quot;&quot;, durSec = 0, vid = &quot;&quot;;
+try {
+  const meta = JSON.parse(yt([&quot;--skip-download&quot;, &quot;--dump-json&quot;, &quot;--no-warnings&quot;, url]));
+  title = meta.title || &quot;&quot;;
+  durSec = meta.duration || 0;
+  vid = meta.id || &quot;video&quot;;
+} catch (e) {
+  console.log(&quot;영상 정보를 못 읽었습니다:&quot;, String(e.message).split(&quot;\n&quot;)[0]);
+  process.exit(1);
+}
+const hhmmss = (s) =&gt; [Math.floor(s / 3600), Math.floor(s / 60) % 60, Math.floor(s % 60)]
+  .map((v, i) =&gt; (i === 0 &amp;&amp; v === 0 ? null : String(v).padStart(2, &quot;0&quot;))).filter(Boolean).join(&quot;:&quot;);
+
+console.log(`영상: ${title}`);
+console.log(`길이: ${hhmmss(durSec)}`);
+
+// ── 2. 자막 받기 , 사람이 단 것 우선, 없으면 자동 생성
+let vtt = null, kind = &quot;&quot;;
+for (const [flag, label] of [[&quot;--write-subs&quot;, &quot;사람이 단 자막&quot;], [&quot;--write-auto-subs&quot;, &quot;자동 생성 자막&quot;]]) {
+  try {
+    yt([flag, &quot;--skip-download&quot;, &quot;--sub-langs&quot;, `${lang}.*,${lang}`, &quot;--sub-format&quot;, &quot;vtt&quot;,
+        &quot;-o&quot;, path.join(TMP, &quot;s.%(ext)s&quot;), &quot;--no-warnings&quot;, url]);
+    const hit = fs.readdirSync(TMP).find(f =&gt; f.endsWith(&quot;.vtt&quot;));
+    if (hit) { vtt = fs.readFileSync(path.join(TMP, hit), &quot;utf8&quot;); kind = label; break; }
+  } catch {}
+}
+if (!vtt) {
+  console.log(`\n&quot;${lang}&quot; 자막이 없습니다. 다른 언어로 다시 해보세요 , 예: node brief.js &quot;${url}&quot; en`);
+  process.exit(1);
+}
+const rawBytes = Buffer.byteLength(vtt);
+
+// ── 3. 정리 , VTT 는 같은 줄을 여러 번 반복해서 내보낸다(자동 자막이 특히 심하다)
+const cues = [];
+for (const block of vtt.replace(/\r/g, &quot;&quot;).split(&quot;\n\n&quot;)) {
+  const m = block.match(/(\d{2}:\d{2}:\d{2})\.\d{3}\s+--&gt;/);
+  if (!m) continue;
+  const text = block.split(&quot;\n&quot;).slice(1)
+    .filter(l =&gt; !/--&gt;/.test(l))
+    .join(&quot; &quot;)
+    .replace(/&lt;[^&gt;]*&gt;/g, &quot;&quot;)          // &lt;c&gt; 같은 타이밍 태그
+    .replace(/&amp;nbsp;|&amp;amp;/g, &quot; &quot;)
+    .replace(/\s+/g, &quot; &quot;).trim();
+  if (text) cues.push({ t: m[1], text });
+}
+// 직전 줄에 이미 들어 있는 조각은 버린다
+const clean = [];
+for (const c of cues) {
+  const prev = clean.length ? clean[clean.length - 1].text : &quot;&quot;;
+  if (prev.endsWith(c.text) || prev === c.text) continue;
+  if (c.text.startsWith(prev) &amp;&amp; prev) { clean[clean.length - 1].text = c.text; continue; }
+  clean.push(c);
+}
+
+// ── 4. 분 단위로 묶기 , 클로드가 &quot;몇 분쯤&quot;으로 짚을 수 있게
+const byMin = new Map();
+for (const c of clean) {
+  const [h, m] = c.t.split(&quot;:&quot;).map(Number);
+  const key = h * 60 + m;
+  if (!byMin.has(key)) byMin.set(key, []);
+  byMin.get(key).push(c.text);
+}
+const lines = [...byMin.entries()].sort((a, b) =&gt; a[0] - b[0])
+  .map(([min, arr]) =&gt; `[${String(Math.floor(min / 60)).padStart(2, &quot;0&quot;)}:${String(min % 60).padStart(2, &quot;0&quot;)}] ${arr.join(&quot; &quot;)}`);
+
+// ── 5. 화면 몽타주 , 자막은 &quot;말한 것&quot;만 담는다. 슬라이드·코드·데모는 여기 있다.
+let shots = 0, sheets = 0, shotDir = &quot;&quot;;
+if (wantScreens) {
+  shotDir = path.join(OUT, `${vid}_screens`);
+  fs.rmSync(shotDir, { recursive: true, force: true });
+  fs.mkdirSync(shotDir, { recursive: true });
+  const gap = durSec &gt; 3600 ? 60 : durSec &gt; 1200 ? 30 : 10;   // 긴 영상일수록 성기게
+  process.stdout.write(`화면: ${gap}초 간격으로 뜨는 중...`);
+  // ★한 번 받은 영상은 남겨둔다 , 같은 영상을 다시 분석할 때 몇 분을 아낀다(용량이 부담되면 지우면 된다).
+  const cached = path.join(OUT, `${vid}_video.mp4`);
+  const raw = fs.existsSync(cached) ? cached : path.join(TMP, &quot;v.mp4&quot;);
+  try {
+    if (fs.existsSync(cached)) {
+      process.stdout.write(` (받아둔 영상 재사용)`);
+    } else {
+      ytMedia([&quot;-f&quot;, &quot;134+140/18/worst[ext=mp4]/worst&quot;, &quot;--merge-output-format&quot;, &quot;mp4&quot;,
+          &quot;-o&quot;, raw, &quot;--no-warnings&quot;, url]);
+      try { fs.copyFileSync(raw, cached); } catch {}
+    }
+    execFileSync(&quot;ffmpeg&quot;, [&quot;-v&quot;, &quot;error&quot;, &quot;-i&quot;, raw, &quot;-vf&quot;, `fps=1/${gap},scale=320:-2`,
+      path.join(TMP, &quot;s%04d.jpg&quot;), &quot;-y&quot;], { maxBuffer: 1 &lt;&lt; 28 });
+    const list = fs.readdirSync(TMP).filter(f =&gt; /^s\d+\.jpg$/.test(f)).sort();
+    shots = list.length;
+    const PER = 24;                                            // 시트 한 장에 24컷(6x4)
+    // ★개별 -i 를 24개 주면 ffmpeg 가 각각을 이미지 **시퀀스**로 읽어 4컷짜리가 나온다.
+    //   tile 필터에 -start_number 로 범위를 주는 쪽이 맞다(2026-08-19 실측).
+    for (let i = 0; i &lt; list.length; i += PER) {
+      execFileSync(&quot;ffmpeg&quot;, [&quot;-v&quot;, &quot;error&quot;, &quot;-start_number&quot;, String(i + 1),
+        &quot;-i&quot;, path.join(TMP, &quot;s%04d.jpg&quot;), &quot;-frames:v&quot;, &quot;1&quot;,
+        &quot;-vf&quot;, &quot;tile=6x4:padding=4:color=0x1e1b17&quot;,
+        path.join(shotDir, `sheet_${String(++sheets).padStart(2, &quot;0&quot;)}.jpg`), &quot;-y&quot;],
+        { maxBuffer: 1 &lt;&lt; 28 });
+    }
+    console.log(` ${shots}컷 → 시트 ${sheets}장`);
+  } catch (e) {
+    console.log(` 실패(${String(e.message).split(&quot;\n&quot;)[0].slice(0, 60)}) , 자막만 저장합니다`);
+    shots = 0; sheets = 0;
+  }
+}
+
+const md = `# ${title}\n\n출처: ${url}\n길이: ${hhmmss(durSec)} · ${kind}\n\n` +
+  `&gt; 아래는 이 영상의 자막을 분 단위로 묶은 것입니다. 클로드에게 이 파일을 주고\n` +
+  `&gt; &quot;훅이 뭔지, 어떤 순서로 풀어가는지, 건너뛰어도 되는 구간이 어딘지&quot; 물어보세요.\n` +
+  (sheets ? `&gt;\n&gt; ★화면도 같이 떴습니다: \`${vid}_screens/sheet_01.jpg\` 부터 ${sheets}장 (${shots}컷).\n` +
+            `&gt; **그 이미지들도 같이 열어보라고 하세요.** 자막에는 슬라이드·코드·데모 화면이 안 들어 있습니다.\n` : &quot;&quot;) +
+  `\n` + lines.join(&quot;\n&quot;) + &quot;\n&quot;;
+
+const outPath = path.join(OUT, `${vid}.md`);
+fs.writeFileSync(outPath, md);
+fs.rmSync(TMP, { recursive: true, force: true });
+
+const kb = (b) =&gt; b &gt;= 1 &lt;&lt; 20 ? (b / (1 &lt;&lt; 20)).toFixed(2) + &quot; MB&quot; : Math.round(b / 1024) + &quot; KB&quot;;
+console.log(`자막: ${kind} · ${cues.length}조각 → ${clean.length}줄 → ${lines.length}분`);
+console.log(`크기: ${kb(rawBytes)} → ${kb(Buffer.byteLength(md))}`);
+console.log(`\n저장: ${outPath}`);
+if (sheets) console.log(`화면: ${shotDir}/ (${shots}컷 · 시트 ${sheets}장)`);
+console.log(`다음: 클로드에게 이 파일을 주고 &quot;훅·구조·건너뛸 구간 알려줘&quot; 라고 하세요.`);
+</pre>
+    </div>
+  </div>
+
+  <div class="sec" id="run">
+    <div class="sec-label">RUN</div>
+    <h2>돌려보기</h2>
+    <div class="copybox">
+      <div class="bar"><span>명령</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre># 자막만 (빠릅니다)
+node brief.js "https://www.youtube.com/watch?v=영상주소"
+
+# 자막 + 화면 몽타주
+node brief.js "https://www.youtube.com/watch?v=영상주소" ko --화면
+
+# 영어 자막
+node brief.js "https://www.youtube.com/watch?v=영상주소" en --화면</pre>
+    </div>
+    <p>끝나면 <code>out/</code> 에 <b>정리된 자막 파일</b>과 <b>화면 시트</b>가 생깁니다. 클로드에게 둘 다 주고 이렇게 물어보세요.</p>
+    <div class="copybox">
+      <div class="bar"><span>클로드에게</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>out 폴더의 md 파일이랑 _screens 안의 시트 이미지 다 열어봐.
+훅이 뭔지, 어떤 순서로 풀어가는지, 건너뛰어도 되는 구간이 어딘지 알려줘.
+화면에만 있고 말로는 안 한 것도 같이 짚어줘.</pre>
+    </div>
+    <div class="hl warn"><strong>시트 이미지를 "같이 열어보라"고 명시하세요.</strong> 파일만 주면 텍스트만 읽고 끝냅니다.</div>
+  </div>
+
+  <div class="sec" id="result">
+    <div class="sec-label">RESULT</div>
+    <h2>실제 실행 기록 (2026년 8월 19일)</h2>
+    <p>Anthropic 공식 유튜브의 52분짜리 대담으로 돌린 결과입니다. 지어낸 값이 아니라 터미널 출력 그대로입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>터미널 출력</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>길이: 51:57
+화면: 30초 간격으로 뜨는 중... 104컷 → 시트 5장
+자막: 사람이 단 자막 · 1504조각 → 1504줄 → 52분
+크기: 103 KB → 58 KB</pre>
+    </div>
+    <table>
+      <tr><th>무엇</th><th>값</th></tr>
+      <tr><td>영상 길이</td><td>51분 57초</td></tr>
+      <tr><td>화면</td><td>104컷 → 시트 5장 (30초 간격)</td></tr>
+      <tr><td>자막</td><td>103KB → 58KB</td></tr>
+    </table>
+    <div class="hl"><strong>이 영상에서 화면에만 있던 정보</strong> , 화면 아래 뜨는 <b>이름·직함 자막</b>이었습니다. 자막에는 이름이 한 번 언급되지만, <b>어느 얼굴이 누구인지</b>는 화면에만 있습니다. 시트를 같이 주면 그때부터 클로드가 "이 구간은 누가 말한다"를 짚습니다.</div>
+    <div class="hl warn"><strong>자동 자막은 중복이 심합니다.</strong> 같은 줄을 한 글자씩 늘려가며 여러 번 내보냅니다. 다른 영상(3시간 14분, 자동 자막)에서는 <b>12,517조각이 6,256줄로</b> 정확히 절반이 되었습니다. 위 영상은 사람이 단 자막이라 중복이 0이었습니다.</div>
+  </div>
+
+  <div class="sec" id="traps">
+    <div class="sec-label">TRAPS</div>
+    <h2>막히는 곳</h2>
+
+    <div class="trap"><div class="t">⚠ 자막은 되는데 영상만 403</div>
+      <p>유튜브는 <b>영상 데이터에만</b> 서명 검사를 겁니다. 자막·제목은 그냥 받아지는데 영상만 막히는 게 정상입니다. 그래서 이 코드는 <b>경로를 둘로 나눠</b> 놨습니다.</p>
+      <p>서버나 컨테이너에서 돌린다면 ①로그인 쿠키 ②<code>yt-dlp</code> 대신 self-contained 바이너리 ③JS 솔버가 필요할 수 있습니다. 일반 PC 에서는 대개 그냥 됩니다.</p></div>
+
+    <div class="trap"><div class="t">⚠ 자막에 쿠키를 붙이면 오히려 실패한다</div>
+      <p>쿠키를 붙이면 인증 경로로 가면서 별도 토큰을 요구합니다. <b>자막은 로그인 없이</b> 받는 게 맞습니다. 코드가 그렇게 나뉘어 있는 이유입니다.</p></div>
+
+    <div class="trap"><div class="t">⚠ 자막이 없습니다</div>
+      <p>그 영상에 그 언어 자막이 없습니다. <code>en</code> 으로 다시 하거나 자막이 있는 영상으로 바꾸세요.</p></div>
+
+    <div class="trap"><div class="t">⚠ 화면 뜨는 게 오래 걸린다</div>
+      <p>영상을 받아야 해서 그렇습니다. 한 번 받으면 <code>out/</code> 에 남겨두고 다음부터는 재사용합니다. 용량이 부담되면 그 파일만 지우면 됩니다.</p></div>
+  </div>
+
+  <div class="sec" id="next">
+    <div class="sec-label">NEXT</div>
+    <h2>여기서 더 나가면</h2>
+    <p>클로드에게 <code>brief.js</code> 를 보여주고 그대로 시키면 고쳐줍니다.</p>
+    <table>
+      <tr><th>하고 싶은 것</th><th>클로드에게 이렇게</th></tr>
+      <tr><td>재생목록 통째로</td><td>"재생목록 주소를 넣으면 영상마다 한 번씩 돌게 해줘"</td></tr>
+      <tr><td>화면 간격 조절</td><td>"슬라이드가 자주 바뀌는 영상이라 10초 간격으로 떠줘"</td></tr>
+      <tr><td>장면 바뀔 때만</td><td>"일정 간격 말고 화면이 크게 바뀌는 지점만 떠줘"</td></tr>
+      <tr><td>바로 요약까지</td><td>"돌리고 나서 클로드한테 바로 넘겨 요약까지 받아줘"</td></tr>
+    </table>
+  </div>
+
+  <div class="sec" id="src">
+    <div class="sec-label">NOTE</div>
+    <h2>지킬 것</h2>
+    <p><b>개인적으로 읽으려고 받는 것까지입니다.</b> 남의 영상 자막이나 화면을 통째로 옮겨 올리거나 그대로 콘텐츠로 만들지 마세요. 요약하거나 인용할 때는 원 영상 출처를 밝히면 됩니다.</p>
+    <p>위 실행 기록에 쓴 영상은 Anthropic 공식 유튜브의 공개 영상이며, 도구가 무엇을 하는지 보여주려고 결과 수치만 인용했습니다.</p>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/">인스타에서 만든 과정 보기</a>
+  </div>
+
+  <div class="foot">
+    <a href="../">← 다른 가이드 보기</a> · AI TIGER MASK
+  </div>
+</div>
+
+<script>
+function cp(b){
+  const t = b.closest('.copybox').querySelector('pre').innerText;
+  navigator.clipboard.writeText(t).then(()=>{ const o=b.textContent; b.textContent='복사됨'; setTimeout(()=>b.textContent=o,1200); });
+}
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-youtube"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+</script>
+</body>
+</html>
