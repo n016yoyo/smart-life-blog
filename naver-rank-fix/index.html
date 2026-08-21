@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>블로그 순위 떨어지면, 아침에 수정안이 와 있게 하기 | AI TIGER MASK</title>
+<meta name="description" content="네이버 검색 순위가 떨어지면 클로드가 상위 글과 대조해 원인을 진단하고 보강 본문까지 써서 텔레그램으로 보냅니다. 발행 버튼만 내가 누릅니다. 코드 전문과 실제 실행 기록.">
+<meta property="og:title" content="블로그 순위 떨어지면, 아침에 수정안이 와 있게 하기">
+<meta property="og:description" content="떨어진 걸 아는 것(감시)에서 한 발 더: 왜 떨어졌는지, 뭘 고칠지까지 자동으로.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>순위 떨어지면,<br><span style="color:var(--acc)">아침에 수정안이</span> 와 있게</h1>
+  <p class="sub">순위 알림(이전 가이드)까지 하셨다면 이제 다음 질문이 남습니다. <b>"떨어졌네… 그래서 뭘 고치지?"</b> 그걸 클로드가 대신 합니다. 상위 글을 읽고, 내 글에 없는 걸 짚고, 고칠 본문까지 써서 폰으로 보냅니다. 발행 버튼만 내가 누릅니다.</p>
+  <div class="chips">
+    <span class="chip">진단·수정안 <b>자동</b></span>
+    <span class="chip">발행 <b>내가 승인</b></span>
+    <span class="chip">원본 <b>백업됨</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#what">아침에 오는 것</a>
+    <a href="#how">원리 한 줄</a>
+    <a href="#trap">먼저 알아야 할 함정</a>
+    <a href="#step1">1. 진단·수정안</a>
+    <a href="#step2">2. 에디터에 넣기</a>
+    <a href="#step3">3. 아침마다 혼자</a>
+    <a href="#stuck">막히면</a>
+  </div>
+
+  <section class="sec" id="what">
+    <div class="sec-label">RESULT</div>
+    <h2>아침에 이런 게 옵니다</h2>
+    <p>2026년 8월, 제 글이 "재입고 알림" 검색에서 5위에서 8위로 떨어진 날 실제로 도착한 메시지입니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>실제로 온 메시지 (전문)</span></div>
+      <pre>📉 순위 하락 감지 → 수정안 준비 완료
+
+키워드: 재입고 알림 , 5위 → 8위
+
+진단:
+상위 3편은 전부 최근 글이고, 검색어를 특정 쇼핑몰·상품과
+붙여 "재입고 알림 설정 방법"을 단계·메뉴 경로까지
+알려주는 정보성 구조다.
+내 글은 앱 제작 후기 중심이라 정작 "재입고 알림을
+어떻게 설정하나"라는 검색 의도에 직접 답하는 단락과
+단계형 소제목이 없다.
+상위 글은 "재입고 알림"이 소제목마다 반복되는 반면, 내
+글은 키워드가 도입부와 해시태그에만 몰려 있다.
+
+수정안: docs/reel_rankfix/evidence/fix_….md (4,219자)
+★발행은 안 했습니다. 발행하려면 '발행해줘'라고 답 주세요
+(원본 백업 있음).</pre>
+    </div>
+    <div class="hl"><strong>핵심은 "왜"와 "그래서"가 같이 온다는 것.</strong> 순위 숫자만 오면 기분만 나쁩니다. 상위 글과 내 글의 실제 차이(진단)와, 그 차이를 메운 완성 본문(수정안)이 같이 와야 아침에 5분으로 끝납니다.</div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="sec-label">HOW</div>
+    <h2>원리 한 줄</h2>
+    <p>모바일 검색 결과는 로그인 없이 볼 수 있습니다. 거기서 <b>내 글 주소와 상위 3개 글</b>을 집어서, 본문을 읽어 파일로 만들고, 클로드 CLI에 "왜 밀렸고 어떻게 보강할까"를 시킵니다. 결과는 텔레그램 봇으로 폰에 보냅니다.</p>
+    <table>
+      <tr><th>단계</th><th>하는 일</th><th>도구</th></tr>
+      <tr><td>감시</td><td>매일 아침 키워드별 내 순위 측정</td><td>rank_watch.js (이전 가이드)</td></tr>
+      <tr><td>진단</td><td>하락 감지 → 내 글·상위 글 수집 → 클로드 분석 → 수정안 저장</td><td>rank_fix.js (이 가이드)</td></tr>
+      <tr><td>반영</td><td>수정안을 네이버 에디터의 기존 글에 삽입(원본 보존)</td><td>rank_apply.js</td></tr>
+      <tr><td>발행</td><td><b>사람이 발행 버튼</b></td><td>나</td></tr>
+    </table>
+  </section>
+
+  <section class="sec" id="trap">
+    <div class="sec-label">TRAPS</div>
+    <h2>먼저 알아야 할 함정 네 개</h2>
+    <p>제가 만들면서 실제로 밟은 것들입니다. 이것만 알고 시작하면 한 번에 됩니다.</p>
+    <div class="trap"><div class="t">⚠️ 기존 글 수정 화면 주소는 postwrite?logNo=</div>
+      <p>구글에 나오는 <code>PostUpdateForm</code>이나 <code>/postupdate/글번호</code>는 404가 뜹니다. <code>blog.naver.com/아이디/postwrite?logNo=글번호</code>로 들어가야 기존 글이 로드된 에디터가 열립니다.</p></div>
+    <div class="trap"><div class="t">⚠️ 본문 전체 교체 금지 , 이미지가 다 날아갑니다</div>
+      <p>전체 선택 후 새 본문을 타이핑하면 글 속 사진이 전부 사라집니다. <b>부족한 섹션만 앵커 문단 뒤에 삽입</b>하세요. 진단이 "이 단락이 없다"고 짚었으니, 없는 그 단락만 넣으면 됩니다.</p></div>
+    <div class="trap"><div class="t">⚠️ 수정 화면엔 임시저장이 없습니다</div>
+      <p>새 글 화면과 달리 기존 글 수정 화면은 발행을 눌러야만 반영됩니다. 그래서 자동화는 <b>수정안 생성까지만</b> 하고, 발행은 사람이 검토 후 누르는 구조로 만들었습니다. 실수로 글이 바뀔 일이 없습니다.</p></div>
+    <div class="trap"><div class="t">⚠️ 다음날 실행이 어제 증거를 덮어씁니다</div>
+      <p>수정안 파일명이 글번호로만 돼 있으면 매일 실행이 어제 파일을 덮습니다. 보관하려면 날짜 붙은 사본을 남기세요(<code>fix_글번호_0820.md</code>).</p></div>
+  </section>
+
+  <section class="sec" id="step1">
+    <div class="sec-label">STEP 1</div>
+    <h2>진단·수정안 만들기 , rank_fix.js</h2>
+    <p>클로드 코드에 이렇게 말하면 아래 코드를 만들어 줍니다. 그대로 붙여넣어도 됩니다. (이전 가이드의 rank_watch.js가 만든 <code>rank_history.json</code>을 읽습니다.)</p>
+    <div class="hl">클로드에게: <strong>"rank_history에서 순위가 떨어진 키워드를 찾아서, 모바일 검색 결과에서 내 글이랑 상위 3개 글 본문을 모아서, 왜 밀렸는지랑 보강 본문을 클로드로 만들어서 파일로 저장하는 스크립트 만들어줘. 원본 백업도."</strong></div>
+    <div class="copybox">
+      <div class="bar"><span>rank_fix.js (전문)</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>#!/usr/bin/env node
+// 순위가 떨어진 내 글을 특정하고, 상위 글과 대조해 클로드가 수정안을 만든다.
+// rank_watch.js(감시)의 다음 단계 , 2026-08-20 reel_rankfix 착수와 함께 제작.
+//
+// 하는 일(순서대로)
+//   ①검색 결과에서 하락 키워드의 **내 글 실제 URL(logNo)** 과 상위 3개 글을 특정
+//   ②내 글 전문 + 상위 글 제목·도입부를 수집(모바일 공개 페이지, 로그인 불필요)
+//   ③원본을 evidence/ 에 백업(수정 전 상태 보존 , 실물 원칙)
+//   ④claude CLI 로 "왜 밀렸나 + 어떻게 보강하나" 분석 → 수정안 생성
+//   ⑤fix_&lt;logNo&gt;.md 저장 + 요약 출력
+//
+// ★발행은 하지 않는다. 에디터 반영(rank_apply.js)은 별도 단계 , 2026-07-19 사장님 결정
+//   (자동은 임시저장까지, 발행 전 검토는 사람)을 기존 글 수정에도 그대로 따른다.
+//
+// 쓰는 법
+//   node docs/naverblog-auto/rank_fix.js "재입고 알림"       # 키워드 지정
+//   node docs/naverblog-auto/rank_fix.js                     # 이력에서 최근 하락 키워드 자동 선택
+const fs = require("fs"), path = require("path");
+const { execSync, execFileSync } = require("child_process");
+const { chromium } = require(require.resolve("playwright", { paths: [path.resolve(__dirname, "../_engine")] }));
+
+const D = __dirname;
+const BLOG_ID = "n016yoyo";
+const EV = path.resolve(D, "../reel_rankfix/evidence");
+const HIST_FILE = path.join(D, "rank_history.json");
+const CHR = execSync("ls /nix/store/*/bin/chromium | head -1").toString().trim();
+const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+const CLAUDE = "/home/user/.global_modules/bin/claude";
+fs.mkdirSync(EV, { recursive: true });
+
+const log = (...a) =&gt; console.log(new Date().toISOString().slice(11, 19), ...a);
+
+// 하락 키워드 자동 선택: 이력의 마지막 두 날짜를 비교해 순위가 내려간 것 중 낙폭 최대
+function pickDroppedKeyword() {
+  const hist = JSON.parse(fs.readFileSync(HIST_FILE, "utf8"));
+  const days = Object.keys(hist).sort();
+  if (days.length &lt; 2) throw new Error("이력이 2일치 미만");
+  const [prev, cur] = [hist[days[days.length - 2]], hist[days[days.length - 1]]];
+  let best = null;
+  for (const kw of Object.keys(cur)) {
+    const a = prev[kw] &amp;&amp; prev[kw].rank, b = cur[kw] &amp;&amp; cur[kw].rank;
+    if (a &amp;&amp; b &amp;&amp; b &gt; a &amp;&amp; (!best || (b - a) &gt; best.drop)) best = { kw, from: a, to: b, drop: b - a };
+  }
+  if (!best) throw new Error("하락한 키워드가 없다");
+  return best;
+}
+
+(async () =&gt; {
+  const kwArg = process.argv[2];
+  const picked = kwArg ? { kw: kwArg } : pickDroppedKeyword();
+  const KW = picked.kw;
+  log(`대상 키워드: "${KW}"` + (picked.from ? ` (${picked.from}위 → ${picked.to}위)` : ""));
+
+  const b = await chromium.launch({ headless: true, executablePath: CHR, args: ["--no-sandbox", "--disable-dev-shm-usage"] });
+  const c = await b.newContext({ viewport: { width: 420, height: 900 }, locale: "ko-KR", userAgent: UA });
+  const p = await c.newPage();
+
+  // ① 검색 결과에서 내 글 + 상위 글 특정 (rank_watch 와 같은 카운트 규칙)
+  await p.goto(`https://m.search.naver.com/search.naver?ssc=tab.m_blog.all&amp;query=${encodeURIComponent(KW)}`, { waitUntil: "domcontentloaded", timeout: 40000 });
+  await p.waitForTimeout(2200);
+  const hrefs = await p.$$eval("a[href]", as =&gt; as.map(a =&gt; a.href || ""));
+  const postOf = (href) =&gt; {
+    try {
+      const x = new URL(href, "https://m.search.naver.com");
+      if (!/\d{4,}\/?$/.test(x.pathname)) return null;
+      if (/(^|\.)blog\.naver\.com$/.test(x.hostname)) {
+        const m = x.pathname.match(/^\/([A-Za-z0-9_-]+)\/(\d+)/);
+        return m ? { key: "naver:" + m[1], owner: m[1], logNo: m[2], url: `https://m.blog.naver.com/${m[1]}/${m[2]}` } : null;
+      }
+      if (/naver\.com$/.test(x.hostname)) return null;
+      return { key: "site:" + x.hostname, owner: x.hostname, logNo: null, url: href };
+    } catch { return null; }
+  };
+  const posts = [];
+  for (const h of hrefs) { const o = postOf(h); if (o &amp;&amp; !posts.some(q =&gt; q.key === o.key)) posts.push(o); }
+  const meIdx = posts.findIndex(q =&gt; q.key === "naver:" + BLOG_ID);
+  if (meIdx &lt; 0) throw new Error(`검색 결과에 내 글이 없다("${KW}")`);
+  const me = posts[meIdx], tops = posts.slice(0, 3).filter(q =&gt; q.key !== me.key);
+  log(`내 글: ${me.url} (현재 ${meIdx + 1}위 / 이 페이지 ${posts.length}개)`);
+
+  // ② 본문 수집 , 내 글 전문 + 상위 글 제목·도입부
+  const readPost = async (url, full) =&gt; {
+    await p.goto(url, { waitUntil: "domcontentloaded", timeout: 40000 });
+    await p.waitForTimeout(2000);
+    return p.evaluate((full) =&gt; {
+      const t = (document.querySelector(".se-title-text, .pcol1, h3.tit_h3") || {}).innerText || document.title;
+      const bodyEl = document.querySelector(".se-main-container, #viewTypeSelector, .post_ct");
+      let body = bodyEl ? bodyEl.innerText : "";
+      body = body.replace(/\n{3,}/g, "\n\n").trim();
+      return { title: t.trim(), body: full ? body : body.slice(0, 900) };
+    }, full);
+  };
+  const mine = await readPost(me.url, true);
+  log(`내 글 수집: "${mine.title}" (${mine.body.length}자)`);
+  const rivals = [];
+  for (const t of tops) {
+    await p.waitForTimeout(1500);   // ★남의 서비스 , 간격은 안전장치
+    try { const r = await readPost(t.url, false); rivals.push({ rank: posts.indexOf(t) + 1, ...r, url: t.url }); log(`상위 글 수집: ${posts.indexOf(t) + 1}위 "${r.title.slice(0, 40)}"`); }
+    catch (e) { log(`  (상위 글 실패: ${e.message.slice(0, 40)})`); }
+  }
+  await b.close();
+
+  // ③ 원본 백업 (수정 전 상태 , 실물 원칙: 사후 대조 가능해야 한다)
+  const orig = path.join(EV, `original_${me.logNo}.md`);
+  fs.writeFileSync(orig, `# 원본 백업 , ${new Date().toISOString()}\n키워드: ${KW} · 현재 ${meIdx + 1}위\nURL: ${me.url}\n\n## ${mine.title}\n\n${mine.body}\n`);
+  log(`원본 백업: ${orig}`);
+
+  // ④ 클로드 분석 , 자료를 파일로 만들어 넘긴다(화면=실행 명령 원칙: 이 파일이 곧 증거)
+  const brief = path.join(EV, `analysis_input_${me.logNo}.md`);
+  fs.writeFileSync(brief, [
+    `# 네이버 블로그 순위 하락 분석 요청`,
+    `검색어: "${KW}" , 내 글이 ${picked.from ? `${picked.from}위에서 ${picked.to}위로 떨어졌다` : `현재 ${meIdx + 1}위다`}.`,
+    ``, `## 내 글 (전문)`, `제목: ${mine.title}`, ``, mine.body,
+    ``, `## 지금 상위에 있는 글들 (제목 + 도입부)`,
+    ...rivals.map(r =&gt; `\n### ${r.rank}위: ${r.title}\n${r.body}`),
+  ].join("\n"));
+  log("클로드 분석 중...");
+  const prompt = `너는 네이버 블로그 SEO 편집자다. 첨부한 자료(내 글 전문 + 현재 상위 글들)를 읽고:
+1) 내 글이 밀린 원인을 상위 글과의 실제 차이에서만 찾아라(추측 금지, 자료에 있는 것만).
+2) 제목은 유지하고, 본문 보강안을 작성하라 , 기존 글의 사실·톤은 지키면서 부족한 부분(정보량·검색어 자연 포함·독자 질문 응답)을 채운 "완성 본문"으로.
+3) 출력 형식: "## 진단"(3줄 이내) 다음 "## 보강 본문"(전문). 다른 말은 쓰지 마라.`;
+  const out = execFileSync(CLAUDE, ["-p", prompt], { input: fs.readFileSync(brief), timeout: 300000, maxBuffer: 8 * 1024 * 1024 }).toString();
+
+  // ⑤ 저장 + 요약
+  const fix = path.join(EV, `fix_${me.logNo}.md`);
+  fs.writeFileSync(fix, `# 수정안 , ${new Date().toISOString()}\n키워드: ${KW} · ${picked.from ? `${picked.from}→${picked.to}위` : `${meIdx + 1}위`} · logNo ${me.logNo}\n\n${out}\n`);
+  log(`수정안 저장: ${fix}`);
+  console.log("\n" + out.slice(0, 600) + "\n...");
+  console.log(`\n다음 단계: 수정안 검토 후 rank_apply.js 로 에디터 반영(임시저장까지).`);
+})().catch(e =&gt; { console.error("FAIL:", e.message.slice(0, 300)); process.exit(1); });
+</pre>
+    </div>
+    <p>실행: <code>node rank_fix.js "키워드"</code> , 키워드를 생략하면 이력에서 가장 많이 떨어진 걸 자동으로 고릅니다.</p>
+  </section>
+
+  <section class="sec" id="step2">
+    <div class="sec-label">STEP 2</div>
+    <h2>에디터에 넣기 , rank_apply.js</h2>
+    <p>수정안이 마음에 들면, 기존 글의 제자리에 <b>새 섹션만 삽입</b>합니다(이미지·기존 문단 보존). 함정 1·2·3이 전부 여기 반영돼 있습니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>rank_apply.js (전문)</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>#!/usr/bin/env node
+// rank_fix.js 의 보강안 중 **새 섹션만** 기존 글의 제자리에 삽입한다(삽입 모드).
+// ★전체 교체는 하지 않는다 , 원글의 이미지·기존 문단을 전부 보존한다(2026-08-20 실측: 원글에 이미지 다수).
+// ★임시저장까지만 한다. 발행 버튼은 누르지 않는다(2026-07-19 사장님 결정: 자동은 초안까지, 발행 전 검토는 사람).
+//
+// 쓰는 법
+//   node docs/naverblog-auto/rank_apply.js &lt;logNo&gt; "&lt;앵커 문구&gt;" "&lt;블록 시작 마커&gt;" "&lt;블록 끝 마커&gt;"
+//   예: node rank_apply.js 224316179238 "지금이 최저가인지" "재입고 알림 설정, 일단" "본론입니다"
+const fs = require("fs"), path = require("path");
+const { chromium } = require(require.resolve("playwright-core", { paths: [path.resolve(__dirname, "../_engine")] }));
+
+const D = __dirname;
+const BLOG_ID = "n016yoyo";
+const EV = path.resolve(D, "../reel_rankfix/evidence");
+const OUT = path.resolve(D, "../reel_rankfix/_work/apply");
+const _R = path.resolve(__dirname, "../..");
+const STATE = [_R + "/docs/scrape/creds/naver_state.json", _R + "/docs/scrape/.naver_state.json"].find(p =&gt; fs.existsSync(p));
+const CHR = process.env.CHR || require("child_process").execSync("ls /nix/store/*/bin/chromium | head -1").toString().trim();
+const log = (...a) =&gt; console.log(new Date().toISOString().slice(11, 19), ...a);
+fs.mkdirSync(OUT, { recursive: true });
+
+const [logNo, ANCHOR, MSTART, MEND] = process.argv.slice(2);
+if (!logNo || !ANCHOR || !MSTART || !MEND) { console.error('사용: node rank_apply.js &lt;logNo&gt; "&lt;앵커 문구&gt;" "&lt;블록 시작&gt;" "&lt;블록 끝&gt;"'); process.exit(2); }
+
+// 삽입 블록 추출: fix_&lt;logNo&gt;.md 에서 시작 마커 문단부터 끝 마커 문단까지
+const raw = fs.readFileSync(path.join(EV, `fix_${logNo}.md`), "utf8");
+const allParas = raw.split(/\n\s*\n/).map(s =&gt; s.replace(/\*\*/g, "").replace(/\n/g, " ").trim()).filter(Boolean);
+const si = allParas.findIndex(t =&gt; t.includes(MSTART)), ei = allParas.findIndex(t =&gt; t.includes(MEND));
+if (si &lt; 0 || ei &lt; 0 || ei &lt; si) { console.error(`마커를 못 찾음: 시작 ${si} · 끝 ${ei}`); process.exit(2); }
+const block = allParas.slice(si, ei + 1);
+log(`삽입 블록: ${block.length}문단 · ${block.join("").length}자 ("${block[0].slice(0, 24)}…" ~ "…${block[block.length - 1].slice(-20)}")`);
+
+(async () =&gt; {
+  const b = await chromium.launch({ executablePath: CHR, headless: true, args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"] });
+  const ctx = await b.newContext({
+    storageState: STATE, viewport: { width: 1440, height: 900 },
+    recordVideo: { dir: OUT, size: { width: 1440, height: 900 } },   // 릴스 재료 , 실화면 녹화
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+  });
+  const p = await ctx.newPage();
+
+  // ★수정 진입 = postwrite?logNo (postupdate 는 404, 2026-08-20 실측)
+  log("수정 화면 진입");
+  await p.goto(`https://blog.naver.com/${BLOG_ID}/postwrite?logNo=${logNo}`, { waitUntil: "domcontentloaded", timeout: 60000 });
+  await p.waitForTimeout(10000);
+  if (/nidlogin/.test(p.url())) throw new Error("세션 만료: 재로그인 필요");
+  try { await p.locator(".se-popup").first().waitFor({ timeout: 6000 }); await p.locator('.se-popup button:has-text("취소")').first().click({ timeout: 3000 }); log("복구팝업 취소"); } catch { log("복구팝업 없음"); }
+  for (const sel of [".se-help-panel-close-button", 'button[aria-label="도움말 닫기"]']) { try { await p.locator(sel).first().click({ timeout: 1200 }); } catch {} }
+  await p.screenshot({ path: OUT + "/step1_editor.png" });
+
+  // 로드 검증(수정 화면엔 .se-main-container 가 없다 , .se-component 로 센다. 2026-08-20 실측)
+  const comp = await p.locator(".se-component").count();
+  const title0 = await p.locator(".se-title-text, .se-documentTitle").first().innerText().catch(() =&gt; "");
+  log(`기존 글 로드: 컴포넌트 ${comp}개 · 제목 "${title0.slice(0, 28)}"`);
+  if (comp &lt; 3 || !title0.trim()) throw new Error("기존 글이 로드되지 않았다");
+
+  // 앵커 문단 특정 → 문단 끝에 커서 → 새 문단으로 블록 타이핑 (삭제 없음 = 이미지·기존 문단 보존)
+  const ai = await p.evaluate((A) =&gt; {
+    const ps = [...document.querySelectorAll(".se-text-paragraph")];
+    return ps.findIndex(el =&gt; el.innerText.includes(A));
+  }, ANCHOR);
+  if (ai &lt; 0) throw new Error(`앵커 문단을 못 찾음: "${ANCHOR}"`);
+  log(`앵커 문단 #${ai} 클릭`);
+  await p.locator(".se-text-paragraph").nth(ai).click({ timeout: 8000 });
+  await p.keyboard.press("End");
+  await p.waitForTimeout(400);
+  await p.keyboard.press("Enter"); await p.keyboard.press("Enter");
+
+  for (const [i, t] of block.entries()) {
+    await p.keyboard.type(t, { delay: 14 });
+    await p.keyboard.press("Enter"); await p.keyboard.press("Enter");
+    log(`  ${i + 1}/${block.length} 문단`);
+  }
+  await p.screenshot({ path: OUT + "/step2_inserted.png" });
+
+  // 삽입 검증: 앵커 뒤에 블록 첫 문구가 실제로 존재하는가
+  const ok = await p.evaluate((m) =&gt; [...document.querySelectorAll(".se-text-paragraph")].some(el =&gt; el.innerText.includes(m.slice(0, 18))), block[0]);
+  if (!ok) throw new Error("삽입 검증 실패: 블록 첫 문구가 문서에 없다");
+  log("삽입 검증 ✅");
+
+  // ★임시저장만. "발행" 이 들어간 버튼은 절대 만지지 않는다.
+  log("임시저장");
+  const saveBtn = p.locator('button[class*="save_btn"]:not(:has-text("발행")), button:has-text("저장"):not(:has-text("발행"))').first();
+  const before = (await saveBtn.innerText().catch(() =&gt; "")).trim();
+  await saveBtn.click({ timeout: 8000 });
+  await p.waitForTimeout(3000);
+  const after = (await saveBtn.innerText().catch(() =&gt; "")).trim();
+  log(`저장 카운트: "${before}" → "${after}"`);
+  await p.screenshot({ path: OUT + "/step3_saved.png" });
+
+  { // 세션 보존 가드(인증쿠키 없으면 덮어쓰지 않는다)
+    const st = await ctx.storageState();
+    const ok2 = (st.cookies || []).some(c =&gt; c.name === "NID_AUT") &amp;&amp; (st.cookies || []).some(c =&gt; c.name === "NID_SES");
+    if (ok2) fs.writeFileSync(STATE, JSON.stringify(st, null, 2)); else log("⚠️ 인증쿠키 없음 , 세션 파일 유지");
+  }
+  await ctx.close(); await b.close();
+  log("완료. 산출물:", OUT);
+  console.log("\n★발행은 하지 않았다. 임시저장본을 검토한 뒤 사람이 발행한다.");
+})().catch(e =&gt; { console.error("FAIL:", e.message.slice(0, 300)); process.exit(1); });
+</pre>
+    </div>
+    <p>실행 후 에디터에서 눈으로 확인하고, <b>발행은 직접</b> 누릅니다.</p>
+  </section>
+
+  <section class="sec" id="step3">
+    <div class="sec-label">STEP 3</div>
+    <h2>아침마다 혼자 돌게 하기 , rank_daemon.sh</h2>
+    <p>매일 아침 7시대에 순위를 재고, 떨어졌으면 수정안까지 만들어 텔레그램으로 보냅니다. 서버가 늘 켜져 있는 환경(개발 워크스페이스, 라즈베리파이, 집 서버 등)에서 돌립니다.</p>
+    <div class="copybox">
+      <div class="bar"><span>rank_daemon.sh (전문)</span><button class="copybtn" onclick="cp(this)">복사</button></div>
+      <pre>#!/usr/bin/env bash
+# 순위 감시·수정안 데몬 , 하루 1회(KST 아침 7시대) rank_watch 를 돌리고,
+# 하락이 감지되면 rank_fix(분석·수정안)까지 자동으로 만들어 텔레로 보고한다.
+# ★발행은 하지 않는다(2026-08-20 사장님 확정: 자동화 범위 = 수정안 생성까지, 발행은 매번 승인).
+# 기동: .idx/dev.nix onStart 가 자동 실행(worker_daemon 과 같은 패턴). 수동: bash rank_daemon.sh
+cd /home/user/template || exit 1
+PIDF=/tmp/rank_daemon.pid
+LOG=/home/user/template/docs/naverblog-auto/rank_daemon.log
+TG=/home/user/template/docs/telegram-claude-bridge/tg_send.sh
+
+# 단일 인스턴스(멱등)
+if [ -f "$PIDF" ] &amp;&amp; kill -0 "$(cat "$PIDF" 2&gt;/dev/null)" 2&gt;/dev/null; then exit 0; fi
+echo $$ &gt; "$PIDF"
+trap 'rm -f "$PIDF"' EXIT
+echo "[$(date '+%F %T')] rank_daemon up (pid $$)" &gt;&gt; "$LOG"
+
+while true; do
+  # KST 시각·날짜 (서버는 UTC , date TZ 지정이 안 먹는 환경이라 파이썬 zoneinfo 로)
+  read -r KH KD &lt;&lt;&lt; "$(python3 -c "from datetime import datetime;from zoneinfo import ZoneInfo;n=datetime.now(ZoneInfo('Asia/Seoul'));print(n.hour, n.strftime('%Y-%m-%d'))")"
+  MARK="/tmp/rank_daemon_done_$KD"
+  if [ "$KH" -ge 7 ] &amp;&amp; [ "$KH" -lt 9 ] &amp;&amp; [ ! -f "$MARK" ]; then
+    echo "[$(date '+%F %T')] 순위 측정 시작 (KST $KD ${KH}시)" &gt;&gt; "$LOG"
+    node docs/naverblog-auto/rank_watch.js --notify &gt;&gt; "$LOG" 2&gt;&amp;1
+    touch "$MARK"
+    # 하락 감지 → rank_fix 자동(수정안 생성까지). pickDroppedKeyword 로직과 동일 기준.
+    DROP=$(node -e '
+      const h=require("/home/user/template/docs/naverblog-auto/rank_history.json");
+      const days=Object.keys(h).sort(); if(days.length&lt;2)process.exit(0);
+      const [a,b]=[h[days[days.length-2]],h[days[days.length-1]]];
+      let best=null;
+      for(const kw of Object.keys(b)){const x=a[kw]&amp;&amp;a[kw].rank,y=b[kw]&amp;&amp;b[kw].rank;
+        if(x&amp;&amp;y&amp;&amp;y&gt;x&amp;&amp;(!best||y-x&gt;best.d))best={kw,x,y,d:y-x};}
+      if(best)console.log(`${best.kw}\t${best.x}\t${best.y}`);
+    ' 2&gt;&gt;"$LOG")
+    if [ -n "$DROP" ]; then
+      KW=$(echo "$DROP" | cut -f1); FR=$(echo "$DROP" | cut -f2); TO=$(echo "$DROP" | cut -f3)
+      echo "[$(date '+%F %T')] 하락 감지: $KW ${FR}→${TO}위 , rank_fix 실행" &gt;&gt; "$LOG"
+      if node docs/naverblog-auto/rank_fix.js "$KW" &gt;&gt; "$LOG" 2&gt;&amp;1; then
+        FIX=$(ls -t docs/reel_rankfix/evidence/fix_*.md 2&gt;/dev/null | head -1)
+        DIAG=$(sed -n '/^## 진단/,/^## 보강 본문/p' "$FIX" 2&gt;/dev/null | sed '1d;$d' | head -4)
+        bash "$TG" "📉 순위 하락 감지 → 수정안 준비 완료
+
+키워드: $KW , ${FR}위 → ${TO}위
+
+진단:
+$DIAG
+
+수정안: $FIX
+★발행은 안 했습니다. 발행하려면 '발행해줘'라고 답 주세요(원본 백업 있음)." &gt;&gt; "$LOG" 2&gt;&amp;1
+      else
+        bash "$TG" "📉 순위 하락 감지($KW ${FR}→${TO}위)했는데 수정안 생성이 실패했습니다. rank_daemon.log 확인 필요." &gt;&gt; "$LOG" 2&gt;&amp;1
+      fi
+    fi
+  fi
+  sleep 600
+done
+</pre>
+    </div>
+    <div class="hl ok"><strong>실제 기록:</strong> 이 데몬이 첫 아침 실행에서 "재입고 알림 5위 → 7위" 하락을 감지해 수정안과 함께 텔레그램으로 보고했습니다. 사람이 한 일은 아침에 메시지를 읽은 것뿐입니다.</div>
+  </section>
+
+  <section class="sec" id="stuck">
+    <div class="sec-label">STUCK?</div>
+    <h2>막히면</h2>
+    <ul>
+      <li><b>클로드 CLI가 없다</b> → 클로드 코드 설치 가이드부터: 홈에서 "클로드 코드 시작" 가이드를 보세요.</li>
+      <li><b>텔레그램 봇이 없다</b> → 이전 가이드(순위 알림)의 봇 만들기 3분 섹션 그대로.</li>
+      <li><b>검색 결과에 내 글이 안 잡힌다</b> → 30위 밖(권외)이면 못 집습니다. 키워드를 더 구체적으로.</li>
+      <li><b>세션 만료</b> → 네이버 로그인 상태 파일을 다시 저장하고 재실행.</li>
+    </ul>
+    <div class="cta"><a href="https://n016yoyo.github.io/smart-life-blog/">다른 자동화 가이드 보기</a></div>
+    <div class="foot">AI TIGER MASK · 비개발자도 따라 할 수 있게, 만든 그대로 공개합니다</div>
+  </section>
+</div>
+
+<script>
+function cp(b){const t=b.closest('.copybox').querySelector('pre').innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨!';setTimeout(()=>b.textContent='복사',1500)})}
+fetch('https://smart-life-views.n016yoyo.workers.dev/hit?p=naver-rank-fix').then(r=>r.json()).then(d=>{document.getElementById('viewcount').textContent=(d.views||0).toLocaleString()}).catch(()=>{document.getElementById('viewcount').textContent='많은'})
+</script>
+</body>
+</html>
