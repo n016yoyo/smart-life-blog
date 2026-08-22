@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 말이 어렵다면, 말투 바꾸는 칸이 이미 있습니다 | AI TIGER MASK</title>
+<meta name="description" content="클로드 답이 어렵게 느껴지는 건 내 탓이 아닙니다. 같은 불만 글에 929명이 저도요를 눌렀어요. 모델을 내리지 말고 설정에서 말투를 고르세요. 다섯 가지가 뭐가 다른지, 비개발자는 뭘 골라야 하는지 정리했습니다.">
+<meta property="og:title" content="클로드 말이 어렵다면, 말투 바꾸는 칸이 이미 있습니다">
+<meta property="og:description" content="모델을 바꾸는 게 아니라 설정 한 줄입니다. 다섯 가지 말투 비교표.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+#table td:nth-child(2){white-space:nowrap;font-weight:700;color:var(--ink)}
+#table td:first-child{white-space:normal}
+</style>
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>클로드 말이 어렵다면, <span style="color:var(--acc)">말투 칸</span>이 이미 있습니다</h1>
+  <p class="sub">답은 맞는데 말을 어렵게 한다는 글에 <b>929명</b>이 저도요를 눌렀습니다. 옛날 버전으로 내려가겠다는 사람까지 나왔는데, 그럴 필요가 없어요. 설정에 <b>말투 고르는 칸</b>이 이미 있습니다.</p>
+  <div class="chips">
+    <span class="chip">누르는 건 <b>세 번</b></span>
+    <span class="chip">설치 <b>불필요</b></span>
+    <span class="chip">다섯 가지 <b>비교표</b></span>
+    <span class="chip">읽는 데 <b>3분</b></span>
+  </div>
+  <div class="viewbar">👀 지금까지 <b><span id="viewcount">…</span></b> 명이 봤어요</div>
+</header>
+
+<div class="wrap">
+  <div class="toc">
+    <a href="#why">내 탓이 아닙니다</a>
+    <a href="#how">세 번만 누르면 됩니다</a>
+    <a href="#table">다섯 가지 비교</a>
+    <a href="#pick">뭘 고를까</a>
+    <a href="#trap">함정</a>
+    <a href="#src">출처</a>
+  </div>
+
+  <div class="sec" id="why">
+    <div class="sec-label">WHY</div>
+    <h2>내 탓이 아닙니다</h2>
+    <p>클로드 답이 길고 어렵게 느껴진 적 있으시죠. 저는 한동안 <b>제가 못 알아듣는 줄</b> 알았습니다.</p>
+    <p>그런데 레딧에 똑같은 글이 올라왔고 <b>929명</b>이 저도요를 눌렀습니다. 댓글도 <b>205개</b> 달렸어요. 답이 틀린 게 아니라 <b>말을 어렵게 한다</b>는 게 요지였습니다.</p>
+    <div class="hl warn"><strong>여기서 많이들 하는 선택.</strong> "예전 모델이 나았다"며 <b>구버전으로 내려갑니다.</b> 성능을 버리는 선택입니다. 그런데 문제는 성능이 아니라 <b>말투</b>였습니다.</div>
+    <p>원글 쓴 사람도 나중에 설정을 찾아서 글에 덧붙여 놨더라고요. 그 칸이 뭔지 정리해 드립니다.</p>
+  </div>
+
+  <div class="sec" id="how">
+    <div class="sec-label">HOW</div>
+    <h2>세 번만 누르면 됩니다</h2>
+    <div class="card">
+      <h3>1. 설정 창을 엽니다</h3>
+      <p>클로드 코드를 쓰신다면 터미널에 <code>/output-style</code> 을 치면 바로 목록이 뜹니다. 앱·웹이면 설정으로 들어가세요.</p>
+    </div>
+    <div class="card">
+      <h3>2. "스타일"이라고 검색합니다</h3>
+      <p>메뉴 이름이 버전마다 조금씩 다릅니다. <b>Output style · 출력 스타일 · 응답 스타일</b> 중 하나로 보입니다.</p>
+    </div>
+    <div class="card">
+      <h3>3. 다섯 개 중 하나를 고릅니다</h3>
+      <p>고르면 바로 적용됩니다. <b>저장 버튼도 없고 재시작도 필요 없습니다.</b> 마음에 안 들면 다시 들어가서 바꾸면 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="table">
+    <div class="sec-label">TABLE</div>
+    <h2>다섯 가지가 뭐가 다른가</h2>
+    <table>
+      <tr><th>이름</th><th>어떻게 말하나</th><th>이럴 때</th></tr>
+      <tr><td>Default</td><td>기본. 일 빨리 끝내고 짧게 답함</td><td>익숙해졌을 때</td></tr>
+      <tr><td>Proactive</td><td>묻지 않고 바로 실행. 중간 확인이 적음</td><td>손이 빠른 사람</td></tr>
+      <tr><td>Concise</td><td>결론부터. 앞뒤 설명을 다 뺌</td><td>답만 필요할 때</td></tr>
+      <tr><td>Explanatory</td><td>왜 그렇게 했는지까지 말해줌</td><td><b style="color:var(--acc)">비개발자 추천</b></td></tr>
+      <tr><td>Learning</td><td>중간중간 직접 해보라고 시킴</td><td>배우면서 하고 싶을 때</td></tr>
+    </table>
+    <div class="hl ok"><strong>한 줄로.</strong> 설명이 필요하면 <b>Explanatory</b>, 답만 짧게 받고 싶으면 <b>Concise</b> 입니다.</div>
+  </div>
+
+  <div class="sec" id="pick">
+    <div class="sec-label">PICK</div>
+    <h2>뭘 고를까</h2>
+    <h3>처음 쓰신다면 , Explanatory</h3>
+    <p>이게 왜 이렇게 됐는지 같이 말해줍니다. 답만 받으면 다음에 또 물어봐야 하는데, 이유를 같이 들으면 <b>다음엔 혼자 됩니다.</b> 길어지는 게 단점이 아니라 그 자리가 배우는 자리입니다.</p>
+    <h3>이제 익숙하다면 , Concise</h3>
+    <p>설명이 반복으로 느껴지기 시작하면 그때 바꾸세요. 결론부터 나와서 훨씬 빠릅니다.</p>
+    <h3>반대로 Proactive 는 조심</h3>
+    <p>중간 확인을 줄이는 설정입니다. 편하지만 <b>내가 확인할 자리도 같이 줄어듭니다.</b> 되돌리기 어려운 일을 시킬 때는 권하지 않습니다.</p>
+    <div class="hl">고민되면 <b>Explanatory 로 두고 일주일 써보세요.</b> 바꾸는 데 3초라 되돌리기가 제일 쉬운 설정입니다.</div>
+  </div>
+
+  <div class="sec" id="trap">
+    <div class="sec-label">TRAP</div>
+    <h2>함정</h2>
+    <div class="trap">
+      <div class="t">⚠️ 모델 이름과 헷갈립니다</div>
+      <p>말투 설정은 <b>모델을 바꾸는 게 아닙니다.</b> Opus 를 쓰면서 Concise 로 둘 수도 있고, 그 반대도 됩니다. 성능은 그대로 두고 <b>말하는 방식만</b> 바뀝니다.</p>
+    </div>
+    <div class="trap">
+      <div class="t">⚠️ 대화 하나에만 적용된 줄 압니다</div>
+      <p>고르면 <b>그다음 대화부터 계속</b> 적용됩니다. 이미 진행 중이던 대화는 중간부터 바뀌니, 바로 안 바뀐 것 같으면 새 대화를 하나 열어보세요.</p>
+    </div>
+    <div class="trap">
+      <div class="t">⚠️ 이름이 영어라 지나칩니다</div>
+      <p>메뉴가 영어로만 보여서 <b>개발자용인 줄 알고 그냥 닫는</b> 분이 많습니다. 다섯 개 다 그냥 말투입니다. 아무거나 눌러도 망가지지 않습니다.</p>
+    </div>
+  </div>
+
+  <div class="sec" id="src">
+    <div class="sec-label">SOURCE</div>
+    <h2>출처</h2>
+    <ul>
+      <li>불만 글 , <b>r/ClaudeAI</b> 의 "답은 맞는데 말이 어렵다" 취지 글. 업보트 <b>929</b> · 댓글 <b>205개</b>. 영상에 쓴 화면은 그 글의 실캡처이고, 숫자는 <b>캡처를 찍은 시점</b> 기준이라 지금은 더 올라가 있을 수 있습니다</li>
+      <li>다섯 가지 이름과 설명 , 클로드 <b>출력 스타일 설정 화면에 표시되는 그대로</b>입니다. 한국어 풀이는 제가 붙였습니다</li>
+      <li>비개발자 추천이 Explanatory 인 것은 <b>제 판단</b>입니다. 공식 권장이 아닙니다</li>
+      <li>메뉴 이름·위치는 버전에 따라 달라질 수 있습니다. 안 보이면 설정에서 <b>style</b> 로 검색하세요</li>
+    </ul>
+  </div>
+
+  <div class="cta">
+    <a href="https://www.instagram.com/aitigermask/">인스타에서 만든 과정 보기</a>
+  </div>
+
+  <div class="foot">
+    <a href="../">← 다른 가이드 보기</a> · AI TIGER MASK
+  </div>
+</div>
+
+</body>
+</html>
