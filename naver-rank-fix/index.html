@@ -481,5 +481,12 @@ done
 function cp(b){const t=b.closest('.copybox').querySelector('pre').innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨!';setTimeout(()=>b.textContent='복사',1500)})}
 fetch('https://smart-life-views.n016yoyo.workers.dev/hit?p=naver-rank-fix').then(r=>r.json()).then(d=>{document.getElementById('viewcount').textContent=(d.views||0).toLocaleString()}).catch(()=>{document.getElementById('viewcount').textContent='많은'})
 </script>
+<script>
+// 조회수: 이 페이지 뷰 +1 후 값 표시
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-rank-fix"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById("viewcount").textContent="—"; });
+</script>
 </body>
 </html>

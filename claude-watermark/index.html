@@ -275,5 +275,12 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
   </div>
 </div>
 
+<script>
+// 조회수: 이 페이지 뷰 +1 후 값 표시
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-watermark"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById("viewcount").textContent="—"; });
+</script>
 </body>
 </html>

@@ -306,5 +306,12 @@ function cp(b){
   navigator.clipboard.writeText(t).then(()=>{ const o=b.textContent; b.textContent='복사됨'; setTimeout(()=>b.textContent=o,1200); });
 }
 </script>
+<script>
+// 조회수: 이 페이지 뷰 +1 후 값 표시
+fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"caption-seo"})})
+  .then(function(r){return r.json();})
+  .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
+  .catch(function(){ document.getElementById("viewcount").textContent="—"; });
+</script>
 </body>
 </html>
