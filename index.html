@@ -467,26 +467,32 @@ button{font-family:inherit}
     if(days >= 0 && days <= NEW_DAYS) badge(el, 'kw-new', 'NEW');
   });
 
-  fetch('https://instagram.verification-app.workers.dev/api/views?pages='+els.map(function(e){return e.dataset.views;}).join(','))
-    .then(function(r){return r.json();})
-    .then(function(data){
+  var BASE = 'https://instagram.verification-app.workers.dev/api/views?pages=';
+  var BATCH = 25;
+  var allData = {};
+  var chunks = [];
+  for(var i=0; i<els.length; i+=BATCH) chunks.push(els.slice(i,i+BATCH));
+  Promise.all(chunks.map(function(chunk){
+    return fetch(BASE+chunk.map(function(e){return e.dataset.views;}).join(','))
+      .then(function(r){return r.json();})
+      .then(function(d){Object.keys(d).forEach(function(k){allData[k]=d[k];});})
+      .catch(function(){});
+  })).then(function(){
       els.forEach(function(el){
-        var n = data[el.dataset.views];
+        var n = allData[el.dataset.views];
         if(n > 0) el.textContent = n.toLocaleString()+'회';
       });
-      // HOT = 조회수 상위 HOT_TOP개. 이미 붙은 NEW는 떼고 HOT으로 바꾼다.
       els.slice()
-        .sort(function(a,b){ return (data[b.dataset.views]||0) - (data[a.dataset.views]||0); })
+        .sort(function(a,b){ return (allData[b.dataset.views]||0) - (allData[a.dataset.views]||0); })
         .slice(0, HOT_TOP)
         .forEach(function(el){
-          if(!(data[el.dataset.views] > 0)) return;
+          if(!(allData[el.dataset.views] > 0)) return;
           var t = el.closest('.kw-card') && el.closest('.kw-card').querySelector('.kw-t');
           if(!t) return;
           var old = t.querySelector('.kw-new'); if(old) old.remove();
           badge(el, 'kw-hot', 'HOT');
         });
-    })
-    .catch(function(){});
+  });
 })();
 </script>
 <!-- redeploy: Pages 배포 실패 재트리거 2026-07-06 11:29 -->
