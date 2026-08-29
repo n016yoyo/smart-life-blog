@@ -76,19 +76,19 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
   <div class="sec"><div class="sec-label">WHAT</div><h2>워드 안에서 클로드가 하는 일</h2>
     <img src="appsource_glance.jpg" alt="AppSource Claude by Anthropic for Word 스크린샷: 워드 오른쪽에 클로드 패널" style="width:100%;max-width:720px;border-radius:12px;border:1px solid var(--line)">
     <p style="font-size:13px;color:var(--mut)">AppSource 공식 스크린샷. 워드 오른쪽 패널에서 대화로 시킵니다.</p>
-    <table><tr><th>공식 영상 장면</th><th>시킨 말(영상 그대로)</th><th>결과</th></tr>
-      <tr><td>댓글 정리</td><td>"Summarize the open comments in this document. Who's asking for what and do any of them conflict?"</td><td>6개 댓글을 4명별로 묶고 충돌 1건 표시</td></tr>
-      <tr><td>변경 내용 추적</td><td>"Turn on track changes and keep it on for everything you do."</td><td>이후 모든 수정이 빨간 줄(승인/거부는 내가)</td></tr>
-      <tr><td>팩트체크</td><td>"Check Box for the results doc and compare every claim. Fix any that don't match."</td><td>원본 문서와 대조해 틀린 수치만 수정 카드로</td></tr>
-      <tr><td>분량</td><td>"We need to get this under a thousand words, but don't cut more than you need to. Don't touch the customer quote."</td><td>화면 표시 ~996 words</td></tr>
+    <table><tr><th>공식 영상 장면</th><th>시킨 말(영상 자막 원문)</th><th>결과</th></tr>
+      <tr><td>댓글 정리</td><td>"Summarize the open comments in this document. Who's asking for what and do any of them conflict with each other?"</td><td>6개 댓글을 4명별로 묶고 충돌 1건 표시</td></tr>
+      <tr><td>변경 내용 추적</td><td>"Turn on track changes and keep it on for everything you do in this document."</td><td>이후 모든 수정이 빨간 줄(승인/거부는 내가)</td></tr>
+      <tr><td>팩트체크</td><td>"Let's look at Morgan's comment. Check Box for the Rock Pool 3.0 early access results doc and compare every performance and speed claim in this post against it. Fix any that don't match the doc."</td><td>원본 문서와 대조해 틀린 수치만 수정 카드로</td></tr>
+      <tr><td>분량</td><td>"We need to get this under a thousand words, but don't cut any more than you need to. Don't touch the customer quote or availability dates. Start with the background section."</td><td>화면 표시 ~996 words</td></tr>
       <tr><td>교정</td><td>패널에 <code>/</code> → copy-edit 스킬</td><td>오타·중복어·문장부호 한 번에</td></tr></table>
     <p>출처: <a href="https://www.youtube.com/watch?v=x80HVKbZrno">Claude for Word: Turn a draft into a finished document</a>(@claude) · <a href="https://support.claude.com/en/articles/14465370-use-claude-for-word">Use Claude for Word</a>(공식 문서).</p></div>
   <div class="sec"><div class="sec-label">PRICE</div><h2>요금과 지원 버전</h2>
-    <p>공식 문서 표기: <strong>Pro, Max, Team, Enterprise</strong> 플랜에 포함. AppSource 의 "Additional purchase may be required"는 유료 클로드 플랜이 필요하다는 뜻입니다.</p>
+    <p>공식 문서 표기: <strong>Pro, Max, Team, Enterprise</strong> 플랜에 포함(영상 6:31 "included with every paid Claude plan"). AppSource 리스팅의 "Pricing: Additional purchase may be required"는 유료 클로드 플랜이 필요하다는 뜻이지, 추가 결제가 아닙니다. 별점(2.4, 30개, 2026-08-29 기준)은 리스팅에 그대로 보입니다.</p>
     <ul><li>Word on the web</li><li>Word on Windows: Microsoft 365, Version 2205 (build 15202.10000) 이상</li><li>Word on Mac: 16.61 (build 22040100) 이상</li></ul>
     <div class="hl warn"><strong>제가 안 한 말.</strong> 저는 아직 워드에서 직접 안 써봤습니다. 위 표는 공식 영상·문서 그대로이고, 2026년 8월 29일 확인 기준입니다.</div></div>
   <div class="sec"><div class="sec-label">INSTALL</div><h2>설치 3단계 (공식 문서 순서)</h2>
-    <ol><li><strong>AppSource 에서 "Claude for Microsoft 365" 열기.</strong> 워드에서는 삽입(추가 기능) → 스토어에서 "Claude" 검색해도 됩니다. Mac 은 도구 → 추가 기능.</li><li><strong>Get it now / 추가.</strong></li><li><strong>워드 홈 리본의 Claude 를 열고 클로드 계정으로 로그인.</strong></li></ol></div>
+    <ol><li><strong>AppSource 에서 <a href="https://appsource.microsoft.com/en-us/product/office/WA200010453">Claude by Anthropic for Word</a> 열기</strong>(통합 앱 이름은 <a href="https://appsource.microsoft.com/en-us/product/office/WA200010725">Claude for Microsoft 365</a>, 공식 문서가 가리키는 리스팅). 워드에서는 삽입(추가 기능) → 스토어에서 "Claude" 검색해도 됩니다. Mac 은 도구 → 추가 기능.</li><li><strong>Get it now / 추가.</strong></li><li><strong>워드 홈 리본의 Claude 를 열고 클로드 계정으로 로그인.</strong></li></ol></div>
   <div class="sec"><div class="sec-label">PROMPTS</div><h2>첫 프롬프트 5개 (복사해서 쓰세요)</h2>
     <div class="copybox"><div class="bar"><span>Claude for Word 첫 프롬프트</span><button class="copybtn" onclick="navigator.clipboard.writeText(document.getElementById('pp').innerText);this.textContent='복사됨'">복사</button></div>
 <pre id="pp">1. 변경 내용 추적을 켜고, 이 문서에서 하는 모든 작업에 유지해줘.
