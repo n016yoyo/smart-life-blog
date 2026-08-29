@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Restocky 설치 한 번만 부탁드립니다 | AI TIGER MASK</title>
+<meta name="description" content="릴스 72편과 가이드 52개를 무료로 드린 사람의 부탁 하나. Restocky 설치 한 번. 별점은 안 눌러도 되고, 써보고 별로면 지우셔도 됩니다.">
+<meta property="og:title" content="부탁은 하나입니다. 설치 한 번.">
+<meta property="og:description" content="별점은 안 눌러도 되고 지우셔도 됩니다. 깔아보신 것만으로 힘이 됩니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<link rel="icon" href="https://n016yoyo.github.io/smart-life-blog/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--acc:#D97757;--ink:#1A1812;--mut:#6B6760;--paper:#F1ECE2;--card:#fff;--line:#E6DDCD;--ok:#2D9E6B;--warn:#C8841A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:52px 20px 42px;text-align:center}
+header .brand{font-size:12px;letter-spacing:3px;color:var(--acc);font-weight:800;margin-bottom:10px}
+header h1{font-size:clamp(24px,5.8vw,32px);line-height:1.25;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px;max-width:560px;margin-left:auto;margin-right:auto}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--acc)}
+.viewbar{margin-top:16px;font-size:12px;color:#c9c3b8}
+.viewbar b{color:#fff}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0 0}
+.toc a{font-size:12.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 11px;background:var(--card);transition:all .15s}
+.toc a:hover{color:var(--ink);border-color:var(--acc)}
+.sec{padding:32px 0;border-bottom:1px solid var(--line)}
+.sec:last-child{border-bottom:none}
+.sec-label{font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--acc);margin-bottom:6px}
+.sec h2{font-size:clamp(20px,4.5vw,24px);letter-spacing:-.02em;margin-bottom:14px}
+.sec p{font-size:14.5px;color:#43403a;margin:8px 0}
+.sec h3{font-size:16px;font-weight:700;margin:20px 0 8px}
+.sec ul,.sec ol{margin:8px 0 8px 20px;font-size:14px;color:#43403a}
+.sec li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(30,25,15,.04)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.card p{font-size:13.5px;color:#43403a}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#ede7da;font-weight:700}
+td:first-child{color:var(--mut);white-space:nowrap}
+.copybox{position:relative;margin:12px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--acc);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:12px 12px 0 0}
+.copybtn{background:#fff;color:var(--acc);border:0;border-radius:7px;padding:5px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.copybtn:active{transform:scale(.96)}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;border-radius:0 0 12px 12px}
+code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.hl{background:#fff7f3;border-left:3px solid var(--acc);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13.5px;color:#43403a}
+.hl strong{color:var(--ink)}
+.hl.warn{background:#fffaf0;border-left-color:var(--warn)}
+.hl.ok{background:#f0faf5;border-left-color:var(--ok)}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.badge.ok{border-color:#2D9E6B;color:#2D9E6B;background:#f0faf5}
+.badge.warn{border-color:#C8841A;color:#C8841A;background:#fffaf0}
+.trap{background:#fffaf0;border:1px solid #f0e2c4;border-radius:14px;padding:14px 16px;margin:12px 0}
+.trap .t{font-size:13px;font-weight:800;color:var(--warn);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.trap p{font-size:13.5px;color:#43403a;margin:4px 0}
+.cta{text-align:center;margin-top:32px}
+.cta a{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 28px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--mut);font-size:12.5px}
+.foot a{color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">AI TIGER MASK</div>
+  <h1>부탁은 <span style="color:var(--acc)">하나</span>입니다. 설치 한 번.</h1>
+  <p class="sub">별점은 억지로 누르지 않으셔도 되고, 써보고 별로면 지우셔도 됩니다. 깔아보신 것만으로 힘이 됩니다.</p>
+  <div class="chips"><span class="chip">릴스 <b>72편</b></span><span class="chip">가이드 <b>52개</b></span><span class="chip">전부 <b>무료</b></span></div>
+</header>
+<div class="wrap">
+  <div class="sec"><div class="sec-label">ASK</div><h2>오늘 드리는 부탁</h2>
+    <div class="hl ok"><strong>설치 한 번.</strong> 그게 전부입니다. 별점도, 후기도, 링크를 넣어보는 것도 하고 싶으실 때만 하세요.</div>
+    <p style="font-size:13px;color:var(--mut)">왜 부탁드리냐면: 2026년 6월 14일 출시 뒤 76일 동안 Google Play 다운로드 표기는 "10+", App Store 별점은 평가 1개에 1.0 입니다(2026년 8월 29일 기준, 스토어 페이지 그대로). 안 깔아보시면 뭐가 문제인지 저도 모른 채로 계속 만들게 됩니다.</p></div>
+  <div class="sec"><div class="sec-label">INSTALL</div><h2>설치</h2>
+    <div class="badge-row"><a class="badge" href="https://apps.apple.com/kr/app/restocky/id6779082478">App Store (iPhone·iPad)</a><a class="badge" href="https://play.google.com/store/apps/details?id=com.leocompany.restocky">Google Play (Android)</a></div>
+    <p style="font-size:13px;color:var(--mut)">무료입니다. 회원가입 없이 바로 씁니다. 앱 안에 광고가 있습니다(Play 표기 "광고 포함").</p></div>
+  <div class="sec"><div class="sec-label">WHAT</div><h2>앱이 하는 일</h2>
+    <ul><li>쇼핑몰 상품 링크를 하나 넣어두면, 가격과 재고를 대신 봅니다.</li><li>재입고되거나 목표가 아래로 떨어지면 알림이 옵니다.</li><li>폰을 꺼도 서버가 대신 확인합니다.</li></ul>
+    <p style="font-size:13px;color:var(--mut)">쿠팡·네이버·아마존·라쿠텐 등 대부분의 쇼핑몰 상품 페이지 링크가 됩니다. 안 되는 페이지면 그것도 알려주세요, 그게 제일 도움이 됩니다.</p></div>
+  <div class="sec"><div class="sec-label">GIVE</div><h2>그동안 드린 것</h2>
+    <p>릴스 72편, 가이드 52개. 전부 무료였고 판매한 적이 없습니다(2026년 8월 29일 기준). 가이드는 <a href="https://n016yoyo.github.io/smart-life-blog/">여기</a>에 전부 있습니다.</p>
+    <div class="hl"><strong>혹시 하나라도 도움이 되셨다면</strong>, 이번 한 번만 설치로 갚아주셔도 되고, 안 하셔도 괜찮습니다. 가이드는 앞으로도 무료입니다.</div></div>
+</div>
+</body>
+</html>
