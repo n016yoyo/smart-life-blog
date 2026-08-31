@@ -81,7 +81,8 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <p>쿠팡 파트너스에 가입한 뒤 <a href="https://partners.coupang.com/">파트너스 사이트</a> 에서 Open API 액세스 키와 시크릿 키를 발급받습니다. 두 키는 코드에 적지 말고 파일로 두고 권한을 600 으로 잠급니다.</p>
     <pre><code>COUPANG_ACCESS_KEY=발급받은키
 COUPANG_SECRET_KEY=발급받은시크릿</code></pre>
-    <p style="font-size:13px;color:var(--mut)">서명은 HmacSHA256 이고, 서명 문자열은 <code>yymmddTHHMMSSZ + METHOD + PATH + QUERY</code> 입니다. 이 순서가 틀리면 401 이 납니다.</p></div>
+    <p style="font-size:13px;color:var(--mut)">서명은 HmacSHA256 이고, 서명 문자열은 <code>yymmddTHHMMSSZ + METHOD + PATH + QUERY</code> 입니다. 이 순서가 틀리면 401 이 납니다.</p>
+<p style="font-size:14px;margin-top:14px"><b>여기서 헷갈리기 쉬운 것.</b> 서명은 <b>API 가 내 계정으로 딥링크를 내주게 하는 조건</b>이고, 판매를 내 것으로 잡아주는 건 그 딥링크에 붙은 <b>내 태그</b>(제 경우 <code>AF2205339</code>)입니다. 그래서 쿠팡 상품 주소를 그냥 복사해 붙이면, 팔려도 내 실적이 아닙니다. 코드 없이 파트너스 웹에서 링크를 받아도 태그는 붙으니, 서명이 필요한 건 <b>자동화로 만들 때</b>입니다.</p></div>
   <div class="sec"><div class="sec-label">CODE</div><h2>코드 세 개</h2>
     <ul><li><code>coupang.js</code> , 검색·베스트·딥링크 생성</li><li><code>review.js</code> , 키워드 → 상품 3개 → 딥링크 → 비교 글 → 저장</li><li><code>report.js</code> , 클릭·주문·수수료 실적 조회</li></ul>
     <p>클로드 코드에 이렇게 말하면 그대로 만들어 줍니다.</p>
