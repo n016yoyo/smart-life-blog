@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>쿠팡 파트너스 자동화: 키워드 하나로 상품·링크·비교글까지 | AI TIGER MASK</title>
-<meta name="description" content="쿠팡 파트너스 Open API 로 상품을 고르고 내 딥링크를 만들고 비교 글까지 자동으로. 실제 코드와 실적(석 달 클릭 67·주문 3·수수료 747원) 공개.">
+<meta name="description" content="쿠팡 파트너스 Open API 로 상품을 고르고 내 딥링크를 만들고 비교 글까지 자동으로. 실제 코드와 만들기 전 석 달 실적(클릭 67·주문 3·수수료 747원) 공개.">
 <meta property="og:title" content="쿠팡 링크만 뿌리면 안 벌립니다">
 <meta property="og:description" content="키워드 하나로 상품·딥링크·비교 글까지 31초. 코드 그대로 공개합니다.">
 <meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
@@ -69,7 +69,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 <header>
   <div class="brand">AI TIGER MASK</div>
   <h1>쿠팡 링크만 뿌리면 <span style="color:var(--acc)">안 벌립니다</span></h1>
-  <p class="sub">제 실적을 먼저 보여드릴게요. 석 달 동안 클릭 67회, 주문 3건, 수수료 747원. 링크는 있었는데 살까 말까 정해주는 글이 없었습니다.</p>
+  <p class="sub">이거 만들기 전 석 달 실적입니다. 클릭 67회, 주문 3건, 수수료 747원. 링크는 있었는데 살까 말까 정해주는 글이 없었습니다.</p>
   <div class="chips"><span class="chip">클릭 <b>67</b></span><span class="chip">주문 <b>3</b></span><span class="chip">수수료 <b>747원</b></span></div>
 </header>
 <div class="wrap">
@@ -93,8 +93,9 @@ COUPANG_SECRET_KEY=발급받은시크릿</code></pre>
 4) 수수료 고지 문구를 마지막에 붙여줘.
 키는 .coupang_keys 파일에서 읽고, 서명은 HmacSHA256 으로.</code></pre></div>
   <div class="sec"><div class="sec-label">HONEST</div><h2>솔직한 부분</h2>
-    <p>이 자동화로 아직 돈을 많이 벌지는 못했습니다(위 실적 그대로입니다). 글이 붙으면 결제로 이어질 확률이 올라간다고 보고 만든 것이고, 결과는 앞으로 같은 방식으로 공개하겠습니다.</p>
-    <div class="hl">쿠팡이 서버 아이피를 막고 있어서 <strong>상품 페이지 크롤링은 안 됩니다.</strong> 그래서 상품 정보는 전부 파트너스 API 응답만 씁니다. 이게 오히려 안전합니다, 없는 정보를 못 쓰니까요.</div>  <div class="sec"><div class="sec-label">고지</div><h2>수수료 고지</h2>
+    <p><b>위 747원은 이 자동화가 번 돈이 아닙니다.</b> 이 코드는 2026년 8월 30일에 만들었고, 747원은 그 전 석 달(6~8월) 동안 링크만 붙여 두던 기간의 실적입니다. 글이 붙으면 결제로 이어질 확률이 올라간다고 보고 만든 것이고, 이 자동화의 결과는 앞으로 같은 방식으로 공개하겠습니다.</p>
+    <div class="hl">쿠팡이 서버 아이피를 막고 있어서 <strong>상품 페이지 크롤링은 안 됩니다.</strong> 그래서 상품 정보는 전부 파트너스 API 응답만 씁니다. 이게 오히려 안전합니다, 없는 정보를 못 쓰니까요.</div></div>
+  <div class="sec"><div class="sec-label">고지</div><h2>수수료 고지</h2>
     <p>이 페이지와 영상에서 소개하는 쿠팡 링크는 파트너스 링크입니다. 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.</p></div>
 </div>
 </body>
