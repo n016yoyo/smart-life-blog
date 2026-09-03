@@ -1,0 +1,123 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>쿠팡 링크 붙은 블로그 글이 혼자 올라가게 만들기 | AI TIGER MASK</title>
+<meta name="description" content="클로드한테 문장 세 개를 시켜서 만든 자동 발행기. 준비물 3개, 프롬프트 원문, 지켜야 하는 규칙과 이유, 우리가 밟은 함정까지 그대로 공개합니다.">
+<meta property="og:title" content="쿠팡 링크 붙은 블로그 글이 혼자 올라가게 만들기">
+<meta property="og:description" content="코드 100줄, 제가 짠 것도 아닙니다. 클로드한테 시킨 문장 세 개와 준비물 3개를 그대로 공개합니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/og-image.png">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.who h2{font-size:16px;margin-bottom:7px}.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}.rule p{font-size:13.5px;color:#4b473f}
+.rule.add{border-color:var(--o);background:#fff7f3}.rule.add .n{background:var(--o);color:#fff}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}.how li{margin:6px 0}
+.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}.foot a{color:var(--dim)}
+</style></head><body>
+
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>쿠팡 링크 붙은 블로그 글이<br>혼자 올라가게 만들기</h1>
+  <div class="sub">제가 한 건 클로드한테 문장 세 개 친 게 다입니다</div>
+  <div class="chips"><span class="chip">코드 <b>100줄</b></span><span class="chip">준비물 <b>3개</b></span><span class="chip">만드는 데 <b>하루 안</b></span><span class="chip">수익 <b>아직 0원</b></span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>먼저 밝힙니다</h2>
+    <p>저는 쿠팡 파트너스를 <b>석 달 동안 링크만 뿌리는 방식</b>으로 해봤고, 결과는 클릭 67회 · 주문 3건 · 수수료 <b>747원</b>이었습니다. 그래서 방식을 바꿔 <b>글이 혼자 올라가게</b> 만들었습니다. 이 페이지는 그 만드는 법을 그대로 공개하는 글입니다.</p>
+    <p class="note">자동 발행은 2026년 9월 3일에 시작했습니다. <b>그 방식으로 번 돈은 아직 0원입니다.</b> "이렇게 하면 얼마 번다"는 말은 못 합니다. 대신 어느 글이 벌었는지 세는 방법까지 같이 공개합니다.</p>
+  </div>
+
+  <div class="lead"><h2>준비물은 세 개뿐입니다</h2><p>개발 지식은 필요 없고, 클로드 코드만 깔려 있으면 됩니다</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>쿠팡 파트너스 키 두 줄</h3>
+      <p><a href="https://partners.coupang.com" target="_blank" rel="noopener">파트너스</a>에 가입하고 승인되면 <b>액세스 키 · 시크릿 키</b>가 나옵니다. 이 두 줄이 있어야 상품 정보와 내 추천 링크를 API로 받아옵니다. 상품 페이지를 긁는 방식은 쿠팡이 막아둔 방식이라 쓰지 않습니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>네이버 로그인 한 번</h3>
+      <p>브라우저 자동화로 글을 쓰기 때문에 <b>로그인 세션(쿠키)</b>을 한 번 저장해두면 그다음부터는 안 물어봅니다. 이건 사람이 직접 한 번 해야 하는 부분입니다.</p></div></div>
+    <div class="rule add"><div class="n">3</div><div><h3>클로드한테 줄 규칙 세 문장</h3>
+      <p>여기가 이 자동화의 전부입니다. 아래 프롬프트를 그대로 주면 됩니다.</p></div></div>
+  </div>
+
+  <div class="lead"><h2>제가 클로드한테 친 문장</h2><p>이 세 문장이 그대로 코드가 됐습니다</p></div>
+  <div class="box">
+    <div class="bar"><span>규칙 세 문장</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p3').innerText);this.textContent='복사됨'">복사</button></div>
+<pre id="p3">1. 상품부터 검색하지 마. 사람들이 검색하는 문제부터 잡고, 상품은 글 맨 끝에 붙여.
+2. 고지 문구는 글 맨 첫 줄에 굵게 넣어. "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+3. 링크는 글당 두 개까지만 걸어. 세 개 이상이면 발행하지 말고 멈춰.</pre>
+  </div>
+
+  <div class="lead"><h2>왜 이 세 개인가</h2><p>지키지 않으면 글이 죽거나 정산에서 빠집니다</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>상품부터 검색하면 광고가 됩니다</h3>
+      <p>상품 이름으로 글을 시작하면 읽는 사람이 없습니다. 사람들이 실제로 검색하는 건 <b>문제</b>입니다. "USB C 허브 샀는데 모니터가 안 잡히는 이유"처럼요. 글의 3분의 2는 고르는 기준이고, 상품은 마지막에 후보로만 붙입니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>고지 문구는 맨 첫 줄, 굵게</h3>
+      <p>쿠팡 파트너스는 게시물 <b>맨 상단</b>에 눈에 띄게 표시하도록 요구합니다. 공정거래위원회 추천·보증 심사지침도 2024년 12월부터 <b>시작과 끝에 반복</b>하고 본문과 구분되게 쓰라고 합니다. "대가성이 있을 수 있음" 같은 애매한 표현은 안 되고 <b>"제공받습니다"</b>로 확정해서 씁니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>링크가 많으면 네이버가 글을 누릅니다</h3>
+      <p>한 글에 제휴 링크를 여러 개 넣으면 어뷰징으로 판단됩니다. 저는 <b>글당 2개</b>로 제한하고, 발행 빈도도 <b>주 2회</b>(화·금)로 낮췄습니다. 매일 올리는 게 더 위험합니다.</p></div></div>
+  </div>
+
+  <div class="lead"><h2>어느 글이 벌었는지 세는 법</h2><p>이게 없으면 어느 키워드가 먹히는지 영원히 모릅니다</p></div>
+  <div class="how">
+    <h2>글마다 다른 꼬리표(subId)를 붙입니다</h2>
+    <ol>
+      <li>딥링크를 만들 때 <code>subId</code>를 같이 보냅니다. 그러면 링크 주소에 <code>subid=blog260903a</code> 같은 꼬리표가 붙습니다.</li>
+      <li>파트너스 실적 API(clicks · commission · orders)의 응답에 <b>그 꼬리표가 그대로 찍혀 나옵니다.</b></li>
+      <li>꼬리표로 묶으면 "3일에 올린 글은 클릭 12 · 주문 1", "5일 글은 0" 처럼 <b>글 단위로</b> 갈립니다.</li>
+      <li>저는 이걸 매일 아침 텔레그램으로 받습니다. 글을 늘릴 게 아니라 <b>되는 키워드를 늘리는</b> 게 목적입니다.</li>
+    </ol>
+  </div>
+
+  <div class="warn">
+    <h3>제가 밟은 함정 (그대로 밟지 마세요)</h3>
+    <p><b>URL을 글자로 타이핑하면 링크가 잘립니다.</b> 네이버 에디터가 타이핑 도중 링크 카드로 바꾸면서 주소 꼬리를 잘라먹습니다. 그러면 <b>내 추천 태그가 없는 링크</b>가 됩니다. 링크는 반드시 에디터의 링크 도구로 넣고, <b>발행 전에 글에 실제로 그 주소가 들어갔는지 대조</b>해야 합니다.<br><br>
+    <b>발행 버튼과 예약 버튼이 헷갈립니다.</b> "발행"이라는 글자로 버튼을 찾으면 <b>예약 발행</b>이 먼저 잡힙니다.<br><br>
+    <b>이미지가 지난 글 것으로 섞입니다.</b> 상품 사진을 받아두는 폴더를 비우지 않으면 전에 만든 글의 사진이 들어갑니다.</p>
+  </div>
+
+  <div class="how">
+    <h2>정직하게, 이건 못 합니다</h2>
+    <ol>
+      <li><b>안 써본 물건을 써봤다고 쓰지 않습니다.</b> 글에 넣는 사실은 파트너스 API가 준 상품명 · 가격 · 로켓배송 여부뿐입니다. 후기 · 성능 · 재질 · 평점은 쓰지 않습니다.</li>
+      <li><b>수익을 약속할 수 없습니다.</b> 노출이 병목이고, 제 기준선은 석 달 747원입니다. 자동 발행분은 아직 0원입니다.</li>
+      <li><b>네이버 약관은 자동 등록 프로그램을 금지합니다.</b> 블로그 자동화 전체가 같은 선 위에 있습니다. 빈도를 낮추고, 중요한 블로그라면 계정을 분리하는 게 안전합니다.</li>
+      <li>가장 잘 되는 글은 결국 <b>직접 써본 물건</b> 이야기입니다. 자동화는 그걸 대신하지 못하고, 안 써본 것도 정직하게 쓸 수 있는 최대치까지만 해줍니다.</li>
+    </ol>
+  </div>
+
+  <div class="src">
+    출처 · 실적 수치는 2026년 9월 3일 쿠팡 파트너스 실적 리포트(클릭 67 · 주문 3 · 747원, 2026-06-03~08-27)입니다. 고지문 규정은 <a href="https://partners.coupang.com" target="_blank" rel="noopener">쿠팡 파트너스</a> 이용 가이드와 공정거래위원회 추천·보증 등에 관한 표시·광고 심사지침을 따랐습니다. 자동 발행 첫 글은 2026년 9월 3일입니다.
+  </div>
+  <div class="cta"><a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">더 많은 자동화는 인스타 @aitigermask</a></div>
+  <div class="foot"><a href="../">← AI TIGER MASK 홈</a></div>
+</div>
+</body></html>
