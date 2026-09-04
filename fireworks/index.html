@@ -1,7 +1,7 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
 <title>여의도 불꽃축제 , 화면을 누르면 불꽃이 터집니다</title>
-<meta name="description" content="여의도 63빌딩 밤하늘 위로, 화면을 누른 자리에 진짜 불꽃이 터집니다. 길게 누르면 대형 불꽃, 쓸면 연발, 이름을 넣으면 글자 불꽃.">
+<meta name="description" content="여의도 63빌딩 밤하늘 위로, 화면을 누른 자리에 진짜 불꽃이 터집니다. 길게 누르면 대형 불꽃, 쓸면 연발, 이름을 넣으면 글자 불꽃. 만드는 법과 실제로 쓴 프롬프트를 원문 그대로 공개합니다.">
 <meta name="theme-color" content="#05060c">
 <meta property="og:title" content="여의도 불꽃축제 , 화면을 누르면 불꽃이 터집니다">
 <meta property="og:description" content="63빌딩 밤하늘 위로 원하는 자리에 불꽃을 터뜨려 보세요. 길게 누르면 대형 불꽃, 쓸면 연발.">
@@ -90,21 +90,57 @@ h1{margin-top:8px;font-size:clamp(25px,7.4vw,34px);font-weight:800;letter-spacin
 .card .row .btn{flex:1;justify-content:center}
 
 /* ───────── 아래 설명 ───────── */
-.doc{padding:34px 20px calc(40px + env(safe-area-inset-bottom));background:#05060c;
-  background-image:radial-gradient(120% 60% at 50% 0%,rgba(255,201,120,.10),transparent 60%)}
-.doc h2{font-size:19px;font-weight:800;letter-spacing:-.02em}
-.doc .lead{margin-top:8px;font-size:13.5px;color:var(--dim)}
-.steps{margin-top:18px;display:grid;gap:10px}
-.step{display:flex;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:var(--panel)}
-.step b{flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:800;
+.doc{padding:34px 18px calc(44px + env(safe-area-inset-bottom));background:#05060c;
+  background-image:radial-gradient(120% 46% at 50% 0%,rgba(255,201,120,.10),transparent 62%)}
+.dhead{text-align:center;padding:4px 2px 6px}
+.eyebrow2{font-size:10px;letter-spacing:.24em;font-weight:800;color:var(--gold);opacity:.9}
+.doc h2{margin-top:9px;font-size:clamp(21px,5.8vw,26px);font-weight:800;letter-spacing:-.025em}
+.doc .lead{margin-top:9px;font-size:13.5px;color:var(--dim);line-height:1.7}
+.kit{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.kit span{font-size:11px;font-weight:800;color:#8d8579;letter-spacing:.04em}
+.kit b{font-size:11.5px;font-weight:700;color:#e7dfd2;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:5px 10px}
+
+.stepx{margin-top:22px;padding:16px 15px 15px;border:1px solid rgba(255,255,255,.10);border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025))}
+.stepx.hero{border-color:rgba(255,201,120,.34);background:linear-gradient(180deg,rgba(255,201,120,.10),rgba(255,255,255,.03))}
+.sh{display:flex;align-items:center;gap:10px}
+.sh b{flex:0 0 28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:800;
   background:linear-gradient(135deg,#ffd98f,#e0a24a);color:#160e02}
-.step div{flex:1}
-.step h4{font-size:13.5px;font-weight:800}
-.step p{margin-top:4px;font-size:12.5px;color:var(--dim);line-height:1.6}
-.step code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--gold);
+.sh h3{font-size:15.5px;font-weight:800;letter-spacing:-.02em}
+.stepx p{margin-top:10px;font-size:13px;color:#cfc7bb;line-height:1.72}
+.stepx p b{color:#fff}
+.stepx p u{text-decoration:none;border-bottom:1px solid rgba(255,201,120,.55);color:#ffe0ae}
+.stepx .note{margin-top:11px;font-size:12.5px;color:#9d958a;border-top:1px dashed rgba(255,255,255,.13);padding-top:10px}
+.doc code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--gold);
   background:rgba(255,201,120,.10);padding:1px 5px;border-radius:5px}
-.cta{margin-top:22px;display:grid;gap:8px}
-.cta a{display:flex;align-items:center;justify-content:center;gap:7px;padding:14px;border-radius:14px;
+
+/* 프롬프트 상자 */
+.pbox{margin-top:13px;border:1px solid rgba(255,255,255,.13);border-radius:14px;overflow:hidden;background:#080a11}
+.pbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;
+  background:linear-gradient(135deg,#ffd98f,#e0a24a)}
+.pbar span{font-size:11.5px;font-weight:800;color:#160e02;letter-spacing:-.01em}
+.pcopy{flex:none;font-family:inherit;font-size:11.5px;font-weight:800;color:#7a4a12;background:#fff8ec;
+  border:0;border-radius:8px;padding:6px 12px;cursor:pointer}
+.pcopy:active{transform:scale(.95)}
+.pbox pre{margin:0;padding:14px 13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;line-height:1.75;color:#dfd8cb;white-space:pre-wrap;word-break:break-word;
+  max-height:none;overflow-x:auto}
+.pbox.big pre{font-size:11px;line-height:1.8}
+
+/* 왜 이 문장인지 */
+.why{margin-top:13px;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09)}
+.why h4{font-size:12.5px;font-weight:800;color:var(--gold);letter-spacing:-.01em}
+.why ul{margin:8px 0 0;padding-left:16px}
+.why li{font-size:12.5px;color:#c6bfb4;line-height:1.72;margin-top:6px}
+.why li b{color:#fff;font-weight:700}
+.why li u{text-decoration:none;border-bottom:1px solid rgba(255,201,120,.5);color:#ffe0ae}
+.why.warn{background:rgba(255,120,90,.08);border-color:rgba(255,140,110,.28)}
+.why.warn h4{color:#ff9d7a}
+
+.cta{margin-top:26px;display:grid;gap:8px}
+.cta a,.cta button{display:flex;align-items:center;justify-content:center;gap:7px;padding:14px;border-radius:14px;
   font-size:13.5px;font-weight:800;text-decoration:none}
 .cta a.p{background:linear-gradient(135deg,#ffd98f,#e0a24a);color:#160e02}
 .cta a.s{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
@@ -160,26 +196,197 @@ h1{margin-top:8px;font-size:clamp(25px,7.4vw,34px);font-weight:800;letter-spacin
 
   <!-- ══════════ 만드는 법 ══════════ -->
   <section class="doc" id="doc">
-    <h2>이 페이지, 이렇게 만들었습니다</h2>
-    <p class="lead">배경은 진짜 여의도 63빌딩 사진입니다. 그림으로 그린 게 아니라, 실사진을 밤으로 바꾸고 움직이게 만든 다음 불꽃만 코드로 얹었습니다.</p>
+    <div class="dhead">
+      <div class="eyebrow2">HOW WE BUILT IT</div>
+      <h2>이 페이지 만드는 법</h2>
+      <p class="lead">쓴 프롬프트를 한 글자도 안 바꾸고 그대로 답니다. 위 불꽃 빼고는 전부 복사해서 그대로 쓰실 수 있습니다.</p>
+      <div class="kit">
+        <span>준비물</span>
+        <b>클로드 코드</b><b>Gemini(이미지·영상)</b><b>Pexels 무료 계정</b><b>ffmpeg</b>
+      </div>
+    </div>
 
-    <div class="steps">
-      <div class="step"><b>1</b><div>
-        <h4>배경은 실사진부터 찾는다</h4>
-        <p>Pexels 무료 사진에서 여의도 63빌딩이 나오는 세로 사진을 골랐습니다. 불꽃이 안 들어간 사진이어야 우리가 터뜨릴 자리가 남습니다.</p>
-      </div></div>
-      <div class="step"><b>2</b><div>
-        <h4>해질녘을 밤으로 바꾼다</h4>
-        <p>원본은 보라빛 해질녘이라 불꽃이 안 살아납니다. 이미지 편집 AI에게 <code>건물은 그대로, 하늘만 깊은 밤으로</code> 시켜서 밤 사진을 만들었습니다.</p>
-      </div></div>
-      <div class="step"><b>3</b><div>
-        <h4>사진을 영상으로 움직인다</h4>
-        <p>구름이 흐르고 창문 불빛이 깜빡이는 7.6초 영상으로 바꿨습니다. 끝과 처음을 겹쳐 이어 붙여서 끊김 없이 계속 돕니다. 용량은 0.5MB, 폰에서도 바로 뜹니다.</p>
-      </div></div>
-      <div class="step"><b>4</b><div>
-        <h4>불꽃은 그림이 아니라 계산이다</h4>
-        <p>영상 위에 투명한 캔버스를 한 장 덮고, 손가락이 닿은 자리로 포탄이 날아가 터지게 했습니다. 불꽃 하나가 입자 수백 개이고 중력과 공기저항까지 계산합니다. 소리도 파일이 아니라 그 자리에서 만들어 냅니다.</p>
-      </div></div>
+    <!-- 1 -->
+    <div class="stepx">
+      <div class="sh"><b>1</b><h3>배경 사진 고르기</h3></div>
+      <p>여기서 제일 오래 걸렸습니다. Pexels 영상을 <b>259편</b> 봤는데 <b>여의도 63빌딩 야경 영상은 0편</b>이었습니다.
+         태그가 <code>여의도</code>인데 실제로는 부산 광안리, 베트남 다낭, 아부다비가 나옵니다.
+         사진 452장 중 설명문에 Seoul·Korea가 들어간 건 239장, 그중 63빌딩이 진짜 찍힌 건 몇 장뿐이었습니다.</p>
+      <p class="note">그래서 <b>목록을 읽지 말고 눈으로 보세요.</b> 썸네일을 한 장의 시트로 붙여서 한 번에 확인하면 5분이면 끝납니다.</p>
+      <div class="pbox">
+        <div class="pbar"><span>클로드 코드에 시킨 말</span><button class="pcopy">복사</button></div>
+        <pre>Pexels API로 배경 후보를 모아줘.
+검색어는 yeouido night, 63 building night, 여의도 야경, 한강 야경,
+seoul night skyline 처럼 여러 개로 돌리고, 세로(portrait)를 먼저 보여줘.
+
+★태그는 못 믿으니까 이렇게 걸러줘.
+- 사진은 alt 설명문에 Seoul / Korea / Yeouido / Han River 가 들어간 것만 남길 것
+- 남은 후보 썸네일을 5~8칸짜리 한 장의 시트 이미지로 붙여줄 것
+- 시트에 번호와 사진 ID, 작가 이름을 같이 찍을 것
+
+내가 시트를 보고 번호로 고를게. 고른 사진은 원본 해상도로 받고
+크레딧(작가 이름, 원본 주소)을 텍스트 파일로 같이 저장해줘.</pre>
+      </div>
+      <p class="note">고르는 기준 셋: <b>세로 사진</b>(폰 화면) · <b>하늘이 넉넉히 비어 있을 것</b>(불꽃이 터질 자리) · <b>불꽃이 이미 들어간 사진은 제외</b>.
+         우리가 고른 건 63빌딩 + 한강철교 + 보라빛 해질녘 사진입니다.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="stepx">
+      <div class="sh"><b>2</b><h3>해질녘을 밤으로 바꾸기</h3></div>
+      <p>불꽃은 어두운 하늘에서만 삽니다. 원본이 보라빛 해질녘이라 그대로 쓰면 불꽃이 안 보입니다.
+         이미지 편집 AI(Nano Banana, <code>gemini-3-pro-image</code>)에 <b>사진 한 장 + 아래 문장</b>을 같이 넣었습니다. 한 번에 나왔습니다.</p>
+      <div class="pbox">
+        <div class="pbar"><span>실제로 넣은 프롬프트 (원문 그대로)</span><button class="pcopy">복사</button></div>
+        <pre>Make this exact photo a deep night scene, about two hours after sunset:
+the sky becomes a deep navy-to-black gradient with faint dark clouds,
+the city and building window lights glow brighter and warmer against the dark,
+the Hanwha sign glows, street lamps on the bridge glow warm.
+Keep the 63 Building shape, the bridge, and every building exactly as they are.
+Do not add fireworks, do not add text, do not change the composition or crop.</pre>
+      </div>
+      <div class="why">
+        <h4>이 문장에서 중요한 곳</h4>
+        <ul>
+          <li><b>about two hours after sunset</b> , "밤으로 바꿔줘"만 쓰면 어중간한 파란 하늘이 나옵니다. 시간을 못 박습니다.</li>
+          <li><b>Keep ... exactly as they are</b> , 이게 없으면 건물 모양을 자기 마음대로 바꿉니다. <u>실제 장소를 지키는 문장</u>이라 제일 중요합니다.</li>
+          <li><b>Do not add fireworks</b> , 안 쓰면 하늘에 불꽃을 그려 넣습니다. 우리가 터뜨릴 자리가 사라집니다.</li>
+          <li><b>do not change the composition or crop</b> , 구도를 바꾸면 아래에서 만든 좌표가 전부 어긋납니다.</li>
+        </ul>
+      </div>
+      <p class="note">결과는 건물·다리·간판이 원본 그대로 남고 하늘만 밤이 됐습니다. <b>AI가 그린 여의도가 아니라 진짜 사진입니다.</b></p>
+    </div>
+
+    <!-- 3 -->
+    <div class="stepx">
+      <div class="sh"><b>3</b><h3>사진을 영상으로 움직이기</h3></div>
+      <p>정지 사진을 깔면 죽은 화면이 됩니다. 영상 생성 AI(Omni, <code>gemini-omni-flash-preview</code>)에 위에서 만든 밤 사진을 넣고 시켰습니다.
+         <b>36초 만에 720x1280, 10초</b> 영상이 나왔습니다.</p>
+      <div class="pbox">
+        <div class="pbar"><span>실제로 넣은 프롬프트 (원문 그대로)</span><button class="pcopy">복사</button></div>
+        <pre>Cinematic locked-off tripod shot at night, absolutely no camera movement.
+Seoul Yeouido 63 Building at night: dark clouds drift very slowly across the night sky,
+office window lights subtly twinkle and a few switch on and off,
+the orange Hanwha sign glows steadily,
+the street lamp on the green railway bridge flickers faintly, faint haze drifts.
+No fireworks, no explosions, no people, no text overlays,
+no drone, no zoom, no pan, no color shift.
+Photoreal, seamless subtle ambient motion.</pre>
+      </div>
+      <div class="why">
+        <h4>배경 영상은 이 세 가지만 지키면 됩니다</h4>
+        <ul>
+          <li><b>locked-off tripod, no camera movement</b> , 카메라가 움직이면 위에 얹은 불꽃과 따로 놉니다. 삼각대에 고정한 그림이어야 합니다.</li>
+          <li><b>움직일 것을 하나씩 지정</b> , "생동감 있게" 대신 구름·창문 불빛·가로등처럼 <u>무엇이 어떻게 움직일지</u>를 적습니다.</li>
+          <li><b>seamless subtle ambient motion</b> , 크게 움직이면 이어 붙일 때 티가 납니다. 배경은 작게 움직여야 오래 봐도 안 질립니다.</li>
+        </ul>
+      </div>
+      <p class="note">덤: 시키지도 않았는데 다리 위로 전동차가 지나갑니다. 원본 사진에는 없던 장면입니다.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="stepx">
+      <div class="sh"><b>4</b><h3>끊김 없이 도는 루프로 자르기</h3></div>
+      <p>영상이 끝나고 처음으로 돌아갈 때 화면이 툭 튑니다. <b>끝 1.2초를 처음에 겹쳐</b> 넣으면 이음매가 사라집니다.
+         결과는 <b>7.58초 · 538KB</b>. 폰 데이터로도 바로 뜹니다.</p>
+      <div class="pbox">
+        <div class="pbar"><span>ffmpeg 두 줄 (실제로 돌린 명령)</span><button class="pcopy">복사</button></div>
+        <pre># ① 프레임레이트를 24로 고정한다
+ffmpeg -i bg_night.mp4 -vf fps=24 -an -c:v libx264 -crf 18 \
+  -pix_fmt yuv420p cfr.mp4
+
+# ② 끝 1.2초를 처음에 겹쳐 이어 붙인다
+ffmpeg -i cfr.mp4 -i cfr.mp4 -filter_complex \
+ "[0:v]trim=0:7.6,setpts=PTS-STARTPTS,fps=24[main]; \
+  [1:v]trim=8.8:10,setpts=PTS-STARTPTS,fps=24[tail]; \
+  [main][tail]xfade=transition=fade:duration=1.2:offset=6.4,format=yuv420p[v]" \
+ -map "[v]" -an -c:v libx264 -crf 27 -movflags +faststart bg.mp4</pre>
+      </div>
+      <div class="why warn">
+        <h4>여기서 두 번 막혔습니다</h4>
+        <ul>
+          <li>AI가 만든 영상은 프레임레이트가 <code>0/0</code>(가변)이라 <code>xfade</code>가 <b>거부합니다.</b> 그래서 ①번으로 먼저 24로 다시 굽습니다.</li>
+          <li><code>trim</code>을 거치면 프레임레이트가 <b>또</b> 사라집니다. 그래서 각 갈래 끝에 <code>fps=24</code>를 한 번 더 붙여야 통과합니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="stepx hero">
+      <div class="sh"><b>5</b><h3>불꽃 엔진 만들기</h3></div>
+      <p>여기가 이 페이지의 본체입니다. 아래를 <b>통째로 복사해서 클로드 코드에 붙이면</b> 같은 것이 나옵니다.
+         길어 보이지만 전부 <u>"이렇게 안 하면 이렇게 망가진다"</u>를 미리 적어 둔 것입니다. 그 한 줄들이 왕복을 줄입니다.</p>
+      <div class="pbox big">
+        <div class="pbar"><span>클로드 코드에 붙여넣을 지시문</span><button class="pcopy">전체 복사</button></div>
+        <pre>배경 영상 위에서 손가락으로 누른 자리에 불꽃이 터지는 모바일 페이지를 만들어줘.
+HTML 파일 하나로 끝내고 외부 라이브러리는 쓰지 마.
+
+[화면]
+- 전체화면(100svh) 배경 영상 bg.mp4 , muted, playsinline, autoplay, loop, poster는 poster.jpg
+- 그 위에 투명한 캔버스를 한 장 덮고 불꽃은 캔버스에만 그린다
+- 위아래 그라데이션 베일을 깔아서 글자가 얹혀도 도시가 안 죽게
+- 상단에 제목과 한 줄 설명. 불꽃이 시작되면 흐리게 물러난다
+- 하단에 소리 / 피날레 / 글자 불꽃 버튼, 우상단에 지금까지 터뜨린 발수(localStorage에 저장)
+
+[조작]
+- 탭: 화면 아래에서 포탄이 날아가 누른 자리에서 터진다
+- 길게 누르기: 충전 링이 원형으로 차오르고 오래 누를수록 크게 터진다. 0.8 넘으면 2차 폭발까지
+- 쓸기: 130ms 간격으로 작은 불꽃 연발
+- 손가락 여러 개를 따로 관리해서 동시에 눌러도 각각 터지게
+- 흔들면 피날레. iOS는 권한을 물어야 하니 버튼을 누른 김에 같이 요청
+- 손 놓고 5초 지나면 알아서 한 발씩 쏜다. 첫 화면이 비어 보이면 안 된다
+
+[불꽃 , 그림이 아니라 계산이다]
+- 포탄은 목표 좌표까지 중력 620px/s^2로 역산한 초속도로 쏜다. 오르는 동안 불티를 흘린다
+- 폭발은 9종: 모란·국화·수양버들·고리·야자수·크래클·스트로브·2단·하트.
+  종류마다 수명, 공기저항, 중력을 다르게 줘서 성격이 갈리게
+- 입자는 점이 아니라 "이전 위치 → 현재 위치" 선분으로 그린다. lineCap은 round, 합성은 lighter
+- ★잔상은 검은색을 덮지 말고 destination-out으로 알파만 깎아라.
+  검은색을 덮으면 배경 영상이 가려진다
+- ★깎는 양을 프레임당 고정값으로 하지 마라. 느린 폰에서 꼬리가 길게 남는다.
+  지난 시간 기준으로: clamp(dt * 9.5, .06, .52)
+- 폭발할 때마다 도시를 잠깐 밝히는 방사형 섬광을 넣되,
+  ★알파는 0.2 안쪽으로 하고 동시에 5개까지만 유지해라.
+  안 그러면 피날레에서 화면이 하얗게 날아간다
+- 글자 불꽃: 안 보이는 캔버스에 글자를 그려서 불투명한 픽셀을 2px 간격으로 뽑고,
+  그 좌표로 입자를 모은다. 2.4초 머물다가 힘이 풀리면서 흩어지게
+
+[소리 , 파일 없이 만든다]
+- WebAudio로 합성한다. 발사는 사인파 주파수 스윕,
+  폭발은 화이트노이즈를 로우패스로 1400Hz에서 120Hz까지 훑으면서 + 78Hz 사인으로 배를 울리고,
+  크래클은 밴드패스 짧은 노이즈 26발을 0.9초에 흩어 뿌린다
+- AudioContext는 첫 터치 때 resume 한다(그 전에는 브라우저가 소리를 막는다)
+
+[모바일]
+- devicePixelRatio는 2로 상한을 둔다(3배 폰에서 화소만 낭비한다)
+- touch-action:none, safe-area 패딩, user-scalable=no
+- ★프레임이 42fps 아래로 떨어지면 입자 수를 자동으로 줄인다(0.45배까지)
+- 터질 때 navigator.vibrate로 짧게 진동
+- 자동재생이 막히면 조용히 poster 이미지로 떨어진다
+
+다 만들면 아이폰 뷰포트로 직접 열어서
+탭 · 길게 누르기 · 쓸기 · 피날레 · 글자까지 다 눌러보고,
+콘솔 오류가 0인지 확인한 다음 스크린샷을 보여줘.</pre>
+      </div>
+      <p class="note">이 지시문은 <b>이 페이지를 다시 만들기 위한 것</b>입니다. 우리가 처음 시킨 말은 이보다 짧았고,
+         아래 두 가지는 만들고 나서 눈으로 보고 잡아 넣은 것입니다.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="stepx">
+      <div class="sh"><b>6</b><h3>만들고 나서 두 번 고쳤습니다</h3></div>
+      <p>둘 다 코드를 읽어서가 아니라 <b>화면을 보고</b> 잡았습니다. 고칠 때는 증상만 말해도 됩니다.</p>
+      <div class="pbox">
+        <div class="pbar"><span>고칠 때 그대로 한 말</span><button class="pcopy">복사</button></div>
+        <pre>피날레를 누르면 화면이 하얗게 날아간다.
+불꽃마다 넣은 섬광이 겹쳐서 누적되는 것 같으니
+섬광 알파를 확 낮추고 동시에 살아 있는 개수를 제한해줘.
+
+느린 기기에서 불꽃 꼬리가 길게 남는다.
+잔상을 프레임당 고정값으로 깎고 있으면
+지난 시간(dt) 기준으로 깎도록 바꿔줘.</pre>
+      </div>
+      <p class="note">이런 것들이 <b>렌더가 아니라 눈으로만 보이는 결함</b>입니다. 만들고 나서 꼭 폰에서 한 번 눌러 보세요.</p>
     </div>
 
     <div class="cta">
@@ -737,6 +944,22 @@ function autoShow(now){
 // ── 스크롤 버튼 ────────────────────────────────────────────
 document.getElementById('scrolldown').addEventListener('click', () => {
   document.getElementById('doc').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// ── 프롬프트 복사 ──────────────────────────────────────────
+document.querySelectorAll('.pcopy').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const txt = btn.closest('.pbox').querySelector('pre').textContent;
+    const done = () => { const o = btn.textContent; btn.textContent = '복사됨'; setTimeout(() => btn.textContent = o, 1600); };
+    try { await navigator.clipboard.writeText(txt); done(); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e2) {}
+      ta.remove();
+    }
+  });
 });
 
 // ── 공유 ───────────────────────────────────────────────────
