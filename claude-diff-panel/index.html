@@ -55,7 +55,7 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   <div class="who">
     <h2>왜 이걸 씁니까</h2>
     <p>AI 한테 일을 시키면 파일이 여러 개 바뀝니다. 그런데 <b>무엇이 바뀌었는지</b> 확인하려고 터미널에서 <code>git diff</code> 를 치면, <b>새로 만든 파일은 한 줄도 안 나옵니다.</b> 깃은 아직 추적하지 않는 파일을 diff 대상으로 보지 않기 때문입니다.</p>
-    <p class="note">저희가 실제로 재봤습니다. 같은 순간 같은 저장소에서 <b>git diff 는 1개</b>, <b>/diff 패널은 4개</b>였고, 차이인 3개는 전부 클로드가 새로 만든 파일이었습니다.</p>
+    <p class="note">저희가 실제로 재봤습니다. 같은 저장소 같은 상태에서 <b>git diff 는 1개</b>, <b>/diff 패널은 4개</b>였고, 차이인 3개는 전부 클로드가 새로 만든 파일이었습니다.</p>
   </div>
 
   <div class="lead">
@@ -102,7 +102,7 @@ pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-si
   </div>
 
   <div class="src">
-    이 페이지의 수치는 저희 저장소에서 실제로 잰 값입니다. <code>git diff --stat HEAD</code> 는 <b>1 file changed, 1 insertion(+)</b>, 같은 순간 <code>/diff</code> 패널은 <b>4 files changed +1</b> 이었고 그중 3개가 <code>untracked</code> 였습니다. 화면은 전부 실제 캡처입니다.
+    이 페이지의 수치는 저희 저장소에서 실제로 잰 값입니다. <code>git diff --stat HEAD</code> 는 <b>1 file changed, 1 insertion(+)</b>, 같은 상태에서 <code>/diff</code> 패널은 <b>4 files changed +1</b> 이었고 그중 3개가 <code>untracked</code> 였습니다. 화면은 전부 실제 캡처입니다.
   </div>
 
   <div class="cta"><a href="https://www.instagram.com/aitigermask/">다른 자동화도 보기 , @aitigermask</a></div>
