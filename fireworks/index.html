@@ -1,0 +1,762 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<title>여의도 불꽃축제 , 화면을 누르면 불꽃이 터집니다</title>
+<meta name="description" content="여의도 63빌딩 밤하늘 위로, 화면을 누른 자리에 진짜 불꽃이 터집니다. 길게 누르면 대형 불꽃, 쓸면 연발, 이름을 넣으면 글자 불꽃.">
+<meta name="theme-color" content="#05060c">
+<meta property="og:title" content="여의도 불꽃축제 , 화면을 누르면 불꽃이 터집니다">
+<meta property="og:description" content="63빌딩 밤하늘 위로 원하는 자리에 불꽃을 터뜨려 보세요. 길게 누르면 대형 불꽃, 쓸면 연발.">
+<meta property="og:image" content="og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.png">
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --gold:#ffc978; --gold-d:#e0a24a; --ink:#f6f1e7; --dim:#b9b1a4;
+  --bg:#05060c; --panel:rgba(255,255,255,.07); --line:rgba(255,255,255,.16);
+}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.55;overscroll-behavior-y:none}
+.wrap{max-width:560px;margin:0 auto;position:relative;background:#000}
+
+/* ───────── 무대 ───────── */
+.stage{position:relative;width:100%;height:100svh;min-height:560px;overflow:hidden;background:#05060c;
+  touch-action:none;user-select:none;-webkit-user-select:none;cursor:crosshair}
+.stage video,.stage .fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.stage .fallback{background:url(poster.jpg) center/cover no-repeat}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+/* 위아래 그라데이션 , 글자가 얹혀도 도시가 안 죽게 */
+.veil{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,4,10,.80) 0%,rgba(3,4,10,.30) 22%,rgba(3,4,10,0) 42%,rgba(3,4,10,.06) 62%,rgba(3,4,10,.52) 86%,rgba(3,4,10,.86) 100%)}
+
+/* 상단 타이틀 */
+.top{position:absolute;left:0;right:0;top:max(16px,env(safe-area-inset-top));padding:0 20px;z-index:5;text-align:center;
+  transition:opacity .5s}
+.stage.playing .top{opacity:.34}
+.eyebrow{font-size:10.5px;letter-spacing:.24em;font-weight:800;color:var(--gold);opacity:.95}
+h1{margin-top:8px;font-size:clamp(25px,7.4vw,34px);font-weight:800;letter-spacing:-.03em;line-height:1.18;
+  text-shadow:0 2px 22px rgba(0,0,0,.75)}
+.sub{margin-top:8px;font-size:13px;color:#d9d2c6;text-shadow:0 1px 12px rgba(0,0,0,.8)}
+
+/* 카운터 */
+.count{position:absolute;z-index:5;top:calc(max(16px,env(safe-area-inset-top)) + 2px);right:16px;
+  font-size:12px;font-weight:800;letter-spacing:.02em;color:#0f0a02;
+  background:linear-gradient(135deg,#ffd98f,#e8a53f);border-radius:999px;padding:6px 12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.45);opacity:0;transform:translateY(-6px);transition:.35s}
+.count.on{opacity:1;transform:none}
+
+/* 가운데 안내 */
+.hint{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:5;text-align:center;
+  pointer-events:none;transition:opacity .6s}
+.hint .ring{width:74px;height:74px;margin:0 auto 14px;border-radius:50%;border:2px solid rgba(255,201,120,.75);
+  animation:pulse 1.9s ease-out infinite}
+.hint .ring::after{content:"";display:block;width:10px;height:10px;margin:30px auto;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 18px 4px rgba(255,201,120,.75)}
+@keyframes pulse{0%{transform:scale(.72);opacity:.25}55%{opacity:1}100%{transform:scale(1.25);opacity:0}}
+.hint p{font-size:14px;font-weight:700;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.9)}
+.hint small{display:block;margin-top:6px;font-size:11.5px;color:#cbc3b6;font-weight:500}
+.stage.playing .hint{opacity:0}
+
+/* 하단 조작 */
+.dock{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));z-index:6;
+  padding:0 14px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.btn{font-family:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;
+  border:1px solid var(--line);background:rgba(12,14,22,.52);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  border-radius:999px;padding:11px 16px;display:inline-flex;align-items:center;gap:6px;transition:.18s}
+.btn:active{transform:scale(.95)}
+.btn.gold{background:linear-gradient(135deg,#ffd98f,#e0a24a);color:#160e02;border:none;font-weight:800;
+  box-shadow:0 8px 24px rgba(224,162,74,.3)}
+.btn .ic{font-size:15px;line-height:1}
+.btn.off{opacity:.5}
+.scrolldown{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(72px + env(safe-area-inset-bottom));z-index:6;
+  font-size:11px;color:#cfc7ba;background:none;border:none;font-family:inherit;cursor:pointer;letter-spacing:.02em;
+  opacity:.85;display:flex;flex-direction:column;align-items:center;gap:3px}
+.scrolldown span{font-size:14px;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* 글자 불꽃 입력 */
+.sheet{position:absolute;inset:0;z-index:9;display:none;place-items:center;padding:22px;
+  background:rgba(3,4,10,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.sheet.on{display:grid}
+.card{width:100%;max-width:330px;background:#0e1119;border:1px solid var(--line);border-radius:20px;padding:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.card h3{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.card p{margin-top:6px;font-size:12.5px;color:var(--dim)}
+.card input{width:100%;margin-top:14px;font-family:inherit;font-size:19px;font-weight:800;text-align:center;color:var(--ink);
+  background:#070910;border:1px solid var(--line);border-radius:14px;padding:14px;outline:none}
+.card input:focus{border-color:var(--gold)}
+.card .row{display:flex;gap:8px;margin-top:14px}
+.card .row .btn{flex:1;justify-content:center}
+
+/* ───────── 아래 설명 ───────── */
+.doc{padding:34px 20px calc(40px + env(safe-area-inset-bottom));background:#05060c;
+  background-image:radial-gradient(120% 60% at 50% 0%,rgba(255,201,120,.10),transparent 60%)}
+.doc h2{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.doc .lead{margin-top:8px;font-size:13.5px;color:var(--dim)}
+.steps{margin-top:18px;display:grid;gap:10px}
+.step{display:flex;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:var(--panel)}
+.step b{flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:800;
+  background:linear-gradient(135deg,#ffd98f,#e0a24a);color:#160e02}
+.step div{flex:1}
+.step h4{font-size:13.5px;font-weight:800}
+.step p{margin-top:4px;font-size:12.5px;color:var(--dim);line-height:1.6}
+.step code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--gold);
+  background:rgba(255,201,120,.10);padding:1px 5px;border-radius:5px}
+.cta{margin-top:22px;display:grid;gap:8px}
+.cta a{display:flex;align-items:center;justify-content:center;gap:7px;padding:14px;border-radius:14px;
+  font-size:13.5px;font-weight:800;text-decoration:none}
+.cta a.p{background:linear-gradient(135deg,#ffd98f,#e0a24a);color:#160e02}
+.cta a.s{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
+.credit{margin-top:20px;font-size:11px;color:#7e7871;line-height:1.75}
+.credit a{color:#9c948a}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ══════════ 무대 ══════════ -->
+  <section class="stage" id="stage">
+    <div class="fallback"></div>
+    <video id="bg" src="bg.mp4" poster="poster.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video>
+    <canvas id="fx"></canvas>
+    <div class="veil"></div>
+
+    <div class="top">
+      <div class="eyebrow">SEOUL YEOUIDO · 한강 밤하늘</div>
+      <h1>여의도 불꽃축제</h1>
+      <div class="sub">63빌딩 위, 누른 자리에서 터집니다</div>
+    </div>
+
+    <div class="count" id="count">🎆 0발</div>
+
+    <div class="hint" id="hint">
+      <div class="ring"></div>
+      <p>화면을 눌러 보세요</p>
+      <small>길게 누르면 대형 불꽃 · 쓸면 연발</small>
+    </div>
+
+    <button class="scrolldown" id="scrolldown">만드는 법<span>⌄</span></button>
+
+    <div class="dock">
+      <button class="btn" id="btnSound" aria-label="소리"><span class="ic">🔊</span>소리</button>
+      <button class="btn gold" id="btnFinale"><span class="ic">🎆</span>피날레</button>
+      <button class="btn" id="btnText"><span class="ic">✍️</span>글자 불꽃</button>
+    </div>
+
+    <!-- 글자 불꽃 -->
+    <div class="sheet" id="sheet">
+      <div class="card">
+        <h3>글자로 터뜨리기</h3>
+        <p>여섯 글자까지. 불꽃이 글자 모양으로 하늘에 뜹니다.</p>
+        <input id="txt" maxlength="6" placeholder="사랑해" autocomplete="off">
+        <div class="row">
+          <button class="btn" id="txtCancel">닫기</button>
+          <button class="btn gold" id="txtGo">쏘기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 만드는 법 ══════════ -->
+  <section class="doc" id="doc">
+    <h2>이 페이지, 이렇게 만들었습니다</h2>
+    <p class="lead">배경은 진짜 여의도 63빌딩 사진입니다. 그림으로 그린 게 아니라, 실사진을 밤으로 바꾸고 움직이게 만든 다음 불꽃만 코드로 얹었습니다.</p>
+
+    <div class="steps">
+      <div class="step"><b>1</b><div>
+        <h4>배경은 실사진부터 찾는다</h4>
+        <p>Pexels 무료 사진에서 여의도 63빌딩이 나오는 세로 사진을 골랐습니다. 불꽃이 안 들어간 사진이어야 우리가 터뜨릴 자리가 남습니다.</p>
+      </div></div>
+      <div class="step"><b>2</b><div>
+        <h4>해질녘을 밤으로 바꾼다</h4>
+        <p>원본은 보라빛 해질녘이라 불꽃이 안 살아납니다. 이미지 편집 AI에게 <code>건물은 그대로, 하늘만 깊은 밤으로</code> 시켜서 밤 사진을 만들었습니다.</p>
+      </div></div>
+      <div class="step"><b>3</b><div>
+        <h4>사진을 영상으로 움직인다</h4>
+        <p>구름이 흐르고 창문 불빛이 깜빡이는 7.6초 영상으로 바꿨습니다. 끝과 처음을 겹쳐 이어 붙여서 끊김 없이 계속 돕니다. 용량은 0.5MB, 폰에서도 바로 뜹니다.</p>
+      </div></div>
+      <div class="step"><b>4</b><div>
+        <h4>불꽃은 그림이 아니라 계산이다</h4>
+        <p>영상 위에 투명한 캔버스를 한 장 덮고, 손가락이 닿은 자리로 포탄이 날아가 터지게 했습니다. 불꽃 하나가 입자 수백 개이고 중력과 공기저항까지 계산합니다. 소리도 파일이 아니라 그 자리에서 만들어 냅니다.</p>
+      </div></div>
+    </div>
+
+    <div class="cta">
+      <a class="p" href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">만드는 과정 보러 가기 · @aitigermask</a>
+      <a class="s" href="../">다른 것도 구경하기</a>
+      <button class="btn" id="btnShare" style="justify-content:center;padding:14px;border-radius:14px;font-size:13.5px">🔗 친구에게 링크 보내기</button>
+    </div>
+
+    <p class="credit">
+      배경 사진: <a href="https://www.pexels.com/photo/63-building-in-skyline-of-seoul-south-korea-26179867/" target="_blank" rel="noopener">Pexels · Mocchi NO</a> (무료 라이선스).
+      야간 변환과 모션은 Google Gemini(Nano Banana 2 이미지 편집 · Omni 영상)로 만들었고, 건물과 다리는 원본 그대로입니다.
+      불꽃과 소리는 이 페이지 안에서 실시간으로 계산합니다.
+    </p>
+  </section>
+</div>
+
+<script>
+(() => {
+"use strict";
+// ══════════════════════════════════════════════════════════
+//  여의도 불꽃축제 , 캔버스 불꽃 엔진
+//  구조: 포탄(shell) → 폭발(burst) → 입자(particle) + 섬광(flash)
+//  잔상은 destination-out 으로 알파만 깎아 배경 영상이 비치게 한다.
+// ══════════════════════════════════════════════════════════
+const stage = document.getElementById('stage');
+const cv    = document.getElementById('fx');
+const ctx   = cv.getContext('2d', { alpha: true });
+const hint  = document.getElementById('hint');
+const countEl = document.getElementById('count');
+const video = document.getElementById('bg');
+
+let W = 0, H = 0, DPR = 1;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = stage.clientWidth; H = stage.clientHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+resize();
+addEventListener('resize', resize);
+addEventListener('orientationchange', () => setTimeout(resize, 250));
+
+const rnd  = (a, b) => a + Math.random() * (b - a);
+const rndi = (a, b) => Math.floor(rnd(a, b + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+
+// ── 색 팔레트 (실제 불꽃 색약: 금·적·청·자·녹·백) ─────────
+const PALETTE = [
+  { h: 40,  s: 100, l: 62, name: 'gold'   },
+  { h: 20,  s: 100, l: 60, name: 'orange' },
+  { h: 350, s: 95,  l: 62, name: 'red'    },
+  { h: 320, s: 92,  l: 66, name: 'pink'   },
+  { h: 275, s: 90,  l: 68, name: 'violet' },
+  { h: 205, s: 95,  l: 64, name: 'blue'   },
+  { h: 178, s: 92,  l: 62, name: 'cyan'   },
+  { h: 130, s: 88,  l: 60, name: 'green'  },
+  { h: 48,  s: 30,  l: 92, name: 'white'  }
+];
+const TYPES = ['peony','chrys','willow','ring','palm','crackle','double','strobe','heart'];
+
+// ── 입자 풀 ────────────────────────────────────────────────
+const MAX_P = 2600;
+const parts = [];
+let quality = 1;            // 프레임이 밀리면 자동으로 내려간다
+function spawn(p){ if (parts.length < MAX_P) parts.push(p); }
+
+function makeParticle(x, y, vx, vy, col, o){
+  o = o || {};
+  return {
+    x, y, px: x, py: y, vx, vy,
+    h: col.h + rnd(-6, 6), s: col.s, l: col.l,
+    life: o.life || rnd(1.0, 1.6), age: 0,
+    w: o.w || rnd(1.4, 2.6),
+    drag: o.drag != null ? o.drag : 1.6,
+    grav: o.grav != null ? o.grav : 190,
+    tw: o.tw || 0,            // 반짝임
+    fade: o.fade || 1,
+    mode: o.mode || 'free',
+    tx: o.tx, ty: o.ty, hold: o.hold || 0
+  };
+}
+
+// ── 섬광(도시를 잠깐 밝히는 빛) ────────────────────────────
+const flashes = [];
+function flash(x, y, r, col, power){
+  flashes.push({ x, y, r, h: col.h, s: col.s, l: col.l, age: 0, life: .40, power: clamp(power || 1, .5, 1.15) });
+  while (flashes.length > 5) flashes.shift();   // 겹쳐 쌓이면 화면이 하얗게 날아간다
+}
+
+// ── 포탄 ───────────────────────────────────────────────────
+const shells = [];
+const G = 620;
+function launch(tx, ty, opt){
+  opt = opt || {};
+  ty = clamp(ty, H * 0.06, H * 0.80);
+  tx = clamp(tx, W * 0.06, W * 0.94);
+  const sx = opt.sx != null ? opt.sx : clamp(tx + rnd(-W * .18, W * .18), W * .12, W * .88);
+  const sy = H + 8;
+  const dur = clamp(0.62 + (H - ty) / H * 0.55, .55, 1.35);
+  const vx = (tx - sx) / dur;
+  const vy = (ty - sy) / dur - 0.5 * G * dur;
+  const col = opt.col || pick(PALETTE);
+  shells.push({
+    x: sx, y: sy, vx, vy, t: 0, life: dur, col,
+    type: opt.type || pick(TYPES),
+    size: opt.size || 1,
+    text: opt.text || null,
+    sfx: opt.sfx !== false
+  });
+  if (opt.sfx !== false) sndWhistle(dur, opt.size || 1);
+}
+
+// ── 폭발 ───────────────────────────────────────────────────
+function burst(x, y, col, type, size, text){
+  size = size || 1;
+  const base = Math.min(W, H);
+  const R = base * 0.34 * size;                 // 확산 속도의 기준
+  const n = Math.round(clamp(base * 0.40 * size, 70, 340) * quality);
+  navigator.vibrate && navigator.vibrate(size > 1.25 ? 26 : 12);
+  flash(x, y, base * 0.55 * size, col, size);
+  sndBoom(size);
+  bumpCount();
+
+  if (text) { burstText(x, y, col, text, size); return; }
+
+  switch (type){
+    case 'willow': {                             // 수양버들 , 느리게 퍼져 길게 흘러내린다
+      for (let i = 0; i < n * .8; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * rnd(.18, .5);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp,
+          { h: 42, s: 95, l: 66 }, { life: rnd(2.0, 3.0), grav: 130, drag: 1.1, w: rnd(1.6, 2.8), tw: .5, fade: .8 }));
+      }
+      break;
+    }
+    case 'ring': {                               // 고리 , 한 평면으로 퍼진다
+      const tilt = rnd(0, Math.PI), sq = rnd(.25, .55);
+      for (let i = 0; i < n; i++){
+        const a = (i / n) * Math.PI * 2, sp = R * rnd(.86, 1.0);
+        const cx = Math.cos(a) * sp, cy = Math.sin(a) * sp * sq;
+        const vx = cx * Math.cos(tilt) - cy * Math.sin(tilt);
+        const vy = cx * Math.sin(tilt) + cy * Math.cos(tilt);
+        spawn(makeParticle(x, y, vx, vy, col, { life: rnd(1.1, 1.6), w: rnd(1.6, 2.4), tw: .4 }));
+      }
+      break;
+    }
+    case 'palm': {                               // 야자수 , 굵은 줄기 몇 가닥
+      const arms = rndi(7, 10);
+      for (let k = 0; k < arms; k++){
+        const a = (k / arms) * Math.PI * 2 + rnd(-.1, .1);
+        for (let i = 0; i < n / arms; i++){
+          const sp = R * rnd(.55, 1.05);
+          spawn(makeParticle(x, y, Math.cos(a) * sp * rnd(.9, 1.1), Math.sin(a) * sp * rnd(.9, 1.1), col,
+            { life: rnd(1.5, 2.2), grav: 165, drag: 1.15, w: rnd(2.0, 3.4), tw: .35 }));
+        }
+      }
+      break;
+    }
+    case 'crackle': {                            // 크래클 , 터진 뒤 자잘하게 파열
+      for (let i = 0; i < n; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * rnd(.3, 1.0);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp, col,
+          { life: rnd(.8, 1.3), w: rnd(1.3, 2.2) }));
+      }
+      for (let i = 0; i < n * .7 * quality; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * rnd(.2, .8);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp, { h: 45, s: 25, l: 96 },
+          { life: rnd(1.2, 2.0), w: rnd(1.0, 1.8), tw: 1, drag: 2.4, grav: 120 }));
+      }
+      sndCrackle(size);
+      break;
+    }
+    case 'strobe': {                             // 스트로브 , 깜빡이는 흰 별
+      for (let i = 0; i < n; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * rnd(.25, .95);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp,
+          i % 3 ? { h: 45, s: 20, l: 97 } : col, { life: rnd(1.4, 2.2), w: rnd(1.6, 2.6), tw: 1, drag: 2.0 }));
+      }
+      break;
+    }
+    case 'double': {                             // 2단 , 다른 색으로 한 번 더
+      burst(x, y, col, 'peony', size * .9);
+      const col2 = pick(PALETTE.filter(c => c.name !== col.name));
+      setTimeout(() => burst(x + rnd(-16, 16), y + rnd(-10, 10), col2, pick(['chrys','ring','crackle']), size * .72), 480);
+      return;
+    }
+    case 'heart': {                              // 하트
+      for (let i = 0; i < n; i++){
+        const t = (i / n) * Math.PI * 2;
+        const hx =  16 * Math.pow(Math.sin(t), 3);
+        const hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        const k = R / 17 * rnd(.94, 1.06);
+        spawn(makeParticle(x, y, hx * k, hy * k, col, { life: rnd(1.3, 1.9), w: rnd(1.8, 2.8), tw: .4, drag: 1.9 }));
+      }
+      break;
+    }
+    case 'chrys': {                              // 국화 , 꼬리를 남기며 퍼진다
+      for (let i = 0; i < n; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * Math.sqrt(Math.random()) * rnd(.6, 1.05);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp, col,
+          { life: rnd(1.4, 2.1), w: rnd(1.5, 2.8), tw: .6, drag: 1.35, grav: 175 }));
+      }
+      break;
+    }
+    default: {                                   // 모란(구형) , 가장 기본
+      for (let i = 0; i < n; i++){
+        const a = rnd(0, Math.PI * 2), sp = R * rnd(.55, 1.0);
+        spawn(makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp, col,
+          { life: rnd(1.0, 1.7), w: rnd(1.5, 2.6), tw: .3 }));
+      }
+    }
+  }
+}
+
+// ── 글자 불꽃 ──────────────────────────────────────────────
+let scratch = null;
+function textTargets(text, boxW){
+  if (!scratch) scratch = document.createElement('canvas');
+  const c = scratch, g = c.getContext('2d');
+  const size = 120;
+  c.width = Math.max(200, boxW); c.height = size * 1.5;
+  g.clearRect(0, 0, c.width, c.height);
+  g.fillStyle = '#fff';
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  let fs = size;
+  do {
+    g.font = '800 ' + fs + 'px "Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    if (g.measureText(text).width <= c.width * .92) break;
+    fs -= 6;
+  } while (fs > 24);
+  g.fillText(text, c.width / 2, c.height / 2);
+  const d = g.getImageData(0, 0, c.width, c.height).data;
+  const pts = [], step = 2;
+  for (let y = 0; y < c.height; y += step)
+    for (let x = 0; x < c.width; x += step)
+      if (d[(y * c.width + x) * 4 + 3] > 128) pts.push([x - c.width / 2, y - c.height / 2]);
+  return pts;
+}
+function burstText(x, y, col, text, size){
+  const boxW = Math.min(W * .82, 420);
+  const pts = textTargets(text, boxW);
+  const max = Math.round(760 * quality);
+  const stride = Math.max(1, Math.ceil(pts.length / max));
+  for (let i = 0; i < pts.length; i += stride){
+    const tx = x + pts[i][0], ty = y + pts[i][1];
+    const a = rnd(0, Math.PI * 2), sp = rnd(40, 120);
+    const p = makeParticle(x, y, Math.cos(a) * sp, Math.sin(a) * sp,
+      i % 5 === 0 ? { h: 45, s: 25, l: 96 } : col,
+      { life: rnd(3.6, 4.4), w: rnd(2.0, 3.2), tw: .35, fade: 1.25, mode: 'to', tx, ty, hold: rnd(2.2, 2.7), grav: 0, drag: 0 });
+    spawn(p);
+  }
+}
+
+// ── 루프 ───────────────────────────────────────────────────
+let last = performance.now(), acc = 0, frames = 0, slow = 0;
+function frame(now){
+  let dt = (now - last) / 1000; last = now;
+  if (dt > .05) dt = .05;
+
+  // 성능 자동 조절
+  acc += dt; frames++;
+  if (acc > 1){
+    const fps = frames / acc; acc = 0; frames = 0;
+    if (fps < 42){ slow++; if (slow > 1 && quality > .45) quality = Math.max(.45, quality - .18); }
+    else if (fps > 55 && quality < 1){ quality = Math.min(1, quality + .08); slow = 0; }
+  }
+
+  // 잔상: 알파만 깎아 배경 영상이 비치게.
+  // ★프레임당 고정값으로 깎으면 느린 기기에서 꼬리가 길게 남는다. 지난 시간으로 깎는다.
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = 'rgba(0,0,0,' + clamp(dt * 9.5, .06, .52).toFixed(3) + ')';
+  ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.lineCap = 'round';
+
+  // 섬광
+  for (let i = flashes.length - 1; i >= 0; i--){
+    const f = flashes[i]; f.age += dt;
+    const k = 1 - f.age / f.life;
+    if (k <= 0){ flashes.splice(i, 1); continue; }
+    const a = k * k * .19 * f.power;
+    const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * (1.6 - k * .6));
+    g.addColorStop(0, 'hsla(' + f.h + ',' + f.s + '%,' + f.l + '%,' + a + ')');
+    g.addColorStop(.45, 'hsla(' + f.h + ',' + f.s + '%,' + f.l + '%,' + (a * .18) + ')');
+    g.addColorStop(1, 'hsla(' + f.h + ',' + f.s + '%,' + f.l + '%,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(f.x - f.r * 1.7, f.y - f.r * 1.7, f.r * 3.4, f.r * 3.4);
+  }
+
+  // 포탄
+  for (let i = shells.length - 1; i >= 0; i--){
+    const s = shells[i];
+    s.t += dt;
+    const px = s.x, py = s.y;
+    s.x += s.vx * dt; s.vy += G * dt; s.y += s.vy * dt;
+    ctx.strokeStyle = 'hsla(38,100%,80%,.95)';
+    ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(s.x, s.y); ctx.stroke();
+    if (Math.random() < .75)
+      spawn(makeParticle(s.x, s.y, rnd(-16, 16), rnd(-6, 22), { h: 34, s: 100, l: 68 },
+        { life: rnd(.25, .5), w: rnd(1.0, 1.8), grav: 60, drag: 2.6 }));
+    if (s.t >= s.life){ burst(s.x, s.y, s.col, s.type, s.size, s.text); shells.splice(i, 1); }
+  }
+
+  // 입자
+  for (let i = parts.length - 1; i >= 0; i--){
+    const p = parts[i];
+    p.age += dt;
+    if (p.age >= p.life){ parts.splice(i, 1); continue; }
+    p.px = p.x; p.py = p.y;
+    if (p.mode === 'to'){
+      const k = Math.min(1, dt * 7);
+      p.x += (p.tx - p.x) * k; p.y += (p.ty - p.y) * k;
+      if (p.age > p.hold){ p.mode = 'free'; p.vx = rnd(-12, 12); p.vy = rnd(-4, 16); p.grav = 60; p.drag = 1.2; }
+    } else {
+      const d = 1 - p.drag * dt;
+      p.vx *= d; p.vy *= d;
+      p.vy += p.grav * dt;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+    }
+    const t = p.age / p.life;
+    let a = (1 - t) * p.fade;
+    a = a * a * 1.1;
+    if (p.tw && t > .35 && Math.random() < p.tw * .5) a *= .25;
+    if (a <= .02) continue;
+    ctx.strokeStyle = 'hsla(' + p.h + ',' + p.s + '%,' + (p.l + (1 - t) * 18) + '%,' + a + ')';
+    ctx.lineWidth = p.w * (1 - t * .35);
+    ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke();
+  }
+
+  // 심심하면 알아서 한 발
+  autoShow(now);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// ── 소리 (파일 없이 그 자리에서 합성) ──────────────────────
+let AC = null, master = null, noise = null, soundOn = true;
+function audio(){
+  if (AC) { if (AC.state === 'suspended') AC.resume(); return AC; }
+  const C = window.AudioContext || window.webkitAudioContext;
+  if (!C) return null;
+  AC = new C();
+  master = AC.createGain(); master.gain.value = .85; master.connect(AC.destination);
+  const len = Math.floor(AC.sampleRate * 1.6);
+  noise = AC.createBuffer(1, len, AC.sampleRate);
+  const d = noise.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return AC;
+}
+function sndWhistle(dur, size){
+  if (!soundOn || !AC) return;
+  const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(620 + rnd(-60, 60), t);
+  o.frequency.exponentialRampToValueAtTime(1250 + rnd(-100, 160), t + dur);
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(.07 * clamp(size, .7, 1.5), t + .06);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .05);
+}
+function sndBoom(size){
+  if (!soundOn || !AC) return;
+  const t = AC.currentTime;
+  const src = AC.createBufferSource(); src.buffer = noise;
+  const f = AC.createBiquadFilter(); f.type = 'lowpass';
+  f.frequency.setValueAtTime(1400 * clamp(size, .8, 1.6), t);
+  f.frequency.exponentialRampToValueAtTime(120, t + .5);
+  const g = AC.createGain();
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(.42 * clamp(size, .6, 1.7), t + .012);
+  g.gain.exponentialRampToValueAtTime(.0001, t + .55 + size * .2);
+  src.connect(f); f.connect(g); g.connect(master);
+  src.start(t); src.stop(t + 1.1);
+  const o = AC.createOscillator(), og = AC.createGain();   // 배를 울리는 저음
+  o.type = 'sine';
+  o.frequency.setValueAtTime(78 * clamp(size, .8, 1.4), t);
+  o.frequency.exponentialRampToValueAtTime(38, t + .35);
+  og.gain.setValueAtTime(.0001, t);
+  og.gain.exponentialRampToValueAtTime(.3 * clamp(size, .6, 1.6), t + .02);
+  og.gain.exponentialRampToValueAtTime(.0001, t + .5);
+  o.connect(og); og.connect(master); o.start(t); o.stop(t + .6);
+}
+function sndCrackle(size){
+  if (!soundOn || !AC) return;
+  const t0 = AC.currentTime, n = Math.round(26 * clamp(size, .7, 1.5));
+  for (let i = 0; i < n; i++){
+    const t = t0 + .12 + Math.random() * .9;
+    const src = AC.createBufferSource(); src.buffer = noise;
+    const f = AC.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = rnd(2200, 5200); f.Q.value = 6;
+    const g = AC.createGain();
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(.075, t + .004);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .07);
+    src.connect(f); f.connect(g); g.connect(master);
+    src.start(t); src.stop(t + .09);
+  }
+}
+
+// ── 카운터 ─────────────────────────────────────────────────
+let total = 0;
+try { total = parseInt(localStorage.getItem('fw_total') || '0', 10) || 0; } catch(e){}
+let shown = total;
+function bumpCount(){
+  total++;
+  try { localStorage.setItem('fw_total', String(total)); } catch(e){}
+  if (total - shown >= 1){
+    shown = total;
+    countEl.textContent = '🎆 ' + total + '발';
+    countEl.classList.add('on');
+  }
+}
+if (total > 0){ countEl.textContent = '🎆 ' + total + '발'; countEl.classList.add('on'); }
+
+// ── 조작 ───────────────────────────────────────────────────
+let started = false, lastTouch = 0;
+function markStarted(){
+  lastTouch = performance.now();
+  if (started) return;
+  started = true;
+  stage.classList.add('playing');
+  audio();
+}
+const holds = new Map();
+stage.addEventListener('pointerdown', e => {
+  if (e.target.closest('.btn') || e.target.closest('.sheet') || e.target.closest('.scrolldown')) return;
+  audio(); markStarted();
+  stage.setPointerCapture && stage.setPointerCapture(e.pointerId);
+  const r = cv.getBoundingClientRect();
+  holds.set(e.pointerId, { x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now(), moved: 0, lastFire: 0 });
+}, { passive: true });
+
+stage.addEventListener('pointermove', e => {
+  const h = holds.get(e.pointerId); if (!h) return;
+  const r = cv.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  h.moved += Math.hypot(x - h.x, y - h.y);
+  h.x = x; h.y = y;
+  const now = performance.now();
+  if (h.moved > 46 && now - h.lastFire > 130){        // 쓸면 연발
+    h.lastFire = now; h.moved = 0;
+    launch(x, y, { size: rnd(.6, .82), type: pick(['peony','chrys','crackle','ring']) });
+  }
+}, { passive: true });
+
+function release(e){
+  const h = holds.get(e.pointerId); if (!h) return;
+  holds.delete(e.pointerId);
+  const held = performance.now() - h.t;
+  if (h.lastFire) return;                              // 쓸기로 이미 쐈으면 끝
+  const power = clamp(held / 900, 0, 1);               // 길게 누를수록 커진다
+  const size = 0.9 + power * 1.0;
+  const type = power > .55 ? pick(['double','crackle','palm','willow','strobe']) : pick(TYPES);
+  launch(h.x, h.y, { size, type });
+  if (power > .8) setTimeout(() => launch(h.x + rnd(-70, 70), h.y + rnd(-60, 30), { size: size * .8 }), 260);
+}
+stage.addEventListener('pointerup', release, { passive: true });
+stage.addEventListener('pointercancel', e => holds.delete(e.pointerId), { passive: true });
+
+// 길게 누르는 동안 충전 링
+(function chargeRing(){
+  requestAnimationFrame(chargeRing);
+  if (!holds.size) return;
+  const now = performance.now();
+  ctx.globalCompositeOperation = 'lighter';
+  holds.forEach(h => {
+    const k = clamp((now - h.t) / 900, 0, 1);
+    if (k < .12 || h.lastFire) return;
+    ctx.strokeStyle = 'hsla(' + (44 - k * 20) + ',100%,' + (66 + k * 20) + '%,' + (.28 + k * .5) + ')';
+    ctx.lineWidth = 2 + k * 2;
+    ctx.beginPath(); ctx.arc(h.x, h.y, 14 + k * 34, -Math.PI / 2, -Math.PI / 2 + k * Math.PI * 2); ctx.stroke();
+  });
+})();
+
+// ── 피날레 ─────────────────────────────────────────────────
+let finaleAt = 0;
+function finale(){
+  const now = performance.now();
+  if (now - finaleAt < 2500) return;
+  finaleAt = now; markStarted();
+  let i = 0;
+  const n = 26;
+  const tick = () => {
+    if (i >= n) return;
+    const k = i / n;
+    const cnt = k > .82 ? 2 : 1;
+    for (let j = 0; j < cnt; j++){
+      launch(rnd(W * .12, W * .88), rnd(H * .10, H * .46),
+        { size: .72 + k * .55, type: k > .8 ? pick(['double','crackle','palm']) : pick(TYPES) });
+    }
+    i++;
+    setTimeout(tick, 240 - k * 130);
+  };
+  tick();
+  setTimeout(() => {
+    for (let j = 0; j < 3; j++)
+      setTimeout(() => launch(W * (.28 + j * .22), H * (.16 + rnd(0, .1)), { size: 1.45, type: 'crackle' }), j * 230);
+  }, 5200);
+}
+document.getElementById('btnFinale').addEventListener('click', () => { audio(); finale(); });
+
+// ── 소리 토글 ──────────────────────────────────────────────
+const btnSound = document.getElementById('btnSound');
+btnSound.addEventListener('click', () => {
+  audio();
+  soundOn = !soundOn;
+  btnSound.classList.toggle('off', !soundOn);
+  btnSound.querySelector('.ic').textContent = soundOn ? '🔊' : '🔇';
+  if (soundOn) launch(W * .5, H * .3, { size: 1, type: 'peony' });
+  askMotion();
+});
+
+// ── 글자 불꽃 ──────────────────────────────────────────────
+const sheet = document.getElementById('sheet'), txt = document.getElementById('txt');
+document.getElementById('btnText').addEventListener('click', () => { audio(); sheet.classList.add('on'); setTimeout(() => txt.focus(), 60); });
+document.getElementById('txtCancel').addEventListener('click', () => sheet.classList.remove('on'));
+document.getElementById('txtGo').addEventListener('click', fireText);
+txt.addEventListener('keydown', e => { if (e.key === 'Enter') fireText(); });
+function fireText(){
+  const v = (txt.value || '').trim();
+  if (!v) { sheet.classList.remove('on'); return; }
+  sheet.classList.remove('on'); markStarted();
+  launch(W * .5, H * .32, { size: 1.2, type: 'peony', text: v, col: pick(PALETTE) });
+}
+
+// ── 흔들면 피날레 ──────────────────────────────────────────
+let motionOn = false;
+function askMotion(){
+  if (motionOn) return;
+  const DM = window.DeviceMotionEvent;
+  if (!DM) return;
+  const go = () => { motionOn = true; window.addEventListener('devicemotion', onMotion); };
+  if (typeof DM.requestPermission === 'function') DM.requestPermission().then(s => { if (s === 'granted') go(); }).catch(() => {});
+  else go();
+}
+let shakeAt = 0;
+function onMotion(e){
+  const a = e.accelerationIncludingGravity; if (!a) return;
+  const m = Math.hypot(a.x || 0, a.y || 0, a.z || 0);
+  const now = performance.now();
+  if (m > 26 && now - shakeAt > 2600){ shakeAt = now; finale(); }
+}
+
+// ── 알아서 쏘는 감상 모드 ──────────────────────────────────
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let nextAuto = performance.now() + 900;
+function autoShow(now){
+  if (reduce) return;
+  const idle = now - lastTouch > 5200 || !started;
+  if (!idle || now < nextAuto) return;
+  nextAuto = now + rnd(1500, 2900);
+  launch(rnd(W * .16, W * .84), rnd(H * .12, H * .44), { size: rnd(.7, 1.1), sfx: started });
+}
+
+// ── 스크롤 버튼 ────────────────────────────────────────────
+document.getElementById('scrolldown').addEventListener('click', () => {
+  document.getElementById('doc').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// ── 공유 ───────────────────────────────────────────────────
+const btnShare = document.getElementById('btnShare');
+btnShare.addEventListener('click', async () => {
+  const url = location.href.split('#')[0];
+  const data = { title: '여의도 불꽃축제', text: '화면을 누르면 63빌딩 위로 불꽃이 터집니다.', url };
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(url);
+    btnShare.textContent = '✅ 링크를 복사했어요';
+    setTimeout(() => btnShare.textContent = '🔗 친구에게 링크 보내기', 2200);
+  } catch (e) {}
+});
+
+// ── 배경 영상 , 자동재생이 막히면 조용히 포스터로 ──────────
+video.play().catch(() => {});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) video.pause(); else video.play().catch(() => {});
+});
+})();
+</script>
+</body></html>
