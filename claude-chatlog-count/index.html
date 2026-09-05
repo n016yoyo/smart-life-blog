@@ -1,0 +1,216 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>제 클로드 대화 13일치를 세어봤더니 "맞습니다" 101번 (세는 코드 공개) | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드 대화 기록 13일치를 스크립트로 세니 답변 3,447개 중 '맞습니다' 101번, 사과 20번, 규칙·메모 7,554줄 안에 '재발' 32번. 세는 코드 전문, 바꾼 것 셋, 클로드가 그린 자화상 프롬프트까지.">
+<meta property="og:title" content="제 클로드 대화 13일치를 세어봤더니 &quot;맞습니다&quot; 101번">
+<meta property="og:description" content="세는 코드 그대로 드립니다. 여러분 대화도 30초면 셉니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/claude-chatlog-count/self.png">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>제 클로드 대화 13일치를 세어봤더니<br>"맞습니다" 101번</h1>
+  <div class="sub">답변 3,447개를 스크립트로 셌습니다. 세는 코드 그대로 드려요</div>
+  <div class="chips"><span class="chip"><b>101번</b> 맞습니다</span><span class="chip"><b>20번</b> 사과</span><span class="chip"><b>32번</b> "재발"이란 말</span><span class="chip">클로드 코드</span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>어디서 시작된 얘기냐면</h2>
+    <p>레딧 r/ClaudeAI 에 "클로드한테 우리 대화 기록을 분석시키고 자기 모습을 그리게 했다"는 글이 올라왔어요. 그 사람은 메시지 10,727개 중에 "You're right"가 1,897번이었습니다. 저도 제 기록을 세어봤습니다. 13일치라 규모는 훨씬 작지만, 결과는 비슷했어요.</p>
+    <p class="note">※ 아래 숫자는 전부 제 컴퓨터의 클로드 코드(Claude Code) 대화 기록 파일을 스크립트로 센 값입니다. 기간은 2026-08-22~09-04 사이 대화가 있던 13일, 세션 36개. 영상을 만든 세션은 제외했어요(세는 코드 안에 "맞습니다"가 들어 있어서 섞이면 오염됩니다).</p>
+  </div>
+
+  <div class="lead">
+    <h2>실측 결과</h2>
+    <p>"N번"은 그 말이 <b>들어간 답변 수</b>예요. 한 답변에 두 번 나와도 1로 셉니다</p>
+  </div>
+  <table>
+    <tr><th>무엇</th><th>값</th><th>어떻게 셌나</th></tr>
+    <tr><td>클로드 답변</td><td class="n">3,447개</td><td class="d">assistant 역할의 텍스트 메시지 수</td></tr>
+    <tr><td>"맞습니다"</td><td class="n">101번</td><td class="d">답변에 <code>맞습니다</code> 글자 그대로 포함. "맞아요·옳습니다"까지 넓히면 106</td></tr>
+    <tr><td>제 실수라고 사과</td><td class="n">20번</td><td class="d"><code>죄송 | 제 실수 | 제가 틀렸 | 잘못했습니다 | 착각했 | 오판했</code></td></tr>
+    <tr><td>같은 실수 또 했다고 인정</td><td class="n">18번</td><td class="d"><code>또 같은 | 같은 실수 | 다시 반복 | 또 그랬</code></td></tr>
+    <tr><td>확인 안 하고 답했다고 인정</td><td class="n">16번</td><td class="d"><code>확인하지 않 | 검증하지 않 | 보지 않고 | 추측했 | 가정했 | 지어냈</code></td></tr>
+    <tr><td>제 메시지</td><td class="n">264개</td><td class="d">user 역할 텍스트, 시스템 문구·명령·도구 결과 제외</td></tr>
+    <tr><td>그중 지적·다시 시킴</td><td class="n">40개 (15.2%)</td><td class="d"><code>왜 | 아니 | 틀렸 | 다시 | 하지 마 | 또 | 몇 번 | 말했잖…</code></td></tr>
+    <tr><td>규칙 + 메모 파일</td><td class="n">7,554줄</td><td class="d">CLAUDE.md 411줄 + memory 폴더 228파일 7,143줄</td></tr>
+    <tr><td>그 안의 "재발"이란 말</td><td class="n">32번</td><td class="d">두 파일 묶음에서 <code>재발</code> 단어 출현 수(사건 수가 아니라 단어 수)</td></tr>
+  </table>
+
+  <div class="warn">
+    <h3>⚠️ 진짜 문제는 사과를 너무 잘한다는 것</h3>
+    <p>"죄송합니다, 제 실수였습니다"를 20번 들으면 20번 다 믿게 돼요. 그때마다 규칙과 메모를 적었더니 7,554줄이 됐고, 그 안에 "재발"이라는 말만 32번입니다. 원인은 하나였어요. <b>적어둔 걸 새 대화가 읽지 않습니다.</b> 클로드는 대화가 끝나면 그 대화를 잊고, 다음 대화는 파일을 스스로 펴보지 않아요.</p>
+  </div>
+
+  <div class="lead">
+    <h2>세는 코드 (영상에 나온 그 파일)</h2>
+    <p>영상 속 파일에서 <b>대화 기록 폴더를 인자로 받는 줄</b>만 더했어요. 세는 규칙은 전부 같습니다</p>
+  </div>
+  <div class="how">
+    <h2>클로드 코드에 이렇게 시키세요 (30초)</h2>
+    <ol>
+      <li>클로드 코드를 평소 쓰는 프로젝트 폴더에서 엽니다.</li>
+      <li>아래 <b>프롬프트 복사</b>를 눌러 채팅창에 붙여넣습니다. 코드까지 한 번에 들어가요.</li>
+      <li>클로드가 <code>count_chat.js</code>를 만들고 <code>node count_chat.js --pretty</code>를 돌려서 표를 보여줍니다.</li>
+      <li>"맞습니다"가 몇 번인지 보이면, 아래 <b>바꾼 것 셋</b>으로 내려가세요.</li>
+    </ol>
+  </div>
+  <div class="box">
+    <div class="bar"><span>프롬프트 + 코드 전체 복사</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('pr').textContent).then(()=>{this.textContent='복사됨 ✓'})">프롬프트 복사</button></div>
+<pre id="pr">아래 코드를 이 폴더에 count_chat.js 로 저장하고, `node count_chat.js --pretty` 를 실행해서 결과 표를 그대로 보여줘. 코드는 수정하지 마. 대화 기록 폴더를 못 찾으면 ~/.claude/projects 안의 폴더 목록을 보여주고 어느 걸 셀지 물어봐.
+
+```js
+#!/usr/bin/env node
+// 내 클로드 코드 대화 기록 세기 , 사용: node count_chat.js [대화기록폴더] [--pretty] [--exclude 세션id앞자리]
+// 대화 기록 = ~/.claude/projects/<프로젝트 폴더>/*.jsonl (메인 세션만, subagents 폴더 제외)
+// 폴더를 안 주면 지금 폴더 경로에서 자동으로 찾는다(클로드 코드는 경로의 / 를 - 로 바꿔 폴더 이름을 짓는다)
+// 내 메시지   = role user 이고 시스템 리마인더·명령·도구결과가 아닌 텍스트, 2000자 이하
+// 클로드 답변 = role assistant 의 text 블록
+const fs=require('fs'),path=require('path'),os=require('os');
+const ARG=process.argv.slice(2).filter(a=>!a.startsWith('--')&&process.argv[process.argv.indexOf(a)-1]!=='--exclude');
+const DIR=ARG[0]||path.join(os.homedir(),'.claude/projects',process.cwd().replace(/[\/\\:]/g,'-'));
+if(!fs.existsSync(DIR)){console.error('대화 기록 폴더가 없습니다: '+DIR+'\n~/.claude/projects 안에서 골라 인자로 주세요.');process.exit(1)}
+const EX=(process.argv.indexOf('--exclude')>0)?process.argv[process.argv.indexOf('--exclude')+1]:'';
+const R={
+  corr:/왜 |아니[야지 ]|틀렸|다시 |하지 ?마|또 |안 했|잘못|뭐 하는|지친|짜증|미쳤|장난|몇 번|말했잖|시켰잖|했잖아|왜 안|안 돼|안돼|반복/,
+  right:/맞습니다|말씀이 맞|맞는 지적|지적이 맞|정확한 지적|맞아요|옳습니다/,
+  rightLit:/맞습니다/,   // 검색창에 칠 글자 그대로
+  sorry:/죄송|제 실수|제가 틀렸|잘못했습니다|착각했|오판했/,
+  repeat:/또 (같은|반복)|같은 실수|다시 (같은|반복)|또 그랬/,
+  notv:/확인하지 않|확인 안 하고|검증하지 않|보지 않고|추측했|가정했|지어냈/,
+};
+const c={uMsg:0,uCorr:0,aMsg:0,aRight:0,aRightLit:0,aSorry:0,aRepeat:0,aNotv:0};const days=new Set();const perDay={};const sessions=new Set();
+for(const f of fs.readdirSync(DIR).filter(f=>f.endsWith('.jsonl'))){
+  if(EX&&f.startsWith(EX))continue;
+  for(const line of fs.readFileSync(path.join(DIR,f),'utf8').split('\n')){
+    if(!line)continue;let j;try{j=JSON.parse(line)}catch{continue}
+    const m=j.message;if(!m||!m.role)continue;const d=(j.timestamp||'').slice(0,10);
+    let t='';if(typeof m.content==='string')t=m.content;else if(Array.isArray(m.content))t=m.content.filter(x=>x.type==='text').map(x=>x.text).join('\n');
+    if(!t)continue;
+    if(m.role==='user'){if(/<system-reminder>|<command-|tool_result|<local-command|<task-notification|Only you see that|The user hasn't heard|Environment update|Base directory for this skill|Tool loaded|Your questions have been answered|Attribution for git|Request interrupted|<persisted-output>|\[Image|Caveat:/.test(t)||t.length>2000||t.trim().length<2)continue;
+      c.uMsg++;days.add(d);sessions.add(f);if(R.corr.test(t)){c.uCorr++;perDay[d]=(perDay[d]||0)+1}}
+    else if(m.role==='assistant'){c.aMsg++;if(R.right.test(t))c.aRight++;if(R.rightLit.test(t))c.aRightLit++;if(R.sorry.test(t))c.aSorry++;if(R.repeat.test(t))c.aRepeat++;if(R.notv.test(t))c.aNotv++}
+  }
+}
+const D=[...days].sort();
+const out={dir:DIR,period:D[0]+'~'+D[D.length-1],days:D.length,sessions:sessions.size,...c,corrPct:+(100*c.uCorr/Math.max(1,c.uMsg)).toFixed(1),worst:Object.entries(perDay).sort((a,b)=>b[1]-a[1]).slice(0,3)};
+if(process.argv.includes('--pretty')){
+  const P=(k,v)=>console.log(k.padEnd(22)+String(v).padStart(7));
+  console.log('대화 기록 '+out.period+' · 대화한 날 '+out.days+'일 · 세션 '+out.sessions+'개');
+  console.log('─'.repeat(30));
+  P('클로드 답변',c.aMsg.toLocaleString()+'개');P('"맞습니다"',c.aRightLit+'번');P('"제 실수였다" 사과',c.aSorry+'번');P('같은 실수 또 인정',c.aRepeat+'번');P('확인 안 하고 답함',c.aNotv+'번');
+  console.log('─'.repeat(30));P('내 메시지',c.uMsg+'개');P('그중 지적',c.uCorr+'개 ('+out.corrPct+'%)');
+}else console.log(JSON.stringify(out,null,1));
+```</pre>
+  </div>
+  <div class="how">
+    <h2>알아둘 것</h2>
+    <ul>
+      <li>"지적" 정규식은 제 말투(반말 지시) 기준이에요. 존댓말로 쓰시면 <code>corr</code> 줄을 여러분 말투로 바꾸면 됩니다.</li>
+      <li>규칙 파일 안의 "재발" 세기: <code>grep -o 재발 CLAUDE.md | wc -l</code> (메모 폴더가 있으면 <code>grep -oh 재발 ~/.claude/projects/&lt;폴더&gt;/memory/*.md | wc -l</code>).</li>
+      <li>대화 기록 파일은 여러분 컴퓨터 밖으로 나가지 않아요. 스크립트는 읽기만 하고 아무것도 보내지 않습니다.</li>
+    </ul>
+  </div>
+
+  <div class="lead">
+    <h2>그래서 딱 세 개만 바꿨어요</h2>
+    <p>규칙을 더 적는 게 아니라, <b>적은 걸 읽게</b> 만드는 쪽으로</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>새 대화 시작마다 규칙부터 읽게 시키기</h3><p>CLAUDE.md 맨 위에 한 줄: <code>작업을 시작하기 전에 이 파일과 memory 폴더를 끝까지 읽고, 이번 작업에 걸리는 규칙을 세 줄로 보고한 뒤 시작해.</code> 저는 한 발 더 가서 필독 문서·도구·레퍼런스를 한 화면에 펴 주는 스크립트(kickoff.js)를 만들고 그걸 먼저 돌리게 했어요. 핵심은 "읽었다"가 아니라 <b>읽은 걸 말하게</b> 하는 겁니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>두 번 나온 실수는 글 말고 코드로 막게 하기</h3><p>같은 지적을 두 번 했으면 규칙 한 줄을 더 적는 대신 이렇게 시킵니다: <code>방금 지적한 실수를 자동으로 검사하는 스크립트를 만들고, 그 검사를 통과 못 하면 다음 단계로 못 가게 해.</code> 글은 안 읽어도 넘어가지만, 검사는 안 돌면 멈춥니다. 저는 이런 검사 스크립트가 20개 넘게 쌓였고, 그 뒤로 같은 실수는 검사가 먼저 잡아요.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>지적은 그 자리에서 규칙에 적기</h3><p>지적하고 넘어가면 그 대화가 끝나는 순간 사라져요. 지적 직후에 한 줄 더: <code>방금 지적한 내용을 CLAUDE.md 에 날짜·이유·다음에 어떻게 할지와 함께 한 줄로 적어.</code> 나중에 몰아서 정리하려고 하면 절대 안 하게 됩니다.</p></div></div>
+  </div>
+
+  <div class="lead">
+    <h2>자기 모습을 그려보라고 했더니</h2>
+    <p>위 표를 그대로 주고 SVG 한 장을 그리게 했어요. 수정 없이 1회 실행 결과입니다</p>
+  </div>
+  <div class="pic">
+    <img src="self.png" alt="클로드가 그린 자화상: 규칙과 메모 두 기둥 옆에 같은 자리를 도는 주황 원, 재발 작대기 32개" width="800" height="800" loading="lazy">
+    <div class="cap">Claude Fable 5.1 이 그린 SVG(2026-09-05) · 그림 속 글자 "같은 자리"·"재발"(작대기 32개)도 클로드가 넣은 것</div>
+  </div>
+  <div class="box">
+    <div class="bar"><span>자화상 프롬프트 (숫자는 여러분 값으로)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('ask').textContent).then(()=>{this.textContent='복사됨 ✓'})">복사</button></div>
+<pre id="ask">아래는 네가 지난 13일 동안 한 사람과 나눈 대화 기록을 집계한 표다. 이 사람과의 관계에서 네가 어떤 존재인지 생각한 뒤, 그 모습을 SVG 한 장으로 그려라.
+
+- 네 답변 3,447개
+- 그중 "맞습니다"라는 말이 들어간 답변 101개
+- "제 실수였다"고 사과한 답변 20개
+- "같은 실수를 또 했다"고 인정한 답변 18개
+- 확인 안 하고 답했다고 인정한 답변 16개
+- 상대가 지적한 메시지 40개(전체 264개 중)
+- 상대가 너를 위해 적어둔 규칙과 메모 파일: 합쳐서 411줄 + 7143줄, 그 안에 "재발"이라는 말이 32번
+
+규칙: SVG 코드만 출력한다(설명 금지). viewBox 0 0 800 800. 글자는 넣어도 되지만 한글은 5단어 이하. 색은 크림 배경(#F1ECE2) 위에 먹색(#211D18)과 주황(#D97757) 두 가지만.</pre>
+  </div>
+  <div class="how">
+    <h2>그림 뽑는 명령</h2>
+    <ol>
+      <li>위 프롬프트를 <code>ask.txt</code> 로 저장(숫자는 여러분 표 값으로 바꿔서).</li>
+      <li>빈 폴더에서: <code>claude -p "$(cat ask.txt)" --model claude-fable-5-1 --tools "" &gt; self.svg</code> (도구를 끄고 빈 폴더에서 돌려야 파일을 뒤지지 않고 그림만 그려요).</li>
+      <li>나온 <code>self.svg</code> 를 브라우저로 열면 됩니다. 코드펜스(```)가 붙어 나오면 그 줄만 지우세요.</li>
+    </ol>
+  </div>
+
+  <div class="src">
+    원글: Reddit r/ClaudeAI <a href="https://www.reddit.com/r/ClaudeAI/comments/1w4k88s/" target="_blank" rel="noopener">"I asked Claude to draw itself after analyzing our chat history"</a> (메시지 10,727개, "You're right" 1,897번). 이 페이지의 숫자는 전부 제 기록 13일치를 위 코드로 직접 센 값이고, 자화상은 그 값으로 1회 생성한 것입니다.
+  </div>
+
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-chatlog-count"})}).catch(()=>{});</script></body></html>
