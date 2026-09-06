@@ -1,0 +1,193 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 요금, 가격표에서 이 한 줄만 보세요 | AI TIGER MASK</title>
+<meta name="description" content="GPT-6 Astra 와 Claude Fable 5.1 은 입력·출력·캐시 쓰기가 똑같고 캐시 읽기만 네 배 다릅니다. 제 7일 사용량의 97.7%가 그 칸이라 정가 환산이 $2,458 대 $5,115 로 갈렸습니다. 내 사용량으로 계산하는 스크립트를 그대로 드립니다.">
+<meta property="og:title" content="클로드 요금, 가격표에서 이 한 줄만 보세요">
+<meta property="og:description" content="정가표는 네 칸 중 세 칸이 똑같습니다. 갈리는 건 캐시 읽기 한 줄이에요.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{white-space:pre;max-height:420px;font-size:11.5px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:640px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+details{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800;font-size:14px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>클로드 요금,<br>가격표에서 이 한 줄만 보세요</h1>
+  <div class="sub">정가표는 네 칸 중 세 칸이 글자까지 똑같습니다</div>
+  <div class="chips"><span class="chip"><b>97.7%</b> 캐시 읽기</span><span class="chip"><b>$2,458</b> Fable 5.1</span><span class="chip"><b>$5,115</b> Astra</span><span class="chip"><b>2.08배</b></span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>왜 계산해봤냐면</h2>
+    <p>새 모델로 갈아탈까 하고 가격표 두 장을 폈는데 <b>네 칸 중 세 칸이 글자까지 같았습니다.</b> 입력 $10, 출력 $50, 캐시 쓰기 $12.50. 그럼 아무거나 써도 되겠다 싶었는데, <b>캐시 읽기 한 칸만 네 배</b>였어요. 겨우 75센트 차이라 넘길 뻔했습니다.</p>
+    <p class="note">※ 아래 숫자는 <b>제 계정의 2026년 9월 6일 7일치</b>입니다. 저는 정액제(Max)라 실제로 이 금액을 내지 않습니다. <b>API 정가로 곱하면 이렇다</b>는 환산값이에요. 여러분 값은 쓴 만큼 다릅니다.</p>
+  </div>
+
+  <div class="lead"><h2>공식 가격표, 네 칸 중 한 칸</h2><p>둘 다 각사 공식 문서 값입니다</p></div>
+  <table>
+    <tr><th>항목</th><th>Claude Fable 5.1</th><th>GPT-6 Astra</th><th>같나</th></tr>
+    <tr><td>입력</td><td class="n">$10</td><td class="n">$10</td><td class="d">같다</td></tr>
+    <tr><td>출력</td><td class="n">$50</td><td class="n">$50</td><td class="d">같다</td></tr>
+    <tr><td>캐시 쓰기(5분)</td><td class="n">$12.50</td><td class="n">$12.50</td><td class="d">같다</td></tr>
+    <tr><td><b>캐시 읽기</b></td><td class="n">$0.25</td><td class="n">$1.00</td><td class="d"><b>네 배</b></td></tr>
+  </table>
+  <div class="src">단위는 백만 토큰(MTok)당 달러. 출처는 <b>platform.claude.com/docs/en/about-claude/pricing</b> 과 <b>platform.openai.com/docs/pricing</b> 공식 표입니다. Anthropic 각주에 근거가 그대로 있습니다: “Cache hits and refreshes on Claude Fable 5.1 and Claude Mythos 5.1 are priced at <b>0.025x</b> the base input price. All other models use the standard <b>0.1x</b> multiplier.”</div>
+
+  <div class="lead"><h2>그 한 칸이 왜 전부가 되나</h2><p>대화가 길어질수록 앞부분을 통째로 다시 읽습니다</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>한 번 시킬 때마다 처음부터 다시 읽는다</h3><p>클로드에게 뭘 시키면 지금까지의 대화를 통째로 다시 읽고 답합니다. 열 번 시키면 새로 쓴 건 열 개인데 읽은 건 쉰다섯 개예요. <b>턴이 늘수록 다시 읽기가 제곱으로 늡니다.</b></p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>그 다시 읽기가 캐시 읽기다</h3><p>제 7일 입력 토큰 <b>36억 개 중 97.7%</b>가 캐시 읽기였습니다. 순수 입력은 0.1%도 안 됩니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>그래서 세 칸이 같아도 소용이 없다</h3><p>총액의 대부분이 그 한 칸에서 나오니까요. 항목별로 곱하면 <b>캐시 읽기만 $886 대 $3,543</b>이고, 나머지 세 칸은 양쪽이 완전히 같습니다.</p></div></div>
+  </div>
+
+  <div class="lead"><h2>제 7일치를 정가로 곱하면</h2><p>스크립트가 찍어준 그대로입니다</p></div>
+  <table>
+    <tr><th>항목</th><th>Claude Fable 5.1</th><th>GPT-6 Astra</th></tr>
+    <tr><td>입력</td><td class="n">$1</td><td class="n">$1</td></tr>
+    <tr><td>캐시 쓰기</td><td class="n">$1,039</td><td class="n">$1,039</td></tr>
+    <tr><td>출력</td><td class="n">$532</td><td class="n">$532</td></tr>
+    <tr><td>캐시 읽기</td><td class="n">$886</td><td class="n">$3,543</td></tr>
+    <tr><td><b>합계</b></td><td class="n">$2,458</td><td class="n">$5,115</td></tr>
+  </table>
+  <div class="src">7일 요청 8,052건 · 입력 합계 3,626,434,768 토큰(그중 캐시 읽기 3,543,209,557 = 97.7%) · 출력 10,642,182 토큰. 차이 <b>$2,657 · 2.08배</b>. 세는 규칙은 아래 스크립트가 전부입니다.</div>
+
+  <div class="warn">
+    <h3>그럼 비싼 쪽이 두 배로 잘하냐면</h3>
+    <p>같은 벤치(Terminal-Bench 4.0) 공식 발표 수치가 <b>Claude Fable 5.1 55.8% · GPT-6 Astra 57.9%</b>입니다. <b>2.1 포인트</b> 차이예요. 값은 두 배인데요. (컨텍스트 창은 Astra 가 1.1M 으로 더 큽니다 , 축이 다른 장점이라 여기선 따지지 않았습니다.)</p>
+  </div>
+
+  <div class="lead"><h2>내 사용량으로 계산하는 법</h2><p>클로드 코드를 쓰신다면 그대로 붙여넣으면 됩니다</p></div>
+  <div class="how">
+    <h2>먼저 이렇게 하세요</h2>
+    <ol>
+      <li>아무 폴더나 열고 <code>cost.js</code> 라는 이름으로 저장합니다.</li>
+      <li>터미널에서 <code>node cost.js</code> 를 칩니다.</li>
+      <li>끝입니다. 아무것도 설치하지 않고, 어디로도 보내지 않습니다.</li>
+    </ol>
+    <p style="font-size:13.5px;color:#4b473f;margin-top:10px">읽는 건 <code>~/.claude/projects/**/*.jsonl</code> 뿐입니다. 클로드 코드가 자기 대화 기록을 남기는 자리예요. 값을 바꾸고 싶으면 맨 위 요금 상수만 고치면 다른 모델로도 계산됩니다.</p>
+  </div>
+  <div class="box"><div class="bar"><span>cost.js</span><button class="copy" onclick="cp(this)">복사</button></div><pre class="code" id="code">// 내 실제 클로드 코드 사용량(최근 7일)을 GPT-6 Astra 와 Claude Fable 5.1 **API 정가**로 각각 곱한다.
+//   ★우리는 정액제(Max)라 이 금액을 실제로 내지 않는다. 화면·대사에 반드시 &quot;API 정가로 곱하면&quot; 을 박는다
+//     (reel_waldo2 라벨 오류 재현 방지 , 숫자는 안 틀려도 이름이 틀릴 수 있다).
+// 요금 출처(둘 다 공식 페이지 실캡처, evidence/shots/):
+//   Astra      platform.openai.com/docs/pricing   입력 $10 / 캐시읽기 $1.00  / 캐시쓰기 $12.50 / 출력 $50
+//   Fable 5.1  platform.claude.com/docs/en/about-claude/pricing
+//              입력 $10 / 캐시읽기(Cache hits and refreshes) $0.25 / 5m 캐시쓰기 $12.50 / 출력 $50
+//   ★각주까지 같이 찍는다: Fable 5.1·Mythos 5.1 만 base input 의 0.025배, 나머지 전 모델은 0.1배 = 4배 차이의 근거.
+// 토큰 출처: ~/.claude/projects/**/*.jsonl 의 message.usage (reel_pricedeadline/cost.js 와 같은 세는 규칙)
+// 실행: node docs/reel_astracache/evidence/cost.js [--json]
+const fs = require(&quot;fs&quot;), path = require(&quot;path&quot;), os = require(&quot;os&quot;);
+const ROOT = path.join(os.homedir(), &quot;.claude&quot;, &quot;projects&quot;);
+const DAYS = 7, since = Date.now() - DAYS * 864e5;
+const FABLE = { in: 10, out: 50, cr: 0.25, cw: 12.50 };
+const ASTRA = { in: 10, out: 50, cr: 1.00, cw: 12.50 };
+
+const walk = (d, o = []) =&gt; {
+  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    const p = path.join(d, e.name);
+    if (e.isDirectory()) walk(p, o); else if (e.name.endsWith(&quot;.jsonl&quot;)) o.push(p);
+  } return o;
+};
+let t = { in: 0, out: 0, cr: 0, cw: 0 }, calls = 0, files = 0;
+for (const f of walk(ROOT)) {
+  if (fs.statSync(f).mtimeMs &lt; since) continue; files++;
+  for (const line of fs.readFileSync(f, &quot;utf8&quot;).split(&quot;\n&quot;)) {
+    if (!line.trim()) continue; let j; try { j = JSON.parse(line); } catch { continue; }
+    const u = j.message &amp;&amp; j.message.usage; if (!u) continue;
+    if (j.timestamp &amp;&amp; Date.parse(j.timestamp) &lt; since) continue;
+    calls++; t.in += u.input_tokens || 0; t.out += u.output_tokens || 0;
+    t.cr += u.cache_read_input_tokens || 0; t.cw += u.cache_creation_input_tokens || 0;
+  }
+}
+const bill = r =&gt; (t.in * r.in + t.out * r.out + t.cr * r.cr + t.cw * r.cw) / 1e6;
+const totalIn = t.in + t.cr + t.cw;
+const f = bill(FABLE), a = bill(ASTRA);
+const R = {
+  at: new Date().toISOString(), days: DAYS, files, calls,
+  tokens: t, total_input: totalIn, cache_read_share: +(t.cr / totalIn * 100).toFixed(1),
+  fable: +f.toFixed(2), astra: +a.toFixed(2), diff: +(a - f).toFixed(2), ratio: +(a / f).toFixed(2),
+  rows: [
+    { label: &quot;입력&quot;,      left: +(t.in * 10 / 1e6).toFixed(2),   right: +(t.in * 10 / 1e6).toFixed(2) },
+    { label: &quot;캐시 쓰기&quot;, left: +(t.cw * 12.5 / 1e6).toFixed(2), right: +(t.cw * 12.5 / 1e6).toFixed(2) },
+    { label: &quot;출력&quot;,      left: +(t.out * 50 / 1e6).toFixed(2),  right: +(t.out * 50 / 1e6).toFixed(2) },
+    { label: &quot;캐시 읽기&quot;, left: +(t.cr * 0.25 / 1e6).toFixed(2), right: +(t.cr * 1.00 / 1e6).toFixed(2) },
+  ],
+  cr_only: { fable: +(t.cr * FABLE.cr / 1e6).toFixed(2), astra: +(t.cr * ASTRA.cr / 1e6).toFixed(2) },
+};
+if (process.argv.includes(&quot;--json&quot;)) { console.log(JSON.stringify(R, null, 1)); process.exit(0); }
+console.log(`최근 ${DAYS}일 · 세션파일 ${files}개 · 요청 ${calls.toLocaleString()}건`);
+console.log(`입력 합계 ${totalIn.toLocaleString()} 토큰  그중 캐시 읽기 ${t.cr.toLocaleString()} = ${R.cache_read_share}%`);
+console.log(`출력 ${t.out.toLocaleString()} 토큰`);
+const usd = (v) =&gt; &quot;$&quot; + Math.round(v).toLocaleString(&quot;en-US&quot;);
+// ★고정폭 터미널에서 한글은 두 칸을 먹는다 , 길이로 세면 표가 어긋난다(2026-09-06 실측)
+const wcw = (s) =&gt; [...String(s)].reduce((n, c) =&gt; n + (/[\u1100-\u11FF\u3000-\u303F\u3130-\u318F\uAC00-\uD7AF\uFF00-\uFF60]/.test(c) ? 2 : 1), 0);
+const pad = (s, n) =&gt; String(s) + &quot; &quot;.repeat(Math.max(0, n - wcw(s)));
+const lpad = (s, n) =&gt; &quot; &quot;.repeat(Math.max(0, n - wcw(s))) + String(s);
+console.log(&quot;&quot;);
+console.log(`API 정가 환산   ${pad(&quot;&quot;, 6)}${lpad(&quot;Fable 5.1&quot;, 10)}${lpad(&quot;Astra&quot;, 10)}`);
+for (const r of R.rows) console.log(`  ${pad(r.label, 12)}${lpad(usd(r.left), 10)}${lpad(usd(r.right), 10)}`);
+console.log(`  ${pad(&quot;합계&quot;, 12)}${lpad(usd(R.fable), 10)}${lpad(usd(R.astra), 10)}`);
+console.log(`차이 ${usd(R.diff)} · ${R.ratio}배   (정액제라 실제 청구 아님)`);
+</pre></div>
+
+  <div class="lead"><h2>정리</h2></div>
+  <div class="rules">
+    <div class="rule"><div class="n">A</div><div><h3>짧게 한 번씩 물어보면</h3><p>대화가 길지 않아 캐시 읽기가 적습니다. 이 차이는 거의 안 납니다.</p></div></div>
+    <div class="rule"><div class="n">B</div><div><h3>하루 종일 붙잡고 쓰면</h3><p>여기서 갈립니다. 새 모델을 고를 때 <b>입력·출력 단가보다 캐시 읽기 줄을 먼저 보세요.</b></p></div></div>
+  </div>
+
+  <div class="src">이 페이지의 모든 수치는 제 계정 실측이거나 각사 공식 문서 값입니다. 지어낸 값은 없습니다. 재현 스크립트가 위에 그대로 있어요. 저는 정액제라 실제 청구가 아니라는 점을 다시 적어둡니다.</div>
+  <div class="cta"><a href="https://www.instagram.com/aitigermask/">인스타그램에서 더 보기</a></div>
+  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+function cp(b){const t=document.getElementById('code').innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1400)})}
+</script>
+</body></html>
