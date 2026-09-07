@@ -1,9 +1,9 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>네이버 키워드 경쟁도, 공짜로 재는 법 | AI TIGER MASK</title>
-<meta name="description" content="유료 키워드 툴이 파는 세 숫자(월간 검색량·블로그 문서수·경쟁도)를 네이버 공식 API 두 개로 직접 뽑았습니다. 키 발급 절차와 제가 친 프롬프트 원문, 실제로 잰 값 그대로 공개합니다.">
-<meta property="og:title" content="네이버 키워드 경쟁도, 공짜로 재는 법">
-<meta property="og:description" content="손님 한 명당 가게가 몇 개인지. 공식 API 두 개, 쓴 돈 0원.">
+<title>블로그 순위 올라도 사람이 안 오는 이유 | AI TIGER MASK</title>
+<meta name="description" content="제가 순위를 재던 키워드 6개를 네이버 공식 API로 재봤더니 셋은 검색량이 아예 안 잡혔습니다. 키 발급 절차와 제가 친 프롬프트 원문, 실제로 잰 값 그대로 공개합니다.">
+<meta property="og:title" content="블로그 순위 올라도 사람이 안 오는 이유">
+<meta property="og:description" content="제 키워드 6개를 재봤더니 전부 미달이었습니다. 공식 API 두 개, 쓴 돈 0원.">
 <style>
 :root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
 *{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
@@ -59,28 +59,33 @@ details .in{font-size:13.5px;color:#43403a;margin-top:10px}
 </style></head><body>
 <header>
   <div class="b">AI TIGER MASK</div>
-  <h1>네이버 키워드 경쟁도,<br>공짜로 재는 법</h1>
-  <div class="sub">유료 툴이 파는 세 숫자를 공식 API 두 개로 직접 뽑았습니다</div>
-  <div class="chips"><span class="chip"><b>0원</b> 쓴 돈</span><span class="chip"><b>공식 API</b> 두 개</span><span class="chip"><b>숫자 두 개</b>로 거른다</span><span class="chip"><b>CSV</b> 로 저장</span></div>
+  <h1>블로그 순위 올라도<br>사람이 안 오는 이유</h1>
+  <div class="sub">제가 순위를 재던 키워드 6개를 직접 재봤습니다</div>
+  <div class="chips"><span class="chip"><b>6개</b> 전부 미달</span><span class="chip"><b>0원</b> 쓴 돈</span><span class="chip"><b>공식 API</b> 두 개</span><span class="chip"><b>CSV</b> 로 저장</span></div>
 </header>
 <div class="wrap">
 
   <div class="who">
     <h2>왜 해봤냐면</h2>
-    <p>"검색량 적은 키워드가 만만하다"는 말을 그대로 믿고 있었습니다. 그런데 재보니 반대였어요.</p>
-    <p><b>검색량은 손님 수고, 블로그 문서수는 그 골목의 가게 수</b>입니다. 손님만 세면 가게가 몇 개인지 모릅니다. 유료 키워드 툴이 파는 게 바로 이 두 숫자와 그 비율인데, 둘 다 네이버가 <b>공식 API로 공짜로 줍니다.</b></p>
+    <p>블로그 검색 첫 화면에 제 글이 떠 있었습니다. 순위 감시기까지 만들어 매일 확인하고 있었고요. 그런데 <b>검색량을 한 번도 안 재봤습니다.</b></p>
+    <p>재보니까 그 키워드를 찾는 사람이 <b>한 달에 열 명 남짓</b>이었어요. 순위를 재던 키워드 6개를 전부 재봤더니 <b>셋은 검색량이 아예 안 잡혔습니다.</b> 3위까지 올라갔던 것도 그중 하나였고요.</p>
+    <p>원인은 단순했습니다. <b>제가 만든 앱 이름을 그대로 키워드로 썼거든요.</b> 아무도 그 말로 검색하지 않는데 그 자리에서 순위를 올리고 있었던 겁니다.</p>
     <p class="note">※ 이 페이지는 <b>클로드 코드</b>(터미널에서 <code>claude</code>)를 쓰는 걸 전제로 씁니다. 코드는 제가 짜지 않고 프롬프트 한 문단으로 시켰습니다.</p>
   </div>
 
-  <div class="lead"><h2>제가 잰 값</h2><p>2026년 9월 7일, 한 번의 실행에서 나온 값 그대로</p></div>
+  <div class="lead"><h2>제 키워드 6개, 재본 결과</h2><p>2026년 9월 7일, 한 번의 실행에서 나온 값 그대로</p></div>
   <table>
-    <tr><th>키워드</th><th>월 검색량<br><span style="font-weight:400">(손님)</span></th><th>블로그 문서수<br><span style="font-weight:400">(가게)</span></th><th>비율<br><span style="font-weight:400">(손님 1명당 가게)</span></th></tr>
-    <tr><td>코딩공부</td><td class="num">100</td><td class="num">721,879</td><td class="n">7,219</td></tr>
-    <tr><td>노션템플릿</td><td class="num">6,350</td><td class="num">41,010</td><td class="n">6.46</td></tr>
-    <tr><td>클로드</td><td class="num">830,400</td><td class="num">373,448</td><td class="n">0.45</td></tr>
+    <tr><th>내가 순위를 재던 키워드</th><th>월 검색량</th><th>블로그 문서수</th><th>비율<br><span style="font-weight:400">(문서수 ÷ 검색량)</span></th></tr>
+    <tr><td>백화점 상품권 유효기간</td><td class="num">180</td><td class="num">45,425</td><td class="n">252</td></tr>
+    <tr><td>기프티콘 관리앱</td><td class="num">10</td><td class="num">42,408</td><td class="n">4,241</td></tr>
+    <tr><td>재입고 알림</td><td class="num">20</td><td class="num">132,627</td><td class="n">6,631</td></tr>
+    <tr><td>품절 재입고 알림 앱</td><td class="num">안 잡힘</td><td class="num">8,374</td><td class="n">–</td></tr>
+    <tr><td>기프티콘 유효기간 알림</td><td class="num">안 잡힘</td><td class="num">12,808</td><td class="n">–</td></tr>
+    <tr><td>냉장고 재고 앱</td><td class="num">안 잡힘</td><td class="num">26,920</td><td class="n">–</td></tr>
   </table>
   <div class="who" style="margin-top:14px">
-    <p>클로드는 코딩공부보다 <b>손님이 8,304배 많은데 가게는 절반 수준</b>입니다. 검색량만 봤으면 "클로드는 경쟁이 세니까 피하고 코딩공부로 가자"고 했을 자리인데, 재보니 정확히 반대였습니다.</p>
+    <p><b>여섯 개 전부가 제 기준(비율 10 이하)에 못 미쳤습니다.</b> 셋은 API가 아예 숫자를 안 줍니다. 참고로 같은 날 잰 쿠팡 글 키워드는 모니터암 <b>5.61</b>, 노트북거치대 <b>6.03</b> 으로 통과했어요.</p>
+    <p class="note">※ 안 잡힘은 0이 아닙니다. 네이버 검색광고 API는 월 10회 미만을 숫자 대신 <code>&lt; 10</code> 문자열로 줍니다. 0회라고 잰 적이 없으니 0이라고 쓰지 않습니다.</p>
   </div>
 
   <div class="lead"><h2>준비물은 키 두 개</h2><p>둘 다 무료. 한 번만 받으면 됩니다</p></div>
@@ -101,7 +106,7 @@ details .in{font-size:13.5px;color:#43403a;margin-top:10px}
 
   <div class="lead"><h2>제가 친 프롬프트 원문</h2><p>토씨 하나 안 고쳤습니다</p></div>
   <div class="box"><div class="bar"><span>프롬프트 (그대로 붙여넣기)</span><button class="copy" onclick="cp(this)">복사</button></div>
-  <pre>네이버 검색광고 API(keywordstool)로 키워드의 월간 PC·모바일 검색량을 가져오고, 네이버 검색 API(blog.json)의 total 로 블로그 문서수를 가져와서, 문서수 ÷ 검색량 을 비율로 계산해 낮은 순으로 표를 찍고 CSV 로 저장하는 스크립트를 만들어줘. 키는 .naver_searchad.json 과 .naver_openapi.json 에 있어. 값은 절대 출력하지 마. 검색광고 API 서명은 HMAC-SHA256(비밀키, "타임스탬프.GET.경로") 를 base64 로.</pre></div>
+  <pre>네이버 검색광고 API(keywordstool)로 키워드의 월간 PC·모바일 검색량을 가져오고, 네이버 검색 API(blog.json)의 total 로 블로그 문서수를 가져와서, 문서수 ÷ 검색량 을 비율로 계산해 낮은 순으로 표를 찍고 CSV 로 저장하는 스크립트를 만들어줘. 키는 .naver_searchad.json 과 .naver_openapi.json 에 있어. 값은 절대 출력하지 마. 검색광고 API 서명은 HMAC-SHA256(비밀키, 타임스탬프.GET.경로) 를 base64 로.</pre></div>
 
   <div class="how">
     <h2>돌리는 순서</h2>
@@ -111,21 +116,21 @@ details .in{font-size:13.5px;color:#43403a;margin-top:10px}
         <code>.naver_searchad.json</code> → <code>{"customerId":"숫자","apiKey":"액세스라이선스","secretKey":"비밀키"}</code><br>
         <code>.naver_openapi.json</code> → <code>{"clientId":"...","clientSecret":"..."}</code></li>
       <li>그 폴더에서 <code>claude</code> 를 켜고 위 프롬프트를 붙여넣습니다</li>
-      <li>다 되면 궁금한 키워드를 이어서 시킵니다 , <b>"클로드 노션템플릿 코딩공부 재줘"</b></li>
+      <li>다 되면 궁금한 키워드를 이어서 시킵니다 , <b>기프티콘관리앱 재입고알림 냉장고재고앱 재줘</b></li>
       <li>표가 나오고 <code>out/</code> 폴더에 CSV 가 쌓입니다</li>
     </ol>
   </div>
 
   <div class="lead"><h2>저는 이렇게 씁니다</h2><p>숫자 두 개면 끝납니다</p></div>
   <div class="rules">
-    <div class="rule"><div class="n">1</div><div><h3>쓸까 싶은 키워드를 죽 적는다</h3><p>고민하지 말고 떠오르는 대로 스무 개쯤. 한 번에 다 잽니다.</p></div></div>
-    <div class="rule"><div class="n">2</div><div><h3>손님 한 명당 가게가 몇 개인지 센다</h3><p>문서수 ÷ 검색량. 이 값 하나만 봅니다.</p></div></div>
-    <div class="rule"><div class="n">3</div><div><h3>10 넘으면 버린다</h3><p><b>이건 제가 정한 선입니다.</b> 위 세 키워드를 재보니 코딩공부 7,219(버림)·노션템플릿 6.46(남김)·클로드 0.45(남김)로 갈렸어요. 잰 값이 아니라 판단이라, 재보시고 본인 선을 잡으셔도 됩니다.</p></div></div>
+    <div class="rule"><div class="n">1</div><div><h3>쓸 키워드를 죽 적어 넣는다</h3><p>고민하지 말고 떠오르는 대로 스무 개쯤. 한 번에 다 잽니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>글 수를 사람 수로 나눈다</h3><p>문서수 ÷ 검색량. 이 값 하나만 봅니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>10 넘으면 버리고, 남은 말로 제목을 잡는다</h3><p><b>10이라는 선은 제가 정한 것입니다.</b> 잰 값이 아니라 판단이라, 재보시고 본인 선을 잡으셔도 됩니다. 저는 남은 키워드로 글 제목을 잡고, <b>순위 추적도 그것만</b> 합니다.</p></div></div>
   </div>
 
   <div class="warn">
     <h3>이 숫자로 하면 안 되는 것</h3>
-    <p><b>순위 예측에 쓰지 마세요.</b> 문서수는 "그 키워드로 네이버 블로그를 검색했을 때 나오는 전체 결과 수"입니다. 그 말이 든 글을 넓게 세기 때문에, 띄어쓰기 없는 합성어일수록 크게 잡힙니다. 제 실측에서 "블로그자동화"는 문서수가 536만으로 나왔어요.</p>
+    <p><b>순위 예측에 쓰지 마세요.</b> 문서수는 그 말로 네이버 블로그를 검색했을 때 나오는 전체 결과 수입니다. 그 말이 든 글을 넓게 세기 때문에, 띄어쓰기 없는 합성어일수록 크게 잡힙니다. 제 실측에서 "블로그자동화"는 문서수가 536만으로 나왔어요.</p>
     <p>그래서 저는 <b>후보를 거를 때만</b> 씁니다. 열 개 중 세 개로 줄이는 용도지, 그 세 개의 순위를 매기는 용도가 아닙니다.</p>
   </div>
 
@@ -140,13 +145,13 @@ details .in{font-size:13.5px;color:#43403a;margin-top:10px}
   <details><summary>세는 규칙 (그대로 옮겨 쓰셔도 됩니다)</summary>
     <div class="in">
       <b>검색량</b> = 네이버 검색광고가 주는 최근 한 달 월간 조회수(PC+모바일). 우리가 계산하지 않고 받은 값 그대로입니다.<br><br>
-      <b>문서수</b> = 그 말로 네이버 블로그를 검색했을 때 나오는 전체 결과 수. 그 키워드만 정확히 담은 글 수가 아닙니다.<br><br>
+      <b>문서수</b> = 그 말로 네이버 블로그를 검색했을 때 나오는 전체 결과 수입니다. 그 키워드만 정확히 담은 글 수가 아닙니다.<br><br>
       <b>비율</b> = 문서수 ÷ 검색량. 유료 툴의 "경쟁도"와 같은 식이지만, 툴 이름이 붙은 지수를 흉내내지 않고 이 식 하나만 씁니다.
     </div>
   </details>
 
   <div class="src">
-    <b>이 페이지 숫자의 출처</b> , 전부 2026년 9월 7일 한 번의 실행에서 제 화면에 찍힌 값입니다. 검색량은 네이버 검색광고 API <code>keywordstool</code>, 문서수는 네이버 검색 API <code>blog.json</code> 의 <code>total</code> 이고, 비율은 그 둘을 나눈 값입니다. 검색량과 문서수는 매일 바뀌므로 직접 재보시면 값이 다를 수 있습니다. 비율 10 이라는 기준은 잰 값이 아니라 제가 정한 선입니다. 유료 키워드 툴의 가격은 캡처를 안 찍어서 적지 않았습니다.
+    <b>이 페이지 숫자의 출처</b> , 전부 2026년 9월 7일 한 번의 실행에서 제 화면에 찍힌 값입니다. 검색량은 네이버 검색광고 API <code>keywordstool</code>, 문서수는 네이버 검색 API <code>blog.json</code> 의 <code>total</code> 이고, 비율은 그 둘을 나눈 값입니다. 순위는 제 순위 감시기가 2026년 8월 11일부터 기록한 값이고, 네이버 블로그 탭 검색 결과 안에서 제 글의 위치입니다. 검색량·문서수·순위는 매일 바뀌므로 직접 재보시면 값이 다를 수 있습니다. 비율 10 이라는 기준은 잰 값이 아니라 제가 정한 선입니다.
   </div>
 
   <div class="cta"><a href="../">다른 글도 보기</a></div>
