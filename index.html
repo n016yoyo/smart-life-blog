@@ -267,6 +267,9 @@ button{font-family:inherit}
           /* 그룹 래퍼 */
           .kw-group{display:contents}
           .kw-group.hidden .kw-group-label,.kw-group.hidden .kw-card{display:none}
+          /* 홈에는 조회수 상위 5 + 최신 5 만 편다. 나머지는 이 버튼으로(DOM 에는 남아 있어 검색·직접접속은 그대로) */
+          .kw-more{display:none;margin:18px auto 0;padding:11px 22px;border-radius:999px;border:1.5px solid rgba(0,0,0,0.12);background:#fff;font-size:13.5px;font-weight:700;color:#4b4b45;cursor:pointer;transition:all .18s}
+          .kw-more:hover{border-color:rgba(0,0,0,0.28);color:#0e0e0a}
         </style>
         <h2 class="kw-h">코딩 없이 AI로 만드는 법</h2>
         <p class="kw-sub">인스타에서 본 그것들, 만드는 법 전부 정리했어요</p>
@@ -347,6 +350,7 @@ button{font-family:inherit}
           <a class="kw-card" data-cat="video" href="https://omni-drone-guide.pages.dev/" target="_blank" rel="noopener"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">사진 한 장으로 드론 영상 만들기</span><span class="kw-s">사진에 선만 그으면 그 경로대로 나는 드론 영상. Gemini $300 무료 크레딧 + 프롬프트 전부 공개</span></span><span class="kw-views" data-date="2026-07-12" data-views="omnidrone-guide"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
           <a class="kw-card" data-cat="video" data-page="bigyul" href="bigyul/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">정지챌린지 영상, 코딩 없이 만들기</span><span class="kw-s">걸어와 윤곽선에 딱 맞는 그 영상 만드는 법</span></span><span class="kw-views" data-date="2026-06-28" data-views="bigyul"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
           <a class="kw-card" data-cat="video" data-page="stretch" href="stretch/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">픽셀 스트레치 효과, 코딩 없이 만들기</span><span class="kw-s">사진 색이 위로 주욱 늘어나는 그 효과, 복붙으로</span></span><span class="kw-views" data-date="2026-06-28" data-views="stretch"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="video" data-page="ig-hourly-views" href="ig-hourly-views/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">인스타 조회수, 어느 영상이 올린 건지 매시간 알림 받기</span><span class="kw-s">인스타는 계정 전체 조회수만 보여줍니다. 어느 영상이 몇 올렸는지는 안 알려줍니다. 매시 정각에 릴스별로 재서 오른 만큼만 텔레그램으로 받는 도구. 코드 전문과 함정까지.</span></span><span class="kw-views" data-date="2026-08-20" data-views="ig-hourly-views"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
 
           <!-- 데모·쇼케이스 -->
           <div class="kw-group-label" data-group="demo">데모·쇼케이스</div>
@@ -355,34 +359,71 @@ button{font-family:inherit}
           <a class="kw-card" data-cat="demo" data-page="design" href="design/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">코드로 내린 커피 (데모 사이트)</span><span class="kw-s">코딩 0으로 만든 시네마틱 사이트 보기</span></span><span class="kw-views" data-date="2026-06-28" data-views="design"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
           <a class="kw-card" data-cat="demo" href="https://tiger-wedding.pages.dev/" target="_blank" rel="noopener"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">시네마틱 청첩장, 코딩 없이 만들기</span><span class="kw-s">봉투 열리고 식장으로 날아가는 그 스크롤 청첩장 (데모 + 만드는 법)</span></span><span class="kw-views" data-date="2026-07-06" data-views="tiger-wedding"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
           <a class="kw-card" data-cat="demo" href="https://tiger-birthday.pages.dev/" target="_blank" rel="noopener"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">모바일 생일 초대장, 코딩 없이 만들기</span><span class="kw-s">촛불에 후 불면 진짜 꺼지는 그 초대장 (데모 + 만드는 법)</span></span><span class="kw-views" data-date="2026-07-06" data-views="tiger-birthday"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="birthday-candle" href="birthday-candle/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">후 불어서 촛불 끄기</span><span class="kw-s">화면에 대고 후 불면 촛불이 꺼집니다. 마이크로 진짜 입김을 감지하는 생일 촛불 페이지.</span></span><span class="kw-views" data-date="2026-08-15" data-views="birthday-candle"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="fridgi" href="fridgi/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">Fridgi — AI Food Expiry Tracker</span><span class="kw-s">Fridgi uses AI to scan grocery receipts, track food expiry dates, and send alerts before anything goes to waste. Free for iOS and Android. Supports Korean, English, Japanese, Chinese.</span></span><span class="kw-views" data-date="2026-06-28" data-views="fridgi"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="giftwallet" href="giftwallet/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">GiftWallet — Korean Gift Card Manager</span><span class="kw-s">GiftWallet manages Korean gift cards (gifticons) with AI barcode scanning. Auto-translates to English, Japanese, Chinese. Free for iOS and Android.</span></span><span class="kw-views" data-date="2026-06-28" data-views="giftwallet"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="harubrief" href="harubrief/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">HaruBrief — AI Morning Briefing App</span><span class="kw-s">HaruBrief reads your iPhone calendar every morning and delivers an AI briefing: lunch availability, departure time, burnout risk. Free for iOS.</span></span><span class="kw-views" data-date="2026-06-28" data-views="harubrief"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="restocky" href="restocky/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">Restocky, 한 번만 깔아봐 주세요</span><span class="kw-s">비개발자가 타이핑만으로 만든 재입고·최저가 알림 앱 Restocky. 상품 링크 하나 붙여넣으면 재입고·가격 하락을 대신 지켜보고 알려줍니다. 한 번만 설치해 보시고, 별로면 이유를 남겨주세요.</span></span><span class="kw-views" data-date="2026-08-28" data-views="restocky"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
+          <a class="kw-card" data-cat="demo" data-page="wc-tracker" href="wc-tracker/"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">대한민국 32강 경우의 수 · 진출확률 , 2026 월드컵 실시간</span><span class="kw-s">2026 북중미 월드컵 대한민국 32강 진출확률 실시간. 경기별 필요한 결과·베스트 시나리오·무관 경기까지 한눈에.</span></span><span class="kw-views" data-date="2026-06-28" data-views="wc-tracker"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
 
           <!-- 기타 -->
           <div class="kw-group-label" data-group="etc">기타</div>
           <a class="kw-card" data-cat="etc" href="https://worldcup32.pages.dev" target="_blank" rel="noopener"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">월드컵 32강 확률 계산기 (실시간)</span><span class="kw-s">한국 진출확률·경기별 영향, 코드 0줄로 만든 실시간 사이트</span></span><span class="kw-views" data-date="2026-07-06" data-views="worldcup32"></span><svg class="kw-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></a>
         </div>
+        <div style="text-align:center"><button class="kw-more" type="button">전체 보기</button></div>
       </section>
       <script>
+      /* 홈 카드 접기 , 조회수 상위 5 + 최신 5 만 펴고 나머지는 '전체 보기' 뒤로 보낸다(2026-09-08 사장님 지시
+         "링크가 너무 많다"). 카드는 지우지 않고 숨기기만 하므로 DM 자동매핑·검색·직접접속은 그대로다.
+         조회수는 워커에서 비동기로 오므로, 먼저 날짜로 접어 70장이 번쩍 보이는 것을 막고 값이 오면 다시 계산한다. */
+      window.__KWFOLD = { on: true, keep: null, TOPN: 5, NEWN: 5 };
       (function(){
+        var F = window.__KWFOLD;
         var tabs = document.querySelectorAll('.kw-tab');
-        var cards = document.querySelectorAll('.kw-card[data-cat]');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('.kw-card[data-cat]'));
         var labels = document.querySelectorAll('.kw-group-label');
-        function filter(tab){
-          var cat = tab.getAttribute('data-tab');
-          tabs.forEach(function(t){t.classList.toggle('active', t===tab)});
+        var more = document.querySelector('.kw-more');
+        var active = document.querySelector('.kw-tab.active') || tabs[0];
+        var key = function(c){ var v = c.querySelector('.kw-views'); return (v && v.dataset.views) || c.getAttribute('data-page') || c.getAttribute('href'); };
+
+        function apply(){
+          var cat = active ? active.getAttribute('data-tab') : 'all';
+          var folded = (cat === 'all') && F.on && F.keep;
           cards.forEach(function(c){
-            var show = cat==='all' || c.getAttribute('data-cat')===cat;
-            c.style.display = show ? '' : 'none';
+            var okCat = (cat === 'all') || c.getAttribute('data-cat') === cat;
+            var okFold = !folded || F.keep.indexOf(key(c)) >= 0;
+            c.style.display = (okCat && okFold) ? '' : 'none';
           });
           labels.forEach(function(l){
             var g = l.getAttribute('data-group');
-            if(cat==='all'){l.style.display='';return;}
-            var hasVisible = Array.from(cards).some(function(c){
-              return c.getAttribute('data-cat')===g && c.getAttribute('data-cat')===cat;
-            });
-            l.style.display = hasVisible ? '' : 'none';
+            l.style.display = cards.some(function(c){
+              return c.getAttribute('data-cat') === g && c.style.display !== 'none';
+            }) ? '' : 'none';
           });
+          var hidden = (cat === 'all' && F.keep)
+            ? cards.filter(function(c){ return F.keep.indexOf(key(c)) < 0; }).length : 0;
+          if (more){
+            // ★CSS 기본이 display:none 이라 빈 문자열로는 안 보인다(2026-09-08 실측). 값을 명시한다
+            more.style.display = (cat === 'all' && (hidden > 0 || !F.on)) ? 'inline-block' : 'none';
+            more.textContent = F.on ? ('전체 ' + cards.length + '개 보기') : '접기';
+          }
         }
-        tabs.forEach(function(t){t.addEventListener('click',function(){filter(t)})});
+        window.__kwApply = apply;
+
+        // 조회수가 오기 전 , 최신 10개로 먼저 접는다(카드가 번쩍였다 사라지는 것 방지)
+        F.keep = cards.slice().sort(function(a,b){
+          var da = (a.querySelector('.kw-views')||{dataset:{}}).dataset.date || '';
+          var db = (b.querySelector('.kw-views')||{dataset:{}}).dataset.date || '';
+          return db.localeCompare(da);
+        }).slice(0, F.TOPN + F.NEWN).map(key);
+
+        tabs.forEach(function(t){ t.addEventListener('click', function(){
+          active = t;
+          tabs.forEach(function(x){ x.classList.toggle('active', x === t); });
+          apply();
+        }); });
+        if (more) more.addEventListener('click', function(){ F.on = !F.on; apply(); });
+        apply();
       })();
       </script>
       <footer class="ftr" data-reveal>
@@ -499,6 +540,21 @@ button{font-family:inherit}
         var n = allData[el.dataset.views];
         if(n > 0) el.textContent = n.toLocaleString()+'회';
       });
+      // ★조회수가 도착했으니 홈 접기를 다시 계산한다 , 상위 TOPN + 최신 NEWN(합집합)
+      var F = window.__KWFOLD;
+      if (F) {
+        var byViews = els.slice()
+          .filter(function(e){ return allData[e.dataset.views] > 0; })
+          .sort(function(a,b){ return allData[b.dataset.views] - allData[a.dataset.views]; })
+          .slice(0, F.TOPN);
+        var byDate = els.slice()
+          .sort(function(a,b){ return (b.dataset.date||'').localeCompare(a.dataset.date||''); })
+          .slice(0, F.NEWN);
+        var keep = [];
+        byViews.concat(byDate).forEach(function(e){ if (keep.indexOf(e.dataset.views) < 0) keep.push(e.dataset.views); });
+        // ★조회수를 하나도 못 받으면 접기를 좁히지 않는다(오프라인·워커 장애 때 홈이 5장으로 쪼그라든다)
+        if (byViews.length && keep.length) { F.keep = keep; window.__kwApply && window.__kwApply(); }
+      }
       els.slice()
         .sort(function(a,b){ return (allData[b.dataset.views]||0) - (allData[a.dataset.views]||0); })
         .slice(0, HOT_TOP)

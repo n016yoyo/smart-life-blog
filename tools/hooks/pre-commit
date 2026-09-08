@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# 홈·조회수 자동 동기화 (2026-09-08 사장님 지시 "자동으로 챙기라고 매번 말하는데 자꾸 까먹는 것 같다")
+#   ★문서에 "돌려라"고 적으면 기억한 세션만 돈다. 그래서 커밋 자체에 꽂았다.
+#   가이드 페이지를 건드린 커밋이면 sync_home 이 ①조회수 카운터 주입 ②홈 카드 추가 를 하고
+#   바뀐 파일을 이 커밋에 같이 넣는다. 사람이 기억할 일이 없다.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+CHANGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^[^/]+/index\.html$|^index\.html$' || true)
+[ -z "$CHANGED" ] && exit 0
+OUT=$(node tools/sync_home.js --write 2>&1) || { echo "$OUT"; echo "❌ sync_home 실패 , 커밋 중단"; exit 1; }
+echo "$OUT" | grep -E '^(조회수 카운터 없음|홈 카드 없음|유령 카드)' || true
+TOUCHED=$(git diff --name-only | grep -E 'index\.html$' || true)
+if [ -n "$TOUCHED" ]; then
+  echo "$TOUCHED" | xargs git add
+  echo "↻ sync_home 이 고친 파일을 이 커밋에 포함했다:"; echo "$TOUCHED" | sed 's/^/   /'
+fi
+exit 0

@@ -115,6 +115,16 @@ const ok = m => console.log("✅ " + m);
   }
 
   await b.close();
+  // ★홈·조회수 동기화 점검(2026-09-08) , 훅이 없는 환경에서도 배포 전에 걸리게 한다.
+  //   가이드 페이지에 조회수 카운터가 없으면 홈 카드에 조회수가 영영 안 뜬다(67개 중 21개가 그랬다).
+  try {
+    const sync = require("child_process").execSync("node " + JSON.stringify(__dirname + "/sync_home.js"), { encoding: "utf8" });
+    const n = (t) => { const m = sync.match(new RegExp(t + ": (\\d+)건")); return m ? +m[1] : 0; };
+    const miss = n("조회수 카운터 없음") + n("홈 카드 없음") + n("유령 카드\\(폴더 없음\\)");
+    if (miss) { bad++; console.log(`❌ 홈 동기화 ${miss}건 , node tools/sync_home.js --write 로 고친다`);
+      sync.split("\n").filter(l => /^   /.test(l)).forEach(l => console.log(l)); }
+    else console.log("✅ 홈 동기화(조회수 카운터·홈 카드) 최신");
+  } catch (e) { bad++; console.log("❌ sync_home 점검 실패:", e.message.split("\n")[0]); }
   console.log(bad ? `\n=> ❌ ${bad}건 , 고치고 다시 돌린다` : "\n=> ✅ 전부 통과");
   process.exit(bad ? 1 : 0);
 })().catch(e => { console.error("실패:", e.message); process.exit(1); });
