@@ -6,7 +6,13 @@
 set -e
 cd "$(git rev-parse --show-toplevel)"
 CHANGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^[^/]+/index\.html$|^index\.html$' || true)
-[ -z "$CHANGED" ] && exit 0
+[ -z "$CHANGED" ] && # ★바뀐 페이지가 브라우저에서 실제로 그려지는지 본다(2026-09-08 사장님이 잡으신 건).
+#   </style> 하나가 빠져 body 전체가 CSS 로 먹혀도 HTTP 200 이고 <title> 도 정상이라 링크검사로는 안 걸린다.
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^[^/]+/index\.html$|^index\.html$' || true)
+if [ -n "$FILES" ]; then
+  node tools/page_audit.js --only $FILES || { echo "❌ 위 페이지가 브라우저에서 안 그려진다 , 커밋 중단"; exit 1; }
+fi
+exit 0
 OUT=$(node tools/sync_home.js --write 2>&1) || { echo "$OUT"; echo "❌ sync_home 실패 , 커밋 중단"; exit 1; }
 echo "$OUT" | grep -E '^(조회수 카운터 없음|홈 카드 없음|유령 카드)' || true
 TOUCHED=$(git diff --name-only | grep -E 'index\.html$' || true)
