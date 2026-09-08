@@ -538,7 +538,10 @@ button{font-family:inherit}
   })).then(function(){
       els.forEach(function(el){
         var n = allData[el.dataset.views];
-        if(n > 0) el.textContent = n.toLocaleString()+'회';
+        // ★0 도 찍는다(2026-09-08). 0 을 빈칸으로 두면 카운터가 고장난 것처럼 보인다 ,
+        //   방금 카운터를 넣은 페이지는 실제로 0이고, 그건 잰 값이지 결측이 아니다.
+        //   워커 응답에 키가 아예 없을 때(요청 실패)만 빈칸으로 둔다.
+        if(typeof n === 'number') el.textContent = n.toLocaleString()+'회';
       });
       // ★조회수가 도착했으니 홈 접기를 다시 계산한다 , 상위 TOPN + 최신 NEWN(합집합)
       var F = window.__KWFOLD;
