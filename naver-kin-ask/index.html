@@ -1,0 +1,164 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>블로그 제목을 지식iN 질문에서 뽑는 법 | AI TIGER MASK</title>
+<meta name="description" content="자동 발행 글 다섯 편 중 네 편이 소제목이 똑같았습니다. 같은 키워드로 사람들이 실제로 올린 질문을 네이버 공식 API로 받아와 제목을 다시 지었습니다. 키 받는 곳이 2026년에 바뀌었습니다.">
+<meta property="og:title" content="블로그 제목을 지식iN 질문에서 뽑는 법">
+<meta property="og:description" content="상품 설명 말고 사람들이 실제로 묻는 말에서 제목을 뽑습니다. 공식 API 두 개, 쓴 돈 0원.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.who h2{font-size:16px;margin-bottom:7px}.who p{font-size:14px;color:#43403a}.who p+p{margin-top:8px}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:30px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.warn{margin:20px 0 0;background:#fff5f1;border:1px solid #f0c9b8;border-left:5px solid var(--o);border-radius:12px;padding:15px 16px}
+.warn h3{font-size:15px;margin-bottom:6px;color:#a2482a}
+.warn p{font-size:13.5px;color:#4b473f}.warn p+p{margin-top:7px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.rules{margin:22px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}.rule p{font-size:13.5px;color:#4b473f}.rule p+p{margin-top:6px}
+.rule code,.who code,td code,.warn code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px;word-break:break-all}
+.cta{margin:34px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:20px;text-align:center}
+.cta h2{font-size:17px}.cta p{font-size:13.5px;color:#4b473f;margin-top:8px}
+footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:34px}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>블로그 제목을 상품 설명 말고<br>지식iN 질문에서 뽑는 법</h1>
+  <div class="sub">자동 발행 글 다섯 편 중 네 편이 첫 소제목이 똑같았습니다</div>
+  <div class="chips">
+    <span class="chip">공식 API <b>2개</b></span>
+    <span class="chip">쓴 돈 <b>0원</b></span>
+    <span class="chip">코드 <b>그대로 공개</b></span>
+  </div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>이 글은 이런 분에게</h2>
+    <p>블로그 글을 자동으로 쓰게 해뒀는데 제목·소제목이 매번 비슷하게 나오는 분.</p>
+    <p>키워드 검색량은 봤지만 <b>사람들이 그 말로 무엇을 묻는지</b>는 안 봤던 분.</p>
+    <p class="note">비개발자 기준으로 썼습니다. 터미널에 명령 한 줄 붙여넣을 수 있으면 됩니다.</p>
+  </div>
+
+  <div class="lead">
+    <h2>제가 겪은 일</h2>
+    <p>같은 키워드인데, 제 글과 사람들의 질문이 다른 곳을 보고 있었습니다</p>
+  </div>
+
+  <table>
+    <tr><th>제가 쓴 글의 첫 소제목</th><th>사람들이 실제로 올린 질문</th></tr>
+    <tr><td>사기 전에 확인할 것 3가지<br><span style="color:#6b665e;font-size:12.5px">다섯 편 중 네 편이 이 문장</span></td>
+        <td>받침대 어떻게 빼나요 · 어떻게 끼우나요<br>분리수거 · 대형폐기물인가요 · 분해 방법</td></tr>
+  </table>
+  <p style="font-size:13px;color:var(--dim);margin-top:10px">
+    「모니터 받침대」로 받아온 질문 여덟 개 중 여섯이 <b>이미 산 다음</b>을 묻고 있었습니다.
+    제 글은 사기 전 이야기만 하고 있었고요.</p>
+
+  <div class="warn">
+    <h3>먼저 알아야 할 것 , 키 받는 곳이 바뀌었습니다</h3>
+    <p>예전에는 <b>네이버 개발자센터</b>에서 애플리케이션을 등록하면 검색 API 키가 나왔습니다.
+       <b>지금은 안 됩니다.</b> 2026년 9월 기준 등록 화면의 「사용 API」 목록에 <b>검색이 아예 없습니다</b>
+       (네이버 로그인 · 인증서 · 전자문서 · 네이버페이 배송지 · 카페 · 캘린더 · 캡차 2종, 이렇게 여덟 개뿐).
+       억지로 넣으면 서버가 <code>신규로 등록할 수 없는 API가 선택되었습니다</code> 라고 답합니다.</p>
+    <p>지금 열려 있는 길은 <b>네이버 클라우드(NCP)의 NAVER API HUB</b> 하나입니다.
+       검색 API는 <b>하루 25,000회까지 무료</b>이고, 그 안에서 쓰면 요금이 0원입니다.
+       다만 <b>NCP 가입에는 본인인증과 결제수단 등록이 필요합니다.</b> 카드 등록 없이는 콘솔이 열리지 않습니다.</p>
+    <p>★<b>NCP에서 API HUB 말고는 아무것도 켜지 마세요.</b> 서버(Compute) · DB · 스토리지 · CDN은
+       무료 상한이 없어서 켜는 순간부터 시간당 요금이 붙습니다. API HUB는 한도 입력 최대값이 무료 쿼터와 같아서
+       초과 설정 자체가 불가능합니다 , 그래서 안전합니다.</p>
+  </div>
+
+  <div class="lead"><h2>따라 하는 순서</h2><p>키 두 개를 받고, 명령 한 줄을 칩니다</p></div>
+
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div>
+      <h3>네이버 검색광고 API 키</h3>
+      <p><b>월 검색수</b>를 재는 데 씁니다. 무료입니다.</p>
+      <p>searchad.naver.com 로그인 → 우측 상단 <b>도구 → API 사용 관리</b> →
+         「네이버 검색광고 API 서비스 신청」 → <b>액세스라이선스</b>·<b>비밀키</b>·<b>고객 ID</b> 세 가지를 받습니다.</p>
+    </div></div>
+    <div class="rule"><div class="n">2</div><div>
+      <h3>NAVER API HUB 키</h3>
+      <p><b>지식iN 질문</b>과 문서 수를 받는 데 씁니다. 검색 25,000회/일 무료.</p>
+      <p>ncloud.com 가입(본인인증·결제수단 등록) → 콘솔 → <b>NAVER API HUB → Application</b> 등록 →
+         <b>Client ID</b>·<b>Client Secret</b>을 받습니다. <b>다른 상품은 켜지 마세요.</b></p>
+    </div></div>
+    <div class="rule"><div class="n">3</div><div>
+      <h3>질문을 받아옵니다</h3>
+      <p>키를 파일 두 개로 저장한 뒤 명령 한 줄이면 끝입니다.</p>
+    </div></div>
+  </div>
+
+  <div class="box">
+    <div class="bar"><span>키 저장</span></div>
+    <pre>docs/scrape/.naver_searchad.json
+{"apiKey":"...", "secretKey":"...", "customerId":"..."}
+
+docs/scrape/.naver_apihub.json
+{"clientId":"...", "clientSecret":"..."}</pre>
+  </div>
+
+  <div class="box">
+    <div class="bar"><span>실행</span></div>
+    <pre>node docs/naver-keyword/ask.js "모니터 받침대" --n 8</pre>
+  </div>
+
+  <div class="box">
+    <div class="bar"><span>나오는 것</span></div>
+    <pre>「모니터 받침대」 사람들이 얼마나 찾고, 얼마나 썼고, 뭘 묻나
+
+  월 검색수          33,000 회   (PC 16,500 · 모바일 16,500)
+  블로그 문서       182,620 개
+  카페 글            70,303 개
+  지식iN 질문         9,023 개
+  뉴스                4,572 개
+
+  지식iN 에 실제로 올라온 질문 8개 (원문 그대로):
+   1. HP일체형컴퓨터 모니터 받침대 분해 방법 좀 알려주세요
+   2. 이 모니터 받침대는 어떻게 끼우나요?
+   3. 책상이 1200에 600인데 이킵먼트 싱글 사이즈 모니터 받침대를
+   4. 다이소에서 판매하는 원목으로 된 모니터 받침대 분리수거
+   5. 모니터 받침대인가요?
+   6. 컴퓨터 고수님들 lg모니터 받침대 어떻게 빼나요ㅠ
+   7. 다이소에 판매하는 모니터 받침대는 대형폐기물 인가요?
+   8. 삼성49인치 모니터 받침대 분리방법</pre>
+  </div>
+  <p style="font-size:12.5px;color:var(--dim);margin-top:8px">
+    ★이 숫자들은 <b>스냅샷</b>입니다. 살아 있는 카운트라 시간마다 늘어납니다 ,
+    영상 촬영 때는 지식iN 질문이 <b>9,014개</b>였고 같은 날 다시 재니 9,023개였습니다.
+    여러분이 돌리면 또 다른 값이 나옵니다.</p>
+
+  <div class="lead"><h2>그다음에 하는 일</h2><p>받아온 질문을 글 쓰기 전에 읽히는 것뿐입니다</p></div>
+  <p style="font-size:13.5px;color:#4b473f">
+    저는 글을 쓰는 스크립트가 <b>초안을 만들기 전에</b> 이 명령을 부르게 해뒀습니다.
+    그랬더니 그날 글의 첫 소제목이 「사기 전에 확인할 것 3가지」에서
+    <b>「힘 주기 전에, 버튼이 있는지부터 찾으세요」</b>로 바뀌었습니다.
+    제목을 잘 짓는 법을 가르친 게 아니라, <b>무엇을 묻는지를 먼저 읽힌 것</b>뿐입니다.</p>
+
+  <div class="cta">
+    <h2>막히는 데가 있으면</h2>
+    <p>인스타그램 릴스 댓글에 <b>클로드</b> 라고 남겨 주세요. 이 페이지 링크를 DM으로 보내드립니다.</p>
+  </div>
+
+  <footer>AI TIGER MASK · 2026-09-09 기준 실측 · 화면·수치는 전부 실제 실행 결과입니다</footer>
+</div></body></html>
