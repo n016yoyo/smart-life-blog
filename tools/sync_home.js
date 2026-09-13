@@ -75,11 +75,16 @@ for (const slug of dirs) {
 // ── ②b 외부 페이지 카드(pages.json, 2026-09-13) , 블로그 폴더 밖 착지 페이지(봇 대시보드 등)는 대장에서 읽는다.
 //   카드는 data-page 대신 data-ext="<key>" 로 표시하고, 조회수 키(data-views)는 key 다(그 페이지가 /api/view 에 같은 key 로 찍는다).
 //   ★홈 "최신 5" 는 data-date 순이라 대장의 date 가 곧 노출 순서다.
-const addedExt = [];
+const addedExt = [], removedExt = [];
 let ext = [];
 try { ext = JSON.parse(fs.readFileSync(path.join(ROOT, "pages.json"), "utf8")).external || []; } catch {}
 for (const e of ext) {
   if (!e.key || !e.url) continue;
+  if (e.unlisted) {   // DM 전용 착지(만드는 법 비공개 등): 홈 카드 없음, 있으면 지운다
+    const re = new RegExp(`          <a class="kw-card" data-cat="[^"]*" data-ext="${e.key}"[\\s\\S]*?</a>\\n`);
+    if (re.test(home)) { removedExt.push(e.key); if (WRITE) home = home.replace(re, ""); }
+    continue;
+  }
   if (home.includes(`data-ext="${e.key}"`)) {
     // 이미 있으면 제목·설명·날짜만 대장 기준으로 맞춘다(대장이 정본)
     const re = new RegExp(`          <a class="kw-card" data-cat="[^"]*" data-ext="${e.key}"[\s\S]*?</a>\n`);
@@ -102,12 +107,13 @@ function extCard(e) {
 for (const m of home.matchAll(/data-page="([^"]+)"/g))
   if (!dirs.includes(m[1]) && !SKIP.has(m[1]) && !fs.existsSync(path.join(ROOT, m[1]))) ghosts.push(m[1]);
 
-if (WRITE && (added.length || addedExt.length || ext.length)) fs.writeFileSync(path.join(ROOT, "index.html"), home);
+if (WRITE && (added.length || addedExt.length || removedExt.length || ext.length)) fs.writeFileSync(path.join(ROOT, "index.html"), home);
 
 const say = (t, arr) => { console.log(`${t}: ${arr.length}건`); arr.forEach(x => console.log("   " + x)); };
 console.log(`가이드 페이지 ${dirs.length}개 · 홈 카드 ${(home.match(/class="kw-card"/g) || []).length}개`);
 say("조회수 카운터 없음", injected);
 say("홈 카드 없음", added);
 say("외부 페이지 카드 없음(pages.json)", addedExt);
+say("비공개(unlisted)라 홈에서 뺀 카드", removedExt);
 say("유령 카드(폴더 없음)", ghosts);
 console.log(WRITE ? "\n✅ 반영했다. link_check 로 확인하고 커밋할 것." : "\n점검만 했다. 고치려면 --write");

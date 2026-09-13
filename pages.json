@@ -1,5 +1,5 @@
 {
-  "_": "외부 페이지 대장(2026-09-13). 블로그 폴더 밖(다른 Pages 프로젝트)에 만든 착지 페이지는 여기 한 줄. sync_home 이 홈 카드로 만든다. key = 조회수 카운터 이름(/api/view page=key). 내부 폴더 페이지는 자동 스캔이라 여기 안 적는다. 추가는 docs/_engine/publish_page.sh 가 한다.",
+  "_": "외부 페이지 대장(2026-09-13). 블로그 폴더 밖(다른 Pages 프로젝트)에 만든 착지 페이지는 여기 한 줄. sync_home 이 홈 카드로 만든다. key = 조회수 카운터 이름(/api/view page=key). 내부 폴더 페이지는 자동 스캔이라 여기 안 적는다. 추가는 docs/_engine/publish_page.sh 가 한다. unlisted:true 면 홈 카드는 안 만들고(있으면 지운다) 전송 관문만 통과시킨다(DM 전용 착지).",
   "external": [
     {
       "key": "upbit-log",
@@ -8,14 +8,6 @@
       "desc": "체결·손익·호가 중인 마켓이 봇에서 자동으로 올라오는 공개 기록. 첫날 5번 중 4번 손실 -703원부터 그대로",
       "cat": "auto",
       "date": "2026-09-12"
-    },
-    {
-      "key": "upbit-log-code",
-      "url": "https://upbit-log.pages.dev/code/",
-      "title": "업비트 메이커 봇 코드 전문 (upbit-mm, Supabase Edge)",
-      "desc": "릴스 「댓글에 클로드」로 드리는 그 코드 326줄. 내려받기 + 돌리는 데 필요한 것 4가지",
-      "cat": "auto",
-      "date": "2026-09-13"
     },
     {
       "key": "binance-log",
