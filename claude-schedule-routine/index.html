@@ -1,0 +1,158 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>컴퓨터 꺼놔도 클로드가 혼자 돕니다, /schedule 루틴 | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드 /schedule(claude.ai 루틴)은 내 컴퓨터가 아니라 클라우드에서 예약한 시각에 혼자 돕니다. 제가 시킨 문장 그대로, 만드는 순서, 지킨 규칙 셋, 못 하는 것.">
+<meta property="og:title" content="컴퓨터 꺼놔도 클로드가 혼자 돕니다, /schedule 루틴">
+<meta property="og:description" content="예약한 시각에 클라우드에서 혼자 켜져 결과를 커밋합니다. 시킨 문장 그대로 드립니다.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{white-space:pre;max-height:420px;font-size:11.5px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:640px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+details{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800;font-size:14px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+
+
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:16px 18px}
+.calc label{display:block;font-size:13px;color:var(--dim);margin-bottom:6px}
+.calc input{width:100%;font-size:20px;padding:10px 12px;border:1px solid #d8d0c0;border-radius:10px;font-variant-numeric:tabular-nums}
+.calc .out{margin-top:12px;font-size:15px;color:#43403a}
+.calc .out b{color:var(--o);font-size:26px;font-variant-numeric:tabular-nums}
+.calc .f{font-size:12.5px;color:var(--dim);margin-top:6px;font-family:ui-monospace,Menlo,Consolas,monospace}
+</style>
+</head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>컴퓨터 꺼놔도<br>클로드가 혼자 돕니다</h1>
+  <div class="sub">클로드 코드 /schedule 루틴, 제가 시킨 문장 그대로</div>
+  <div class="chips"><span class="chip"><b>18:52</b> 혼자 커밋</span><span class="chip"><b>0</b>회 내 손</span><span class="chip"><b>06:00</b> 매일</span><span class="chip"><b>1</b>파일 결과</span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>실제로 돈 기록</h2>
+    <p>2026년 9월 16일, 예약 시각이 되자 클라우드 샌드박스가 켜지고 저장소를 받아 판정을 계산한 뒤 <b>작성자 Claude</b> 로 커밋을 남겼습니다. 저는 그 시간에 아무것도 안 했고, 노트북은 닫혀 있었습니다.</p>
+    <p class="note">※ 루틴은 claude.ai 의 클라우드 세션입니다. 제 컴퓨터가 아니라 Anthropic 쪽 격리 환경에서 돌아요. 그래서 제 컴퓨터 안 파일·비밀키는 못 봅니다(아래 "못 하는 것").</p>
+  </div>
+
+  <div class="lead"><h2>만드는 순서</h2><p>클로드 코드 안에서 명령 한 줄로 시작합니다</p></div>
+  <div class="how">
+    <h2>이렇게 하세요</h2>
+    <ol>
+      <li>클로드 코드에서 <code>/schedule</code> 을 칩니다. 선택지가 뜨면 <b>Create</b>.</li>
+      <li>무엇을 시킬지 한 문장으로 말합니다(아래 제 문장을 그대로 붙여도 됩니다). 저장소(GitHub)를 하나 연결하라고 하면 결과를 커밋할 저장소를 고릅니다.</li>
+      <li>시각을 정합니다. 서버 기준이 UTC 라 <b>한국 06:00 = 21:00 UTC</b> 입니다. 클로드가 변환해서 확인해 줍니다.</li>
+      <li>만들어지면 <b>Run now</b> 로 한 번 시험 실행해 결과 파일이 저장소에 커밋되는지 봅니다. 목록·수정은 <a href="https://claude.ai/code/routines" target="_blank" rel="noopener">claude.ai/code/routines</a>.</li>
+    </ol>
+  </div>
+
+  <div class="lead"><h2>제가 지킨 규칙 셋</h2><p>영상에서 말한 하나·둘·셋</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>시킬 일은 한 문장으로 끝나게</h3><p>"어제 올린 영상이 살았는지 죽었는지 판정하고, 오늘 소재 하나를 골라라." 이 한 문장이 전부입니다. 나머지는 읽을 파일·쓸 파일·틀을 적은 것뿐이에요. 목적이 둘 이상이면 루틴을 둘로 나눕니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>결과는 파일로 남기게</h3><p>루틴은 끝나면 사라집니다. 저장소에 <code>docs/routines/morning/날짜.md</code> 한 파일을 커밋하게 해야 다음 날 제가(그리고 다음 루틴이) 읽습니다. 실행마다 커밋 하나가 남으면 그게 "혼자 돌았다"의 증거예요.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>시간은 일어나기 한 시간 전</h3><p>저장소 받는 데만 1~2분, 전체 3~5분 걸립니다. 06:00 에 돌려두면 눈 뜰 때 답이 와 있어요. 자기 전 시각으로 잡으면 아침엔 이미 낡은 판정입니다.</p></div></div>
+  </div>
+
+  <div class="warn">
+    <h3>못 하는 것</h3>
+    <p>클라우드라 <b>내 컴퓨터 안 파일·로컬 비밀키·로그인 세션</b>은 못 씁니다. 저장소에 올려둔 것만 읽어요. 그래서 저는 인스타 조회수 스냅샷을 매일 새벽 GitHub Actions 로 저장소에 먼저 올려두고(비밀키는 Actions secret), 루틴은 그 파일만 읽게 했습니다. 텔레그램 알림도 루틴이 아니라 Actions 가 결과 파일을 읽어서 보냅니다.</p>
+  </div>
+
+  <div class="lead"><h2>제가 시킨 문장 그대로</h2><p>루틴 프롬프트 전문 (docs/routines/morning/PROMPT.md)</p></div>
+  <div class="box"><div class="bar"><span>PROMPT.md</span><button class="copy" onclick="cp(this,'code')">복사</button></div><pre class="code" id="code"># 아침 루틴 morning-d1 , 클로드에게 시킨 문장 (2026-09-16 작성, claude.ai/code/routines 에 이 내용 그대로)
+
+당신은 AI TIGER MASK(@aitigermask, 인스타 릴스 채널) 저장소에서 매일 아침 06:00 KST 에 혼자 도는 루틴이다.
+할 일은 둘뿐이다: ①어제 올린 릴스의 D1 판정 ②오늘 만들 다음 편 소재 하나. 결과를 파일 하나로 커밋한다. 다른 파일은 건드리지 않는다.
+
+## 읽을 것 (전부 저장소 안, 인터넷 불필요)
+- `docs/scrape/out/daily/ins_&lt;YYYY-MM-DD&gt;.json` : 인스타 스냅샷(하루 한 파일, KST 0시 기준). 필드 `items[]` = { date(게시 MM-DD), hook(첫 줄), views, reach, saved, shares, likes, comments, awt }. 문자열 숫자는 Number() 로.
+- `docs/scrape/autopsy/REACH_DROP_2026-09-16.md` : 판정 규칙의 근거. 핵심: **D1(게시 다음날 0시 조회) &lt; 400 이면 2차 배포 없음**, 1000+ 는 승자. 승자 유형 = "완성된 결과 + 숫자 + 내 것" 또는 "새 기능 첫 폭로". 진행상황·시작 선언·개념 설명은 죽는다.
+- `docs/scrape/HOOK_BANK.md` §2 의 N 계열 훅 골격.
+- `docs/reel_*/script.json` 의 첫 줄(flow:"hook") : 이미 만든 편 목록(중복 금지).
+- `node docs/_engine/niche_streak.js` : 니치별 직전 3편 결과(돌려서 출력을 읽는다).
+
+## 할 것
+1. 오늘 KST 날짜 D 를 구한다(`TZ=Asia/Seoul date +%F`). 최신 스냅샷 `ins_D.json`(없으면 가장 최근 파일)과 그 전날 파일을 연다.
+2. D1 판정: 게시일이 D-1 인 편마다 `views` 를 읽어 `&lt;400 ❌ 2차 배포 없음 / 400~999 △ / 1000+ ★`. 게시일이 D-2 인 편은 D2/D1 배율도 적는다(전날 파일 대비).
+3. 편별 하루 증가분(어제 파일 대비 views 차) 상위 5편을 표로.
+4. 다음 소재 **하나만** 고른다. 조건: (a) 승자 유형(결과+숫자+내 것 / 새 기능 첫 폭로) (b) niche_streak 에서 ✗ 연속인 니치·진행상황 유형 제외 (c) 이미 만든 편의 첫 줄과 같은 소재 제외 (d) 저장소 안에 실제 잰 숫자(evidence·counts.md·out/)가 있거나 하루 안에 잴 수 있는 것.
+   적을 것: 소재 한 줄 · 유형 · 훅 첫 줄(N 골격 번호 표기, 음성은 숫자를 한글로) · 찍어야 할 실물 3개 · 고른 이유(숫자 근거 한 줄).
+5. `docs/routines/morning/D.md` 를 아래 틀로 쓴다(40줄 이내, 엠대시 금지, 표는 마크다운).
+
+```
+# 아침 루틴 D  (실행 &lt;UTC 시각&gt;, 스냅샷 &lt;파일명&gt;)
+## 1. 어제 편 D1
+| 편(첫 줄) | 게시 | D1 조회 | 판정 |
+## 2. 어제 하루 많이 오른 편 5
+| 편 | +조회 | 누적 | 공유 |
+## 3. 오늘 소재 하나
+- 소재:
+- 유형:
+- 훅(N골격):
+- 실물 3개:
+- 이유:
+## 4. 팔로워 &lt;오늘&gt; (전날 대비 +N)
+```
+
+6. 커밋·푸시: `git add docs/routines/morning/D.md &amp;&amp; git commit -m "morning routine D &lt;실행 UTC 시각&gt;" &amp;&amp; git push origin HEAD:main`. main 푸시가 거부되면 `git push origin HEAD:routine-morning --force`.
+   파일이 이미 있어도(같은 날 두 번째 실행) 그대로 덮어쓰고 커밋한다 , 실행마다 커밋 하나가 남아야 "혼자 돌았다"의 기록이 된다.
+7. 마지막 출력은 그 파일 내용 전체.
+
+## 하지 말 것
+- 스냅샷·대본·엔진 파일 수정 금지. 새 파일은 `docs/routines/morning/D.md` 하나.
+- 숫자를 지어내지 않는다. 파일에 없는 값은 "없음"으로 적는다.
+- 소재를 둘 이상 나열하지 않는다(하나만).
+</pre></div>
+  <div class="src">이 문장에서 파일 경로·판정 규칙(D1 &lt; 400)·훅 골격은 제 채널 기준입니다. 여러분 것으로 바꿀 자리는 "읽을 것"의 파일들과 "할 것" 4번의 조건이에요.</div>
+
+  <div class="src">숫자 출처: 커밋 9d4f5810(작성자 Claude, 2026-09-16 09:52 UTC = 18:52 KST), 루틴 실행 로그(claude.ai 루틴 API), 판정 값 57 은 인스타 인사이트 일일 스냅샷. 시험을 위해 이날만 예약 시각을 당겨 두 번 발화시켰고, 끝나고 06:00 으로 되돌렸습니다.</div>
+  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+function cp(b,id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1400)})}
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-schedule-routine"})}).catch(()=>{});</script></body></html>
