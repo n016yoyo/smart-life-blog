@@ -1,0 +1,157 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Max 요금제인데 /fast 는 카드에서 나갑니다 | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드 패스트 모드(/fast)는 Pro·Max 구독 한도가 아니라 사용량 크레딧에서 나갑니다. 켜는 순간 지금까지 대화 전체를 패스트 단가로 다시 사고요. 내 대화 크기로 계산하는 스크립트와 설정 한 줄 그대로.">
+<meta property="og:title" content="Max 요금제인데 /fast 는 카드에서 나갑니다">
+<meta property="og:description" content="켜는 순간 지금까지 대화 전체를 패스트 단가로 다시 삽니다. 계산기·설정 한 줄 그대로.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{white-space:pre;max-height:420px;font-size:11.5px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:640px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+details{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800;font-size:14px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+
+
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:16px 18px}
+.calc label{display:block;font-size:13px;color:var(--dim);margin-bottom:6px}
+.calc input{width:100%;font-size:20px;padding:10px 12px;border:1px solid #d8d0c0;border-radius:10px;font-variant-numeric:tabular-nums}
+.calc .out{margin-top:12px;font-size:15px;color:#43403a}
+.calc .out b{color:var(--o);font-size:26px;font-variant-numeric:tabular-nums}
+.calc .f{font-size:12.5px;color:var(--dim);margin-top:6px;font-family:ui-monospace,Menlo,Consolas,monospace}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>Max 요금제인데<br>/fast 는 카드에서 나갑니다</h1>
+  <div class="sub">켜는 순간, 지금까지 대화 전체를 패스트 단가로 다시 삽니다</div>
+  <div class="chips"><span class="chip"><b>$10</b> / MTok 입력</span><span class="chip"><b>$50</b> / MTok 출력</span><span class="chip"><b>966,489</b> 토큰</span><span class="chip"><b>$9.66</b> 켜는 순간</span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>실제로 쳐봤습니다</h2>
+    <p>Max 요금제로 로그인된 클로드 코드에서 <code>/fast</code> 를 쳤더니 이렇게 나왔어요. <b>Fast mode requires usage credits · /usage-credits to turn them on.</b> 그리고 그 위에 한 줄: <b>Draws from usage credits at a higher rate. Separate rate limits apply.</b></p>
+    <p class="note">※ 2026년 9월 16일, Claude Code v2.1.266, Opus 5. 크레딧은 켜지 않았습니다. 그래서 아래 금액은 <b>공식 단가 x 제 대화 토큰</b>으로 계산한 값이고, 실제 결제 화면이 아닙니다.</p>
+  </div>
+
+  <div class="lead"><h2>공식 문서가 말하는 네 가지</h2><p>code.claude.com/docs/en/fast-mode 원문 그대로</p></div>
+  <table>
+    <tr><th>원문</th><th>뜻</th></tr>
+    <tr><td class="d">For Claude Code users on subscription plans (Pro/Max/Team/Enterprise), fast mode is available via usage credits only and not included in the subscription rate limits.</td><td>구독 한도에 <b>포함 안 됨</b>. 크레딧(카드)에서만 나간다</td></tr>
+    <tr><td class="d">The first time you enable fast mode in a conversation, you pay the full fast mode uncached input token price for the entire conversation context.</td><td>켜는 순간 <b>지금까지 대화 전체</b>를 패스트 입력 단가로 한 번 다시 산다</td></tr>
+    <tr><td class="d">Fast mode pricing per MTok input/output is $10/$50 on Opus 5 and Opus 4.8.</td><td>표준 Opus 5 는 $5/$25 라 <b>두 배</b></td></tr>
+    <tr><td class="d">By default, fast mode you turn on in an interactive session persists across sessions.</td><td>한 번 켜두면 <b>다음 대화도 켜진 채</b> 시작한다</td></tr>
+  </table>
+  <div class="src">표준 단가 출처 platform.claude.com/docs/en/about-claude/pricing (Claude Opus 5: 입력 $5 · 출력 $25 · 캐시 읽기 $0.50 / MTok). 패스트 모드는 같은 페이지 Fast mode pricing 표($10 / $50). 캐시 배수는 패스트 단가 위에 그대로 곱합니다.</div>
+
+  <div class="lead"><h2>켜는 순간 얼마인지 계산기</h2><p>지금 대화의 토큰 수를 넣으면 됩니다</p></div>
+  <div class="calc">
+    <label>지금 대화의 컨텍스트 토큰 수 (클로드 코드에서 <code>/context</code> 또는 아래 스크립트)</label>
+    <input id="tok" type="number" inputmode="numeric" value="966489" oninput="calc()">
+    <div class="out">켜는 순간 한 번에 <b id="usd">$9.66</b> <span id="won"></span></div>
+    <div class="f" id="f">966,489 토큰 × $10 / 1,000,000 = $9.66</div>
+  </div>
+  <div class="src">제 가장 긴 대화 한 통이 966,489 토큰이었습니다. 빈 대화도 시스템 프롬프트·도구 설명이 들어 있어 몇만 토큰에서 시작하고, 길게 쓴 대화는 백만 토큰 근처까지 갑니다.</div>
+
+  <div class="lead"><h2>그래서 세 가지만 지킵니다</h2><p>영상에서 말한 하나·둘·셋</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>켤 거면 새 대화에서 처음부터 켠다</h3><p>대화 끝에서 켜면 그 대화 전체를 다시 삽니다. <code>/clear</code> 로 새로 열고 첫 턴 전에 <code>/fast</code>. 공식 문서도 "enable fast mode at the start of a session" 을 권합니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>크레딧 켜기 전에 월 한도부터 건다</h3><p>claude.ai <b>Settings › Usage › Usage credits</b> 에서 켜고 끄고, <b>monthly spend limit</b> 을 정합니다. 클로드 코드에서 <code>/usage-credits</code> 를 치면 그 페이지가 열려요. 크레딧이 켜져 있으면 구독 한도를 다 쓴 뒤에도 크레딧으로 계속 과금될 수 있으니 한도부터.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>대화마다 다시 켜게 설정 한 줄</h3><p>기본값은 한 번 켜면 다음 세션도 켜진 채 시작합니다. 아래 한 줄을 <code>~/.claude/settings.json</code> 에 넣으면 세션마다 꺼진 채 시작하고 필요할 때만 <code>/fast</code> 로 켭니다.</p></div></div>
+  </div>
+  <div class="box"><div class="bar"><span>~/.claude/settings.json</span><button class="copy" onclick="cp(this,'set')">복사</button></div><pre id="set">{
+  "fastModePerSessionOptIn": true
+}</pre></div>
+
+  <div class="warn">
+    <h3>지금 확인하는 법</h3>
+    <p>클로드 코드에서 <code>/fast</code> 를 한 번 쳐보세요. <b>Fast mode requires usage credits</b> 가 뜨면 크레딧이 꺼져 있는 것이고, 패스트 모드로 나간 돈은 아직 없습니다. 대신 <b>Fast mode ON</b> 이 뜨면 이미 크레딧으로 과금 중이니 <code>/fast</code> 를 다시 쳐서 끄고 Settings › Usage 에서 이번 달 지출을 확인하세요.</p>
+  </div>
+
+  <div class="lead"><h2>내 대화 크기를 세는 스크립트</h2><p>클로드 코드가 남긴 대화 기록에서 세션별 최대 컨텍스트를 찍습니다</p></div>
+  <div class="how">
+    <h2>이렇게 하세요</h2>
+    <ol>
+      <li>아무 폴더에 <code>ctx_sizes.js</code> 로 저장합니다. 맨 위 <code>dir</code> 의 프로젝트 폴더 이름만 내 것으로 바꿉니다(<code>~/.claude/projects/</code> 안에 있어요).</li>
+      <li>터미널에서 <code>node ctx_sizes.js</code> 를 칩니다. 설치할 것 없고, 어디로도 보내지 않습니다.</li>
+      <li>첫 행이 가장 긴 대화입니다. 그 토큰 수를 위 계산기에 넣으면 끝.</li>
+    </ol>
+  </div>
+  <div class="box"><div class="bar"><span>ctx_sizes.js</span><button class="copy" onclick="cp(this,'code')">복사</button></div><pre class="code" id="code">#!/usr/bin/env node
+// 내 클로드 코드 세션들의 컨텍스트 크기(토큰) , 트랜스크립트(~/.claude/projects/&lt;프로젝트&gt;/*.jsonl)의
+// 각 요청 usage(input + cache_read + cache_creation)를 읽어 세션별 최대값을 찍는다. 화면 수치의 근거(reel_fastlimit).
+// 실행: node ctx_sizes.js [--fast 10]   (--fast: 패스트 모드 입력 단가 $/MTok, 켜는 순간 = 컨텍스트 x 단가)
+const fs = require("fs"), path = require("path"), os = require("os");
+const dir = path.join(os.homedir(), ".claude/projects/-home-user-template");
+const RATE = Number((process.argv.indexOf("--fast") &gt; -1 &amp;&amp; process.argv[process.argv.indexOf("--fast") + 1]) || 10);
+const rows = [];
+for (const f of fs.readdirSync(dir).filter(f =&gt; f.endsWith(".jsonl"))) {
+  let peak = 0, n = 0;
+  for (const line of fs.readFileSync(path.join(dir, f), "utf8").split("\n")) {
+    if (!line.includes('"usage"')) continue;
+    let j; try { j = JSON.parse(line); } catch { continue; }
+    const u = j.message &amp;&amp; j.message.usage; if (!u) continue;
+    const ctx = (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0);
+    n++; if (ctx &gt; peak) peak = ctx;
+  }
+  if (n) rows.push({ id: f.slice(0, 8), n, peak });
+}
+rows.sort((a, b) =&gt; b.peak - a.peak);
+console.log("세션      요청수   최대 컨텍스트(토큰)   /fast 켜는 순간($" + RATE + "/MTok)");
+for (const r of rows.slice(0, 12)) console.log(`${r.id}  ${String(r.n).padStart(6)}   ${r.peak.toLocaleString("en-US").padStart(16)}   $${(r.peak * RATE / 1e6).toFixed(2)}`);
+console.log(`세션 ${rows.length}개 · 최대 ${rows[0].peak.toLocaleString("en-US")} 토큰 → $${(rows[0].peak * RATE / 1e6).toFixed(2)}`);
+</pre></div>
+
+  <div class="src">숫자 출처: /fast 화면·/usage 화면은 제 Max 계정 클로드 코드 실화면(2026-09-16), 토큰 수는 위 스크립트 실행값, 단가는 Anthropic 공식 문서. 실제로 크레딧을 켜서 결제한 값은 없습니다.</div>
+  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+function cp(b,id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1400)})}
+function calc(){const n=Math.max(0,parseInt(document.getElementById('tok').value||'0',10));const usd=n*10/1e6;document.getElementById('usd').textContent='$'+usd.toFixed(2);document.getElementById('f').textContent=n.toLocaleString('en-US')+' 토큰 × $10 / 1,000,000 = $'+usd.toFixed(2);}
+calc();
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-fast-credits"})}).catch(()=>{});</script></body></html>
