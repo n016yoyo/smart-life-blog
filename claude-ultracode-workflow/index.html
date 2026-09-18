@@ -1,0 +1,134 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 코드, 아직도 한 명한테 다 시키세요? ultracode 워크플로 실측 | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드에서 시킬 문장 앞에 ultracode 한 단어를 붙이면 에이전트 여러 개가 일을 나눠 동시에 달립니다. 제 코드 3,290줄 검사를 실제로 시켜 잰 숫자(에이전트 18개·합 4시간 29분·실제 1시간 59분·후보 176건), 시킨 문장 원문, 한도 주의.">
+<meta property="og:title" content="클로드 코드, 아직도 한 명한테 다 시키세요?">
+<meta property="og:description" content="ultracode 한 단어로 에이전트 18개가 동시에. 4시간 29분짜리를 1시간 59분에. 시킨 문장 그대로 드립니다.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{white-space:pre;max-height:420px;font-size:11.5px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.quote{margin:14px 0 0;background:#fff;border-left:4px solid var(--o);border-radius:0 14px 14px 0;padding:14px 16px;font-size:13.5px;color:#43403a}
+.quote .en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#5c554a;margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style>
+</head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>클로드 코드,<br>아직도 한 명한테 다 시키세요?</h1>
+  <div class="sub">시킬 문장 앞에 ultracode 한 단어. 제가 시킨 문장 그대로 드려요</div>
+  <div class="chips"><span class="chip"><b>18</b>개 에이전트</span><span class="chip">합 <b>4:29:03</b></span><span class="chip">실제 <b>1:59:43</b></span><span class="chip">후보 <b>176</b>건</span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>어디서 시작된 얘기냐면</h2>
+    <p>클로드 코드에 <b>워크플로</b>가 생겼습니다. 시킬 말 앞에 <code>ultracode</code> 한 단어를 붙이면 클로드가 일을 조각으로 나눠 에이전트(클로드 분신) 여러 개를 동시에 돌리고, 결과를 한 장으로 합칩니다. 남의 데모 말고 제 것으로 재보고 싶어서, 제가 두 달 동안 만든 릴스 엔진 코드 3,290줄을 검사시켰습니다.</p>
+    <p class="note">※ 아래 숫자는 2026년 9월 18일 제 Claude Max 계정의 클로드 코드(v2.1.266, Opus 5)에서 실제로 한 번 돌린 값입니다. 에이전트 시각은 워크플로 리포트의 표, 벽시계는 첫 에이전트 시작부터 병합 끝까지입니다.</p>
+  </div>
+
+  <div class="lead"><h2>실측 결과</h2><p>워크플로 한 번, 문장 하나</p></div>
+  <table>
+    <tr><th>무엇</th><th>값</th><th>어떻게 셌나</th></tr>
+    <tr><td>검사한 코드</td><td class="n">3,290줄</td><td class="d">엔진 파일 5개 <code>wc -l</code> 합</td></tr>
+    <tr><td>에이전트</td><td class="n">18개 + 병합 1</td><td class="d">찾기 3라운드(12+3+3), 한 번에 6개씩 동시</td></tr>
+    <tr><td>에이전트 시간 합</td><td class="n">4시간 29분 03초</td><td class="d">19개 소요를 더한 값 = 혼자 순서대로 했을 시간</td></tr>
+    <tr><td>실제 걸린 시간</td><td class="n">1시간 59분 43초</td><td class="d">02:18:58 → 04:18:41 UTC</td></tr>
+    <tr><td>고칠 후보</td><td class="n">176건</td><td class="d">원본 197건을 병합. <b>검증 단계는 제가 중단</b>(아래 「알아둘 것」), 그래서 「후보」</td></tr>
+    <tr><td>한도</td><td class="n">3% → 97%</td><td class="d">5시간 사용량 창, 토큰 5.7M. 세션 상태바 실측</td></tr>
+  </table>
+
+  <div class="warn">
+    <h3>⚠️ 진짜 문제는 한도</h3>
+    <p>찾기 단계까지는 좋았는데, 검증 단계가 <b>후보 176건 × (재현 1 + 반박 1) = 에이전트 352개</b>로 잡혔습니다. 그 시점에 제 5시간 한도가 80%를 넘어 제가 멈췄고, 멈춘 직후 97%였습니다. 즉 워크플로는 일을 잘게 나눌수록 에이전트 수가 곱으로 늘고, 한도는 그만큼 빨리 닳습니다. <b>작은 일에 쓰면 손해, 큰 일 한 번에 쓰면 이득</b>입니다. 시킬 때 「검증은 상위 10건만」처럼 상한을 문장에 적어 두세요(제 문장엔 없었습니다).</p>
+  </div>
+
+  <div class="lead"><h2>제가 시킨 문장 그대로</h2><p>클로드 코드 채팅창에 그대로 붙여 넣으면 됩니다. 대상 파일만 여러분 것으로</p></div>
+  <div class="how">
+    <h2>클로드 코드에 이렇게 시키세요 (30초)</h2>
+    <ol>
+      <li>클로드 코드를 검사할 프로젝트 폴더에서 엽니다.</li>
+      <li>아래 <b>프롬프트 복사</b>를 눌러 채팅창에 붙입니다. 맨 앞 <code>ultracode:</code> 가 워크플로를 켜는 한 단어입니다.</li>
+      <li>워크플로가 돌기 시작하면 <code>/workflows</code> 를 쳐서 에이전트가 몇 개 동시에 도는지 봅니다(x 로 중단, s 로 저장).</li>
+      <li>끝나면 보고서 파일 한 장을 읽습니다. 한도가 걱정되면 문장 끝에 「검증은 상위 10건만, 에이전트 20개 이하로」를 붙이세요.</li>
+    </ol>
+  </div>
+  <div class="box"><div class="bar"><span>프롬프트 (제 원문, 파일명만 바꾸세요)</span><button class="copy" onclick="cp(this,'pr')">프롬프트 복사</button></div><pre id="pr">ultracode: docs/_engine 의 릴스 엔진 코드(reel_engine.js, validate_config.js, validate_script.js, preflight.js, cards/line.js)를 정확성 버그·중복·비효율 세 관점으로 나눠 검토하고, 찾은 결함마다 별도 에이전트가 실제 코드로 검증한 뒤, 확인된 결함만 파일:줄과 함께 보고서 한 장으로 정리해줘. 코드는 고치지 마.</pre></div>
+
+  <div class="lead"><h2>에이전트 19개가 실제로 걸린 시간</h2><p>워크플로 리포트의 표 그대로</p></div>
+  <table>
+    <tr><th>단계</th><th>에이전트</th><th>소요</th><th>보고</th></tr>
+    <tr><td>Find r1</td><td class="d">correctness:reel_engine.js</td><td class="n">17분 42초</td><td class="d">11건</td></tr><tr><td>Find r1</td><td class="d">correctness:validate_config.js</td><td class="n">10분 48초</td><td class="d">10건</td></tr><tr><td>Find r1</td><td class="d">correctness:validate_script.js</td><td class="n">10분 36초</td><td class="d">8건</td></tr><tr><td>Find r1</td><td class="d">correctness:preflight.js</td><td class="n">15분 01초</td><td class="d">8건</td></tr><tr><td>Find r1</td><td class="d">correctness:line.js</td><td class="n">9분 35초</td><td class="d">9건</td></tr><tr><td>Find r1</td><td class="d">inefficiency:reel_engine.js</td><td class="n">11분 36초</td><td class="d">14건</td></tr><tr><td>Find r1</td><td class="d">inefficiency:validate_config.js</td><td class="n">7분 04초</td><td class="d">12건</td></tr><tr><td>Find r1</td><td class="d">inefficiency:validate_script.js</td><td class="n">4분 09초</td><td class="d">7건</td></tr><tr><td>Find r1</td><td class="d">inefficiency:preflight.js</td><td class="n">9분 51초</td><td class="d">8건</td></tr><tr><td>Find r1</td><td class="d">inefficiency:line.js</td><td class="n">9분 00초</td><td class="d">4건</td></tr><tr><td>Find r1</td><td class="d">duplication:cross-file</td><td class="n">14분 57초</td><td class="d">27건</td></tr><tr><td>Find r1</td><td class="d">duplication:intra-file</td><td class="n">11분 14초</td><td class="d">28건</td></tr><tr><td>Find r2</td><td class="d">correctness:all</td><td class="n">20분 19초</td><td class="d">9건</td></tr><tr><td>Find r2</td><td class="d">inefficiency:all</td><td class="n">12분 42초</td><td class="d">9건</td></tr><tr><td>Find r2</td><td class="d">duplication:all</td><td class="n">12분 16초</td><td class="d">12건</td></tr><tr><td>Find r3</td><td class="d">correctness:all</td><td class="n">18분 37초</td><td class="d">4건</td></tr><tr><td>Find r3</td><td class="d">inefficiency:all</td><td class="n">12분 42초</td><td class="d">6건</td></tr><tr><td>Find r3</td><td class="d">duplication:all</td><td class="n">9분 55초</td><td class="d">7건</td></tr><tr><td>Merge</td><td class="d">merge (197건 병합)</td><td class="n">50분 59초</td><td class="d">176건</td></tr>
+  </table>
+
+  <div class="lead"><h2>후보 상위 10건 (미검증)</h2><p>병합 에이전트가 고른 것. 줄 번호는 세션이 실제 파일과 대조</p></div>
+  <table>
+    <tr><th>#</th><th>파일:줄</th><th>무엇</th><th>관점</th></tr>
+    <tr><td class="n">1</td><td class="d">docs/_engine/reel_engine.js:190</td><td>PREFLIGHT 모드가 진행 중 렌더의 프레임 폴더를 지운다</td><td class="d">정확성</td></tr><tr><td class="n">2</td><td class="d">docs/_engine/reel_engine.js:953</td><td>SVG 텍스트 이스케이프가 6곳 중 2곳에만</td><td class="d">정확성</td></tr><tr><td class="n">3</td><td class="d">docs/_engine/reel_engine.js:414</td><td>손그림 화살표·밑줄이 안 그려지고 튀어나온다(dasharray 4000)</td><td class="d">정확성</td></tr><tr><td class="n">4</td><td class="d">docs/_engine/reel_engine.js:687</td><td>burst 스파크가 standX 를 무시하고 중앙 고정</td><td class="d">정확성</td></tr><tr><td class="n">5</td><td class="d">docs/_engine/preflight.js:182</td><td>J 마스코트 자리 검사가 도구 크래시를 ✅ 로 통과</td><td class="d">정확성</td></tr><tr><td class="n">6</td><td class="d">docs/_engine/validate_config.js:651</td><td>gen_cards.js 만 읽어 LINE 편은 순차 점등·글자량 게이트가 안 돈다</td><td class="d">정확성</td></tr><tr><td class="n">7</td><td class="d">docs/_engine/validate_config.js:46</td><td>trans:&quot;none&quot;·kin:&quot;soft&quot; 를 엔진은 받는데 게이트가 거부</td><td class="d">정확성(오탐)</td></tr><tr><td class="n">8</td><td class="d">docs/_engine/cards/line.js:227</td><td>grain() 이 카드 캡처 7.4배·용량 47배</td><td class="d">비효율</td></tr><tr><td class="n">9</td><td class="d">docs/_engine/validate_script.js:44</td><td>음절 세기 함수 5벌, 영어를 세는 사본과 안 세는 사본</td><td class="d">중복</td></tr><tr><td class="n">10</td><td class="d">docs/_engine/preflight.js:90</td><td>케이던스 하한 계산이 validate_config 와 preflight 두 벌, 분모가 다르다</td><td class="d">중복</td></tr>
+  </table>
+  <div class="src">이 중 7번(<code>trans:"none"</code>·<code>kin:"soft"</code> 를 엔진은 받는데 게이트가 거부)은 제가 전날 고친 자리였습니다. 저도 모르던 고칠 곳이 맞았어요. 나머지는 검증 전이라 「후보」로 둡니다.</div>
+
+  <div class="lead"><h2>그래서 딱 세 개만</h2><p>영상에서 말한 하나·둘·셋</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>시킬 일을 한 문장으로 적고</h3><p>무엇을, 어떤 관점으로, 결과를 어디에. 제 문장은 「다섯 파일을 세 관점으로 검토, 결함마다 검증, 보고서 한 장」이었습니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>그 문장 앞에 ultracode 만 붙이고</h3><p>이 한 단어가 워크플로를 켭니다. 클로드가 단계(찾기 → 병합 → 검증)를 짜고 에이전트를 나눕니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>끝나면 보고서 한 장만 읽으면 돼요</h3><p>에이전트 원문은 안 읽어도 됩니다. 대신 한도 상한을 문장에 적어 두세요.</p></div></div>
+  </div>
+
+  <div class="how">
+    <h2>알아둘 것</h2>
+    <ul>
+      <li>워크플로는 클로드 코드 안의 기능이고 Max 계정으로 돌렸습니다. 요금제별 가능 여부는 공식 문서를 보세요.</li>
+      <li>「후보 176건」은 찾기·병합까지의 결과입니다. 검증(재현·반박) 에이전트 352개는 제가 한도 때문에 멈췄습니다.</li>
+      <li>리포트 본문에 적힌 「합 4시간 49분」은 그 세션의 합산 오류이고, 표의 19행을 더하면 4시간 29분 03초입니다. 이 페이지와 영상은 표 합을 씁니다.</li>
+      <li>코드는 한 줄도 손대지 않았습니다(「코드는 고치지 마」가 문장에 있었고, 실제로 변경 0).</li>
+    </ul>
+  </div>
+
+  <div class="src">숫자 출처: 워크플로 리포트 <code>docs/_engine/ENGINE_CODE_REVIEW_2026-09-18.md</code>(에이전트 표·후보), 세션 화면 캡처(SHOOT_LOG, 한도 %), <code>docs/reel_ultracode/evidence/counts.md</code>. 공식 문서: <a href="https://code.claude.com/docs/en/workflows" target="_blank" rel="noopener">Claude Code Docs · Workflows</a>.</div>
+  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+function cp(b,id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='프롬프트 복사',1600)})}
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-ultracode-workflow"})}).catch(()=>{});</script></body></html>
