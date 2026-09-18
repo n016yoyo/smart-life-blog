@@ -1,0 +1,480 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>티스토리 글이 63초 만에 혼자 올라가게 만들기 | AI TIGER MASK</title>
+<meta name="description" content="네이버 블로그 자동 발행에 이어 티스토리도. 키워드 하나 → 지식iN 질문으로 제목 → 쿠팡 파트너스 상품 2개 → 사진 6장 → 대표 사진까지 그려서 63초에 발행. 발행 코드 188줄과 대표 사진 코드 92줄 원문, 준비물, 함정.">
+<meta property="og:title" content="티스토리 글이 63초 만에 혼자 올라가게 만들기">
+<meta property="og:description" content="발행 코드 188줄 · 대표 사진 코드 92줄 원문 공개. 준비물 4개, 지켜야 하는 규칙, 제가 밟은 함정.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/tistory-auto-guide/cover.jpg">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.who h2{font-size:16px;margin-bottom:7px}.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}.rule p{font-size:13.5px;color:#4b473f}
+.rule.add{border-color:var(--o);background:#fff7f3}.rule.add .n{background:var(--o);color:#fff}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}.how li{margin:6px 0}
+.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}.foot a{color:var(--dim)}
+
+.shot{margin:14px 0 0;border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 18px 40px rgba(0,0,0,.08)}.shot img{display:block;width:100%}
+.cap{font-size:12.5px;color:var(--dim);margin-top:6px;text-align:center}
+pre.code{max-height:520px;font-size:12px;line-height:1.55}
+</style></head><body>
+
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>티스토리 글이 63초 만에<br>혼자 올라가게 만들기</h1>
+  <div class="sub">네이버 블로그 자동 발행 다음 편입니다. 코드 원문을 그대로 둡니다</div>
+  <div class="chips"><span class="chip">발행 <b>63초</b></span><span class="chip">발행 코드 <b>188줄</b></span><span class="chip">대표 사진 코드 <b>92줄</b></span><span class="chip">준비물 <b>4개</b></span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>먼저 밝힙니다</h2>
+    <p><b>63초</b>는 발행 스크립트가 브라우저를 띄운 순간부터 글 주소와 링크를 대조하고 끝난 순간까지입니다(2026-09-18, 글 5번, 로그 <code>완료 63초 · 1485자 · 사진 6</code>). 그 앞의 초안 쓰기(클로드)·사진 받기는 <b>포함하지 않았고</b>, 그것까지 하면 한 편에 4분쯤 걸립니다.</p>
+    <p class="note">지금은 전부 <b>비공개</b>로 올리고 제가 열어 본 뒤 공개로 바꿉니다. 그러니 이 방식으로 번 돈은 아직 <b>0원</b>입니다. 자동 발행 자체가 되는지를 공개하는 글이지 수익을 약속하는 글이 아닙니다.</p>
+  </div>
+
+  <div class="lead"><h2>글 한 편이 이렇게 조립됩니다</h2><p>제가 한 건 키워드 하나 넣은 것뿐입니다</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>제목은 지식iN 질문에서</h3>
+      <p>네이버 검색 API로 그 키워드의 <b>지식iN 질문 원문 10개</b>를 받아 클로드에게 줍니다. 사람들이 실제로 물어본 말이 제목과 소제목이 됩니다. 이번 글의 키워드(타이틀리스트골프공)는 지식iN에 질문이 <b>1,256개</b> 걸려 있었습니다(검색 결과 화면 기준).</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>상품과 가격은 쿠팡 파트너스 API 값 그대로</h3>
+      <p>상품명·가격·로켓배송 여부·사진을 API가 준 대로만 씁니다. 이번 글은 후보 <b>2개</b>, 최저 <b>44,100원</b>. 링크는 글마다 다른 꼬리표(subId)를 붙여서 어느 글이 벌었는지 나중에 갈립니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>사진 6장, 대표 사진은 코드가 그립니다</h3>
+      <p>Pexels 4장 + 상품 사진 1장 + <b>대표 사진 1장</b>. 대표 사진은 <code>cover.js</code>가 제목·후보 수·최저가·상품 사진을 읽어 1200x630 으로 그립니다. 검색 결과와 카톡 미리보기가 쓰는 비율입니다.</p></div></div>
+    <div class="rule add"><div class="n">4</div><div><h3>발행은 브라우저 자동화가 누릅니다</h3>
+      <p>제목·본문·태그를 넣고 사진을 올리고, 쿠팡 링크는 <b>미리보기 카드</b>로 붙인 뒤 발행 버튼까지. 끝나면 글 페이지를 다시 열어 <b>링크가 정말 2개 들어갔는지 대조</b>하고 끝냅니다. 전 과정이 녹화됩니다.</p></div></div>
+  </div>
+
+  <div class="shot"><img src="cover.jpg" alt="cover.js 가 그린 대표 사진: 골프공 종류별 차이, 뭐가 다른 건지 모르겠을 때 · 후보 2개 · 44,100원부터 · 로켓배송 2개"></div>
+  <div class="cap">cover.js 가 그린 글 5번의 대표 사진(수정 없음)</div>
+
+  <div class="lead"><h2>준비물은 네 개입니다</h2><p>개발 지식은 필요 없고, 클로드 코드만 깔려 있으면 됩니다</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>티스토리 로그인 쿠키</h3>
+      <p>카카오 로그인 세션(<code>TSSESSION</code>)은 <b>30일</b>짜리입니다. 크롬에서 로그인 → F12 → Application → Cookies → 표를 복사해 파일로 저장해 둡니다. 만료되면 스크립트가 "세션 만료"로 멈추고 알림을 보냅니다. 사람이 한 달에 한 번 하는 유일한 일입니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>쿠팡 파트너스 키 두 줄</h3>
+      <p><a href="https://partners.coupang.com" target="_blank" rel="noopener">파트너스</a> 승인 뒤 나오는 액세스 키·시크릿 키. 상품 검색과 딥링크 생성에 씁니다.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>네이버 검색 API 키 · Pexels 키</h3>
+      <p>지식iN 질문(검색 API)과 사진(Pexels)은 둘 다 무료 키입니다.</p></div></div>
+    <div class="rule add"><div class="n">4</div><div><h3>클로드한테 한 문장</h3>
+      <p>제가 친 건 이 한 줄이 전부입니다. 나머지 규칙은 네이버 편에서 이미 세워둔 걸 그대로 물려받았습니다.</p></div></div>
+  </div>
+
+  <div class="box">
+    <div class="bar"><span>제가 클로드한테 친 문장</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p1').innerText);this.textContent='복사됨'">복사</button></div>
+<pre id="p1">네이버 블로그 자동화처럼 티스토리도 되게 해. 베스트 프랙티스 총동원.</pre>
+  </div>
+
+  <div class="lead"><h2>코드가 지키는 규칙</h2><p>네이버 편과 같습니다. 어기면 발행하지 않고 멈춥니다</p></div>
+  <div class="how">
+    <ol>
+      <li><b>글에 넣는 사실은 API 값뿐.</b> 후기·성능·재질·평점은 쓰지 않습니다. 안 써본 물건을 써봤다고 쓰지 않습니다.</li>
+      <li><b>고지 문구는 글 맨 위와 맨 아래.</b> "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."</li>
+      <li><b>링크는 글당 2개.</b> 발행 뒤 글 페이지를 다시 열어 실제로 2개 들어갔는지 셉니다. 다르면 실패로 기록합니다.</li>
+      <li><b>사진 6장 전부 alt 를 붙입니다.</b> 소제목은 진짜 <code>&lt;h3&gt;</code> 태그로. 구글이 읽는 자리입니다.</li>
+      <li><b>기본은 비공개.</b> 월·수·토 10:30 한 편. 제휴 글만 잦으면 저품질 위험이 있어 주 3회에서 시작했습니다.</li>
+    </ol>
+  </div>
+
+  <div class="warn">
+    <h3>제가 밟은 함정 (그대로 밟지 마세요)</h3>
+    <p><b>쿠팡 링크를 그냥 붙이면 미리보기 카드가 안 뜹니다.</b> 쿠팡 딥링크는 봇 접근이 403 이라 티스토리가 OG 정보를 못 긁어옵니다. 그래서 파트너스 API가 준 상품명·사진·가격으로 <b>미리보기 카드를 우리가 채워서</b> 넣습니다(<code>data-ke-type="opengraph"</code> 피겨).<br><br>
+    <b>임시저장 복구창이 새 글을 막습니다.</b> 글쓰기 페이지를 열면 지난 임시저장을 불러올지 묻는 네이티브 confirm 이 뜹니다. 안 받아주면 그 자리에서 멈춥니다. 새 글이면 dismiss 로 답해야 합니다.<br><br>
+    <b>공개/비공개 라디오는 높이가 0 입니다.</b> 보이는 라벨을 눌러도 안 잡혀서 <code>check(…, {force:true})</code> 로 강제로 찍어야 합니다.<br><br>
+    <b>글 주소를 목록에서 읽을 때 공지가 먼저 잡힙니다.</b> 첫 링크가 <code>notice.tistory.com</code> 이라 내 블로그 호스트로 좁혀야 내 글 번호가 나옵니다.<br><br>
+    <b>기본 스킨은 대표 사진 위에 제목을 겹쳐 그립니다.</b> 표지에 이미 제목이 있어서 글자가 두 번 보입니다. 헤더에 썸네일을 안 쓰는 스킨으로 바꾸면 됩니다(저는 아직 안 바꿨습니다).</p>
+  </div>
+
+  <div class="lead"><h2>발행 코드 원문 · tistory_post.js (188줄)</h2><p>입력은 글 JSON 하나({title, blocks, tags}), 출력은 글 주소와 페이지에서 읽은 링크 목록입니다</p></div>
+  <div class="box">
+    <div class="bar"><span>tistory_post.js</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('c1').innerText);this.textContent='복사됨'">복사</button></div>
+<pre id="c1" class="code">// 티스토리 자동 글쓰기 + 발행 + 전 과정 녹화. 네이버 auto_post.js 의 티스토리판(2026-09-18 사장님 "네이버 블로그 자동화처럼 티스토리도").
+//   사용: node tistory_post.js --content=&lt;json&gt; [--publish=none|private|public] [--blog=aitigermask]
+//   입력 JSON 은 쿠팡 publish.js 가 만드는 것 그대로({title, blocks:[{t}|{b,size,color}|{img}|{hr}|{quote}|{card}|{sticker}], tags}).
+//   출력(마지막 줄들): POST_URL=&lt;글 주소&gt;  CARD_HREFS=&lt;글 페이지에서 읽은 쿠팡 링크 배열&gt;  , publish.js 가 이 둘을 읽는다.
+//
+// ★실측 선택자(2026-09-18, probe_editor.js·probe2.js 로 찍음):
+//   제목 #post-title-inp · 본문 TinyMCE(#editor-tistory_ifr, window.tinymce.activeEditor) · 태그 #tagText
+//   첨부 드롭다운 #mceu_0-open → #attach-image(사진, 파일창이 뜬다) · 모드 #editor-mode-layer-btn-open → #editor-mode-html
+//   발행 #publish-layer-btn → 라디오 #open20(공개)/#open15(보호)/#open0(비공개) → #publish-btn(라벨이 "공개 발행"/"비공개 저장"으로 바뀐다) · 취소 #unpublish-btn
+//   임시저장 복구는 네이티브 confirm 이라 page.on("dialog") 로 받는다(새 글 = dismiss).
+// ★본문 넣는 법: 보통 문단({t})은 키보드로 친다(녹화에 타이핑이 보인다). 서식 블록(소제목·인용·구분선·링크·굵게)은
+//   tinymce insertContent 로 넣는다 , 네이버처럼 툴바를 더듬을 이유가 없다(TinyMCE 가 API 를 준다). 사진은 파일창으로 실제 업로드.
+// ★세션: docs/scrape/creds/tistory_state.json(set_session.js). 만료면 URL 이 /auth/login 으로 튄다 → 쿠키 재요청.
+const fs = require("fs"), path = require("path");
+const { chromium } = require(require.resolve("playwright-core", { paths: [path.resolve(__dirname, "../_engine")] }));
+const D = __dirname, R = path.resolve(D, "../.."), NB = path.join(R, "docs/naverblog-auto");
+const opt = k =&gt; { const a = process.argv.find(x =&gt; x.startsWith("--" + k + "=")); return a ? a.split("=").slice(1).join("=") : null; };
+const MODE = opt("publish") || "none";
+const BLOG = opt("blog") || (fs.existsSync(D + "/.blog") ? fs.readFileSync(D + "/.blog", "utf8").trim() : "aitigermask");
+const STATE = path.join(R, "docs/scrape/creds/tistory_state.json");
+const CHR = process.env.CHR || require("child_process").execSync("ls /nix/store/*/bin/chromium | head -1").toString().trim();
+if (!opt("content")) { console.log("사용: node tistory_post.js --content=&lt;json&gt; [--publish=none|private|public]"); process.exit(2); }
+const CONTENT = JSON.parse(fs.readFileSync(path.resolve(opt("content")), "utf8"));
+const _logF = path.join(D, "out/last_run.log"); fs.mkdirSync(path.join(D, "out"), { recursive: true }); fs.writeFileSync(_logF, "");
+const log = (...a) =&gt; { const line = [new Date().toISOString().slice(11, 19), ...a].join(" "); console.log(line); try { fs.appendFileSync(_logF, line + "\n"); } catch {} };
+const esc = s =&gt; String(s).replace(/&amp;/g, "&amp;amp;").replace(/&lt;/g, "&amp;lt;").replace(/&gt;/g, "&amp;gt;").replace(/"/g, "&amp;quot;");
+const P = "&lt;p data-ke-size=\"size16\"&gt;";   // 티스토리 본문 문단(본문2 = size16)
+const EMPTY = P + "&lt;br&gt;&lt;/p&gt;";
+
+// 서식 블록 → 티스토리 에디터 HTML(발행된 글에서 티스토리 기본 스킨이 그리는 마크업 그대로)
+function blockHtml(b) {
+  if (b.hr) return "&lt;hr contenteditable=\"false\" data-ke-type=\"horizontalRule\" data-ke-style=\"style5\"&gt;";
+  if (b.quote) return `&lt;blockquote data-ke-style="style2"&gt;${P}${esc(b.quote)}&lt;/p&gt;&lt;/blockquote&gt;`;
+  if (b.card) {
+    // ★링크 카드(2026-09-18): 제목·사진이 오면 티스토리 "링크 미리보기" 피겨(opengraph)로 , 네이버 링크 카드와 같은 배너.
+    //   쿠팡 딥링크는 봇에 403 이라 티스토리가 OG 를 못 긁는다 → 파트너스 API 가 준 상품명·사진·가격을 우리가 채운다.
+    if (b.title) {
+      const u = esc(b.card), t = esc(b.title), d = esc(b.desc || ""), im = esc(b.image || "");
+      return `&lt;figure id="og_${Date.now()}${Math.floor(Math.random() * 1000)}" contenteditable="false" data-ke-type="opengraph" data-ke-align="alignCenter" data-og-type="website" data-og-title="${t}" data-og-description="${d}" data-og-host="link.coupang.com" data-og-source-url="${u}" data-og-url="${u}" data-og-image="${im}"&gt;&lt;a href="${u}" target="_blank" rel="noopener" data-source-url="${u}"&gt;&lt;div class="og-image" style="background-image: url('${im}');"&gt;&lt;/div&gt;&lt;div class="og-text"&gt;&lt;p class="og-title"&gt;${t}&lt;/p&gt;&lt;p class="og-desc"&gt;${d}&lt;/p&gt;&lt;p class="og-host"&gt;link.coupang.com&lt;/p&gt;&lt;/div&gt;&lt;/a&gt;&lt;/figure&gt;`;
+    }
+    return `${P}&lt;a href="${esc(b.card)}" target="_blank" rel="noopener"&gt;👉 쿠팡에서 가격 보기&lt;/a&gt;&lt;/p&gt;`;
+  }
+  if (b.b &amp;&amp; b.size) {   // 소제목 , 제목2(h3 size23 , 구글이 읽는 진짜 제목 태그) + 색
+    const st = b.color ? ` style="color:${b.color};"` : "";
+    return `&lt;h3 data-ke-size="size23"${st}&gt;&lt;b&gt;${esc(b.b)}&lt;/b&gt;&lt;/h3&gt;`;
+  }
+  if (b.b) { const st = b.color ? ` style="color:${b.color};"` : ""; return `${P}&lt;b${st}&gt;${esc(b.b)}&lt;/b&gt;&lt;/p&gt;`; }
+  return null;
+}
+
+(async () =&gt; {
+  const T0 = Date.now(); let chars = 0, imgs = 0;
+  const b = await chromium.launch({ executablePath: CHR, headless: true, args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"] });
+  const ctx = await b.newContext({
+    storageState: STATE, viewport: { width: 1440, height: 900 },
+    recordVideo: { dir: D + "/out", size: { width: 1440, height: 900 } },
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+  });
+  const p = await ctx.newPage();
+  p.on("dialog", async d =&gt; { log(`다이얼로그(${d.type()}): ${d.message().slice(0, 60)} → 취소(새 글)`); await d.dismiss().catch(() =&gt; {}); });
+
+  log(`에디터 진입(${BLOG})`);
+  await p.goto(`https://${BLOG}.tistory.com/manage/newpost/?type=post&amp;returnURL=%2Fmanage%2Fposts%2F`, { waitUntil: "domcontentloaded", timeout: 60000 });
+  await p.waitForTimeout(5000);
+  if (/auth\/login|accounts\.kakao/.test(p.url())) throw new Error("세션 만료: 티스토리 쿠키 재요청(set_session.js)");
+  await p.waitForFunction(() =&gt; window.tinymce &amp;&amp; window.tinymce.activeEditor &amp;&amp; window.tinymce.activeEditor.initialized, null, { timeout: 30000 });
+  await p.screenshot({ path: D + "/out/step1_editor.png" });
+
+  // 에디터 헬퍼 , 전부 페이지 안 tinymce API
+  const ed = (fn, arg) =&gt; p.evaluate(([f, a]) =&gt; { const e = window.tinymce.activeEditor; return (new Function("e", "a", f))(e, a); }, [fn, arg]);
+  const toEnd = async () =&gt; { await ed("e.focus(); e.selection.select(e.getBody(), true); e.selection.collapse(false);"); };
+  const insert = async html =&gt; { await toEnd(); await ed("e.insertContent(a);", html); await p.waitForTimeout(150); };
+  const body = p.frameLocator("#editor-tistory_ifr").locator("body");
+
+  // 기존 내용 비우기(복구 팝업을 취소해도 남는 경우 대비)
+  await ed("e.setContent('');");
+  log("제목 타이핑");
+  await p.click("#post-title-inp"); await p.keyboard.type(CONTENT.title, { delay: 45 }); chars += CONTENT.title.length;
+  await p.screenshot({ path: D + "/out/step2_title.png" });
+
+  await body.click(); await p.waitForTimeout(300);
+  const wantLinks = [];
+  for (const [i, blk] of CONTENT.blocks.entries()) {
+    if (blk.sticker) continue;   // 티스토리엔 스티커가 없다 , 그냥 건너뛴다
+    if (blk.img) {
+      const f = path.isAbsolute(blk.img) ? blk.img : [path.join(NB, blk.img), path.join(D, blk.img), path.resolve(blk.img)].find(x =&gt; fs.existsSync(x));
+      if (!f || !fs.existsSync(f) || fs.statSync(f).size &lt; 1000) { log(`  ⚠️ 사진 파일 없음/0바이트: ${blk.img} , 건너뜀`); continue; }
+      log(`이미지 업로드: ${blk.img}`);
+      await toEnd();
+      const before = await ed("return e.getBody().querySelectorAll('img').length;");
+      await p.click("#mceu_0-open"); await p.waitForTimeout(600);
+      const [fc] = await Promise.all([p.waitForEvent("filechooser", { timeout: 10000 }), p.click("#attach-image")]);
+      await fc.setFiles(f);
+      // 업로드가 끝나 img 가 하나 늘 때까지(최대 25초)
+      let ok = false;
+      for (let k = 0; k &lt; 50; k++) { await p.waitForTimeout(500); if ((await ed("return e.getBody().querySelectorAll('img').length;")) &gt; before) { ok = true; break; } }
+      log(`  ${ok ? "✓" : "✗ 업로드 확인 실패"} (img ${before} → ${before + (ok ? 1 : 0)})`);
+      if (!ok) await p.screenshot({ path: D + `/out/img_fail_${i}.png` });
+      else { imgs++; if (blk.alt) await ed("const im=[...e.getBody().querySelectorAll('img')].pop(); if(im){im.setAttribute('alt',a); im.setAttribute('data-alt',a);}", blk.alt); }   // alt = 구글 이미지 검색·접근성
+      await p.waitForTimeout(600);
+      await insert(EMPTY);
+      continue;
+    }
+    const html = blockHtml(blk);
+    if (html) {
+      log(`블록 ${i + 1}/${CONTENT.blocks.length}: ${blk.hr ? "구분선" : blk.quote ? "인용구" : blk.card ? "링크" : "굵게/소제목"}${blk.b ? ` "${blk.b.slice(0, 24)}"` : ""}`);
+      if (blk.card) wantLinks.push(blk.card);
+      chars += (blk.b || blk.quote || "").length;
+      await insert(html + EMPTY);
+      continue;
+    }
+    if (blk.t) {
+      log(`본문 ${i + 1}/${CONTENT.blocks.length} 타이핑(${blk.t.length}자)`);
+      chars += blk.t.length;
+      await toEnd(); await body.click({ position: { x: 10, y: 10 } }).catch(() =&gt; {}); await toEnd();
+      await p.keyboard.type(blk.t, { delay: 14 });
+      await p.keyboard.press("Enter"); await p.waitForTimeout(120);
+      continue;
+    }
+    log(`  ⚠️ 모르는 블록 ${JSON.stringify(blk).slice(0, 60)} , 건너뜀`);
+  }
+  await p.screenshot({ path: D + "/out/step3_body.png" });
+  const finalHtml = await ed("return e.getContent();");
+  fs.writeFileSync(D + "/out/last_content.html", finalHtml);
+  const hrefs = [...finalHtml.matchAll(/href="([^"]+)"/g)].map(m =&gt; m[1]);
+  const missing = wantLinks.filter(l =&gt; !hrefs.some(h =&gt; h.includes(l)));
+  log(`본문 완성: ${chars}자 · 사진 ${imgs} · 링크 요구 ${wantLinks.length}·편집기 ${hrefs.length}·누락 ${missing.length}`);
+  if (missing.length) throw new Error("링크가 편집기에 없다: " + missing.join(", "));
+
+  // 태그
+  if (CONTENT.tags &amp;&amp; CONTENT.tags.length) {
+    await p.click("#tagText");
+    for (const tg of CONTENT.tags.slice(0, 10)) { await p.keyboard.type(tg, { delay: 20 }); await p.keyboard.press("Enter"); await p.waitForTimeout(150); }
+    log(`태그 ${Math.min(10, CONTENT.tags.length)}개`);
+  }
+
+  let postUrl = "", cardHrefs = [];
+  if (MODE === "none") {
+    // 임시저장까지만(네이버 2026-07-19 결정과 같은 기본값)
+    const sv = p.locator('a.action:has-text("임시저장"), button:has-text("임시저장")').first();   // 실측: &lt;a role=button class=action&gt;
+    if (await sv.count()) { await sv.click({ timeout: 5000 }).catch(() =&gt; {}); await p.waitForTimeout(1500); log("임시저장 클릭"); }
+    await p.screenshot({ path: D + "/out/step4_saved.png" });
+  } else {
+    log(`발행 시작(${MODE})`);
+    await p.click("#publish-layer-btn"); await p.waitForTimeout(1200);
+    await p.screenshot({ path: D + "/out/step5_publish_layer.png" });
+    const radio = MODE === "public" ? "open20" : "open0";
+    // ★라벨은 높이 0 이라 click 이 30초 타임아웃 난다(2026-09-18 실측). 라디오 입력에 force 로 체크한다. 기본값은 비공개(open0).
+    await p.check("#" + radio, { force: true }).catch(async () =&gt; { await p.evaluate(id =&gt; { const e = document.getElementById(id); e.click(); e.checked = true; e.dispatchEvent(new Event("change", { bubbles: true })); }, radio); });
+    await p.waitForTimeout(500);
+    const btnTxt = (await p.locator("#publish-btn").innerText().catch(() =&gt; "")).trim();
+    log(`발행 버튼: "${btnTxt}" (${MODE === "public" ? "공개 발행이어야" : "비공개 저장이어야"})`);
+    await p.screenshot({ path: D + "/out/step6_publish_option.png" });
+    await Promise.all([p.waitForNavigation({ waitUntil: "domcontentloaded", timeout: 30000 }).catch(() =&gt; {}), p.click("#publish-btn")]);
+    await p.waitForTimeout(3000);
+    log(`발행 뒤 URL: ${p.url()}`);
+    // 글 주소: 글 관리 목록의 첫 글(방금 것). 제목이 같은지 대조한다
+    await p.goto(`https://${BLOG}.tistory.com/manage/posts/`, { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() =&gt; {});
+    await p.waitForTimeout(3000);
+    const first = await p.evaluate(() =&gt; {
+      // ★공지(notice.tistory.com/2702)도 같은 꼴이라 이 블로그 호스트로 좁힌다(2026-09-18 실측)
+      const host = location.host;
+      const a = [...document.querySelectorAll("a[href]")].find(x =&gt; new RegExp("^https?://" + host.replace(/\./g, "\\.") + "/\\d+$").test(x.href));
+      return a ? { href: a.href, text: (a.innerText || "").trim().slice(0, 80) } : null;
+    });
+    if (first) { postUrl = first.href; log(`글 주소 ${postUrl} · 목록 제목 "${first.text}"`); }
+    else { await p.screenshot({ path: D + "/out/posts_list.png" }); log("⚠️ 글 목록에서 주소를 못 찾음(out/posts_list.png)"); }
+    await p.screenshot({ path: D + "/out/step7_published.png" });
+    if (postUrl) {
+      await p.goto(postUrl, { waitUntil: "domcontentloaded", timeout: 60000 }).catch(() =&gt; {});
+      await p.waitForTimeout(2500);
+      cardHrefs = await p.evaluate(() =&gt; [...document.querySelectorAll("a[href*='coupang']")].map(a =&gt; a.href));
+      const miss = wantLinks.filter(l =&gt; !cardHrefs.some(h =&gt; h.includes(l)));
+      log(`글 페이지 링크 대조: 요구 ${wantLinks.length} · 페이지 ${cardHrefs.length} · 누락 ${miss.length}`);
+      await p.screenshot({ path: D + "/out/step8_post_page.png", fullPage: false });
+    }
+  }
+  await ctx.close();
+  // 녹화 파일 이름 고정
+  const vids = fs.readdirSync(D + "/out").filter(f =&gt; f.endsWith(".webm") &amp;&amp; f !== "last_run.webm").map(f =&gt; ({ f, t: fs.statSync(path.join(D, "out", f)).mtimeMs })).sort((a, b) =&gt; b.t - a.t);
+  if (vids[0]) { fs.renameSync(path.join(D, "out", vids[0].f), path.join(D, "out", "last_run.webm")); for (const v of vids.slice(1)) fs.unlinkSync(path.join(D, "out", v.f)); }
+  await b.close();
+  const sec = Math.round((Date.now() - T0) / 1000);
+  fs.writeFileSync(D + "/out/last_post.json", JSON.stringify({ at: new Date().toISOString(), blog: BLOG, mode: MODE, title: CONTENT.title, url: postUrl, chars, imgs, sec, cardHrefs }, null, 1));
+  log(`완료 ${sec}초 · ${chars}자 · 사진 ${imgs} · 녹화 out/last_run.webm`);
+  console.log(`POST_URL=${postUrl}`);
+  console.log(`CARD_HREFS=${JSON.stringify(cardHrefs)}`);
+})().catch(e =&gt; { log("❌ 실패: " + e.message); process.exit(1); });
+</pre>
+  </div>
+
+  <div class="lead"><h2>대표 사진 코드 원문 · cover.js (92줄)</h2><p>글 JSON 과 상품 JSON 을 읽어 1200x630 표지를 그립니다(크로미움 + sharp)</p></div>
+  <div class="box">
+    <div class="bar"><span>cover.js</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('c2').innerText);this.textContent='복사됨'">복사</button></div>
+<pre id="c2" class="code">// 티스토리 대표 사진(썸네일) 생성 , 검색 결과·피드에서 "눌러보고 싶게"(2026-09-18 사장님 "이미지만 달랑 있지 않고 검색했을 때 눌러보고 싶게끔").
+//   사용: node cover.js --content=&lt;content json&gt; [--md=&lt;review md&gt;] [--out=&lt;png&gt;]
+//   출력: COVER=&lt;파일&gt;  (1200x630, OG 표준 비율 , 구글·다음·카카오톡 미리보기가 이 비율을 그대로 쓴다)
+//   디자인 = 우리 캐러셀 정본(메모리 reference_carousel_builder): paper #F1ECE2+격자 · ink #1A1812 · accent #D97757 · Pretendard 헤드 · Newsreader 세리프 키커.
+//   왼쪽 = 오렌지 태그 + 글 제목(2줄) + 한 줄 요약(후보 수·최저가·로켓) · 오른쪽 = 상품 사진 카드(그림자·살짝 기울임) + 가격 배지.
+//   ★사진은 쿠팡 파트너스 API 가 준 상품 이미지(review.js 가 out/img/p1.jpg 로 받아둔 것) , 생성 이미지 안 쓴다.
+const fs = require("fs"), path = require("path");
+const { chromium } = require(require.resolve("playwright-core", { paths: [path.resolve(__dirname, "../_engine")] }));
+const opt = k =&gt; { const a = process.argv.find(x =&gt; x.startsWith("--" + k + "=")); return a ? a.split("=").slice(1).join("=") : null; };
+const R = path.resolve(__dirname, "../.."), CA = path.join(R, "docs/coupang-auto");
+const CHR = process.env.CHR || require("child_process").execSync("ls /nix/store/*/bin/chromium | head -1").toString().trim();
+const cf = path.resolve(opt("content") || ""); if (!fs.existsSync(cf)) { console.log("사용: node cover.js --content=&lt;json&gt; [--md=&lt;md&gt;]"); process.exit(2); }
+const C = JSON.parse(fs.readFileSync(cf, "utf8"));
+const subId = (path.basename(cf).match(/content_(\w+)\.json/) || [, "cover"])[1];
+const OUT = path.resolve(opt("out") || path.join(__dirname, "out", `cover_${subId}.png`));
+
+// 상품 데이터: --md 의 파트너스 원본 JSON(가격·로켓·이름). 없으면 본문 굵은 줄에서 가격만 긁는다
+let products = [];
+if (opt("md") &amp;&amp; fs.existsSync(opt("md"))) { try { products = JSON.parse(fs.readFileSync(opt("md"), "utf8").split("&lt;!-- 상품 데이터(파트너스 API 원본)")[1].split("--&gt;")[0]); } catch {} }
+const priceOf = p =&gt; Number(p.productPrice || 0);
+const prices = products.map(priceOf).filter(Boolean);
+const n = products.length || C.blocks.filter(b =&gt; b.card).length;
+const rocket = products.filter(p =&gt; p.isRocket).length;
+const minP = prices.length ? Math.min(...prices) : null;
+const sub = [n ? `후보 ${n}개` : null, minP ? `${minP.toLocaleString("ko-KR")}원부터` : null, rocket ? `로켓배송 ${rocket}개` : null].filter(Boolean).join(" · ") || "쿠팡 등록 기준 가격 비교";
+const kw = (C.tags &amp;&amp; C.tags[0]) || "";
+// 사진: out/img/p1.jpg(p2.jpg) , 파일 URL 로 넣는다
+const imgs = ["p1.jpg", "p2.jpg"].map(f =&gt; path.join(CA, "out/img", f)).filter(f =&gt; fs.existsSync(f) &amp;&amp; fs.statSync(f).size &gt; 5000);
+const b64 = f =&gt; "data:image/jpeg;base64," + fs.readFileSync(f).toString("base64");
+const fontP = path.join(process.env.HOME, ".fonts/PretendardVariable.ttf");
+const nrDir = path.join(R, "docs/carousel/assets/fonts");
+const esc = s =&gt; String(s).replace(/&amp;/g, "&amp;amp;").replace(/&lt;/g, "&amp;lt;").replace(/&gt;/g, "&amp;gt;");
+const title = C.title.replace(/\s+/g, " ").trim();
+const tsize = title.length &gt; 26 ? 56 : title.length &gt; 18 ? 62 : 70;
+
+const html = `&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;style&gt;
+@font-face{font-family:"Pretendard";src:url("file://${fontP}") format("truetype");font-weight:100 900}
+@font-face{font-family:"Newsreader";src:url("file://${nrDir}/Newsreader-Italic.woff2") format("woff2");font-style:italic}
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;overflow:hidden;font-family:Pretendard,system-ui,sans-serif;color:#1A1812;
+  background:#F1ECE2;position:relative}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,24,18,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(26,24,18,.06) 1px,transparent 1px);background-size:60px 60px;
+  -webkit-mask-image:radial-gradient(ellipse at 40% 50%,#000 30%,transparent 85%)}
+.glow{position:absolute;right:-120px;top:-160px;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(217,119,87,.28),transparent 65%)}
+.left{position:absolute;left:72px;top:72px;width:620px;height:486px;display:flex;flex-direction:column}
+.tag{display:inline-flex;align-items:center;gap:10px;background:#D97757;color:#fff;font-weight:700;font-size:22px;letter-spacing:.02em;padding:10px 18px;border-radius:999px;width:max-content}
+.tag i{width:10px;height:10px;border-radius:50%;background:#fff;display:inline-block}
+h1{margin-top:28px;font-size:${tsize}px;line-height:1.18;font-weight:800;letter-spacing:-.02em;word-break:keep-all;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kick{margin-top:22px;font-family:Newsreader,serif;font-style:italic;font-size:30px;color:#6b665b}
+.sub{margin-top:auto;display:flex;gap:12px;flex-wrap:wrap}
+.sub span{background:#fff;border:1.5px solid rgba(26,24,18,.12);border-radius:12px;padding:10px 16px;font-size:22px;font-weight:600;box-shadow:0 8px 24px rgba(26,24,18,.08)}
+.sub span b{color:#D97757}
+.right{position:absolute;left:740px;top:60px;width:400px;height:510px}
+.card{position:absolute;background:#fff;border-radius:28px;box-shadow:0 46px 90px rgba(26,24,18,.28),0 8px 20px rgba(26,24,18,.10);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.card img{width:100%;height:100%;object-fit:contain;padding:14px;background:#fff}
+.c1{left:20px;top:40px;width:330px;height:390px;transform:rotate(-4deg);z-index:2}
+.c2{left:170px;top:150px;width:250px;height:300px;transform:rotate(9deg);z-index:1}
+.price{position:absolute;left:8px;top:388px;z-index:3;background:#1A1812;color:#fff;border-radius:16px;padding:12px 20px;font-size:30px;font-weight:800;letter-spacing:-.01em;box-shadow:0 14px 30px rgba(26,24,18,.3)}
+.price small{font-size:18px;font-weight:600;opacity:.8;margin-right:8px}
+.foot{position:absolute;left:72px;right:72px;bottom:34px;display:flex;justify-content:space-between;font-size:20px;font-weight:600;color:#6b665b}
+.foot b{color:#1A1812}.foot b i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#D97757;margin-right:8px}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;div class="grid"&gt;&lt;/div&gt;&lt;div class="glow"&gt;&lt;/div&gt;
+&lt;div class="left"&gt;
+  &lt;div class="tag"&gt;&lt;i&gt;&lt;/i&gt;${esc(kw || "가격 비교")}&lt;/div&gt;
+  &lt;h1&gt;${esc(title)}&lt;/h1&gt;
+  &lt;div class="kick"&gt;Compare first, then buy.&lt;/div&gt;
+  &lt;div class="sub"&gt;${sub.split(" · ").map(s =&gt; `&lt;span&gt;${esc(s).replace(/(\d[\d,]*원부터|로켓배송)/, "&lt;b&gt;$1&lt;/b&gt;")}&lt;/span&gt;`).join("")}&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="right"&gt;
+  ${imgs[1] ? `&lt;div class="card c2"&gt;&lt;img src="${b64(imgs[1])}"&gt;&lt;/div&gt;` : ""}
+  ${imgs[0] ? `&lt;div class="card c1"&gt;&lt;img src="${b64(imgs[0])}"&gt;&lt;/div&gt;` : `&lt;div class="card c1"&gt;&lt;/div&gt;`}
+  ${minP ? `&lt;div class="price"&gt;&lt;small&gt;최저&lt;/small&gt;${minP.toLocaleString("ko-KR")}원&lt;/div&gt;` : ""}
+&lt;/div&gt;
+&lt;div class="foot"&gt;&lt;b&gt;&lt;i&gt;&lt;/i&gt;AI TIGER MASK&lt;/b&gt;&lt;span&gt;aitigermask.tistory.com&lt;/span&gt;&lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;`;
+
+(async () =&gt; {
+  fs.mkdirSync(path.dirname(OUT), { recursive: true });
+  const hf = OUT.replace(/\.png$/, ".html"); fs.writeFileSync(hf, html);
+  const b = await chromium.launch({ executablePath: CHR, headless: true, args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--allow-file-access-from-files"] });
+  const p = await b.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+  await p.goto("file://" + hf, { waitUntil: "load" });
+  await p.evaluate(() =&gt; document.fonts.ready); await p.waitForTimeout(400);
+  await p.screenshot({ path: OUT, type: "png" });
+  await b.close();
+  const jpg = OUT.replace(/\.png$/, ".jpg");
+  await require(require.resolve("sharp", { paths: [path.resolve(__dirname, "../_engine")] }))(OUT).jpeg({ quality: 88 }).toFile(jpg);
+  fs.unlinkSync(OUT);
+  console.log(`대표 사진 ${jpg} · 제목 ${title.length}자 · ${sub}`);
+  console.log(`COVER=${jpg}`);
+})().catch(e =&gt; { console.error("❌", e.message); process.exit(1); });
+</pre>
+  </div>
+
+  <div class="lead"><h2>요일마다 한 편 내보내는 데몬 (41줄)</h2><p>월·수·토 10:30, 모드(off/private/public)와 요일은 파일 두 개로 바꿉니다</p></div>
+  <div class="box">
+    <div class="bar"><span>publish_daemon.sh</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('c3').innerText);this.textContent='복사됨'">복사</button></div>
+<pre id="c3" class="code">#!/usr/bin/env bash
+# 티스토리 글 자동 발행 데몬 , 발행 요일 KST 10:30 에 publish.js --target=tistory 한 편(네이버 데몬 09:30 과 겹치지 않게 한 시간 뒤).
+#   네이버 쪽 docs/coupang-auto/publish_daemon.sh 와 같은 구조(while 루프 + dev.nix onStart 부활). 실적 리포트는 네이버 데몬의 08:30 것이 티스토리 편(tist…)까지 같이 찍는다.
+#   켜기(멱등): bash docs/tistory-auto/publish_daemon.sh ensure   상태: --stat   끄기: stop   요일: days 1,3,6   모드: mode public
+#   발행 모드는 docs/tistory-auto/.mode: private(기본) | public | off.
+# 로그: docs/tistory-auto/daemon.log. ★서버는 UTC, KST = +9h.
+PIDF=/home/user/template/docs/tistory-auto/.daemon.pid
+LOG=/home/user/template/docs/tistory-auto/daemon.log
+MODEF=/home/user/template/docs/tistory-auto/.mode
+DAYSF=/home/user/template/docs/tistory-auto/.days   # 발행 요일(1=월…7=일), 기본 "1,3,6" 월·수·토(네이버 화·금과 엇갈리게)
+cd /home/user/template || exit 1
+if ! command -v node &gt;/dev/null 2&gt;&amp;1; then [ -s "$HOME/.local/share/fnm/fnm" ] &amp;&amp; eval "$("$HOME/.local/share/fnm/fnm" env 2&gt;/dev/null)"; fi
+case "${1:-ensure}" in
+  stop) [ -f "$PIDF" ] &amp;&amp; kill "$(cat "$PIDF")" 2&gt;/dev/null &amp;&amp; rm -f "$PIDF" &amp;&amp; echo "stopped"; exit 0;;
+  --stat) if [ -f "$PIDF" ] &amp;&amp; kill -0 "$(cat "$PIDF")" 2&gt;/dev/null; then echo "살아있음 PID $(cat "$PIDF") · 모드 $(cat "$MODEF" 2&gt;/dev/null || echo private) · 요일 $(cat "$DAYSF" 2&gt;/dev/null || echo 1,3,6) · 마지막: $(tail -1 "$LOG" 2&gt;/dev/null)"; else echo "죽어있음"; fi; exit 0;;
+  mode) echo "${2:-private}" &gt; "$MODEF"; echo "모드 → $(cat "$MODEF")"; exit 0;;
+  days) echo "${2:-1,3,6}" &gt; "$DAYSF"; echo "발행 요일 → $(cat "$DAYSF")"; exit 0;;
+  ensure|start) ;;
+esac
+[ -f "$MODEF" ] || echo private &gt; "$MODEF"
+[ -f "$DAYSF" ] || echo "1,3,6" &gt; "$DAYSF"
+if [ -f "$PIDF" ] &amp;&amp; kill -0 "$(cat "$PIDF")" 2&gt;/dev/null; then exit 0; fi
+(
+  echo $BASHPID &gt; "$PIDF"
+  echo "[$(date -u '+%F %T')Z] tistory publish_daemon up (pid $BASHPID)" &gt;&gt; "$LOG"
+  LASTP=""
+  while true; do
+    NOW=$(( $(date +%s) + 32400 )); KDATE=$(date -u -d "@$NOW" +%F); KHM=$(date -u -d "@$NOW" +%H%M)
+    MODE=$(cat "$MODEF" 2&gt;/dev/null || echo private)
+    KDOW=$(date -u -d "@$NOW" +%u); DAYS=$(cat "$DAYSF" 2&gt;/dev/null || echo "1,3,6")
+    if [ "$KHM" -ge 1030 ] &amp;&amp; [ "$LASTP" != "$KDATE" ]; then
+      if ! echo ",$DAYS," | grep -q ",$KDOW,"; then echo "[$(date -u '+%F %T')Z] KST $KDATE 요일 $KDOW 은 발행일 아님($DAYS)" &gt;&gt; "$LOG"; LASTP="$KDATE"
+      elif [ "$MODE" = "off" ]; then echo "[$(date -u '+%F %T')Z] KST $KDATE 발행 꺼짐(mode off)" &gt;&gt; "$LOG"
+      else echo "[$(date -u '+%F %T')Z] KST $KDATE $KHM 티스토리 자동 발행($MODE)" &gt;&gt; "$LOG"; node docs/coupang-auto/publish.js --target=tistory &gt;&gt; "$LOG" 2&gt;&amp;1; fi
+      LASTP="$KDATE"
+    fi
+    sleep 60
+  done
+) &amp;
+disown
+echo "started"
+</pre>
+  </div>
+
+  <div class="how">
+    <h2>붙여 쓰는 순서</h2>
+    <ol>
+      <li>클로드 코드에 위 세 파일을 주고 "내 환경에 맞게 경로 고쳐줘"라고 합니다. 쓰는 것은 <code>playwright-core</code> + 크로미움, <code>sharp</code>(대표 사진), 그리고 글 JSON 을 만드는 앞 단계(지식iN·쿠팡·Pexels·초안)입니다. 앞 단계는 <a href="../coupang-blog-auto/">네이버 편 가이드</a>에 있는 규칙 세 문장으로 클로드에게 만들게 하면 됩니다.</li>
+      <li>티스토리 쿠키를 저장하고 <code>node tistory_post.js --content=글.json --publish=private</code> 로 한 편 손으로 내봅니다. 마지막 줄에 <code>완료 N초 · 글자 · 사진 N</code> 이 찍히면 된 겁니다.</li>
+      <li>글을 직접 열어 보고 괜찮으면 데몬을 켭니다. 공개 발행은 <code>mode public</code> 으로 바꿀 때까지 안 합니다.</li>
+    </ol>
+  </div>
+
+  <div class="how">
+    <h2>정직하게, 이건 못 합니다</h2>
+    <ol>
+      <li><b>수익을 약속할 수 없습니다.</b> 자동 발행분은 아직 비공개라 노출도 0, 수익도 0원입니다. 네이버 편의 기준선도 석 달 747원이었습니다.</li>
+      <li><b>티스토리 약관도 자동 등록 프로그램에 우호적이지 않습니다.</b> 주 3회, 제휴 링크 2개, 비공개 검토라는 낮은 빈도로 시작한 이유입니다. 중요한 블로그라면 계정을 분리하세요.</li>
+      <li><b>쿠키는 한 달마다 사람이 다시 넣어야 합니다.</b> 이 부분은 자동화하지 않았고 할 생각도 없습니다.</li>
+    </ol>
+  </div>
+
+  <div class="src">
+    출처 · 63초·1,485자·사진 6·링크 2 는 2026-09-18 글 5번 발행 로그(<code>out/last_run.log</code>), 1,256개는 같은 날 지식iN 검색 결과 화면, 44,100원·후보 2개는 쿠팡 파트너스 API 응답 원본입니다. 코드 원문은 위 세 블록이 전부이며 키·쿠키는 들어 있지 않습니다.
+  </div>
+  <div class="cta"><a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">더 많은 자동화는 인스타 @aitigermask</a></div>
+  <div class="foot"><a href="../">← AI TIGER MASK 홈</a></div>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"tistory-auto-guide"})}).catch(()=>{});</script></body></html>
