@@ -28,7 +28,9 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.code{white-space:pre;max-height:420px;font-size:11.5px}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
-th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top;white-space:nowrap}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:560px}
 th{background:#efe7db;font-size:12.5px;color:#5c554a}
 td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
 td.d{font-size:12.5px;color:#5c554a}
@@ -86,7 +88,7 @@ summary{cursor:pointer;font-weight:800;font-size:14px}
   </div>
 
   <div class="lead"><h2>실측 표</h2><p>과제 3개 x 넷, 결과 JSON 의 usage · total_cost_usd · duration_ms 그대로</p></div>
-  <table>
+  <div class="tw"><table>
     <tr><th>과제</th><th>켠 것</th><th>코드 줄</th><th>출력 토큰</th><th>입력 토큰</th><th>비용</th><th>시간</th><th>왕복</th></tr>
     <tr><td rowspan="4" class="d">①재입고 알림 폼<br>(HTML/JS)</td><td>없이</td><td class="n">419</td><td>10,310</td><td>339,731</td><td>$1.07</td><td>120초</td><td>15</td></tr>
     <tr><td>포니테일</td><td class="n">71</td><td>2,195</td><td>129,390</td><td>$0.49</td><td>32초</td><td>5</td></tr>
@@ -100,14 +102,14 @@ summary{cursor:pointer;font-weight:800;font-size:14px}
     <tr><td>포니테일</td><td class="n">7</td><td>1,596</td><td>153,770</td><td>$0.45</td><td>24초</td><td>6</td></tr>
     <tr><td>케이브맨</td><td class="n">12</td><td>1,331</td><td>132,686</td><td>$0.45</td><td>20초</td><td>5</td></tr>
     <tr><td>둘 다</td><td class="n">7</td><td>1,320</td><td>175,681</td><td>$0.52</td><td>21초</td><td>6</td></tr>
-  </table>
-  <table>
+  </table></div>
+  <div class="tw"><table>
     <tr><th>합계</th><th>코드 줄</th><th>출력 토큰</th><th>입력 토큰</th><th>비용</th><th>시간</th></tr>
     <tr><td>없이</td><td class="n">537</td><td>16,390</td><td>640,642</td><td>$2.04</td><td>207초</td></tr>
     <tr><td>포니테일</td><td class="n">117 (-78%)</td><td>5,033 (-69%)</td><td>356,698 (-44%)</td><td>$1.35 (-34%)</td><td>76초 (-63%)</td></tr>
     <tr><td>케이브맨</td><td class="n">493 (-8%)</td><td>8,811 (-46%)</td><td>382,220 (-40%)</td><td>$1.68 (-18%)</td><td>111초 (-46%)</td></tr>
     <tr><td>둘 다</td><td class="n">120 (-78%)</td><td>6,729 (-59%)</td><td>417,093 (-35%)</td><td>$1.71 (-16%)</td><td>93초 (-55%)</td></tr>
-  </table>
+  </table></div>
   <div class="src">코드 줄 = 만들거나 고친 파일의 줄 수 합(시드 제외). 입력 토큰 = input + cache_read + cache_creation. 비용·시간·왕복 = 결과 JSON 의 total_cost_usd · duration_ms · num_turns. 세 과제 모두 네 팔이 같은 프롬프트, 같은 빈 폴더, 같은 권한(파일 쓰기만, Bash 없음).</div>
 
   <div class="lead"><h2>한도는 말이 아니라 읽기로 닳습니다</h2><p>그래서 말만 줄이면 비용이 별로 안 빠집니다</p></div>
@@ -116,23 +118,23 @@ summary{cursor:pointer;font-weight:800;font-size:14px}
   </div>
 
   <div class="lead"><h2>품질은 유지되나</h2><p>에이전트가 못 본 숨김 테스트로 쟀습니다</p></div>
-  <table>
+  <div class="tw"><table>
     <tr><th>과제</th><th>검사</th><th>없이</th><th>포니테일</th><th>케이브맨</th><th>둘 다</th></tr>
-    <tr><td>①폼</td><td class="d">헤드리스 크로미움에서 실제 입력·클릭·제출 11항목(잘못된 URL·이메일·어제 날짜 차단, SMS 전화 칸, 서버 500·네트워크 실패 안내, 라벨·live region)</td><td class="n">11/11</td><td class="n">9/11</td><td class="n">11/11</td><td class="n">9/11</td></tr>
-    <tr><td>②날짜 추출</td><td class="d">숨김 제목 8줄(제로패딩 없음·붙여쓰기·두 날짜·13월·빈 줄·작년)</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td></tr>
-    <tr><td>③조회수 파싱</td><td class="d">명세 안 4종 / 명세 밖 6종(1.2억·공백·1.15만·0·1,234회·abc 예외)</td><td class="n">4/4 · 6/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 4/6</td></tr>
-  </table>
+    <tr><td>①폼</td><td class="d" style="white-space:normal;min-width:260px">헤드리스 크로미움에서 실제 입력·클릭·제출 11항목(잘못된 URL·이메일·어제 날짜 차단, SMS 전화 칸, 서버 500·네트워크 실패 안내, 라벨·live region)</td><td class="n">11/11</td><td class="n">9/11</td><td class="n">11/11</td><td class="n">9/11</td></tr>
+    <tr><td>②날짜 추출</td><td class="d" style="white-space:normal">숨김 제목 8줄(제로패딩 없음·붙여쓰기·두 날짜·13월·빈 줄·작년)</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td></tr>
+    <tr><td>③조회수 파싱</td><td class="d" style="white-space:normal">명세 안 4종 / 명세 밖 6종(1.2억·공백·1.15만·0·1,234회·abc 예외)</td><td class="n">4/4 · 6/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 4/6</td></tr>
+  </table></div>
   <div class="warn">
     <h3>포니테일이 깨뜨린 것</h3>
     <p>"SMS 체크하면 전화 칸 노출" 을 CSS 한 줄 <code>#sms:checked ~ #phone-wrap</code> 로 풀었는데, 체크박스가 label 안에 있어 형제 선택자가 닿지 않습니다. 전화 칸이 <b>영원히 안 뜨고</b>, 체크하면 전화가 필수가 되어 <b>SMS 신청 자체가 불가능</b>해집니다. 코드만 읽어서는 못 잡았고(저도 놓쳤습니다), 브라우저에서 눌러보니 나왔습니다. 본인 답변에도 "Not verified in a browser" 라고 적혀 있었습니다.</p>
   </div>
-  <table>
+  <div class="tw"><table>
     <tr><th>폼 과제</th><th>없이</th><th>포니테일</th><th>포니테일 + 버그 알려주고 수정</th></tr>
     <tr><td>코드</td><td>419줄</td><td>71줄</td><td>71줄</td></tr>
     <tr><td>비용</td><td>$1.07</td><td>$0.49</td><td class="n">$0.60 (+$0.11)</td></tr>
     <tr><td>시간</td><td>120초</td><td>32초</td><td class="n">47초 (+15초)</td></tr>
     <tr><td>숨김 테스트</td><td>11/11</td><td>9/11</td><td class="n">11/11</td></tr>
-  </table>
+  </table></div>
   <div class="src">같은 세션을 이어 "SMS 체크박스를 체크해도 전화번호 칸이 안 나타나요. 고쳐주세요." 한 줄. 수정은 <code>form:has(#sms:checked) #phone-wrap</code> 한 줄, 2턴.</div>
 
   <div class="lead"><h2>설치 명령</h2><p>둘 다 무료 · MIT/BSL · 클로드 코드 플러그인</p></div>
