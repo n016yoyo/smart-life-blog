@@ -1,0 +1,118 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>제브(Jev)로 댓글 문지기 만들기 | AI TIGER MASK</title>
+<meta name="description" content="말을 안 하는 AI 제브(Jev, TypeSafe)에 제 인스타 댓글 14건을 넣어 14/14 맞힌 기록, 그리고 키워드 밖 댓글에 답글을 고르는 문지기를 붙인 방법. 공식 가격·OpenRouter 호출 예제·답글 뱅크 그대로.">
+<meta property="og:title" content="제브(Jev)로 댓글 문지기 만들기">
+<meta property="og:description" content="출력이 공짜인 AI. 문장 대신 답만 찍습니다. 제 댓글 14건 14/14, $0.00028.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.deck{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.deck a{display:block;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden;box-shadow:0 8px 20px rgba(26,22,16,.08)}
+.deck img{width:100%;display:block}
+.deck .k{font-size:11.5px;color:var(--dim);padding:6px 9px}
+.dl{margin:14px 0 0;text-align:center}
+.dl a{display:inline-block;background:#1a1610;color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:12px 22px;border-radius:12px}
+.dl p{font-size:12.5px;color:var(--dim);margin-top:8px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top;white-space:nowrap}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:560px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a;white-space:normal}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule q{color:#7a4a36;font-size:12.5px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.pair div{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden}
+.pair img{width:100%;display:block}
+.pair .k{font-size:12px;color:var(--dim);padding:7px 9px}
+.pair .k b{color:var(--o)}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style>
+<style>.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}.pair div{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:12px}.pair .k{font-size:12px;color:var(--dim)}.bank{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px 16px;font-size:13.5px}.bank div{padding:6px 0;border-bottom:1px dashed #e0d9cc}.bank b{color:var(--o);font-size:12.5px;margin-right:6px}</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>제브(Jev)로 댓글 문지기 만들기</h1>
+<div class="sub">TypeSafe AI · 2026년 9월 15일 공개 · 제 인스타 댓글로 직접 재봤습니다</div>
+<div class="chips"><span class="chip">댓글 14건 <b>14/14</b></span><span class="chip">평균 <b>0.3초</b></span><span class="chip">총 <b>$0.00028</b></span><span class="chip">출력 <b>무료</b></span></div>
+</header>
+<div class="wrap">
+
+<div class="who"><h2>영상 뒤에 남은 답</h2>
+<p><b>제브(Jev)는 문장을 못 만듭니다.</b> 텍스트와 "질문"을 주면 답만 돌려줘요: 이거냐 저거냐(choice), 몇 단계냐(score), 예냐 아니오냐(noul). 그 답에 확률이 붙어 나옵니다. 그래서 LLM 을 대신하는 게 아니라 <b>LLM 앞에 세우는 문지기</b>로 씁니다.</p>
+<p class="note">공식 문서(docs.typesafe.ai)는 한국어(CJK) 정확도가 낮다고 적어 두었습니다. 그래서 제 댓글로 먼저 쟀습니다.</p></div>
+
+<div class="lead"><h2>공식 수치</h2><p>docs.typesafe.ai/models · 2026-09-19 확인</p></div>
+<div class="tw"><table><tr><th>항목</th><th>값</th></tr>
+<tr><td>입력 가격</td><td class="n">$0.042 / 백만 토큰</td></tr>
+<tr><td>출력 가격</td><td class="n">무료</td></tr>
+<tr><td>응답 시간</td><td>70~500ms (공식 주장)</td></tr>
+<tr><td>답 형태</td><td>choice · score · noul (문장 생성 없음)</td></tr>
+<tr><td>언어</td><td class="d">영어 위주. CJK 는 "handled but not equally well; test on your own content"</td></tr>
+<tr><td>접근</td><td class="d">typesafe.ai 웨이트리스트 · OpenRouter <code>typesafe/jev-1.13</code> (대기 없음)</td></tr>
+</table></div>
+
+<div class="lead"><h2>제 댓글 14건, 그대로 넣은 결과</h2><p>2026-09-19 라이브 댓글 12건 + 이틀 전 2건. 정답 = 키워드 규칙 + 제가 읽은 것.</p></div>
+<div class="tw"><table><tr><th>댓글</th><th>Jev 판정</th><th>확률</th><th>응답</th></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>581ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>290ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>267ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>305ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>318ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>263ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>230ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>302ms</td></tr><tr><td>🙌🙌🙌🙌</td><td class='n'>칭찬</td><td>0.99</td><td>306ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>348ms</td></tr><tr><td>나왔따~~^^😍</td><td class='n'>칭찬</td><td>0.97</td><td>254ms</td></tr><tr><td>클로드</td><td class='n'>링크 요청</td><td>1.00</td><td>306ms</td></tr><tr><td>목소리가 별로예요 😮 성악가같애요</td><td class='n'>불만</td><td>0.99</td><td>284ms</td></tr><tr><td>🙌</td><td class='n'>칭찬</td><td>0.99</td><td>301ms</td></tr></table></div>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">14/14 · 평균 311ms · 총 $0.00029(≈0.4원). 영상 속 실행은 두 번째 호출(322ms · $0.00028)입니다. 같은 문장이라도 호출마다 시간·비용이 조금 다릅니다.</p>
+
+<div class="lead"><h2>호출 한 번</h2><p>OpenRouter 키 하나면 웨이트리스트 없이 됩니다(채팅 API 가 아니라 <code>/api/alpha/decisions</code>).</p></div>
+<div class="box"><div class="bar">curl<button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('c1').innerText)">복사</button></div><pre id="c1">curl -X POST https://openrouter.ai/api/alpha/decisions \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe/jev-1.13",
+    "state": { "comment": "목소리가 별로예요 😮 성악가같애요" },
+    "questions": {
+      "intent": { "type": "choice", "instructions": "What does this Korean Instagram comment intend?",
+        "criteria": { "link_request": "Wants the guide link", "praise": "Positive reaction", "negative_feedback": "Complaint", "question": "Asks a question", "spam": "Advertising", "other": "None" } },
+      "needs_owner": { "type": "noul", "instructions": "The channel owner should personally read this" }
+    }
+  }'</pre></div>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">응답: <code>intent.choice = "negative_feedback"</code> (0.99) · <code>needs_owner.noul = 0.57</code> · 0.28초 · $0.00002</p>
+
+<div class="lead"><h2>제 계정에 붙인 문지기</h2><p>키워드 「클로드」 밖 댓글만 제브가 봅니다. 답글 문장은 전부 사람이 미리 쓴 것, 제브는 고르기만.</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>스팸이면 아무것도 안 함</h3><p>맞팔·광고는 확신 0.7 이상이면 답글 없이 기록만. 클로드도 안 부릅니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>나머지는 답글 뱅크에서 하나 고름</h3><p>24종(칭찬·웃음·이모지·응원·다음편 요청·목소리/속도/오류 불만·가격/설치/비교/가능 질문·링크 변형·수식 장난·인사·부탁). 제브가 댓글을 읽고 제일 맞는 걸 확률과 함께 돌려주면 그 문장을 답니다. 확률 0.35 미만이면 안 답니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>질문·불만은 저한테 알림</h3><p>제브가 "주인이 직접 봐야 함" 을 0.5 이상으로 보면 텔레그램으로 옵니다. 그래서 놓치던 20%가 사라졌습니다.</p></div></div>
+</div>
+<div class="bank">
+<div><b>칭찬</b> 봐주셔서 고마워요 🙌 다음 편도 곧 올릴게요!</div>
+<div><b>웃음</b> 웃으셨다니 다행이에요 😄 다음 편은 더 재밌게 만들어 볼게요!</div>
+<div><b>목소리 불만</b> 죄송해요 🙏 목소리는 다음 편에 꼭 손볼게요. 솔직한 피드백 감사합니다.</div>
+<div><b>가격 질문</b> 가격 쪽은 바뀌는 게 많아서요, 확인해서 답글로 알려드릴게요 🙏</div>
+<div><b>설치 질문</b> 설정법은 댓글에 '클로드' 남기시면 정리한 페이지로 보내드려요 😊</div>
+<div><b>수식 장난(1+1)</b> 2요 😄 (제브가 계산은 안 하고 답만 찍었어요)</div>
+</div>
+
+<div class="warn"><h3>제 결론</h3><p>댓글 하루 수십 건 규모면 클로드만 써도 비용 차이는 몇십 원입니다. 제브의 값어치는 <b>속도·확신 수치·스팸 선차단</b>이에요. 문장을 지어내지 않는다는 점이 공개 답글엔 오히려 안전했습니다. 한국어는 짧은 댓글 6분류에선 다 맞았지만, 긴 글은 직접 재보세요(공식 권고).</p></div>
+
+<div class="src">출처: <a href="https://docs.typesafe.ai/models">docs.typesafe.ai/models</a> · <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">TypeSafe 공식 발표(2026-09-15)</a> · <a href="https://openrouter.ai/typesafe/jev-1.13">OpenRouter 모델 페이지</a> · 실측 파일 docs/reel_jevcomment/evidence(저장소) · 참고 영상: Matthew Berman "We need to talk about Jev..." (2026-09-18)</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div><script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"jev-comment-bot"})}).catch(()=>{});</script></body></html>
