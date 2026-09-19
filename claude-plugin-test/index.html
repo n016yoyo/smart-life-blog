@@ -1,0 +1,178 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>포니테일 · 케이브맨, 12번 돌려서 잰 표 | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드 한도 아껴준다는 무료 플러그인 둘(Ponytail·Caveman)을 같은 일 세 개에 없이·하나씩·둘 다 켜고 12번 돌려 코드 줄·토큰·비용·시간을 재고, 숨김 테스트로 품질까지 확인한 표. 뭘 켜야 하는지 결론 세 줄과 설치 명령 그대로.">
+<meta property="og:title" content="포니테일 · 케이브맨, 12번 돌려서 잰 표">
+<meta property="og:description" content="코드 -78% 는 공짜가 아니었습니다. 한도는 말이 아니라 읽기로 닳고요. 뭘 켜야 하는지 표 하나.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.code{white-space:pre;max-height:420px;font-size:11.5px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:640px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+details{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800;font-size:14px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+
+
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:16px 18px}
+.calc label{display:block;font-size:13px;color:var(--dim);margin-bottom:6px}
+.calc input{width:100%;font-size:20px;padding:10px 12px;border:1px solid #d8d0c0;border-radius:10px;font-variant-numeric:tabular-nums}
+.calc .out{margin-top:12px;font-size:15px;color:#43403a}
+.calc .out b{color:var(--o);font-size:26px;font-variant-numeric:tabular-nums}
+.calc .f{font-size:12.5px;color:var(--dim);margin-top:6px;font-family:ui-monospace,Menlo,Consolas,monospace}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>포니테일 · 케이브맨,<br>12번 돌려서 잰 표</h1>
+  <div class="sub">같은 일 세 개를 없이 · 포니테일 · 케이브맨 · 둘 다 켜고 한 번씩, Fable 5.1 클로드 코드</div>
+  <div class="chips"><span class="chip">코드 <b>-78%</b></span><span class="chip">비용 <b>-34%</b></span><span class="chip">출력은 토큰의 <b>2.5%</b></span><span class="chip">숨김 테스트 <b>9/11</b></span></div>
+</header>
+<div class="wrap">
+
+  <div class="who">
+    <h2>영상에서 안 말한 답</h2>
+    <p>코드가 78% 줄어든 쪽은 <b>포니테일</b>이고, 버그가 난 쪽도 <b>포니테일</b>입니다. 케이브맨은 코드를 안 건드려서 품질이 그대로였고, 대신 아끼는 것도 말 부분뿐이라 비용은 18% 만 줄었습니다. 둘 다 켜면 포니테일 하나보다 더 줄지 않았습니다.</p>
+    <p class="note">※ 2026년 9월 19일, Claude Code v2.1.266 · Fable 5.1 · Ponytail v4.10.0 · Caveman v2.7.0. 과제 3개 x 4가지 = 12회, <b>각 한 번</b>이라 편차가 있습니다. "세 번 중 한 번 버그" 는 확률이 아니라 이번에 그렇게 나왔다는 기록입니다.</p>
+  </div>
+
+  <div class="lead"><h2>그래서 뭘 켜나</h2><p>결론 세 줄</p></div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>코드 시키는 작업이고, 결과를 확인할 테스트·화면이 있다 → 포니테일</h3><p>코드 -78% · 비용 -34% · 시간 -63%. 버그 하나가 났지만 알려주니 한 줄 수정에 $0.11 · 15초였고, 고친 뒤 테스트 11/11. 고치는 왕복까지 더해도 없이 할 때보다 44% 싸고 61% 빠릅니다.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>확인할 방법이 없다(코드만 받아서 그냥 쓴다) → 케이브맨</h3><p>코드가 기본과 같은 크기라 품질도 같았습니다(숨김 테스트 전부 통과). 비용 -18%, 말만 짧아집니다. 위험 0, 이득 작음.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>둘 다 켜기 → 켤 이유 없음</h3><p>코드 120줄 대 117줄, 비용 $1.71 대 $1.35. 포니테일이 이미 코드를 줄여서 케이브맨이 더 줄일 말이 없었고, 버그도 그대로 따라왔습니다.</p></div></div>
+  </div>
+
+  <div class="lead"><h2>실측 표</h2><p>과제 3개 x 넷, 결과 JSON 의 usage · total_cost_usd · duration_ms 그대로</p></div>
+  <table>
+    <tr><th>과제</th><th>켠 것</th><th>코드 줄</th><th>출력 토큰</th><th>입력 토큰</th><th>비용</th><th>시간</th><th>왕복</th></tr>
+    <tr><td rowspan="4" class="d">①재입고 알림 폼<br>(HTML/JS)</td><td>없이</td><td class="n">419</td><td>10,310</td><td>339,731</td><td>$1.07</td><td>120초</td><td>15</td></tr>
+    <tr><td>포니테일</td><td class="n">71</td><td>2,195</td><td>129,390</td><td>$0.49</td><td>32초</td><td>5</td></tr>
+    <tr><td>케이브맨</td><td class="n">401</td><td>5,166</td><td>171,295</td><td>$0.73</td><td>54초</td><td>7</td></tr>
+    <tr><td>둘 다</td><td class="n">67</td><td>2,322</td><td>117,835</td><td>$0.57</td><td>29초</td><td>4</td></tr>
+    <tr><td rowspan="4" class="d">②블로그 제목 날짜 추출<br>(Python)</td><td>없이</td><td class="n">72</td><td>3,330</td><td>114,447</td><td>$0.48</td><td>46초</td><td>5</td></tr>
+    <tr><td>포니테일</td><td class="n">39</td><td>1,242</td><td>73,538</td><td>$0.41</td><td>20초</td><td>4</td></tr>
+    <tr><td>케이브맨</td><td class="n">80</td><td>2,314</td><td>78,239</td><td>$0.50</td><td>37초</td><td>4</td></tr>
+    <tr><td>둘 다</td><td class="n">46</td><td>3,087</td><td>123,577</td><td>$0.62</td><td>43초</td><td>6</td></tr>
+    <tr><td rowspan="4" class="d">③조회수 "1.2만" 파싱 버그 수정<br>(Python, 시드 20줄)</td><td>없이</td><td class="n">46</td><td>2,750</td><td>186,464</td><td>$0.49</td><td>40초</td><td>8</td></tr>
+    <tr><td>포니테일</td><td class="n">7</td><td>1,596</td><td>153,770</td><td>$0.45</td><td>24초</td><td>6</td></tr>
+    <tr><td>케이브맨</td><td class="n">12</td><td>1,331</td><td>132,686</td><td>$0.45</td><td>20초</td><td>5</td></tr>
+    <tr><td>둘 다</td><td class="n">7</td><td>1,320</td><td>175,681</td><td>$0.52</td><td>21초</td><td>6</td></tr>
+  </table>
+  <table>
+    <tr><th>합계</th><th>코드 줄</th><th>출력 토큰</th><th>입력 토큰</th><th>비용</th><th>시간</th></tr>
+    <tr><td>없이</td><td class="n">537</td><td>16,390</td><td>640,642</td><td>$2.04</td><td>207초</td></tr>
+    <tr><td>포니테일</td><td class="n">117 (-78%)</td><td>5,033 (-69%)</td><td>356,698 (-44%)</td><td>$1.35 (-34%)</td><td>76초 (-63%)</td></tr>
+    <tr><td>케이브맨</td><td class="n">493 (-8%)</td><td>8,811 (-46%)</td><td>382,220 (-40%)</td><td>$1.68 (-18%)</td><td>111초 (-46%)</td></tr>
+    <tr><td>둘 다</td><td class="n">120 (-78%)</td><td>6,729 (-59%)</td><td>417,093 (-35%)</td><td>$1.71 (-16%)</td><td>93초 (-55%)</td></tr>
+  </table>
+  <div class="src">코드 줄 = 만들거나 고친 파일의 줄 수 합(시드 제외). 입력 토큰 = input + cache_read + cache_creation. 비용·시간·왕복 = 결과 JSON 의 total_cost_usd · duration_ms · num_turns. 세 과제 모두 네 팔이 같은 프롬프트, 같은 빈 폴더, 같은 권한(파일 쓰기만, Bash 없음).</div>
+
+  <div class="lead"><h2>한도는 말이 아니라 읽기로 닳습니다</h2><p>그래서 말만 줄이면 비용이 별로 안 빠집니다</p></div>
+  <div class="who">
+    <p>플러그인 없이 돌린 세 과제에서 <b>출력 토큰은 16,390</b>, 입력(읽기)은 <b>640,642</b>였습니다. 출력은 전체의 <b>2.5%</b>(16,390 / 657,032). 클로드 코드는 한 번 시킬 때마다 앞 대화를 다시 읽기 때문에 왕복이 많을수록 읽기가 쌓입니다. 포니테일이 폼 과제에서 파일 3개를 1개로, <b>왕복 15번을 5번으로</b> 줄인 게 입력을 -62%(339,731 → 129,390) 끌어내렸고, 그게 비용 절감의 실체였습니다. 케이브맨은 말만 줄여서 출력 -46% 인데 비용은 -18% 에서 멈췄습니다. JetBrains 가 80쌍으로 잰 독립 테스트도 같은 결론입니다("an agent's bill is mostly reading, not writing").</p>
+  </div>
+
+  <div class="lead"><h2>품질은 유지되나</h2><p>에이전트가 못 본 숨김 테스트로 쟀습니다</p></div>
+  <table>
+    <tr><th>과제</th><th>검사</th><th>없이</th><th>포니테일</th><th>케이브맨</th><th>둘 다</th></tr>
+    <tr><td>①폼</td><td class="d">헤드리스 크로미움에서 실제 입력·클릭·제출 11항목(잘못된 URL·이메일·어제 날짜 차단, SMS 전화 칸, 서버 500·네트워크 실패 안내, 라벨·live region)</td><td class="n">11/11</td><td class="n">9/11</td><td class="n">11/11</td><td class="n">9/11</td></tr>
+    <tr><td>②날짜 추출</td><td class="d">숨김 제목 8줄(제로패딩 없음·붙여쓰기·두 날짜·13월·빈 줄·작년)</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td><td class="n">7/7</td></tr>
+    <tr><td>③조회수 파싱</td><td class="d">명세 안 4종 / 명세 밖 6종(1.2억·공백·1.15만·0·1,234회·abc 예외)</td><td class="n">4/4 · 6/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 5/6</td><td class="n">4/4 · 4/6</td></tr>
+  </table>
+  <div class="warn">
+    <h3>포니테일이 깨뜨린 것</h3>
+    <p>"SMS 체크하면 전화 칸 노출" 을 CSS 한 줄 <code>#sms:checked ~ #phone-wrap</code> 로 풀었는데, 체크박스가 label 안에 있어 형제 선택자가 닿지 않습니다. 전화 칸이 <b>영원히 안 뜨고</b>, 체크하면 전화가 필수가 되어 <b>SMS 신청 자체가 불가능</b>해집니다. 코드만 읽어서는 못 잡았고(저도 놓쳤습니다), 브라우저에서 눌러보니 나왔습니다. 본인 답변에도 "Not verified in a browser" 라고 적혀 있었습니다.</p>
+  </div>
+  <table>
+    <tr><th>폼 과제</th><th>없이</th><th>포니테일</th><th>포니테일 + 버그 알려주고 수정</th></tr>
+    <tr><td>코드</td><td>419줄</td><td>71줄</td><td>71줄</td></tr>
+    <tr><td>비용</td><td>$1.07</td><td>$0.49</td><td class="n">$0.60 (+$0.11)</td></tr>
+    <tr><td>시간</td><td>120초</td><td>32초</td><td class="n">47초 (+15초)</td></tr>
+    <tr><td>숨김 테스트</td><td>11/11</td><td>9/11</td><td class="n">11/11</td></tr>
+  </table>
+  <div class="src">같은 세션을 이어 "SMS 체크박스를 체크해도 전화번호 칸이 안 나타나요. 고쳐주세요." 한 줄. 수정은 <code>form:has(#sms:checked) #phone-wrap</code> 한 줄, 2턴.</div>
+
+  <div class="lead"><h2>설치 명령</h2><p>둘 다 무료 · MIT/BSL · 클로드 코드 플러그인</p></div>
+  <div class="box"><div class="bar"><span>포니테일 (전역 설치)</span><button class="copy" onclick="cp(this,'p1')">복사</button></div><pre id="p1">claude plugin marketplace add DietrichGebert/ponytail
+claude plugin install ponytail@ponytail</pre></div>
+  <div class="box"><div class="bar"><span>케이브맨 (전역 설치)</span><button class="copy" onclick="cp(this,'p2')">복사</button></div><pre id="p2">claude plugin marketplace add JuliusBrussee/caveman
+claude plugin install caveman@caveman</pre></div>
+  <div class="box"><div class="bar"><span>전역 설치 없이 이 세션에만 붙이기 (제가 실험에 쓴 방식)</span><button class="copy" onclick="cp(this,'p3')">복사</button></div><pre id="p3">git clone --depth 1 https://github.com/DietrichGebert/ponytail ~/plugins/ponytail
+claude --plugin-dir ~/plugins/ponytail</pre></div>
+  <div class="box"><div class="bar"><span>끄기</span><button class="copy" onclick="cp(this,'p4')">복사</button></div><pre id="p4">claude plugin disable ponytail@ponytail
+claude plugin disable caveman@caveman
+# 세션 안에서만 잠깐 끄려면: "stop ponytail" / "stop caveman"</pre></div>
+
+  <div class="lead"><h2>직접 재보는 법</h2><p>제가 돌린 러너 그대로</p></div>
+  <div class="how">
+    <h2>이렇게 했습니다</h2>
+    <ol>
+      <li>빈 폴더에 과제 프롬프트를 <code>task.txt</code> 로 둡니다(제 것: 재입고 알림 폼 · 블로그 제목 날짜 추출 · 조회수 "1.2만" 파싱 버그 수정).</li>
+      <li>아래 러너가 <b>없이 · 포니테일 · 케이브맨 · 둘 다</b> 네 폴더에서 같은 프롬프트를 <code>claude -p --output-format json</code> 으로 돌립니다. <code>--setting-sources ""</code> 로 내 CLAUDE.md·메모리를 끊어야 공정합니다.</li>
+      <li>결과 JSON 의 <code>usage</code> · <code>total_cost_usd</code> · <code>duration_ms</code> · <code>num_turns</code> 를 읽고, 코드 줄은 <code>wc -l</code>.</li>
+      <li>품질은 에이전트가 못 본 테스트로. 폼이면 브라우저에서 실제로 눌러봅니다(제 것은 playwright 11항목).</li>
+    </ol>
+  </div>
+  <div class="box"><div class="bar"><span>run_arms.sh</span><button class="copy" onclick="cp(this,'code')">복사</button></div><pre class="code" id="code">#!/bin/bash
+# usage: run_arms.sh &lt;taskdir&gt;   (needs &lt;taskdir&gt;/task.txt, optional &lt;taskdir&gt;/seed/ copied into each arm)
+set -u
+D=$(cd "$1" &amp;&amp; pwd); T=$(cat "$D/task.txt")
+PONY=$HOME/plugins/ponytail; CAVE=$HOME/plugins/caveman
+declare -A PL=( [base]="" [pony]="--plugin-dir $PONY" [cave]="--plugin-dir $CAVE" [both]="--plugin-dir $PONY --plugin-dir $CAVE" )
+for a in base pony cave both; do
+  rm -rf "$D/$a"; mkdir -p "$D/$a"; [ -d "$D/seed" ] &amp;&amp; cp -r "$D/seed/." "$D/$a/"
+  ( cd "$D/$a" &amp;&amp; claude -p --model claude-fable-5-1 --setting-sources "" --permission-mode acceptEdits ${PL[$a]} --output-format json "$T" &gt; "$D/$a.json" 2&gt; "$D/$a.err" &lt; /dev/null; echo "$a exit $?" ) &amp;
+done
+wait</pre></div>
+
+  <div class="src">출처: <a href="https://github.com/DietrichGebert/ponytail">DietrichGebert/ponytail</a>(저자 주장 코드 -54%·토큰 -22%, Haiku 4.5 12과제) · <a href="https://github.com/JuliusBrussee/caveman">JuliusBrussee/caveman</a> · JetBrains 독립 테스트 <a href="https://blog.jetbrains.com/ai/2026/07/ponytail-skill-claude-tested/">Ponytail 80쌍(중앙 코드 -15%·비용 -10.3%)</a> · <a href="https://blog.jetbrains.com/ai/2026/07/speak-to-ai-agents-like-cavemen-tosave-tokens/">Caveman 86과제</a>. 제 수치는 위 표가 전부이고 남의 수치와 섞지 않았습니다. 케이브맨의 "프록시"(입력을 줄이는 별도 제품)는 안 쟀습니다.</div>
+
+  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+function cp(b,id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1400)})}
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-plugin-test"})}).catch(()=>{});</script></body></html>
