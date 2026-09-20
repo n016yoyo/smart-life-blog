@@ -1,0 +1,248 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>관제센터 화면을 내 컴퓨터에 띄우는 법 (God's Eye View, 딱 세 줄) | AI TIGER MASK</title>
+<meta name="description" content="항공기 5,486대·선박·위성·CCTV 가 실시간으로 뜨는 오픈소스 God's Eye View 를 클로드 코드로 3분 안에 설치하는 프롬프트. 키 없이 되는 층, 숫자 센 규칙, 광화문 CCTV 7대 붙인 방법까지 그대로 드립니다.">
+<meta property="og:title" content="관제센터 화면을 내 컴퓨터에 띄우는 법 (딱 세 줄)">
+<meta property="og:description" content="설치 프롬프트·명령·링크 그대로. 키 없이 항공기 5,486대가 뜹니다.">
+<meta property="og:image" content="https://n016yoyo.github.io/smart-life-blog/gods-eye-view-install/screens.jpg">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#0f1a22,#06111a);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code,.who code,.warn code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:640px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>관제센터 화면을 내 컴퓨터에 띄우는 법<br>(God's Eye View, 딱 세 줄)</h1>
+  <div class="sub">항공기·선박·위성·CCTV 가 실시간으로 뜨는 오픈소스. 설치 프롬프트·명령·링크 그대로 드려요</div>
+  <div class="chips">
+    <span class="chip"><b>5,486대</b> 지금 공중에</span>
+    <span class="chip"><b>109대</b> 한반도 상공</span>
+    <span class="chip"><b>17대</b> 인천공항 50km</span>
+    <span class="chip"><b>38.7k</b> GitHub 별</span>
+  </div>
+</header>
+<div class="wrap">
+
+<div class="pic">
+  <img src="screens.jpg" alt="God's Eye View 실행 화면 셋: 지구본 위 항공기, 인천 상공 추적, 광화문 3D 도시와 CCTV">
+  <div class="cap">전부 제 서버에서 돌린 실캡처예요. 왼쪽부터 지구본 항공기 층, 인천공항 위 한 대 추적, 광화문 3D 도시 + CCTV 패널</div>
+</div>
+
+<div class="who">
+  <h2>이게 뭐냐면</h2>
+  <p>Bilawal Sidhu 가 만든 오픈소스 <b>God's Eye View</b> 예요. 영화 속 스파이 위성 화면처럼 생겼는데, 데이터는 전부 진짜 공개 데이터입니다. 항공기(OpenSky), 선박(AIS), 위성 궤도, 군용기, 지진, 산불, 도시 CCTV, 해저 케이블, 데이터센터 같은 층이 지구본 위에 실시간으로 올라가요.</p>
+  <p style="margin-top:8px">2026년 8월 24일 공개 영상이 올라왔고, 제가 확인한 9월 20일 기준 GitHub 별 38,648개, 포크 7,804개였어요. README 에 <b>층 15개 중 13개는 키 없이 된다</b>고 적혀 있고, 실제로 키 하나 없이 항공기 층이 떴습니다.</p>
+  <p class="note">※ 이 페이지의 숫자는 전부 <b>제 서버에서 찍은 캡처와 같은 시각에 저장한 응답 파일</b>에서 스크립트로 센 값이에요. 기간·분모는 아래 표에 적었습니다. 저는 원작자와 아무 관계가 없고, 그냥 깔아 쓴 사람입니다.</p>
+</div>
+
+<div class="lead"><h2>숫자는 이렇게 쟀어요</h2><p>2026-09-20 11:22 KST, OpenSky 익명 <code>states/all</code> 응답 한 장 기준</p></div>
+<table>
+  <tr><th>무엇</th><th>값</th><th>어떻게 셌나</th></tr>
+  <tr><td>지금 공중에 있는 항공기</td><td class="n">5,486대</td><td class="d">응답 중 위치(경위도)가 있는 6,121대 가운데 <code>on_ground=false</code> 인 것</td></tr>
+  <tr><td>한반도 상공</td><td class="n">109대</td><td class="d">위도 33~39N · 경도 124~132E 상자 안, 공중. 지상 21대는 뺌</td></tr>
+  <tr><td>인천공항 50km 안</td><td class="n">17대</td><td class="d">ICN(37.4602N, 126.4407E) 에서 하버사인 50km 이내, 공중. 지상 18대는 뺌</td></tr>
+  <tr><td>GitHub 별</td><td class="n">38.7k</td><td class="d"><code>api.github.com/repos/bilawalsidhu/gods-eye-view</code> 의 stargazers_count 38,648 (2026-09-20 01:30Z)</td></tr>
+</table>
+<p style="font-size:12.5px;color:var(--dim);margin-top:8px">OpenSky 익명 응답은 커버리지가 시각마다 달라요. 여러분이 돌리면 다른 수가 나오는 게 정상이고, 그게 "지금" 값입니다. 앱이 adsb.lol 로 대체 응답을 받을 때는 250해리 반경만 오니까 "전 세계 수"로 읽으면 안 돼요.</p>
+
+<div class="lead"><h2>클로드 코드에 이렇게 시키세요 (딱 세 줄)</h2><p>Node.js 24 이상만 있으면 됩니다. 키는 없어도 항공기 층이 떠요</p></div>
+<div class="how">
+  <ol>
+    <li>클로드 코드(Claude Code)를 아무 빈 폴더에서 엽니다.</li>
+    <li>아래 <b>프롬프트 복사</b>를 눌러 채팅창에 붙여넣습니다.</li>
+    <li>클로드가 클론하고 <code>npm ci</code> 하고 <code>npm run dev</code> 를 띄운 뒤 주소를 알려줍니다. 브라우저에서 <code>http://localhost:4173</code> 을 열면 지구가 떠요.</li>
+  </ol>
+</div>
+<div class="box">
+  <div class="bar"><span>클로드 코드 프롬프트</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p1').textContent).then(()=>{this.textContent='복사됨 ✓'})">프롬프트 복사</button></div>
+<pre id="p1">https://github.com/bilawalsidhu/gods-eye-view 를 이 폴더에 클론해서 실행해 줘.
+순서: git clone → cd gods-eye-view → Node 24 이상인지 확인(아니면 nvm 이나 fnm 으로 24 설치) → npm ci → npm run doctor → npm run dev
+키는 아직 하나도 없으니 .env 는 만들지 마. 키 없이 되는 층(항공기·위성·지진·산불 등)만 확인하면 돼.
+서버가 뜨면 내가 열 주소(http://localhost:4173)를 알려주고, 첫 화면에서 "Live Contacts" 를 고르면 된다고 안내해 줘.
+설치 중 에러가 나면 원인과 고친 내용을 한 줄씩 보고해 줘.</pre>
+</div>
+<div class="box">
+  <div class="bar"><span>터미널로 직접 할 때</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p2').textContent).then(()=>{this.textContent='복사됨 ✓'})">명령 복사</button></div>
+<pre id="p2">git clone https://github.com/bilawalsidhu/gods-eye-view.git
+cd gods-eye-view
+npm ci
+npm run doctor
+npm run dev</pre>
+</div>
+<p style="font-size:12.5px;color:var(--dim);margin-top:8px">원작 README 의 "Path 2 , Terminal / coding agent" 그대로예요. 서버는 기본으로 <code>localhost</code> 에만 붙어서 밖에서는 못 봅니다. 같은 와이파이에서 폰으로 보려면 <code>npm run dev -- --host 0.0.0.0 --port 4173</code> 로 직접 켜야 해요.</p>
+
+<div class="lead"><h2>키가 필요한 것 / 없어도 되는 것</h2><p>제가 실제로 켜 본 층 기준이에요</p></div>
+<table>
+  <tr><th>층</th><th>키</th><th>제 실측</th></tr>
+  <tr><td>항공기(OpenSky 익명 + adsb.lol)</td><td class="n">없음</td><td class="d">키 없이 바로. 편명·출발→도착 라벨은 앱이 adsbdb 로 붙여요</td></tr>
+  <tr><td>위성·지진·산불·해저 케이블·라디오</td><td class="n">없음</td><td class="d">README 기준 키 없이 됨(저는 항공기·선박·CCTV·3D 도시만 켰어요)</td></tr>
+  <tr><td>선박(AIS)</td><td class="n">AISStream 무료 가입 키</td><td class="d"><code>.env</code> 에 <code>AISSTREAM_API_KEY=</code>. 구독 상자를 한반도(32~40N, 122~132E)로 좁히면 가벼워요. 배 이름·속도까지 뜹니다</td></tr>
+  <tr><td>3D 포토리얼 도시(구글 타일)</td><td class="n">Google Maps 타일 키</td><td class="d"><code>GOOGLE_MAPS_API_KEY=</code>. 월 무료 한도 안에서 됐어요. 광화문 3D 가 이 층입니다</td></tr>
+  <tr><td>도시 CCTV</td><td class="n">없음</td><td class="d">기본은 오스틴 공개 카메라. 서울은 제가 아래처럼 직접 붙였어요</td></tr>
+</table>
+<div class="warn">
+  <h3>⚠️ 구글 타일 키는 브라우저에 노출되는 키예요</h3>
+  <p><code>.env.example</code> 에도 적혀 있어요. 발급할 때 <b>Map Tiles API 만</b> 켜고, 허용 도메인(리퍼러)을 <code>localhost</code> 로 제한하세요. 그리고 "전부 키 없이"는 아니에요. 항공기·위성은 키 없이, 선박·3D 도시는 키가 있어야 합니다.</p>
+</div>
+
+<div class="lead"><h2>광화문 CCTV 7대는 제가 붙였어요</h2><p>원작엔 없어요. 서울시 TOPIS 공개 카메라를 앱 형식으로 넣은 것</p></div>
+<div class="pic">
+  <img src="cctv7.jpg" alt="광화문·광화문광장·경복궁역·안국사거리·청계광장·종로1가·시청 CCTV 정지영상 7장">
+  <div class="cap">광화문 · 광화문광장 · 경복궁역 · 안국사거리 · 청계광장 · 종로1가 · 시청 (서울시 TOPIS, 서울경찰청 제공)</div>
+</div>
+<div class="how">
+  <h2>원리는 셋이에요</h2>
+  <ol>
+    <li><b>카메라 목록</b>: 서울시 교통정보 시스템(TOPIS) 지도 페이지가 키 없이 498대의 좌표와 HLS 주소를 줘요. 그중 광화문 주변 7대를 골랐습니다.</li>
+    <li><b>중계 서버</b>: TOPIS 영상 호스트(<code>topiscctv1.eseoul.go.kr</code>)는 인증서 체인이 빠져 있어서 브라우저가 https 를 못 열어요. 그래서 로컬에 작은 중계(아래 코드, 포트 8791)를 두고 플레이리스트 주소만 바꿔 줍니다. 재인코딩은 안 해요.</li>
+    <li><b>앱에 등록</b>: 앱의 카메라 팩 형식(<code>config/cctv_sources.*.json</code>)으로 7대를 적고, 서버를 <code>CCTV_SOURCES_FILE=config/cctv_sources.seoul.json npm run dev</code> 로 켜면 지도 위에 카메라 판이 서요.</li>
+  </ol>
+</div>
+<div class="box">
+  <div class="bar"><span>클로드 코드에 시킬 프롬프트 (CCTV 붙이기)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p3').textContent).then(()=>{this.textContent='복사됨 ✓'})">프롬프트 복사</button></div>
+<pre id="p3">gods-eye-view 에 서울 광화문 CCTV 를 붙이고 싶어. 아래 순서로 해 줘.
+1) 서울시 TOPIS 지도 페이지의 CCTV 목록(https://topis.seoul.go.kr/map/cctv/selectCctvList.do 에 빈 POST)에서 광화문·광화문광장·경복궁역·안국사거리·청계광장·종로1가·시청 7대의 id·좌표·HLS 주소를 받아 cctv_kr/gwanghwamun_info.json 으로 저장해. 개별 HLS 주소는 모바일 상세(https://m.topis.seoul.go.kr/tab3/selectCctvList.do, cctvId=) 로 받는데, 그 전에 모바일 페이지를 한 번 GET 해서 세션을 만들어야 해.
+2) 아래 hls_relay.js 를 cctv_kr/ 에 저장하고 node cctv_kr/hls_relay.js 로 띄워(포트 8791). TOPIS 호스트는 인증서 체인이 빠져 있으니 rejectUnauthorized:false 는 이 중계 안에서만 써.
+3) config/cctv_sources.seoul.json 을 아래 샘플 형식으로 7대 적어. url 은 http://127.0.0.1:8791/&lt;id&gt;.m3u8, feedType 은 "hls". 방위각(headingDeg)은 영상을 보고 추정하고 headingConfidence 는 "low" 로 둬.
+4) CCTV_SOURCES_FILE=config/cctv_sources.seoul.json npm run dev 로 다시 켜고, /api/cctv/sources 에 7대가 뜨는지 확인해서 보고해.
+출처 표기는 "서울시 TOPIS · 서울경찰청", 비상업 참고용으로만 쓴다.</pre>
+</div>
+<div class="box">
+  <div class="bar"><span>cctv_kr/hls_relay.js (그대로 저장하면 됩니다)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p4').textContent).then(()=>{this.textContent='복사됨 ✓'})">코드 복사</button></div>
+<pre id="p4" class="small">// TOPIS CCTV HLS 를 브라우저가 열 수 있게 중계한다. 인증서 체인이 빠진 호스트라 플레이리스트·세그먼트를 이 서버가 대신 받아 준다.
+// 실행: node cctv_kr/hls_relay.js  (포트 8791, 카메라 목록 gwanghwamun_info.json = [{id,name,hls,...}])
+const http = require("http"), https = require("https"), { spawn } = require("child_process");
+const CAMS = require("./gwanghwamun_info.json");
+const PORT = +(process.env.PORT || 8791), UA = "Mozilla/5.0";
+const byId = Object.fromEntries(CAMS.map((c) => [c.id, c]));
+const get = (u) => new Promise((res, rej) => {
+  const r = https.get(u, { rejectUnauthorized: false, headers: { "User-Agent": UA } }, (x) => res(x));
+  r.on("error", rej); r.setTimeout(15000, () => { r.destroy(new Error("timeout")); });
+});
+const text = (x) => new Promise((res) => { let s = ""; x.setEncoding("utf8"); x.on("data", (d) => (s += d)); x.on("end", () => res(s)); });
+const b64 = (s) => Buffer.from(s).toString("base64url"), unb64 = (s) => Buffer.from(s, "base64url").toString();
+async function playlist(cam, url) {
+  const x = await get(url); const body = await text(x);
+  const base = url.slice(0, url.lastIndexOf("/") + 1);
+  return body.split("\n").map((ln) => {
+    const t = ln.trim(); if (!t || t.startsWith("#")) return ln;
+    const abs = /^https?:/.test(t) ? t : base + t;
+    return t.endsWith(".m3u8") ? `/${cam.id}.m3u8?u=${b64(abs)}` : `/${cam.id}/seg?u=${b64(abs)}`;
+  }).join("\n");
+}
+const srv = http.createServer(async (req, res) => {
+  try {
+    const u = new URL(req.url, "http://x");
+    let m;
+    if ((m = u.pathname.match(/^\/(\d+)\.m3u8$/))) {
+      const cam = byId[m[1]]; if (!cam) return res.writeHead(404).end();
+      const src = u.searchParams.get("u") ? unb64(u.searchParams.get("u")) : cam.hls;
+      const pl = await playlist(cam, src);
+      res.writeHead(200, { "Content-Type": "application/vnd.apple.mpegurl", "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" }); return res.end(pl);
+    }
+    if ((m = u.pathname.match(/^\/(\d+)\/seg$/))) {
+      const x = await get(unb64(u.searchParams.get("u")));
+      res.writeHead(x.statusCode, { "Content-Type": "video/MP2T", "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" }); return x.pipe(res);
+    }
+    if ((m = u.pathname.match(/^\/(\d+)\.mp4$/))) {
+      const cam = byId[m[1]]; if (!cam) return res.writeHead(404).end();
+      res.writeHead(200, { "Content-Type": "video/mp4", "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" });
+      const ff = spawn("ffmpeg", ["-loglevel", "error", "-nostdin", "-live_start_index", "-3", "-i", `http://127.0.0.1:${PORT}/${cam.id}.m3u8`,
+        "-an", "-c:v", "copy", "-f", "mp4", "-movflags", "frag_keyframe+empty_moov+default_base_moof", "-frag_duration", "500000", "pipe:1"]);
+      ff.stdout.pipe(res); ff.stderr.on("data", (d) => process.stderr.write(`[ff ${cam.id}] ${d}`));
+      const kill = () => { try { ff.kill("SIGKILL"); } catch {} };
+      res.on("close", kill); ff.on("exit", () => res.end());
+      return;
+    }
+    if (u.pathname === "/") { res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" }); return res.end(CAMS.map((c) => `${c.id} ${c.name}  /${c.id}.m3u8`).join("\n") + "\n"); }
+    res.writeHead(404).end();
+  } catch (e) { console.error("relay error", req.url, e.message); try { res.writeHead(502).end(); } catch {} }
+});
+srv.listen(PORT, "127.0.0.1", () => console.log(`hls_relay 127.0.0.1:${PORT} · 카메라 ${CAMS.length}대`));</pre>
+</div>
+<div class="box">
+  <div class="bar"><span>config/cctv_sources.seoul.json 한 대 샘플</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('p5').textContent).then(()=>{this.textContent='복사됨 ✓'})">샘플 복사</button></div>
+<pre id="p5" class="small">[
+  {
+    "id": "topis-166",
+    "name": "광화문 (사직로)",
+    "city": "Seoul",
+    "provider": "서울시 TOPIS · 서울경찰청",
+    "sourceKind": "municipal-webcam",
+    "feedType": "hls",
+    "url": "http://127.0.0.1:8791/166.m3u8",
+    "lat": 37.57554,
+    "lon": 126.97847,
+    "headingDeg": 200,
+    "headingConfidence": "low",
+    "pitchDeg": -28,
+    "fovDeg": 70,
+    "rangeM": 180,
+    "mountHeightM": 12
+  }
+]</pre>
+</div>
+<div class="how">
+  <h2>알아둘 것</h2>
+  <ul>
+    <li>TOPIS 카메라는 서울시가 교통 정보용으로 공개한 거예요. <b>비상업·참고용</b>으로만 쓰고, 화면에 출처(서울시 TOPIS · 서울경찰청)를 남기세요.</li>
+    <li>중계는 <code>127.0.0.1</code> 에만 붙어요. 밖으로 열지 마세요. 인증서 검사를 끄는 건 이 중계가 TOPIS 에 붙을 때 한 곳뿐이고, 여러분 브라우저와 앱 사이는 그대로예요.</li>
+    <li>앱은 카메라 판을 지도 위에 세울 때 방위각·기울기(<code>headingDeg</code>·<code>pitchDeg</code>)를 써요. 영상을 보고 대충 맞추면 되고, 틀려도 재생은 됩니다.</li>
+    <li>다른 도시도 같은 형식이에요. 앱에 이미 오스틴·신주쿠·탈린·바렌도르프 팩이 들어 있으니 그걸 열어 보면 필드 뜻이 다 나와요.</li>
+  </ul>
+</div>
+
+<div class="src">
+  원작: Bilawal Sidhu, <a href="https://github.com/bilawalsidhu/gods-eye-view" target="_blank" rel="noopener">github.com/bilawalsidhu/gods-eye-view</a> (공개 영상 2026-08-24). 항공기 데이터: OpenSky Network 익명 API(연구·비상업). 선박: AISStream. 3D 타일: Google Maps Platform. CCTV: 서울시 TOPIS · 서울경찰청. 이 페이지의 화면은 전부 제 서버에서 2026-09-20 에 찍은 실캡처이고, 숫자는 그 캡처와 같은 시각의 응답 파일에서 센 값입니다.
+</div>
+
+<div class="cta"><a href="https://www.instagram.com/aitigermask/" target="_blank" rel="noopener">더 많은 클로드 자동화 → @aitigermask</a></div>
+<div class="foot">AI TIGER MASK · <a href="../">홈</a></div>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"gods-eye-view-install"})}).catch(()=>{});</script></body></html>
