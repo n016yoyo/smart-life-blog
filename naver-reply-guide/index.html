@@ -117,7 +117,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
     <div class="sec-label">핵심</div>
     <h2>그래서 답글을 달기 전에, 안 다는 규칙부터 정합니다</h2>
     <p><b>하나. 확인해야 아는 걸 물으면 답하지 않습니다.</b> 재고, 가격, 입금, 배송, 거래, 예약, 환불. 그리고 <b>어떤 버전이 있는지</b>도 여기 들어갑니다. 안드로이드가 있는지, 아이폰만 되는지, 언제 나오는지. 전부 내가 확인해야 아는 것들입니다. 모델은 모른다고 말하는 대신 만들어 냅니다.</p>
-    <p><b>둘. 사백 일 지난 글은 건너뜁니다.</b> 오래전에 쓴 판매글에는 아직도 "이거 구매 가능한가요?" 같은 문의가 달립니다. 몇 년 지난 글에 오늘 자동 답글이 붙는 건 그 자체로 이상하고, 그 글일수록 지금은 사실이 아닌 걸 묻습니다. 그리고 옛 글일수록 지금은 사실이 아닌 내용을 묻습니다.</p>
+    <p><b>둘. 사백 일 지난 글은 건너뜁니다.</b> 오래전에 쓴 판매글에는 아직도 "이거 구매 가능한가요?" 같은 문의가 달립니다. 몇 년 지난 글에 오늘 자동 답글이 붙는 건 그 자체로 이상하고, 옛 글일수록 지금은 사실이 아닌 내용을 묻습니다.</p>
     <p><b>셋. 공식 블로그가 붙은 업체 계정은 뺍니다.</b> 홍보 댓글에 답하면 그쪽만 노출을 가져갑니다.</p>
     <p>이렇게 거르고 나면 인사와 후기 댓글이 남습니다. <b>여기는 내가 아는 내용이라 지어낼 게 없습니다.</b></p>
   </div>
@@ -262,7 +262,7 @@ function copy(btn, id) {
 fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"naver-reply-guide"})})
   .then(function(r){return r.json();})
   .then(function(d){ if(d && typeof d.views==="number") document.getElementById("viewcount").textContent = d.views.toLocaleString(); })
-  .catch(function(){ document.getElementById('viewcount').textContent=','; });
+  .catch(function(){ document.getElementById('viewcount').textContent='-'; });
 </script>
 </body>
 </html>
