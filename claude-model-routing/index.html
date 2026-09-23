@@ -66,6 +66,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 table.tw{table-layout:fixed}
 table.tw td:first-child,table.tw th:first-child{width:70%;white-space:normal;color:var(--ink)}
 table.tw td:last-child{white-space:nowrap;font-size:13px}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 </style>
 </head>
 <body>
@@ -113,12 +114,12 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">결과 ①</div>
     <h2>셋 다 맞혔습니다. 값만 갈렸습니다</h2>
     <p>한 번에 정답을 맞힌 회차만 나란히 놓으면 이렇습니다. 구독 CLI에서 <code>--output-format json</code>으로 받은 실제 토큰·비용입니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>모델</th><th>시간</th><th>출력 토큰</th><th>비용</th></tr>
       <tr><td>Sonnet 5</td><td>136초</td><td>7,240</td><td><b>$0.61</b></td></tr>
       <tr><td>Opus 5</td><td>227초</td><td>12,724</td><td>$2.17</td></tr>
       <tr><td>Fable 5</td><td>574초</td><td>30,544</td><td style="color:var(--acc)"><b>$7.26</b></td></tr>
-    </table>
+    </table></div>
     <p>Fable이 Sonnet 대비 시간 4.2배, 출력 토큰 4.2배, 비용 <b>11.8배</b>입니다. 답은 같았습니다.</p>
     <div class="hl warn">
       <strong>왜 이게 내 문제인가.</strong> 구독제라 돈이 바로 빠져나가지는 않습니다. 대신 <b>한도가 그만큼 빨리 닳습니다.</b> 같은 답을 얻는 데 토큰을 4배 쓰면, 그날 쓸 수 있는 횟수가 4분의 1이 됩니다.
@@ -129,7 +130,7 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">결과 ②</div>
     <h2>그럼 비싼 게 더 정확한가</h2>
     <p>아니었습니다. 전체 7회 이력 전부입니다. 숨긴 회차 없습니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>#</th><th>모델</th><th>좌표</th><th>오차</th><th>판정</th></tr>
       <tr><td>1</td><td>Opus 5</td><td>(1294, 1596)</td><td>1,244px</td><td>오답(미끼)</td></tr>
       <tr><td>2</td><td>Opus 5</td><td>(1295, 1608)</td><td>1,256px</td><td>오답(미끼)</td></tr>
@@ -138,7 +139,7 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
       <tr><td>5</td><td>Sonnet 5</td><td>(1274, 358)</td><td>9px</td><td>정답</td></tr>
       <tr><td>6</td><td>Fable 5</td><td>(1277, 360)</td><td>12px</td><td>정답</td></tr>
       <tr><td>7</td><td>Opus 5</td><td>(1274, 360)</td><td>9px</td><td>정답</td></tr>
-    </table>
+    </table></div>
     <p>정답률은 <b>Sonnet 2/2 · Fable 2/2 · Opus 1/3</b>입니다.</p>
     <div class="hl">
       "Opus는 못 찾는다"는 <strong>거짓입니다.</strong> 7회차에 맞혔습니다. 정확히 말하면 <b>흔들립니다</b> , 세 번 중 한 번 맞았고 두 번은 같은 미끼에 걸렸습니다. 표본이 3회라 확정은 아닙니다. 그래서 이력을 통째로 공개합니다.
@@ -194,13 +195,13 @@ claude --model opus   --output-format json -p "&lt;프롬프트&gt;"
 claude --model fable  --output-format json -p "&lt;프롬프트&gt;"</pre>
     </div>
     <p>돌아온 JSON에서 볼 것은 이 네 개입니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>필드</th><th>뜻</th></tr>
       <tr><td>output_tokens</td><td>모델이 실제로 생각하고 쓴 양. <b>한도를 먹는 주범</b>입니다</td></tr>
       <tr><td>cache_creation_input_tokens</td><td>이번에 새로 캐시에 올린 입력</td></tr>
       <tr><td>cache_read_input_tokens</td><td>캐시에서 읽어 절약된 입력</td></tr>
       <tr><td>total_cost_usd</td><td>그 한 번의 값. 모델끼리 비교할 때 이걸 봅니다</td></tr>
-    </table>
+    </table></div>
     <div class="hl">
       <strong>공정하게 재는 요령.</strong> 시간(초)은 재현되지 않습니다 , 같은 모델 같은 프롬프트로 144초와 280초가 나왔습니다. 서버 혼잡도가 섞이기 때문입니다. <b>토큰과 비용은 훨씬 안정적</b>이니 비교는 그걸로 하세요.
     </div>

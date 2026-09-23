@@ -137,7 +137,7 @@ for(const f of fs.readdirSync(DIR).filter(f=>f.endsWith('.jsonl'))){
     const m=j.message;if(!m||!m.role)continue;const d=(j.timestamp||'').slice(0,10);
     let t='';if(typeof m.content==='string')t=m.content;else if(Array.isArray(m.content))t=m.content.filter(x=>x.type==='text').map(x=>x.text).join('\n');
     if(!t)continue;
-    if(m.role==='user'){if(/<system-reminder>|<command-|tool_result|<local-command|<task-notification|Only you see that|The user hasn't heard|Environment update|Base directory for this skill|Tool loaded|Your questions have been answered|Attribution for git|Request interrupted|<persisted-output>|\[Image|Caveat:/.test(t)||t.length>2000||t.trim().length<2)continue;
+    if(m.role==='user'){if(/&lt;system-reminder>|&lt;command-|tool_result|&lt;local-command|&lt;task-notification|Only you see that|The user hasn't heard|Environment update|Base directory for this skill|Tool loaded|Your questions have been answered|Attribution for git|Request interrupted|&lt;persisted-output>|\[Image|Caveat:/.test(t)||t.length>2000||t.trim().length&lt;2)continue;
       c.uMsg++;days.add(d);sessions.add(f);if(R.corr.test(t)){c.uCorr++;perDay[d]=(perDay[d]||0)+1}}
     else if(m.role==='assistant'){c.aMsg++;if(R.right.test(t))c.aRight++;if(R.rightLit.test(t))c.aRightLit++;if(R.sorry.test(t))c.aSorry++;if(R.repeat.test(t))c.aRepeat++;if(R.notv.test(t))c.aNotv++}
   }
