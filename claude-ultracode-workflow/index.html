@@ -28,7 +28,7 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.code{white-space:pre;max-height:420px;font-size:11.5px}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
-th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 th{background:#efe7db;font-size:12.5px;color:#5c554a}
 td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
 td.d{font-size:12.5px;color:#5c554a}
@@ -49,6 +49,7 @@ td.d{font-size:12.5px;color:#5c554a}
 .quote .en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#5c554a;margin-top:8px}
 .src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
 .src a{color:#7a4a36}
+.src code{overflow-wrap:anywhere}
 .foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
 .foot a{color:var(--dim)}
 </style>
@@ -64,7 +65,7 @@ td.d{font-size:12.5px;color:#5c554a}
   <div class="who">
     <h2>어디서 시작된 얘기냐면</h2>
     <p>클로드 코드에 <b>워크플로</b>가 생겼습니다. 시킬 말 앞에 <code>ultracode</code> 한 단어를 붙이면 클로드가 일을 조각으로 나눠 에이전트(클로드 분신) 여러 개를 동시에 돌리고, 결과를 한 장으로 합칩니다. 남의 데모 말고 제 것으로 재보고 싶어서, 제가 두 달 동안 만든 릴스 엔진 코드 3,290줄을 검사시켰습니다.</p>
-    <p class="note">※ 아래 숫자는 2026년 9월 18일 제 Claude Max 계정의 클로드 코드(v2.1.266, Opus 5)에서 실제로 한 번 돌린 값입니다. 에이전트 시각은 워크플로 리포트의 표, 벽시계는 첫 에이전트 시작부터 병합 끝까지입니다.</p>
+    <p class="note">※ 아래 숫자는 2026년 9월 18일 제 Claude Max 계정의 클로드 코드(v2.1.266, Opus 5)에서 실제로 한 번 돌린 값입니다. 에이전트 시간은 워크플로 리포트의 표, 벽시계는 첫 에이전트 시작부터 병합 끝까지입니다.</p>
   </div>
 
   <div class="lead"><h2>실측 결과</h2><p>워크플로 한 번, 문장 하나</p></div>
@@ -126,7 +127,7 @@ td.d{font-size:12.5px;color:#5c554a}
   </div>
 
   <div class="src">숫자 출처: 워크플로 리포트 <code>docs/_engine/ENGINE_CODE_REVIEW_2026-09-18.md</code>(에이전트 표·후보), 세션 화면 캡처(SHOOT_LOG, 한도 %), <code>docs/reel_ultracode/evidence/counts.md</code>. 공식 문서: <a href="https://code.claude.com/docs/en/workflows" target="_blank" rel="noopener">Claude Code Docs · Workflows</a>.</div>
-  <div class="foot"><a href="/">AI TIGER MASK 홈</a></div>
+  <div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
 </div>
 <script>
 function cp(b,id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>{b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='프롬프트 복사',1600)})}
