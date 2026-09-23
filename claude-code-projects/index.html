@@ -1,0 +1,110 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 코드 프로젝트, 켜자마자 바꿀 설정 두 개 | AI TIGER MASK</title>
+<meta name="description" content="클로드 코드 Projects 베타(2026-09-17)를 제 계정에서 직접 돌렸습니다. 블로그 가이드 78편 점검을 맡기고 한 줄 보냈더니 4묶음으로 나뉘어 14분 46초에 PR 4개. 브라우저를 닫은 동안에도 2개가 올라왔습니다. 켜자마자 바꿀 기본값 두 개를 정리했습니다.">
+<meta property="og:title" content="클로드 코드 프로젝트, 켜자마자 바꿀 설정 두 개">
+<meta property="og:description" content="브라우저를 닫아도 스레드는 계속 돌았습니다. 기본값 두 개부터 보세요.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:520px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a;white-space:nowrap}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.box{margin:14px 0 0;background:#1a1610;border-radius:14px;overflow:hidden}
+.box .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#2a221d;color:#c9c3b8;font-size:12px}
+.box pre{color:#f2ede3;font-size:12.5px;line-height:1.55;padding:14px;overflow-x:auto;white-space:pre}
+.copy{background:var(--o);color:#fff;border:0;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}
+.dl{margin:14px 0 0;text-align:center}
+.dl a{display:inline-block;background:#1a1610;color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:12px 22px;border-radius:12px}
+.dl p{font-size:12.5px;color:var(--dim);margin-top:8px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+code{background:#efe7db;border-radius:5px;padding:1px 5px;font-size:12.5px}
+</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>클로드 코드 프로젝트,<br>켜자마자 바꿀 설정 두 개</h1>
+<div class="sub">2026년 9월 23일 제 계정(Claude Max 5x)에서 직접 돌린 기록 · 시각은 한국 시간</div>
+<div class="chips"><span class="chip">보낸 뒤 <b>14분 46초</b>에 4묶음 끝</span><span class="chip">PR <b>4개</b></span><span class="chip">브라우저 닫힌 동안 <b>2개</b></span></div>
+</header>
+<div class="wrap">
+
+<div class="who"><h2>한 줄 요약</h2>
+<p>클로드 코드에 새로 생긴 <b>Projects</b>(2026년 9월 17일 베타)에 제 블로그 가이드 78편 점검을 맡겼습니다. "나눠서 동시에 돌려줘" 한 줄을 보내자 코디네이터가 <b>4묶음</b>으로 나눠 스레드를 띄웠고, 제가 20:17:17 에 브라우저를 닫은 뒤에도 두 묶음이 더 끝나 <b>PR 4개</b>가 올라와 있었습니다.</p>
+<p class="note">PR(풀 리퀘스트)은 "이렇게 고쳤으니 확인하고 반영해 달라"는 요청 묶음입니다. 제가 병합하기 전까지 블로그에는 반영되지 않습니다.</p></div>
+
+<div class="lead"><h2>켜자마자 바꿀 설정 두 개</h2><p>Project settings(프로젝트 화면 오른쪽 위 톱니바퀴) &gt; General</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>Thread effort , 기본값 High</h3>
+<p>새 프로젝트는 스레드마다 <b>Opus · High</b> 로 돕니다. 공식 문서 원문: "A new project runs every thread on Opus at high effort, which draws on your plan fastest". 링크 확인·오타 같은 가벼운 일이면 <b>Thread effort</b> 를 낮추고, 무거운 일만 High 로 두세요.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>Auto-continue when usage limits reset , 기본 켜짐</h3>
+<p>한도에 닿은 스레드는 기다렸다가 <b>한도가 리셋되면 알아서 이어서</b> 돕니다. 공식 문서 원문: "work you left running starts using your next usage window without a message from you". 다음 한도 창까지 쓰기 싫으면 이 스위치를 끄세요.</p></div></div>
+</div>
+<div class="who"><h2>하나 더 , 코디네이터에게 이렇게 말해 두기</h2>
+<p>"스레드는 시작 전에 먼저 제안하고, 한 번에 몇 개씩만 돌려줘." 공식 문서도 처음엔 이렇게 시키고, 결과가 원하는 대로 나오면 풀라고 적어 둡니다. 단 이건 설정이 아니라 부탁이라 강제 상한은 아닙니다(강제 상한은 하루 새 스레드 200개).</p></div>
+
+<div class="lead"><h2>제가 보낸 것, 그대로</h2><p>프로젝트 만들 때 적은 목표와, 만든 뒤 보낸 한 줄</p></div>
+<pre class="req">이름: 가이드 78편 점검
+목표: smart-life-blog 가이드 78편에서 깨진 링크, 오타, 폰에서 넘치는 화면을 전부 찾아 고친다
+저장소: n016yoyo/smart-life-blog
+
+보낸 한 줄: 78편을 나눠서 스레드 여러 개로 동시에 돌려줘. 고친 건 스레드마다 PR로 올리고, 합치지는 마.</pre>
+
+<div class="lead"><h2>시간 순서(한국 시간)</h2><p>PR 시각은 GitHub 기록(created_at), 나머지는 제 녹화 기록</p></div>
+<div class="tw"><table><tr><th>시각</th><th>일어난 일</th></tr>
+<tr><td class="n">20:07:13</td><td>프로젝트 만듦 , 목표만 보고 코디네이터가 전체 점검 스레드 1개를 먼저 띄움</td></tr>
+<tr><td class="n">20:08:02</td><td>"나눠서 동시에 돌려줘" 한 줄 보냄 → "78편을 파일명 순으로 네 묶음으로 나눠 동시에 돌릴게요"</td></tr>
+<tr><td class="n">20:16:17</td><td>PR #1 (1~20편)</td></tr>
+<tr><td class="n">20:16:21</td><td>PR #2 (41~60편)</td></tr>
+<tr><td class="n">20:17:17</td><td><b>브라우저 닫음</b></td></tr>
+<tr><td class="n">20:20:55</td><td>PR #3 (61~78편) , 닫고 3분 38초 뒤</td></tr>
+<tr><td class="n">20:22:48</td><td>PR #4 (21~40편) , 닫고 5분 31초 뒤 · 보낸 뒤 14분 46초</td></tr>
+<tr><td class="n">20:35:15</td><td>다시 엶 → "Welcome back" · Ready for review 4</td></tr></table></div>
+
+<div class="lead"><h2>숫자, 세는 법까지</h2></div>
+<div class="tw"><table><tr><th>무엇</th><th>값</th><th>어떻게 셌나</th></tr>
+<tr><td>PR</td><td class="n">4개</td><td class="d">GitHub 에서 이 시각 뒤 생성된 PR, 전부 열린 채(병합 안 함)</td></tr>
+<tr><td>고친 파일</td><td class="n">40개</td><td class="d">PR 4개의 바뀐 파일 합은 41개, 두 PR 이 같은 파일을 하나 겹쳐 고쳐서 한 번만 셈</td></tr>
+<tr><td>코드 변경</td><td class="n">+142 −124</td><td class="d">Project settings &gt; Usage 의 Code changes = PR 4개 합(77+18+31+16 · 69+13+27+15)</td></tr>
+<tr><td>프로젝트 토큰</td><td class="n">4,650만</td><td class="d">같은 화면 Tokens 46.5M. 그중 캐시 읽기가 44.5M(캐시 적중 96%)</td></tr></table></div>
+<p class="note" style="font-size:12.5px;color:var(--dim);margin-top:8px">사용량 %는 적지 않았습니다. 같은 계정으로 제 다른 작업도 돌았고, 화면에 "처음 $25 까지는 한도에 안 들어간다(Up to $25 of initial usage, including the automatic setup, won't count towards your usage limits.)"는 안내가 떠 있었습니다.</p>
+
+<div class="warn"><h3>막혔던 것 둘</h3>
+<p>① 외부 링크를 열어 보려던 스레드 3개가 "WebFetch 허락"을 기다리며 멈췄습니다. 거절하고 "외부 주소는 열지 말고 PR 설명에 목록만 적어줘" 한 줄로 풀었습니다.<br>
+② 1~20편 묶음과 21~40편 묶음이 경계 파일(claude-opus5-guide) 하나를 둘 다 고쳤습니다. 병합할 때 충돌이 날 수 있으니 PR 은 하나씩 확인하고 합치세요.</p></div>
+
+<div class="who"><h2>내 계정에 있나 확인</h2>
+<p><b>claude.ai/code</b> 또는 데스크톱 앱 Code 탭 왼쪽 사이드바에 <b>Projects</b>(New)가 보이면 열린 겁니다. 공식 안내로는 Pro·Max 중 클라우드 세션을 써 봤고 claude.ai 채팅·Cowork 에 기존 프로젝트가 없는 계정부터 열리고, 안 보이면 <a href="https://claude.com/form/projects">대기자 명단</a>에 신청할 수 있습니다. 터미널 CLI 에서는 안 됩니다.</p></div>
+
+<div class="src">출처: <a href="https://code.claude.com/docs/en/claude-projects">code.claude.com/docs/en/claude-projects</a> · <a href="https://claude.com/blog/projects-redesigned">claude.com/blog/projects-redesigned</a>(2026-09-17) · 실행 기록: 제 claude.ai 프로젝트 「가이드 78편 점검」 녹화, GitHub n016yoyo/smart-life-blog PR #1~#4</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div><script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-code-projects"})}).catch(()=>{});</script></body></html>
