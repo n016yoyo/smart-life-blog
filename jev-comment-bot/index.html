@@ -3,7 +3,7 @@
 <title>제브(Jev)로 댓글 문지기 만들기 | AI TIGER MASK</title>
 <meta name="description" content="말을 안 하는 AI 제브(Jev, TypeSafe)에 제 인스타 댓글 14건을 넣어 14/14 맞힌 기록, 그리고 키워드 밖 댓글에 답글을 고르는 문지기를 붙인 방법. 공식 가격·OpenRouter 호출 예제·답글 뱅크 그대로.">
 <meta property="og:title" content="제브(Jev)로 댓글 문지기 만들기">
-<meta property="og:description" content="출력이 공짜인 AI. 문장 대신 답만 찍습니다. 제 댓글 14건 14/14, $0.00028.">
+<meta property="og:description" content="출력이 공짜인 AI. 문장 대신 답만 찍습니다. 제 댓글 14건 14/14, $0.00029.">
 <style>
 :root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
 *{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
@@ -54,18 +54,22 @@ td.d{font-size:12.5px;color:#5c554a;white-space:normal}
 .src a{color:#7a4a36}
 .foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
 .foot a{color:var(--dim)}
+.box{margin:14px 0 0;background:#1a1610;border-radius:14px;overflow:hidden}
+.box .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#2a221d;color:#c9c3b8;font-size:12px}
+.box pre{color:#f2ede3;font-size:12.5px;line-height:1.55;padding:14px;overflow-x:auto;white-space:pre}
+.copy{background:var(--o);color:#fff;border:0;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}
 </style>
 <style>.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}.pair div{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:12px}.pair .k{font-size:12px;color:var(--dim)}.bank{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px 16px;font-size:13.5px}.bank div{padding:6px 0;border-bottom:1px dashed #e0d9cc}.bank b{color:var(--o);font-size:12.5px;margin-right:6px}</style>
 </head><body>
 <header><div class="b">AI TIGER MASK</div>
 <h1>제브(Jev)로 댓글 문지기 만들기</h1>
 <div class="sub">TypeSafe AI · 2026년 9월 15일 공개 · 제 인스타 댓글로 직접 재봤습니다</div>
-<div class="chips"><span class="chip">댓글 14건 <b>14/14</b></span><span class="chip">평균 <b>0.3초</b></span><span class="chip">총 <b>$0.00028</b></span><span class="chip">출력 <b>무료</b></span></div>
+<div class="chips"><span class="chip">댓글 14건 <b>14/14</b></span><span class="chip">평균 <b>0.3초</b></span><span class="chip">총 <b>$0.00029</b></span><span class="chip">출력 <b>무료</b></span></div>
 </header>
 <div class="wrap">
 
 <div class="who"><h2>영상 뒤에 남은 답</h2>
-<p><b>제브(Jev)는 문장을 못 만듭니다.</b> 텍스트와 "질문"을 주면 답만 돌려줘요: 이거냐 저거냐(choice), 몇 단계냐(score), 예냐 아니오냐(noul). 그 답에 확률이 붙어 나옵니다. 그래서 LLM 을 대신하는 게 아니라 <b>LLM 앞에 세우는 문지기</b>로 씁니다.</p>
+<p><b>제브(Jev)는 문장을 못 만듭니다.</b> 텍스트와 "질문"을 주면 답만 돌려줘요: 이거냐 저거냐(choice), 몇 단계냐(score), 예냐 아니요냐(noul). 그 답에 확률이 붙어 나옵니다. 그래서 LLM 을 대신하는 게 아니라 <b>LLM 앞에 세우는 문지기</b>로 씁니다.</p>
 <p class="note">공식 문서(docs.typesafe.ai)는 한국어(CJK) 정확도가 낮다고 적어 두었습니다. 그래서 제 댓글로 먼저 쟀습니다.</p></div>
 
 <div class="lead"><h2>공식 수치</h2><p>docs.typesafe.ai/models · 2026-09-19 확인</p></div>
