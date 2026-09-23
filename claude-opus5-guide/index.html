@@ -66,6 +66,7 @@ code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-siz
 table.tw{table-layout:fixed}
 table.tw td:first-child,table.tw th:first-child{width:70%;white-space:normal;color:var(--ink)}
 table.tw td:last-child{white-space:nowrap;font-size:13px}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media(max-width:420px){td:first-child{white-space:normal}th,td{padding:8px 9px}}
 </style>
 </head>
@@ -98,13 +99,13 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">WHY</div>
     <h2>왜 나만 더 답답할까</h2>
     <p>출시 당일 반응이 정확히 두 쪽으로 갈렸습니다. 저희가 직접 세어본 수치입니다.</p>
-    <table class="tw">
+    <div class="tscroll"><table class="tw">
       <tr><th>레딧 스레드</th><th>반응</th></tr>
       <tr><td>Introducing Claude Opus 5</td><td>추천 1.3k<br>댓글 352</td></tr>
       <tr><td>Opus 5 results are really shocking!!</td><td>추천 319<br>댓글 119</td></tr>
       <tr><td><b>Opus 5 , immediate disappointment</b></td><td>추천 215<br>댓글 150</td></tr>
       <tr><td>Does anyone else feel like Opus 5 has been nerfed?</td><td>출시 <b>5시간</b><br>만에 등장</td></tr>
-    </table>
+    </table></div>
     <div class="hl">
       <strong>원인은 모델이 아닙니다.</strong> Anthropic이 Claude Code 시스템 프롬프트의 <b>80% 이상을 삭제</b>했는데 "코딩 평가에서 측정 가능한 성능 손실이 없었다"고 공식 발표했습니다. 모델이 알아서 하는 부분이 커졌는데, <b>내 설정 파일에 남아 있는 옛 규칙이 발목을 잡는 것</b>입니다.
     </div>
@@ -115,14 +116,14 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">DELETE</div>
     <h2>이제 지워도 되는 옛 규칙 5가지</h2>
     <p>공식 문서가 "더 이상 필요 없다"고 명시한 항목들입니다. 설정 파일에 있으면 오히려 성능을 깎습니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>지울 것</th><th>왜</th></tr>
       <tr><td><b>주석 제약</b></td><td>"주석 쓰지 마라", "여러 줄 docstring 금지" 같은 명시적 금지</td></tr>
       <tr><td><b>사용 예시</b></td><td>새 모델은 예시에 <b>제약당합니다</b>. 도움이 안 됩니다</td></tr>
       <tr><td><b>정보 사전 로딩</b></td><td>필요할 때 알아서 읽습니다(progressive disclosure)</td></tr>
       <tr><td><b>반복 지시</b></td><td>시스템 프롬프트·도구 설명에 이미 있는 내용의 중복</td></tr>
       <tr><td><b>수동 메모리 관리</b></td><td>관련성 기반 자동 메모리로 대체됨</td></tr>
-    </table>
+    </table></div>
     <div class="hl warn">
       <strong>그렇다고 다 지우면 안 됩니다.</strong> 아래 "지우면 안 되는 것"을 꼭 같이 보세요. 이걸 안 보고 밀면 이번엔 다른 게 무너집니다.
     </div>
@@ -166,13 +167,13 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="hl ok">
       <strong>코드가 자동으로 막아주는 규칙은 문서에서 빼고, 코드가 구조적으로 못 잡는 것만 남긴다.</strong>
     </div>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>남길 것</th><th>예</th></tr>
       <tr><td>취향·브랜드 일관성</td><td>"이 톤은 쓰지 않는다", "이 스타일로 고정"</td></tr>
       <tr><td>이 프로젝트만의 함정</td><td>"이 API는 이렇게 부르면 조용히 실패한다"</td></tr>
       <tr><td>사실 정확성 규칙</td><td>"숫자는 원본에서 확인하고 쓴다"</td></tr>
       <tr><td>작업 순서</td><td>"A를 끝내기 전에 B로 넘어가지 않는다"</td></tr>
-    </table>
+    </table></div>
     <p>반대로 <b>테스트·린터·검증 스크립트가 이미 막아주는 규칙</b>은 문서에서 빼도 됩니다. 어차피 어기면 코드가 거부하고, 그 메시지에 이유와 수정법이 다 들어 있습니다.</p>
   </div>
 
@@ -180,23 +181,23 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">SPEC</div>
     <h2>스펙·벤치 정리표</h2>
     <p>전부 공식 발표문 기준입니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th></th><th>Opus 5</th><th>Opus 4.8</th><th>Sonnet 5</th></tr>
       <tr><td>가격(입력/출력)</td><td><b>$5 / $25</b></td><td>$5 / $25</td><td>$3 / $15</td></tr>
       <tr><td>컨텍스트</td><td>1M</td><td>1M</td><td>1M</td></tr>
       <tr><td>최대 출력</td><td>128k</td><td>128k</td><td>128k</td></tr>
       <tr><td><b>지식 컷오프</b></td><td><b>2026년 5월</b></td><td>2026년 1월</td><td>2026년 1월</td></tr>
       <tr><td>Adaptive thinking</td><td>기본 <b>ON</b></td><td>Yes</td><td>Yes</td></tr>
-    </table>
+    </table></div>
     <h3>벤치마크</h3>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>항목</th><th>결과</th></tr>
       <tr><td>Frontier-Bench v0.1</td><td>전 모델 1위, <b>Opus 4.8의 2배 이상</b>이면서 작업당 비용은 더 낮음</td></tr>
       <tr><td>ARC-AGI 3</td><td>차순위 모델의 <b>3배</b></td></tr>
       <tr><td>OSWorld 2.0 (컴퓨터 조작)</td><td>Fable 5 최고 기록 상회, 비용 <b>약 1/3</b></td></tr>
       <tr><td>Zapier AutomationBench</td><td>같은 비용에서 통과율 차순위의 <b>약 1.5배</b></td></tr>
       <tr><td>CursorBench 3.2</td><td>max effort로 Fable 5 최고점의 0.5% 이내, 비용은 <b>절반</b></td></tr>
-    </table>
+    </table></div>
     <div class="hl">가격이 Opus 4.8과 <strong>똑같습니다.</strong> 이게 이번 출시의 핵심입니다.</div>
   </div>
 
@@ -204,12 +205,12 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">EFFORT</div>
     <h2>effort는 어디에 둘까</h2>
     <p>공식 가이드 기준입니다. 코딩·에이전트 작업이면 <code>xhigh</code>가 권장 시작점입니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>상황</th><th>권장</th></tr>
       <tr><td>코딩·에이전트 작업</td><td><b>xhigh</b> (권장 시작점)</td></tr>
       <tr><td>가장 어려운 문제</td><td>max</td></tr>
       <tr><td>단순·반복 작업</td><td>low ~ medium</td></tr>
-    </table>
+    </table></div>
     <div class="hl warn">
       <strong>한 가지 주의.</strong> effort를 낮춰도 <b>응답 길이는 안 줄어듭니다.</b> 줄어드는 건 생각하는 양입니다. 답변이 길어서 불편하면 effort가 아니라 "짧게 답해달라"고 직접 말해야 합니다.
     </div>
@@ -219,13 +220,13 @@ table.tw td:last-child{white-space:nowrap;font-size:13px}
     <div class="sec-label">CASE</div>
     <h2>우리는 뭘 바꿨고, 얼마나 줄었나</h2>
     <p>말로만 하면 믿기 어려우니 저희 실측치를 공개합니다.</p>
-    <table>
+    <div class="tscroll"><table>
       <tr><th>바꾼 것</th><th>결과</th></tr>
       <tr><td>CLAUDE.md 다이어트</td><td>12,962B → 9,245B (<b>-30%</b>). 검증 스크립트가 이미 막아주는 12건을 짧은 포인터로 축약, 코드가 못 잡는 14건은 전부 유지</td></tr>
       <tr><td>안 쓰는 플러그인 비활성화</td><td>스킬 목록 9,048 → <b>2,245 토큰</b>. 사용 이력 0회인 9개 팩</td></tr>
       <tr><td>effort 재보정</td><td>xhigh로 고정</td></tr>
       <tr><td>응답 길이 지침 추가</td><td>"기본 응답이 길고 effort로 안 줄어드니 의식적으로 짧게"</td></tr>
-    </table>
+    </table></div>
     <div class="hl ok">
       핵심은 <strong>"뭘 지웠나"가 아니라 "왜 남겼나"</strong>입니다. 지운 12건은 전부 <b>어기면 코드가 거부하는</b> 규칙이었고, 남긴 14건은 <b>코드가 구조적으로 못 잡는</b> 것들이었습니다.
     </div>
