@@ -28,6 +28,7 @@ header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
 pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
 pre.code{white-space:pre;max-height:420px;font-size:11.5px}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
 th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
 th{background:#efe7db;font-size:12.5px;color:#5c554a}
 td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -38,6 +39,7 @@ td.d{font-size:12.5px;color:#5c554a}
 .rule h3{font-size:15.5px;margin-bottom:3px}
 .rule p{font-size:13.5px;color:#4b473f}
 .rule code,.how code,.who code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.src code{overflow-wrap:anywhere}
 .warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
 .warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
 .warn p{font-size:13.5px;color:#5c4b47}
@@ -71,7 +73,7 @@ td.d{font-size:12.5px;color:#5c554a}
     <h2>실측 결과</h2>
     <p>「고화질 판 있음」 = 서버에 VP9 1080p 60fps 판이 있는 편, 「기본본만」 = H.264 720p 30fps 판만 있는 편</p>
   </div>
-  <table>
+  <div class="tw"><table>
     <tr><th>무엇</th><th>값</th><th>어떻게 셌나</th></tr>
     <tr><td>조사 편수</td><td class="n">54편</td><td class="d">계정 릴스 55편 중 비공개 1편 제외</td></tr>
     <tr><td>고화질 판 있음 / 기본본만</td><td class="n">27편 / 27편</td><td class="d">서빙 포맷 목록에 vp09 가 하나라도 있으면 있음, avc1 뿐이면 기본본만</td></tr>
@@ -83,7 +85,7 @@ td.d{font-size:12.5px;color:#5c554a}
     <tr><td>내가 올린 파일</td><td class="n">66편 전부 같음</td><td class="d">완성본 mp4 66편 ffprobe, 전부 1080x1920 60fps H.264</td></tr>
     <tr><td>정해지는 시점</td><td class="n">게시 13시간 뒤엔 이미</td><td class="d">18:00 게시 편을 다음 날 07:22 에 읽으니 고화질 판 있음. 그날 밤에 붙는지는 못 쟀다</td></tr>
     <tr><td>조회가 쌓여도</td><td class="n">1,363회 · 34일째 기본본</td><td class="d">8월 13일 편. 반대로 182회 편이 고화질 판 있는 경우도 있음</td></tr>
-  </table>
+  </table></div>
 
   <div class="warn">
     <h3>⚠️ 진짜 문제는 화질이 아니라 배포</h3>
