@@ -1,0 +1,103 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Opus 5.5 vs Fable 5.1, 같은 테트리스 요청 한 번씩 | AI TIGER MASK</title>
+<meta name="description" content="Claude Opus 5.5 가 나온 날, 같은 테트리스 요청을 Opus 5.5 와 Fable 5.1 에 Claude Code 로 한 번씩 시켰습니다. 둘 다 한 번에 완성, 비용 $0.7409 대 $1.9283, 시간 51.5초 대 63.0초. 요청문 그대로와 공식 발표에서 챙길 것 셋.">
+<meta property="og:title" content="Opus 5.5 vs Fable 5.1, 같은 테트리스 요청 한 번씩">
+<meta property="og:description" content="같은 요청 두 줄, 각 1회. 요청문 그대로 드립니다.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:520px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a;white-space:nowrap}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.box{margin:14px 0 0;background:#1a1610;border-radius:14px;overflow:hidden}
+.box .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#2a221d;color:#c9c3b8;font-size:12px}
+.box pre{color:#f2ede3;font-size:12.5px;line-height:1.55;padding:14px;overflow-x:auto;white-space:pre}
+.copy{background:var(--o);color:#fff;border:0;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer}
+.dl{margin:14px 0 0;text-align:center}
+.dl a{display:inline-block;background:#1a1610;color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:12px 22px;border-radius:12px}
+.dl p{font-size:12.5px;color:var(--dim);margin-top:8px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+code{background:#efe7db;border-radius:5px;padding:1px 5px;font-size:12.5px}
+</style>
+<style>pre.req{white-space:pre-wrap;background:#1a1610;color:#f4efe6;border-radius:14px;padding:16px 16px;font-size:14.5px;line-height:1.6;margin-top:12px}
+.play{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}.play a{flex:1;min-width:150px;text-align:center;font-weight:800;padding:12px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.1);color:var(--ink);text-decoration:none}.play a.o{border-color:var(--o);color:var(--o)}</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>Opus 5.5 vs Fable 5.1,<br>같은 테트리스 요청 한 번씩</h1>
+<div class="sub">2026년 9월 23일 제 Claude Code(v2.1.280)로 직접 돌렸습니다 · 각 모델 기본 effort · 각 1회</div>
+<div class="chips"><span class="chip">비용 <b>$0.7409</b> 대 <b>$1.9283</b></span><span class="chip">시간 <b>51.5초</b> 대 <b>63.0초</b></span><span class="chip">둘 다 <b>한 번에 완성</b></span></div>
+</header>
+<div class="wrap">
+
+<div class="who"><h2>한 줄 요약</h2>
+<p>Opus 5.5 가 나온 날(2026년 9월 22일 발표), <b>같은 요청 두 줄</b>을 Opus 5.5 와 Fable 5.1 에 한 번씩 시켰습니다. 둘 다 한 번에 돌아가는 테트리스를 만들었고, Claude Code 가 찍어 준 비용은 <b>Fable 이 2.60배</b>(1.9283 ÷ 0.7409), 시간은 Opus 가 11.5초 빨랐습니다.</p>
+<p class="note">한 번씩 돌린 결과라 다시 돌리면 차이는 달라질 수 있습니다. 비용은 Claude Code 결과 줄의 <code>total_cost_usd</code>(API 정가 환산)이고, 구독 요금제 청구액이 아닙니다. 한도가 몇 배 덜 닳는지는 재지 않았습니다.</p></div>
+
+<div class="lead"><h2>요청문, 그대로</h2><p>두 모델에 똑같이 넣은 파일(request.txt)</p></div>
+<pre class="req">index.html 파일 하나로, 브라우저에서 바로 할 수 있는 테트리스 게임을 만들어줘.
+점수, 다음 블록 미리보기, 키보드 조작, 게임오버 화면까지 넣어줘.</pre>
+
+<div class="lead"><h2>결과</h2><p>각 폴더 stream.jsonl 의 마지막 result 줄 그대로</p></div>
+<div class="tw"><table><tr><th>모델</th><th>비용(정가 환산)</th><th>시간</th><th>출력 토큰</th><th>턴</th></tr>
+<tr><td>Opus 5.5</td><td class="n">$0.7409</td><td class="n">51,503ms</td><td class="n">7,068</td><td class="n">2</td></tr>
+<tr><td>Fable 5.1</td><td class="n">$1.9283</td><td class="n">63,019ms</td><td class="n">6,254</td><td class="n">2</td></tr></table></div>
+
+<div class="lead"><h2>만든 게임, 직접 해보기</h2><p>모델이 만든 index.html 을 한 글자도 안 고치고 올렸습니다. 방향키 · 스페이스(하드 드롭) · Enter</p></div>
+<div class="play"><a class="o" href="opus55.html">Opus 5.5 가 만든 테트리스</a><a href="fable51.html">Fable 5.1 이 만든 테트리스</a></div>
+
+<div class="lead"><h2>돌린 명령</h2><p>저장소 밖 빈 폴더에서, 설정·플러그인 빼고 모델만 바꿔서</p></div>
+<pre class="req">#!/bin/bash
+# 같은 요청 파일을 모델만 바꿔 claude -p 로 한 번씩. 설정·플러그인 제외(--setting-sources &quot;&quot;), 기본 effort.
+# 사용: run.sh &lt;폴더&gt; &lt;모델&gt;
+cd &quot;$1&quot;
+S=$(date +%s.%N)
+claude -p --model &quot;$2&quot; --setting-sources &quot;&quot; --tools &quot;Read,Write,Edit&quot; --permission-mode acceptEdits \
+  --output-format stream-json --verbose &quot;$(cat request.txt)&quot; &gt; stream.jsonl 2&gt; stderr.txt
+echo &quot;wall $(python3 -c &quot;print(round($(date +%s.%N)-$S,1))&quot;)&quot; &gt; wall.txt</pre>
+
+<div class="lead"><h2>공식 발표에서 챙길 것 셋</h2><p>anthropic.com/claude-opus-5-5 · claude.com/pricing</p></div>
+<div class="who"><h2>하나, 실력 , 공식 성능표 9항목 전부 Opus 5.5 가 위</h2>
+<div class="tw"><table><tr><th>항목</th><th>Opus 5.5</th><th>Fable 5.1</th></tr><tr><td>Agentic coding · Terminal-Bench 4.0</td><td class="n">66.4%</td><td class="n">55.8%</td></tr><tr><td>Agentic coding · FrontierCode v1.1</td><td class="n">54.4%</td><td class="n">50.3%</td></tr><tr><td>Agentic coding · CursorBench 4.0</td><td class="n">57.8%</td><td class="n">51.8%</td></tr><tr><td>Knowledge work · GDPval-AA v2.1</td><td class="n">1846</td><td class="n">1735</td></tr><tr><td>Business workflows · AutomationBench</td><td class="n">40.0%</td><td class="n">31.4%</td></tr><tr><td>Multidisciplinary reasoning · Humanity&#x27;s Last Exam</td><td class="n">67.7%</td><td class="n">65.6%</td></tr><tr><td>Agentic scientific research · Terminal-Bench-Science 0.1</td><td class="n">58.7%</td><td class="n">52.6%</td></tr><tr><td>Computer use · OSWorld 2.0</td><td class="n">81.8%</td><td class="n">80.7%</td></tr><tr><td>Visual chart recognition · Chartography</td><td class="n">89.0%</td><td class="n">88.4%</td></tr></table></div>
+<p class="note">Anthropic 도 발표문에 "실제 차이는 이 점수보다 좁다"고 적었습니다(In our own use, the gap between Opus 5.5 and Claude Fable 5.1 is narrower than these scores suggest).</p></div>
+<div class="who"><h2>둘, 요금제 , 프로에서 Fable 은 사용 크레딧 따로, Opus 는 포함</h2>
+<p>요금제 표 「Models and usage」: Fable 행 Pro 열 = <b>Usage credits</b>, Opus 행 Pro 열 = 포함. API 값은 출력 백만 토큰에 Opus 5.5 <b>$20</b>, Fable 5.1 <b>$50</b>(입력 $4 대 $10).</p></div>
+<div class="who"><h2>셋, 한도 , 5시간 한도 상향 + 리셋 한 번 저장</h2>
+<p>"In addition to the price drop, we're increasing five-hour usage limits on Pro, Max, Team, and seat-based Enterprise plans. We're also providing subscription users a rate limit reset, which you can now save and use whenever you choose."</p>
+<p class="note">몇 퍼센트 올렸는지는 공식 발표에 숫자가 없어 적지 않았습니다.</p></div>
+
+<div class="warn"><h3>제 결론</h3><p>웬만한 일은 기본값(Opus 5.5)으로 두고, 제일 어렵고 긴 일만 Fable 로 바꿔 쓰면 됩니다. Claude Code 에서 <code>/model</code> 을 치면 바로 바꿀 수 있고, 제 계정은 이미 기본값이 Opus 5.5 였습니다. <code>/usage</code> 를 보면 Fable 은 주간 한도가 따로 잡힙니다.</p></div>
+
+<div class="src">출처: <a href="https://www.anthropic.com/claude-opus-5-5">anthropic.com/claude-opus-5-5</a>(2026-09-22) · <a href="https://claude.com/pricing">claude.com/pricing</a> · 실험 기록: claude -p stream.jsonl(Opus 5.5·Fable 5.1 각 1회)</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div><script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"opus55-vs-fable"})}).catch(()=>{});</script></body></html>
