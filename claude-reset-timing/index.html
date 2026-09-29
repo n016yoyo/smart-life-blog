@@ -1,0 +1,145 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드 무료 리셋, 누를 날 고르는 법 | AI TIGER MASK</title>
+<meta name="description" content="클로드 무료 리셋을 주간 98%, 초기화 하루 전에 눌렀더니 쓸 시간이 23시간뿐이었습니다. 리셋을 눌러도 주간 초기화 요일은 그대로라, 언제 누르느냐가 전부입니다. 내 초기화 요일로 계산해 보세요.">
+<meta property="og:title" content="클로드 무료 리셋, 누를 날 고르는 법">
+<meta property="og:description" content="리셋을 눌러도 주간 초기화 요일은 안 바뀝니다. 초기화 하루 전에 누르면 23시간뿐입니다.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e;--g:#1e9e6a}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.calc label{display:block;font-size:13px;font-weight:800;color:#5c554a;margin:10px 0 6px}
+.calc .row{display:flex;gap:10px;flex-wrap:wrap}
+.calc select,.calc input{font:inherit;font-size:15px;padding:9px 12px;border-radius:10px;border:1px solid #d8d0c0;background:#faf7f1;color:var(--ink)}
+.calc button{margin-top:14px;width:100%;background:var(--o);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:900;cursor:pointer}
+.out{margin-top:14px;border-radius:14px;padding:16px;background:#faf7f1;border:1px solid #eee7db;display:none}
+.out .big{font-size:28px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.out .big.ok{color:var(--g)}.out .big.no{color:var(--o)}
+.out p{font-size:13.5px;color:#4b473f;margin-top:6px}
+.bar{margin-top:10px;height:14px;border-radius:7px;background:#e6f4ec;overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--o)}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:520px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a;white-space:nowrap}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.warn p+p{margin-top:6px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>클로드 무료 리셋,<br>누를 날 고르는 법</h1>
+<div class="sub">2026년 9월 29일 제 계정(Claude Max 5x)에서 직접 눌러 본 기록 · 시각은 한국 시간</div>
+<div class="chips"><span class="chip">누르기 직전 주간 <b>98%</b></span><span class="chip">초기화 요일 <b>그대로</b></span><span class="chip">쓸 시간 <b>23시간</b></span></div>
+</header>
+<div class="wrap">
+<div class="who"><h2>한 줄 요약</h2>
+<p>무료 리셋(설정 &gt; 사용량 &gt; Reset for free)을 누르면 5시간 한도와 주간 한도가 둘 다 0%로 돌아갑니다. 그런데 <b>주간 초기화 요일·시각은 그대로</b>입니다. 저는 초기화(수요일 08:00) 하루 전인 화요일 아침 08:55쯤 눌러서, 돌려받은 한도를 쓸 시간이 <b>23시간</b>뿐이었습니다. 5시간 한도도 그대로 걸려 있어서 쉬지 않고 돌려도 주간의 <b>38~47%</b>가 한계입니다(제 로그 기준). 그래서 이 버튼은 <b>언제 누르느냐</b>가 전부입니다.</p>
+<p class="note">초기화 요일·시각은 계정마다 다릅니다. 아래 계산기에 내 요일·시각을 넣어 보세요. 설정 &gt; 사용량의 "이번 주 · 재설정" 줄에 나옵니다.</p></div>
+
+<div class="lead"><h2>지금 누르면 얼마나 쓸 수 있나</h2><p>내 주간 초기화 요일·시각을 넣으면, 남은 시간 동안 5시간 창이 몇 번 열리고 주간을 최대 몇 % 쓸 수 있는지 계산합니다</p></div>
+<div class="calc">
+<label for="wd">내 주간 초기화 요일</label>
+<div class="row"><select id="wd"><option value="1">월요일</option><option value="2">화요일</option><option value="3" selected>수요일</option><option value="4">목요일</option><option value="5">금요일</option><option value="6">토요일</option><option value="0">일요일</option></select>
+<input id="tm" type="time" value="08:00"></div>
+<label for="now">누를 시각(비워 두면 지금)</label>
+<div class="row"><input id="now" type="datetime-local"></div>
+<button id="go">계산하기</button>
+<div class="out" id="out"></div>
+</div>
+
+<div class="lead"><h2>누를 날 고르는 법</h2><p>제 실수를 기준으로 정리했습니다</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>한도가 넉넉할 때는 누르지 않는다</h3>
+<p>리셋은 쓴 만큼을 돌려줄 뿐 한도를 늘리지 않습니다. 주간을 거의 안 쓴 날 누르면 돌려받을 게 없습니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>주중에 바닥났고, 초기화까지 며칠 남았을 때 누른다</h3>
+<p>제 로그로는 5시간 한도를 100% 쓴다고 환산해도 주간은 7.7~9.4%만 오릅니다. 돌려받은 100%를 다 쓰려면 창이 13번 필요하고(13 × 7.7% = 100.1%), 창은 누른 순간부터 5시간마다 열리니 <b>초기화까지 60시간(2일 12시간) 넘게 남았을 때</b> 눌러야 다 쓸 수 있습니다. 예를 들어 초기화가 수요일 08:00인데 3일 만인 토요일 08:00에 바닥나서 누르면, 초기화까지 4일 · 창 20번이라 다 씁니다. 같은 비율이면 금요일 08:00에는 아직 바닥이 안 납니다(이틀 동안 창 9.6번 × 9.4% = 약 90%).</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>이미 늦게 눌렀다면 무거운 작업을 몰아 돌린다</h3>
+<p>초기화 순간 못 쓴 몫은 다음 주로 넘어가지 않습니다. 남은 시간 안에 긴 작업(대량 수정, 실험, 빌드)을 몰아서 돌리는 게 버튼 값을 가장 많이 뽑는 방법입니다.</p></div></div>
+<div class="rule"><div class="n">4</div><div><h3>웹이나 데스크톱에서, 만료 전에</h3>
+<p>버튼은 claude.ai 웹과 Claude Desktop 의 설정 &gt; 사용량에만 있습니다(모바일 앱·클로드 코드 터미널엔 없음). 제 화면 기준 만료는 10월 22일이었고, 누르면 취소할 수 없습니다. 해지하거나 요금제를 내리면 쓰기 전에 사라집니다.</p></div></div>
+</div>
+
+<div class="lead"><h2>제 기록, 세는 법까지</h2><p>클로드 코드가 응답마다 남기는 한도 로그(rate_limit_event)와 설정 화면 스샷으로 잰 값입니다</p></div>
+<div class="tw"><table><tr><th>무엇</th><th>값</th><th>어디서</th></tr>
+<tr><td>누르기 직전 주간 한도</td><td class="n">98%</td><td class="d">누르기 직전 마지막 응답(9/29 08:53)의 한도 값, 클로드 코드 상태줄 기록. 그때 5시간 한도는 80%. 두 시간 전(06:46) 한도 로그는 주간 97% · 5시간 72%</td></tr>
+<tr><td>누른 뒤</td><td class="n">0% · 0%</td><td class="d">데스크톱 설정 &gt; 사용량 스샷(08:56)에서 현재 세션·이번 주 둘 다 0%, 서버 클로드 코드 재조회(08:59)도 0%</td></tr>
+<tr><td>주간 초기화</td><td class="n">수 08:00 그대로</td><td class="d">누르기 전·후 로그의 주간 재설정 시각이 같음. 설정 화면의 초기화 칸에도 초기화 요일은 평소와 같게 유지된다고 적혀 있음</td></tr>
+<tr><td>5시간 창</td><td class="n">누른 순간 새로</td><td class="d">재설정 시각이 09:30 → 13:50 으로 바뀜. 서버가 새 창을 08:50부터 열었습니다(13:50 − 5시간, 10분 단위로 끊김)</td></tr>
+<tr><td>쓸 수 있는 시간</td><td class="n">약 23시간</td><td class="d">누른 시각 화 08:54~08:56(마지막 요청 08:53, 누른 뒤 스샷 08:56) → 수 08:00. 약 23시간 5분</td></tr>
+<tr><td>5시간 창 하나 = 주간 몇 %</td><td class="n">7.7~9.4%</td><td class="d">같은 5시간 창 안에서 두 한도가 오른 폭: 5시간 +53 때 주간 +5, 5시간 +52 때 주간 +4. 5시간 100%로 환산. 제 사용 패턴(주로 Opus 5.5) 기준이고, 로그가 소수 둘째 자리라 오차가 있습니다</td></tr>
+<tr><td>23시간 동안 쓸 수 있는 주간</td><td class="n">38~47%</td><td class="d">창 5번(08:50·13:50·18:50·23:50·04:50) × 7.7~9.4%</td></tr>
+</table></div>
+
+<div class="lead"><h2>갑자기 왜 줬나</h2></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>Opus 5.5 를 써 보라고</h3>
+<p>앤트로픽 발표(2026-09-22) 원문: "We're also providing subscription users a rate limit reset, which you can now save and use whenever you choose." 같은 발표에서 5시간 한도도 올렸습니다. 설정 화면 문구도 "Get extra wiggle room to explore Opus 5.5" 입니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>OpenAI 가 먼저 했다</h3>
+<p>OpenAI 도움말 원문: "As a part of the GPT-6 Astra rollout, we provided banked resets to eligible new or existing accounts on Plus, Pro or Business plans." 9월 3일·4일에 저장해 두고 쓰는 Codex 리셋을 줬고, 9월 7일엔 전체 즉시 리셋도 했습니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>또 올 수 있다</h3>
+<p>클로드 도움말은 리셋을 "Limit resets are occasional rewards for eligible plans" 라고 설명합니다. 한 번으로 끝나는 행사라기보다 가끔 주는 보상입니다.</p></div></div>
+</div>
+
+<div class="warn"><h3>확인한 것, 못 한 것</h3>
+<p>제 화면(한국어) 초기화 칸에는 리셋을 쓰면 5시간 한도와 주간 한도가 다시 채워진다고 적혀 있고, 실제로 둘 다 0%가 됐습니다. 영어 도움말은 "Either your five-hour session limit or weekly usage limit resets"(둘 중 하나)라고 적혀 있어, 리셋 종류에 따라 다를 수 있습니다.</p>
+<p>창 하나당 주간 몫(7.7~9.4%)은 제 계정·제 사용 패턴의 두 창에서 잰 값입니다. 모델·작업이 다르면 달라지니, 계산기 결과는 대략으로 보세요.</p></div>
+
+<div class="src">출처: <a href="https://www.anthropic.com/claude-opus-5-5">anthropic.com/claude-opus-5-5</a>(2026-09-22) · <a href="https://support.claude.com/en/articles/17007452-what-is-a-limit-reset">support.claude.com , What is a limit reset?</a> · <a href="https://help.openai.com/en/articles/20001498-how-banked-codex-resets-work">help.openai.com , How banked Codex resets work</a> · 실측: 제 Claude 데스크톱 설정 &gt; 사용량 스샷(2026-09-29 08:56)과 클로드 코드 한도 로그(rate_limit_event, 9/28~9/29)</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div>
+<script>
+// 창 하나 = 주간 7.7~9.4%(제 로그 두 창, 5시간 100% 환산). 5시간 창은 누른 순간부터 5시간마다 새로 열린다고 본다(쉬지 않고 쓸 때의 상한).
+const LO = 7.7, HI = 9.4, WIN = 5;
+const $ = (id) => document.getElementById(id);
+function nextReset(from, wd, hh, mm) {
+  const r = new Date(from); r.setHours(hh, mm, 0, 0);
+  let add = (wd - r.getDay() + 7) % 7; r.setDate(r.getDate() + add);
+  if (r <= from) r.setDate(r.getDate() + 7);
+  return r;
+}
+function calc() {
+  const wd = +$("wd").value, [hh, mm] = $("tm").value.split(":").map(Number);
+  const from = $("now").value ? new Date($("now").value) : new Date();
+  const r = nextReset(from, wd, hh, mm), hrs = (r - from) / 36e5;
+  const wins = Math.ceil(hrs / WIN - 1e-9), lo = Math.min(100, wins * LO), hi = Math.min(100, wins * HI);
+  const tm = Math.round(hrs * 60), d = Math.floor(tm / 1440), h = Math.floor((tm % 1440) / 60), m = tm % 60;   // 분을 먼저 반올림(「22시간 60분」 방지)
+  const left = (d ? d + "일 " : "") + h + "시간" + (m ? " " + m + "분" : "");
+  const ok = lo >= 100;
+  const o = $("out"); o.style.display = "block";
+  o.innerHTML = `<div class="big ${ok ? "ok" : "no"}">${ok ? "다 쓸 수 있어요" : `최대 ${Math.floor(lo)}~${Math.round(hi)}%`}</div>
+    <p>초기화까지 <b>${left}</b> · 5시간 창 <b>${wins}번</b> · 창 하나 7.7~9.4%</p>
+    <div class="bar"><i style="width:${hi}%"></i></div>
+    <p>${ok ? "돌려받은 한도를 초기화 전에 다 쓸 수 있는 시점입니다. 한도가 바닥났다면 지금 누르세요." : hi >= 100 ? "경계입니다. 창 하나에 주간이 9.4%씩 오르는 쪽이면 다 쓰고, 7.7%씩이면 " + Math.round(100 - lo) + "% 정도 남아 초기화 때 사라집니다." : "지금 누르면 돌려받은 한도 중 " + Math.round(100 - hi) + "% 넘게 못 쓰고 초기화 때 사라집니다. 한도가 바닥났어도 초기화가 가깝다면 기다리는 편이 낫고, 이미 눌렀다면 무거운 작업을 몰아 돌리세요."}</p>`;
+}
+$("go").addEventListener("click", calc);
+</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-reset-timing"})}).catch(()=>{});</script></body></html>
