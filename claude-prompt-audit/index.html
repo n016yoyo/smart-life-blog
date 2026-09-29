@@ -62,8 +62,8 @@ td.d{font-size:12.5px;color:#5c554a}
 </header>
 <div class="wrap">
 <div class="who"><h2>한 줄 요약</h2>
-<p>Claude Code 2.1.283(9월 25일 배포)에 <b>/doctor prompt-audit</b> 가 새로 생겼습니다. 클로드가 대화를 열 때마다 읽는 설정 파일(CLAUDE.md)과 스킬 파일을 검사해서, 요즘 모델에 안 맞는 옛날식 지시를 찾아 줍니다. 제 저장소에 돌렸더니 <b>고칠 곳이 13군데</b>(저장소와 어긋난 사실 6 + 옛날식 패턴 7)였고, CLAUDE.md 482줄 중 <b>120줄에 ★ 강조</b>가 붙어 있었습니다. 제 회차에서는 파일을 하나도 고치지 않고 보고서만 냈습니다. 약 10분 걸렸습니다.</p>
-<p class="note">아래 보고서는 제 회차의 원문입니다. 제 개인 메모(CLAUDE.md 에 적어 둔 사람 말 인용, 개인 폴더 경로, 설치한 플러그인 목록)만 「(개인 메모)」로 가렸습니다.</p></div>
+<p>Claude Code 2.1.283(9월 25일 배포, 미국 시간)에 <b>/doctor prompt-audit</b> 가 새로 생겼습니다. 클로드가 대화를 열 때마다 읽는 설정 파일(CLAUDE.md)과 스킬 파일을 검사해서, 요즘 모델에 안 맞는 옛날식 지시를 찾아 줍니다. 제 저장소에 돌렸더니 <b>고칠 곳이 13군데</b>(보고서 Counts 줄 기준 4 + 9)였고, CLAUDE.md 482줄 중 <b>120줄에 ★ 강조</b>가 붙어 있었습니다. 제 회차에서는 파일을 하나도 고치지 않고 보고서만 냈습니다. 약 10분 걸렸습니다.</p>
+<p class="note">아래 보고서는 제 회차의 원문입니다. 제 개인 메모(CLAUDE.md 에 적어 둔 사람 말 인용)만 「(개인 메모)」로 가렸고, 개인 폴더 경로와 설치한 플러그인 목록이 나오는 부분은 싣지 않았습니다.</p></div>
 
 <div class="lead"><h2>직접 해 보는 법</h2><p>세 줄이면 됩니다</p></div>
 <div class="rules">
@@ -92,8 +92,8 @@ grep -cE 'IMPORTANT|MUST|CRITICAL|반드시|절대|무조건' CLAUDE.md   # 다�
    - "A~Q 전부 ✅" is incomplete: preflight also has stages R through Y.
    - "18종" (18 comps) is out of date: the catalog now lists 37 current comps.
 3. CLAUDE.md carries dead text into every session:
-   - the abandoned (개인 메모) procedure (lines 180-192);
-   - the (개인 메모) rule written as three revisions of history;
+   - the abandoned Mac offloading procedure (lines 180-192);
+   - the /tmp rule written as three revisions of history;
    - ★ on 120 of 482 lines (★★★ 12, ★★ 63).
 
 Counts: Group 1: 4. Group 2: 9 actionable, plus 5 flags. Group 3 (tool descriptions): not applicable. Group 4 (request code): not applicable. The project defines no subagents of its own.</pre></div>
