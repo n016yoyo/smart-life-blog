@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Low-Poly Running Tiger</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3d9a8; }
+  canvas { display: block; }
+  #info {
+    position: fixed; left: 12px; bottom: 10px;
+    font: 13px/1.4 system-ui, sans-serif; color: #5a3b1a; opacity: .75;
+    user-select: none; pointer-events: none;
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="info">드래그: 회전 · 휠: 줌</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- 기본 세팅 ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf3d9a8);
+scene.fog = new THREE.Fog(0xf3d9a8, 14, 32);
+
+const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 100);
+camera.position.set(3.5, 2.6, 6.5);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0.9, 0);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.49;
+controls.minDistance = 3;
+controls.maxDistance = 16;
+
+scene.add(new THREE.HemisphereLight(0xfff4e0, 0x8a6a3a, 1.2));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(4, 8, 5);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4, near: 1, far: 20 });
+scene.add(sun);
+
+// ---------- 재질 / 헬퍼 ----------
+const mat = (color) => new THREE.MeshStandardMaterial({ color, flatShading: true, roughness: 0.85 });
+const M = {
+  orange: mat(0xe8761e),
+  dark:   mat(0x1c1612),
+  white:  mat(0xf5ecdc),
+  pink:   mat(0xd9777a),
+  eye:    mat(0xf2c230),
+  ground: mat(0xc9a15e),
+  grass:  mat(0x7f9a3c),
+  rock:   mat(0x9b8c78),
+};
+
+function mesh(geo, material, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(geo, material);
+  m.position.set(x, y, z);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  return m;
+}
+const box = (w, h, d) => new THREE.BoxGeometry(w, h, d);
+const cyl = (rt, rb, h, seg = 6) => new THREE.CylinderGeometry(rt, rb, h, seg);
+const cone = (r, h, seg = 4) => new THREE.ConeGeometry(r, h, seg);
+
+// ---------- 호랑이 ----------
+// 호랑이는 +X 방향을 바라봄. Z축 회전 = 앞뒤로 흔드는 동작.
+const tiger = new THREE.Group();
+scene.add(tiger);
+
+const body = new THREE.Group();          // 전체 몸통 (상하 바운스 + 피치)
+body.position.y = 1.25;
+tiger.add(body);
+
+// 앞 몸통(가슴)
+const chest = new THREE.Group();
+chest.position.x = 0.1;
+body.add(chest);
+chest.add(mesh(box(1.1, 0.85, 0.78), M.orange, 0.45, 0, 0));
+chest.add(mesh(box(0.95, 0.12, 0.66), M.white, 0.45, -0.44, 0));   // 배
+for (const x of [0.15, 0.45, 0.75]) {
+  chest.add(mesh(box(0.09, 0.5, 0.8), M.dark, x, 0.19, 0));        // 줄무늬
+}
+
+// 뒷 몸통(엉덩이) — 가슴과 별도로 휘어짐
+const hips = new THREE.Group();
+hips.position.x = 0.1;
+body.add(hips);
+hips.add(mesh(box(1.15, 0.78, 0.72), M.orange, -0.5, 0.02, 0));
+hips.add(mesh(box(0.9, 0.1, 0.6), M.white, -0.45, -0.38, 0));
+for (const x of [-0.2, -0.5, -0.8]) {
+  hips.add(mesh(box(0.09, 0.45, 0.74), M.dark, x, 0.19, 0));
+}
+
+// 머리
+const neck = new THREE.Group();
+neck.position.set(0.95, 0.2, 0);
+chest.add(neck);
+neck.add(mesh(cyl(0.26, 0.32, 0.45, 6), M.orange, 0.12, 0.05, 0)).rotation.z = -1.0;
+
+const head = new THREE.Group();
+head.position.set(0.38, 0.22, 0);
+neck.add(head);
+head.add(mesh(box(0.55, 0.5, 0.58), M.orange, 0.1, 0, 0));
+head.add(mesh(box(0.3, 0.26, 0.4), M.white, 0.45, -0.1, 0));       // 주둥이
+head.add(mesh(box(0.1, 0.09, 0.16), M.pink, 0.61, -0.01, 0));      // 코
+const jaw = mesh(box(0.28, 0.08, 0.32), M.white, 0.42, -0.26, 0);
+head.add(jaw);
+for (const s of [-1, 1]) {
+  head.add(mesh(box(0.08, 0.08, 0.06), M.eye, 0.36, 0.1, s * 0.2));  // 눈
+  head.add(mesh(box(0.04, 0.09, 0.07), M.dark, 0.4, 0.1, s * 0.2)); // 동공
+  const ear = mesh(cone(0.12, 0.2, 4), M.orange, -0.05, 0.32, s * 0.2);
+  ear.rotation.y = Math.PI / 4;
+  head.add(ear);
+  head.add(mesh(box(0.56, 0.06, 0.04), M.dark, 0.05, 0.05, s * 0.29)); // 뺨 줄무늬
+  head.add(mesh(box(0.3, 0.04, 0.02), M.white, 0.5, -0.12, s * 0.21)); // 수염
+}
+head.add(mesh(box(0.06, 0.02, 0.3), M.dark, 0.05, 0.25, 0));        // 이마 줄무늬
+head.add(mesh(box(0.06, 0.02, 0.3), M.dark, -0.1, 0.25, 0));
+
+// 다리
+function makeLeg(front, side) {
+  const hip = new THREE.Group();
+  const upperR = front ? 0.13 : 0.17;
+  hip.add(mesh(cyl(upperR, upperR * 0.75, 0.5, 6), M.orange, 0, -0.25, 0));
+  hip.add(mesh(cyl(upperR * 0.93, upperR * 0.86, 0.06, 6), M.dark, 0, -0.18, 0));
+  const knee = new THREE.Group();
+  knee.position.y = -0.5;
+  hip.add(knee);
+  knee.add(mesh(cyl(0.095, 0.075, 0.45, 6), M.orange, 0, -0.225, 0));
+  knee.add(mesh(cyl(0.09, 0.085, 0.05, 6), M.dark, 0, -0.15, 0));
+  knee.add(mesh(box(0.24, 0.1, 0.2), M.white, 0.05, -0.47, 0));     // 발
+  hip.userData = { knee, front, side };
+  return hip;
+}
+
+// 페이즈 오프셋 (로터리 갤럽: 뒷다리 → 앞다리 순서)
+const legs = [
+  { leg: makeLeg(true,  1), parent: chest, pos: [0.75, -0.25,  0.25], off: Math.PI },
+  { leg: makeLeg(true, -1), parent: chest, pos: [0.75, -0.25, -0.25], off: Math.PI + 0.55 },
+  { leg: makeLeg(false, 1), parent: hips,  pos: [-0.8, -0.2,  0.24], off: 0.55 },
+  { leg: makeLeg(false,-1), parent: hips,  pos: [-0.8, -0.2, -0.24], off: 0 },
+];
+for (const l of legs) {
+  l.leg.position.set(...l.pos);
+  l.parent.add(l.leg);
+}
+
+// 꼬리 — 체인 구조의 세그먼트, 주황/검정 교차
+const tailRoot = new THREE.Group();
+tailRoot.position.set(-1.05, 0.22, 0);
+hips.add(tailRoot);
+const tailSegs = [];
+{
+  let parent = tailRoot;
+  const N = 7, segLen = 0.2;
+  for (let i = 0; i < N; i++) {
+    const g = new THREE.Group();
+    if (i > 0) g.position.x = -segLen;
+    const r = 0.07 - i * 0.005;
+    const m = mesh(cyl(r * 0.9, r, segLen, 5), i % 2 ? M.dark : (i === N - 1 ? M.dark : M.orange), -segLen / 2, 0, 0);
+    m.rotation.z = Math.PI / 2;
+    g.add(m);
+    parent.add(g);
+    tailSegs.push(g);
+    parent = g;
+  }
+}
+
+// ---------- 배경 (스크롤되는 지면) ----------
+const ground = mesh(new THREE.PlaneGeometry(80, 80), M.ground);
+ground.rotation.x = -Math.PI / 2;
+ground.castShadow = false;
+scene.add(ground);
+
+const SCROLL_LEN = 36;
+const props = [];
+{
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 70; i++) {
+    const isRock = rand() < 0.25;
+    const m = isRock
+      ? mesh(new THREE.DodecahedronGeometry(0.15 + rand() * 0.25, 0), M.rock)
+      : mesh(cone(0.08 + rand() * 0.06, 0.3 + rand() * 0.35, 4), M.grass);
+    let z = (rand() - 0.5) * 18;
+    if (Math.abs(z) < 0.7) z += Math.sign(z || 1) * 0.9;   // 호랑이 발밑은 비워둠
+    m.position.set(0, isRock ? 0.05 : 0.18, z);
+    m.rotation.y = rand() * Math.PI;
+    m.userData.x0 = rand() * SCROLL_LEN;
+    scene.add(m);
+    props.push(m);
+  }
+}
+
+// ---------- 애니메이션 ----------
+const PERIOD = 0.62;               // 한 보폭 주기(초)
+const SPEED = 7;                   // 지면 스크롤 속도
+const TAU = Math.PI * 2;
+const clock = new THREE.Clock();
+
+function animate() {
+  const t = clock.getElapsedTime();
+  // 모든 동작이 p의 정수배 주기 함수이므로 루프가 끊김 없이 이어짐
+  const p = ((t % PERIOD) / PERIOD) * TAU;
+
+  // 몸통: 한 보폭당 1회 체공 바운스 + 피치
+  body.position.y = 1.25 + 0.08 * Math.sin(p + 1.2);
+  body.rotation.z = 0.07 * Math.sin(p + 2.4);
+  // 척추 굽힘 (가슴·엉덩이 반대로)
+  chest.rotation.z = -0.05 * Math.sin(p + 0.4);
+  hips.rotation.z  =  0.12 * Math.sin(p + 0.2);
+
+  // 다리
+  for (const { leg, off } of legs) {
+    const { knee, front } = leg.userData;
+    const a = p + off;
+    const lift = Math.max(0, Math.cos(a));       // 앞으로 휘두를 때 무릎 접기
+    if (front) {
+      leg.rotation.z  = 0.05 + 0.75 * Math.sin(a);
+      knee.rotation.z = -0.05 - 1.4 * lift * lift;
+    } else {
+      leg.rotation.z  = 0.3 + 0.65 * Math.sin(a);
+      knee.rotation.z = -0.55 - 0.9 * lift;
+    }
+  }
+
+  // 머리: 몸 피치를 상쇄해 시선을 안정시키고 살짝 끄덕임
+  neck.rotation.z = -body.rotation.z - chest.rotation.z + 0.06 * Math.sin(p + 3.4);
+  head.rotation.z = 0.05 * Math.sin(p + 4.0);
+  head.rotation.x = 0.03 * Math.sin(p);
+  jaw.position.y = -0.26 - 0.03 * (0.5 + 0.5 * Math.sin(p * 2));  // 헐떡임
+
+  // 꼬리: 세그먼트마다 위상 지연된 파동
+  tailRoot.rotation.z = -0.5 + 0.15 * Math.sin(p);
+  tailSegs.forEach((s, i) => {
+    if (i === 0) return;
+    s.rotation.z = 0.22 * Math.sin(p - i * 0.7) + 0.06;
+    s.rotation.y = 0.12 * Math.sin(p - i * 0.5);
+  });
+
+  // 지면 소품 스크롤 (구간 반복)
+  const shift = t * SPEED;
+  for (const m of props) {
+    const x = ((m.userData.x0 - shift) % SCROLL_LEN + SCROLL_LEN) % SCROLL_LEN;
+    m.position.x = x - SCROLL_LEN / 2;
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(animate);
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Low-Poly Tiger · Running in Place</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3dcb2; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  canvas { display: block; }
+  #ui {
+    position: fixed; top: 16px; left: 16px;
+    padding: 12px 14px; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(6px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    color: #3b2a1a; font-size: 13px; user-select: none;
+  }
+  #ui h1 { margin: 0 0 8px; font-size: 14px; letter-spacing: 0.03em; }
+  #ui .row { display: flex; align-items: center; gap: 8px; }
+  #ui input[type="range"] { width: 120px; accent-color: #d9731f; }
+  #ui button {
+    margin-top: 8px; padding: 4px 12px; border: 0; border-radius: 6px;
+    background: #d9731f; color: #fff; font: inherit; cursor: pointer;
+  }
+  #ui .hint { margin-top: 8px; font-size: 12px; opacity: 0.6; }
+</style>
+</head>
+<body>
+<div id="ui">
+  <h1>Low-Poly Tiger</h1>
+  <label class="row">속도 <input id="speed" type="range" min="0.2" max="2" step="0.05" value="1" /> <span id="speedVal">1.00×</span></label>
+  <button id="pause" type="button">일시정지</button>
+  <div class="hint">드래그: 회전 · 휠: 확대/축소 · Space: 일시정지</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const TAU = Math.PI * 2;
+const HORIZON = 0xf3dcb2;
+
+// ───────────────────────── 렌더러 · 씬 · 카메라 ─────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(HORIZON);
+scene.fog = new THREE.Fog(HORIZON, 18, 40);
+
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(5.2, 2.6, 7.4);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.0, 0);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 4;
+controls.maxDistance = 14;
+controls.maxPolarAngle = Math.PI * 0.48;
+controls.update();
+
+scene.add(new THREE.HemisphereLight(0xfff3dc, 0x8a7350, 1.5));
+const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+sun.position.set(4, 10, 6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4.5, near: 1, far: 30 });
+sun.shadow.camera.updateProjectionMatrix();
+sun.shadow.bias = -0.0005;
+sun.shadow.normalBias = 0.02;
+scene.add(sun);
+
+// 하늘: 지평선(안개색) → 천정 그라디언트
+{
+  const geo = new THREE.SphereGeometry(90, 24, 12);
+  const pos = geo.attributes.position;
+  const low = new THREE.Color(HORIZON), high = new THREE.Color(0x9fc3d6), c = new THREE.Color();
+  const colors = [];
+  for (let i = 0; i < pos.count; i++) {
+    const h = THREE.MathUtils.clamp(pos.getY(i) / 90, 0, 1);
+    c.copy(low).lerp(high, Math.pow(h, 0.6));
+    colors.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  scene.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+    vertexColors: true, side: THREE.BackSide, fog: false, depthWrite: false,
+  })));
+}
+
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(60, 48).rotateX(-Math.PI / 2),
+  new THREE.MeshStandardMaterial({ color: 0xd2b27a, roughness: 1 })
+);
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ───────────────────────── 모델링 도우미 ─────────────────────────
+const COL = {
+  orange: new THREE.Color(0xe27a28),
+  deep:   new THREE.Color(0xc8621c),
+  black:  new THREE.Color(0x231a14),
+  white:  new THREE.Color(0xf5ede0),
+  pale:   new THREE.Color(0xf1cfa3),
+};
+
+const solidMat = (color, opts = {}) =>
+  new THREE.MeshStandardMaterial({ color, flatShading: true, roughness: 0.85, ...opts });
+
+const skinMat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.85 });
+const MAT = {
+  black:  solidMat(0x231a14),
+  white:  solidMat(0xf5ede0),
+  eye:    solidMat(0xf2b632, { emissive: 0x4a2c00, roughness: 0.35 }),
+  nose:   solidMat(0x6e3a34),
+  mouth:  solidMat(0x5a1f1f),
+  tongue: solidMat(0xd46e6e),
+};
+
+// 삼각형(면)마다 색을 칠한다 → 로우폴리 특유의 각진 줄무늬
+function paint(geometry, colorAt) {
+  const geo = geometry.index ? geometry.toNonIndexed() : geometry;
+  const pos = geo.attributes.position;
+  const colors = new Float32Array(pos.count * 3);
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i += 3) {
+    a.fromBufferAttribute(pos, i);
+    b.fromBufferAttribute(pos, i + 1);
+    c.fromBufferAttribute(pos, i + 2);
+    const col = colorAt(a.add(b).add(c).divideScalar(3));
+    for (let k = 0; k < 3; k++) col.toArray(colors, (i + k) * 3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  return geo;
+}
+
+function addMesh(geo, mat, parent, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set(x, y, z);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  parent.add(m);
+  return m;
+}
+const fur = (geo, colorAt, parent, x, y, z) => addMesh(paint(geo, colorAt), skinMat, parent, x, y, z);
+
+function pivot(parent, x = 0, y = 0, z = 0) {
+  const g = new THREE.Group();
+  g.position.set(x, y, z);
+  parent.add(g);
+  return g;
+}
+
+// X축으로 누운 각기둥 (rBack: -X쪽, rFront: +X쪽). 바닥이 평평한 면이 되도록 회전 시작각 조정
+function xPrism(rBack, rFront, length, radial = 8, segs = 1) {
+  return new THREE.CylinderGeometry(rBack, rFront, length, radial, segs, false, 1.5 * Math.PI - Math.PI / radial)
+    .rotateZ(Math.PI / 2);
+}
+
+// 아래(-Y)로 늘어진 다리 마디. 원점 = 관절
+function yPrism(rTop, rBottom, length, radial = 6) {
+  const segs = Math.max(1, Math.round(length / 0.08));
+  return new THREE.CylinderGeometry(rTop, rBottom, length, radial, segs).translate(0, -length / 2, 0);
+}
+
+function furBody({ belly = -0.3, freq = 15, thr = 0.62, seed = 0 } = {}) {
+  return (p) => {
+    if (p.y < belly) return COL.white;
+    const s = Math.sin(p.x * freq + 1.3 * Math.sin(p.y * 5 + Math.abs(p.z) * 3 + seed) + seed * 3);
+    if (s > thr) return COL.black;
+    return p.y > 0.3 ? COL.deep : COL.orange;
+  };
+}
+
+function furLeg(side, { freq = 14, thr = 0.7, seed = 0 } = {}) {
+  return (p) => {
+    if (p.z * side < -0.02) return COL.pale; // 다리 안쪽은 밝은 털
+    return Math.sin(p.y * freq + p.x * 4 + seed) > thr ? COL.black : COL.orange;
+  };
+}
+
+const pawColor = (p) => (p.y > 0.03 ? COL.orange : p.y < -0.03 ? COL.white : COL.pale);
+
+// ───────────────────────── 호랑이 ─────────────────────────
+// 계층: tiger ─ body(상하·기울기) ─┬ chest(척추 앞) ─ 목 · 머리 · 앞다리
+//                                 └ hips (척추 뒤) ─ 뒷다리 · 꼬리
+const tiger = new THREE.Group();
+scene.add(tiger);
+
+const BODY_Y = 1.31;
+const body = pivot(tiger, 0, BODY_Y, 0);
+const chest = pivot(body);
+const hips = pivot(body);
+
+// 몸통
+fur(xPrism(0.46, 0.5, 1.2, 8, 14).scale(1, 1.02, 0.8), furBody({ seed: 0.3 }), chest, 0.5, 0, 0);
+fur(new THREE.SphereGeometry(0.5, 8, 6).scale(0.8, 1, 0.8), furBody({ belly: -0.12, seed: 4 }), chest, 1.02, 0, 0);
+fur(xPrism(0.42, 0.46, 1.1, 8, 12).scale(1, 1, 0.82), furBody({ seed: 1.7 }), hips, -0.45, 0, 0);
+fur(new THREE.SphereGeometry(0.44, 8, 6).scale(0.85, 0.98, 0.82), furBody({ seed: 5.2 }), hips, -0.98, 0, 0);
+
+// 목
+const NECK0 = 0.32;
+const neck = pivot(chest, 1.02, 0.14, 0);
+fur(xPrism(0.34, 0.28, 0.72, 8, 6).scale(1, 1, 0.85), furBody({ belly: -0.12, freq: 13, seed: 2.4 }), neck, 0.22, 0, 0);
+
+// 머리
+const HEAD0 = -0.42;
+const head = pivot(neck, 0.52, 0.02, 0);
+fur(new THREE.BoxGeometry(0.6, 0.5, 0.62), (p) => (p.y < -0.2 ? COL.white : COL.orange), head, 0.26, 0.04, 0);
+fur(new THREE.BoxGeometry(0.34, 0.26, 0.4), (p) => (p.y > 0.1 ? COL.orange : COL.white), head, 0.68, -0.08, 0);
+addMesh(new THREE.BoxGeometry(0.1, 0.08, 0.17), MAT.nose, head, 0.855, 0.03, 0);
+addMesh(new THREE.BoxGeometry(0.3, 0.07, 0.3), MAT.mouth, head, 0.66, -0.22, 0);
+
+const jaw = pivot(head, 0.5, -0.2, 0);
+fur(new THREE.BoxGeometry(0.34, 0.09, 0.32), () => COL.white, jaw, 0.16, -0.045, 0);
+addMesh(new THREE.BoxGeometry(0.2, 0.03, 0.2), MAT.tongue, jaw, 0.15, 0.005, 0);
+
+// 이마 줄무늬
+addMesh(new THREE.BoxGeometry(0.24, 0.02, 0.04), MAT.black, head, 0.3, 0.295, 0);
+addMesh(new THREE.BoxGeometry(0.02, 0.1, 0.03), MAT.black, head, 0.565, 0.2, 0);
+
+const ears = [];
+const EAR0 = 0.35;
+for (const s of [-1, 1]) {
+  addMesh(new THREE.BoxGeometry(0.2, 0.02, 0.035), MAT.black, head, 0.24, 0.295, s * 0.13).rotation.y = s * 0.35;
+  addMesh(new THREE.BoxGeometry(0.045, 0.22, 0.02), MAT.black, head, 0.1, 0.1, s * 0.315).rotation.z = 0.35;
+  addMesh(new THREE.BoxGeometry(0.045, 0.22, 0.02), MAT.black, head, 0.22, 0.12, s * 0.315).rotation.z = 0.25;
+
+  // 눈 · 눈썹 흰 반점
+  const eye = addMesh(new THREE.BoxGeometry(0.03, 0.08, 0.11), MAT.eye, head, 0.57, 0.12, s * 0.17);
+  eye.rotation.y = -s * 0.35;
+  addMesh(new THREE.BoxGeometry(0.012, 0.07, 0.03), MAT.black, eye, 0.016, 0, 0);
+  addMesh(new THREE.BoxGeometry(0.02, 0.05, 0.13), MAT.white, head, 0.565, 0.21, s * 0.16);
+
+  // 볼 갈기: 뒤·바깥쪽으로 뻗은 원뿔
+  const cheek = fur(new THREE.ConeGeometry(0.17, 0.34, 4, 3),
+    (p) => (p.y > -0.02 && p.y < 0.06 ? COL.black : COL.white), head, 0.26, -0.1, s * 0.27);
+  cheek.rotation.set(0, s * 0.7, Math.PI / 2);
+
+  // 귀: 뒤로 젖혀진 사각뿔
+  const ear = pivot(head, 0.1, 0.27, s * 0.2);
+  ear.rotation.x = s * 0.35;
+  ear.rotation.z = EAR0;
+  fur(new THREE.ConeGeometry(0.12, 0.22, 4, 2).rotateY(Math.PI / 4).translate(0, 0.11, 0),
+    (p) => (p.y > 0.12 ? COL.black : p.x > 0.02 ? COL.white : COL.orange), ear);
+  ears.push(ear);
+}
+
+// 다리
+const legs = [];
+
+function solePoint(parent, x, y) {
+  const o = new THREE.Object3D();
+  o.position.set(x, y, 0);
+  parent.add(o);
+  return o;
+}
+
+function buildFrontLeg(side, offset) {
+  const shoulder = pivot(chest, 0.9, -0.08, side * 0.24);
+  fur(yPrism(0.19, 0.12, 0.74).scale(1, 1, 0.78), furLeg(side, { freq: 13, seed: 0.5 }), shoulder, 0, 0.12, 0);
+  const elbow = pivot(shoulder, 0, -0.62, 0);
+  fur(yPrism(0.11, 0.085, 0.56), furLeg(side, { thr: 0.86, seed: 1.1 }), elbow, 0, 0.03, 0);
+  const paw = pivot(elbow, 0, -0.53, 0);
+  fur(new THREE.BoxGeometry(0.28, 0.1, 0.22), pawColor, paw, 0.06, -0.05, 0);
+  legs.push({
+    front: true, offset, joints: [shoulder, elbow], paw,
+    soles: [solePoint(paw, -0.07, -0.1), solePoint(paw, 0.19, -0.1)],
+  });
+}
+
+function buildHindLeg(side, offset) {
+  const hip = pivot(hips, -0.72, -0.02, side * 0.24);
+  fur(yPrism(0.23, 0.13, 0.66).scale(1, 1, 0.72), furLeg(side, { freq: 12, seed: 2 }), hip, 0, 0.14, 0);
+  const knee = pivot(hip, 0, -0.52, 0);
+  fur(yPrism(0.12, 0.085, 0.5), furLeg(side, { freq: 15, seed: 0.2 }), knee, 0, 0.03, 0);
+  const hock = pivot(knee, 0, -0.46, 0);
+  fur(yPrism(0.08, 0.07, 0.36), furLeg(side, { thr: 0.9, seed: 3 }), hock, 0, 0.03, 0);
+  const paw = pivot(hock, 0, -0.32, 0);
+  fur(new THREE.BoxGeometry(0.26, 0.09, 0.2), pawColor, paw, 0.05, -0.045, 0);
+  legs.push({
+    front: false, offset, joints: [hip, knee, hock], paw,
+    soles: [solePoint(paw, -0.07, -0.09), solePoint(paw, 0.17, -0.09)],
+  });
+}
+
+// 회전 갤럽(rotary gallop) 순서: 뒷발 A → 뒷발 B → 앞발 B → 앞발 A  (offset = 주기 내 위상)
+buildHindLeg(-1, 0.0);
+buildHindLeg(+1, 0.09);
+buildFrontLeg(+1, 0.48);
+buildFrontLeg(-1, 0.57);
+
+// 꼬리: 마디 체인
+const TAIL0 = 0.55;
+const TAIL_N = 10, TAIL_LEN = 0.17;
+const tail = [];
+{
+  let seg = pivot(hips, -1.28, 0.2, 0);
+  for (let i = 0; i < TAIL_N; i++) {
+    const r0 = THREE.MathUtils.lerp(0.085, 0.045, i / TAIL_N);
+    const r1 = THREE.MathUtils.lerp(0.085, 0.045, (i + 1) / TAIL_N);
+    const tip = i >= TAIL_N - 2;
+    const band = i % 2 === 1;
+    fur(xPrism(r1, r0, TAIL_LEN + 0.02, 6, 2).translate(-TAIL_LEN / 2, 0, 0),
+      (p) => (tip || (band && p.x < -TAIL_LEN / 2) ? COL.black : COL.orange), seg);
+    tail.push(seg);
+    if (i < TAIL_N - 1) seg = pivot(seg, -TAIL_LEN, 0, 0);
+    else fur(new THREE.SphereGeometry(0.05, 6, 4), () => COL.black, seg, -TAIL_LEN, 0, 0);
+  }
+}
+
+// ───────────────────────── 애니메이션 ─────────────────────────
+// 모든 움직임은 위상 t(0~1)에 대한 정수배 주파수 사인 함수 → t=1과 t=0이 정확히 같은 자세라 이음새 없이 반복
+const soft = (x) => (x > 0 ? x * Math.sqrt(x) : 0); // 0에서 부드럽게 시작하는 양수부
+const tmp = new THREE.Vector3();
+
+function poseTiger(t) {
+  const w = TAU * t;
+
+  // 몸통: 한 주기에 두 번 출렁(앞발·뒷발 착지), 앞뒤 끄덕임, 척추 굽힘/폄
+  const pitch = 0.06 * Math.sin(w - TAU * 0.4);
+  const flex = 0.1 * Math.sin(w - TAU * 0.03);
+  body.position.y = BODY_Y - 0.05 * Math.cos(2 * w);
+  body.rotation.z = pitch;
+  body.rotation.x = 0.025 * Math.sin(w);
+  chest.rotation.z = -flex;
+  hips.rotation.z = flex;
+
+  // 머리: 몸이 흔들려도 시선이 유지되도록 반대로 보정
+  const chestPitch = pitch - flex;
+  neck.rotation.z = NECK0 - 0.5 * chestPitch + 0.03 * Math.sin(2 * w + 0.6);
+  head.rotation.z = HEAD0 - 0.4 * chestPitch + 0.03 * Math.sin(2 * w + 1.4);
+  jaw.rotation.z = -0.08 - 0.07 * (0.5 + 0.5 * Math.sin(2 * w));
+  ears.forEach((ear, i) => { ear.rotation.z = EAR0 + 0.08 * Math.sin(2 * w + i * 1.3); });
+
+  // 꼬리: 마디마다 위상을 늦춰 채찍처럼 흐르는 웨이브
+  tail.forEach((seg, i) => {
+    const k = i / (tail.length - 1);
+    seg.rotation.z = (i === 0 ? TAIL0 : -0.07) + (0.06 + 0.1 * k) * Math.sin(w - 0.6 - i * 0.5);
+    seg.rotation.y = (0.03 + 0.07 * k) * Math.sin(w + 1.0 - i * 0.45);
+  });
+
+  // 다리
+  for (const leg of legs) {
+    const a = w - TAU * leg.offset;
+    if (leg.front) {
+      const swing = soft(Math.cos(a + 0.35));        // 공중에서 다리를 접는 정도
+      const upper = 0.08 + 0.62 * Math.sin(a);
+      const lower = -0.05 - 1.5 * swing;
+      leg.joints[0].rotation.z = upper;
+      leg.joints[1].rotation.z = lower;
+      leg.paw.rotation.z = -(upper + lower) * 0.85 - 0.6 * swing;
+    } else {
+      const swing = soft(Math.cos(a + 0.2));
+      const push = soft(-Math.sin(a));                // 뒤로 차낼 때 쭉 펴짐
+      const thigh = 0.28 + 0.55 * Math.sin(a);
+      const shin = -0.9 - 0.55 * swing + 0.3 * push;
+      const meta = 0.65 + 0.6 * swing - 0.25 * push;
+      leg.joints[0].rotation.z = thigh;
+      leg.joints[1].rotation.z = shin;
+      leg.joints[2].rotation.z = meta;
+      leg.paw.rotation.z = -(thigh + shin + meta) * 0.85 - 0.45 * swing;
+    }
+  }
+
+  // 접지: 가장 낮은 발바닥이 땅 아래로 들어가면 몸 전체를 그만큼 들어올림
+  tiger.updateMatrixWorld(true);
+  let minY = Infinity;
+  for (const leg of legs) {
+    for (const s of leg.soles) minY = Math.min(minY, s.getWorldPosition(tmp).y);
+  }
+  if (minY < 0) body.position.y -= minY;
+}
+
+// ───────────────────────── 흘러가는 배경 (제자리 달리기 느낌) ─────────────────────────
+const HALF = 24, SPAN = HALF * 2;
+const decor = [];
+
+let seed = 20240917; // mulberry32 — 매번 같은 배치
+const rand = () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+const pick = (arr) => arr[Math.floor(rand() * arr.length)];
+const randX = () => (rand() * 2 - 1) * HALF;
+const sideZ = (min, max) => (rand() < 0.5 ? -1 : 1) * (min + rand() * (max - min));
+
+function addDecor(obj, x, z, scale) {
+  obj.position.set(x, 0, z);
+  scene.add(obj);
+  decor.push({ obj, x0: x + HALF, scale });
+}
+
+const decorMat = {
+  grass: [0x8f9f4c, 0x7b9444, 0xa3a55a].map((c) => solidMat(c, { roughness: 1 })),
+  rock: solidMat(0xa89a84, { roughness: 1 }),
+  trunk: solidMat(0x7b5537),
+  leaf: [0x6d9146, 0x88a24f, 0x5b7f3c].map((c) => solidMat(c)),
+  patch: [solidMat(0xc5a46c, { roughness: 1 }), solidMat(0xdcc493, { roughness: 1 })],
+};
+const tuftGeo = new THREE.ConeGeometry(0.05, 0.36, 3).translate(0, 0.18, 0);
+const rockGeo = new THREE.DodecahedronGeometry(0.25, 0);
+const patchGeo = new THREE.CircleGeometry(0.5, 6).rotateX(-Math.PI / 2);
+const trunkGeo = new THREE.CylinderGeometry(0.1, 0.15, 1, 5).translate(0, 0.5, 0);
+const crownGeo = new THREE.IcosahedronGeometry(0.9, 0);
+const pineGeo = new THREE.ConeGeometry(0.8, 1.6, 6);
+
+for (let i = 0; i < 36; i++) { // 흙 얼룩
+  const k = i % 2;
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(patchGeo, decorMat.patch[k]);
+  m.position.y = 0.01 + k * 0.01;
+  m.scale.set(1.5 + rand() * 2.5, 1, 0.6 + rand() * 0.8);
+  m.rotation.y = (rand() - 0.5) * 0.4;
+  m.receiveShadow = true;
+  g.add(m);
+  addDecor(g, randX(), (rand() * 2 - 1) * 5, 1);
+}
+for (let i = 0; i < 80; i++) { // 풀 덤불
+  const g = new THREE.Group();
+  const mat = pick(decorMat.grass);
+  for (let j = 0; j < 3; j++) {
+    const m = new THREE.Mesh(tuftGeo, mat);
+    m.position.set((rand() - 0.5) * 0.18, 0, (rand() - 0.5) * 0.18);
+    m.rotation.set((rand() - 0.5) * 0.6, rand() * Math.PI, (rand() - 0.5) * 0.6);
+    m.scale.y = 0.6 + rand() * 0.9;
+    g.add(m);
+  }
+  addDecor(g, randX(), sideZ(0.9, 12), 0.8 + rand() * 0.6);
+}
+for (let i = 0; i < 26; i++) { // 바위
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(rockGeo, decorMat.rock);
+  m.scale.set(1 + rand() * 0.6, 0.5 + rand() * 0.4, 0.8 + rand() * 0.5);
+  m.rotation.y = rand() * Math.PI;
+  m.position.y = 0.05;
+  m.receiveShadow = true;
+  g.add(m);
+  addDecor(g, randX(), sideZ(1.4, 12), 0.5 + rand() * 0.9);
+}
+for (let i = 0; i < 18; i++) { // 나무 (카메라 궤도 밖에 배치)
+  const g = new THREE.Group();
+  g.add(new THREE.Mesh(trunkGeo, decorMat.trunk));
+  const pine = rand() < 0.4;
+  const crown = new THREE.Mesh(pine ? pineGeo : crownGeo, pick(decorMat.leaf));
+  crown.position.y = pine ? 1.6 : 1.5;
+  crown.scale.y = pine ? 1 : 0.85;
+  crown.rotation.y = rand() * Math.PI;
+  g.add(crown);
+  addDecor(g, randX(), sideZ(17, 26), 1.2 + rand() * 1.2);
+}
+
+let scroll = 0;
+function updateDecor() {
+  for (const d of decor) {
+    const x = THREE.MathUtils.euclideanModulo(d.x0 + scroll, SPAN) - HALF;
+    const fade = THREE.MathUtils.clamp((HALF - Math.abs(x)) / 4, 0, 1); // 양 끝에서 줄어들며 재순환
+    d.obj.position.x = x;
+    d.obj.visible = fade > 0.001;
+    d.obj.scale.setScalar(d.scale * Math.max(fade, 0.001));
+  }
+}
+
+// ───────────────────────── UI · 루프 ─────────────────────────
+const CYCLE = 0.66;  // 속도 1일 때 한 걸음(주기) 길이 [초]
+const STRIDE = 4.6;  // 한 주기 동안 땅이 뒤로 흘러가는 거리
+let phase = 0, speed = 1, paused = false;
+
+const speedInput = document.getElementById('speed');
+const speedVal = document.getElementById('speedVal');
+const pauseBtn = document.getElementById('pause');
+
+speedInput.addEventListener('input', () => {
+  speed = parseFloat(speedInput.value);
+  speedVal.textContent = `${speed.toFixed(2)}×`;
+});
+function togglePause() {
+  paused = !paused;
+  pauseBtn.textContent = paused ? '재생' : '일시정지';
+}
+pauseBtn.addEventListener('click', togglePause);
+window.addEventListener('keydown', (e) => {
+  if (e.code !== 'Space' || e.target instanceof HTMLButtonElement || e.target instanceof HTMLInputElement) return;
+  e.preventDefault();
+  togglePause();
+});
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  // 속도를 바꿔도 튀지 않도록 위상을 누적
+  const dp = paused ? 0 : (dt * speed) / CYCLE;
+  phase = (phase + dp) % 1;
+  scroll = (scroll - dp * STRIDE) % SPAN;
+
+  poseTiger(phase);
+  updateDecor();
+  controls.update();
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>

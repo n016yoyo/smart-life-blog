@@ -1,0 +1,118 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>같은 호랑이를 에포트만 바꿔 다섯 번 | AI TIGER MASK</title>
+<meta name="description" content="같은 로우폴리 호랑이 요청을 Opus 5.5 의 effort 만 low·medium·high·xhigh·max 로 바꿔 각 1회 시켰더니 정가 환산 비용은 $0.75 에서 $12.42(16.5배), 시간은 42.5초에서 1시간 16분 20초(107.8배)였습니다. 요청문과 결과 파일 다섯 개 그대로.">
+<meta property="og:title" content="같은 호랑이를 에포트만 바꿔 다섯 번">
+<meta property="og:description" content="요청문 그대로 · 결과 파일 다섯 개 · 비용과 시간 세는 법 · 고르는 법">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e;--g:#1e9e6a}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.calc label{display:block;font-size:13px;font-weight:800;color:#5c554a;margin:10px 0 6px}
+.calc .row{display:flex;gap:10px;flex-wrap:wrap}
+.calc select,.calc input{font:inherit;font-size:15px;padding:9px 12px;border-radius:10px;border:1px solid #d8d0c0;background:#faf7f1;color:var(--ink)}
+.calc button{margin-top:14px;width:100%;background:var(--o);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:900;cursor:pointer}
+.out{margin-top:14px;border-radius:14px;padding:16px;background:#faf7f1;border:1px solid #eee7db;display:none}
+.out .big{font-size:28px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.out .big.ok{color:var(--g)}.out .big.no{color:var(--o)}
+.out p{font-size:13.5px;color:#4b473f;margin-top:6px}
+.bar{margin-top:10px;height:14px;border-radius:7px;background:#e6f4ec;overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--o)}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:520px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a;white-space:nowrap}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.warn p+p{margin-top:6px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+.box{margin:12px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden}
+.box .bar{display:flex;justify-content:space-between;align-items:center;height:auto;margin:0;padding:10px 14px;background:#efe7db;font-size:12.5px;font-weight:800;color:#5c554a;border-radius:0}
+.box pre{padding:14px 16px;font:inherit;font-size:14px;line-height:1.6;white-space:pre-wrap}
+.copy{border:0;background:var(--o);color:#fff;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:800;cursor:pointer}
+.dl{margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.dl a{display:block;text-align:center;background:var(--ink);color:#fff;border-radius:12px;padding:13px;font-size:14.5px;font-weight:800;text-decoration:none}
+.dl p{font-size:12.5px;color:var(--dim);text-align:center}
+</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>같은 호랑이를<br>에포트만 바꿔 다섯 번</h1>
+<div class="sub">2026년 9월 28일 Opus 5.5 에 effort 만 바꿔 각 1회 보낸 기록 · 시각은 한국 시간</div>
+<div class="chips"><span class="chip">비용 <b>$0.75</b> → <b>$12.42</b></span><span class="chip">시간 <b>42.5초</b> → <b>1시간 16분</b></span><span class="chip">각 <b>1회</b></span></div>
+</header>
+<div class="wrap">
+<div class="who"><h2>한 줄 요약</h2>
+<p>같은 로우폴리 호랑이 요청을 클로드 Opus 5.5 에 effort(생각 수준)만 low, medium, high, xhigh, max 로 바꿔 한 번씩 보냈습니다. 정가로 환산한 비용은 max 가 low 의 16.5배, 걸린 시간은 107.8배였고, 다섯 결과 모두 콘솔 오류 없이 재생됐습니다. xhigh 와 max 에는 요청에 없던 속도 슬라이더가 붙어 있었습니다.</p>
+<p class="note">각 단계 한 번씩 잰 값입니다. 같은 요청을 다시 보내면 값이 조금씩 다르게 나옵니다.</p></div>
+
+<div class="lead"><h2>제가 보낸 요청, 그대로</h2><p>다섯 단계 모두 글자 하나 다르지 않게 같은 요청을 보냈습니다</p></div>
+<div class="box"><div class="bar"><span>보낸 요청 · 두 줄</span><button class="copy" data-t="req">복사</button></div>
+<pre id="req">Three.js 로 로우폴리 호랑이가 제자리에서 달리는 3D 애니메이션을 index.html 한 파일로 만들어줘.
+기본 도형만 써서 다리·몸통·머리·꼬리가 따로 움직이고, 끊김 없이 반복되게.</pre></div>
+<div class="dl"><a href="low.html">low 가 만든 호랑이 열어 보기 · 42.5초 · $0.75</a><a href="medium.html">medium 이 만든 호랑이 열어 보기 · 92.7초 · $0.87</a><a href="high.html">high 가 만든 호랑이 열어 보기 · 6분 35초 · $1.73</a><a href="xhigh.html">xhigh 가 만든 호랑이 열어 보기 · 14분 4초 · $3.11</a><a href="max.html">max 가 만든 호랑이 열어 보기 · 1시간 16분 · $12.42</a><p>전부 수정 없이 올렸습니다. 열 때 인터넷이 필요합니다(Three.js 를 불러옵니다, PC 권장)</p></div>
+
+<div class="lead"><h2>결과물에서 보이는 것만</h2><p>좋고 나쁨의 평가는 하지 않고, 화면에 실제로 있는 것만 적었습니다</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>low · medium</h3><p>low 는 상자 몸통에 풀 몇 포기, medium 은 꼬리가 휘고 바위가 생겼습니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>high</h3><p>바닥 무늬, 풀, 바위와 얼굴 무늬가 있습니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>xhigh · max</h3><p>둘 다 요청에 없던 속도 슬라이더와 일시정지 버튼이 붙어 있었습니다. xhigh 는 뒤에 나무도 있습니다. max 는 둥근 몸통과 흰 배가 보입니다.</p></div></div>
+</div>
+
+<div class="lead"><h2>직접 바꿔 보는 법, 셋</h2><p>클로드 코드를 열면 바로 됩니다</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>/effort 치고 ←/→ 로 고르기</h3><p>슬래시 effort 를 입력하면 low, medium, high, xhigh, max 가 놓인 슬라이더가 뜹니다. 좌우 화살표로 옮기고 Enter 로 확정합니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>s 는 이 대화에서만</h3><p>패널 아래 안내에 「s for this session only」가 있습니다. 제가 max 에서 s 를 눌러 보니 「Set effort level to max (this session only)」가 떴습니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>첫 화면 맨 위에서 지금 값 확인</h3><p>클로드 코드 첫 화면 머리 둘째 줄에 「Opus 5.5 with xhigh effort」처럼 지금 모델과 effort 가 적혀 있습니다.</p></div></div>
+</div>
+<div class="warn"><h3>max 를 고를 때 클로드 코드가 띄운 안내문 그대로</h3>
+<p>「Maximum capability with deepest reasoning. May use excessive tokens resulting in long response times or overthinking. Use sparingly for the hardest tasks.」</p>
+<p>제 결과에서는 max 가 low 의 16.5배 비용, 107.8배 시간이었습니다. 그래서 저는 처음부터 max 로 시작하지 않고 low 로 먼저 돌려 보고, 결과가 모자라면 한 칸씩 올리려고 합니다. 이건 쉬운 요청 한 번으로 정한 제 방식이고, 어려운 일에서 어느 단계가 맞는지는 재 보지 않았습니다.</p></div>
+
+<div class="lead"><h2>숫자, 세는 법까지</h2><p>클로드 코드가 남긴 실행 기록과 결과 파일로 잰 값입니다</p></div>
+<div class="tw"><table><tr><th>effort</th><th>시간</th><th>정가 환산</th><th>출력 토큰</th><th>파일</th><th>재생 오류</th></tr>
+<tr><td>low</td><td class="n">42.5초</td><td class="n">$0.75</td><td class="n">4,699</td><td class="d">5.9KB</td><td class="d">0</td></tr>
+<tr><td>medium</td><td class="n">92.7초</td><td class="n">$0.87</td><td class="n">9,707</td><td class="d">9.6KB</td><td class="d">0</td></tr>
+<tr><td>high</td><td class="n">6분 35초</td><td class="n">$1.73</td><td class="n">40,500</td><td class="d">14.3KB</td><td class="d">0</td></tr>
+<tr><td>xhigh</td><td class="n">14분 4초</td><td class="n">$3.11</td><td class="n">88,597</td><td class="d">20.8KB</td><td class="d">0</td></tr>
+<tr><td>max</td><td class="n">1시간 16분 20초</td><td class="n">$12.42</td><td class="n">483,942</td><td class="d">20.6KB</td><td class="d">0</td></tr>
+</table></div>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">시간은 실행 기록 duration_ms(각 42,543 · 92,712 · 395,437 · 844,398 · 4,580,365). 비용은 실행 기록 total_cost_usd 를 API 정가로 환산한 <b>세션 전체</b> 값이라 단계마다 고정으로 들어가는 입력 토큰(캐시에 쓰는 약 8만 토큰, 무엇인지는 확인하지 못했습니다)이 포함돼 있습니다. 배수는 같은 표의 두 칸을 나눈 값입니다: 비용 12.4166 ÷ 0.75135 = 16.5배, 시간 4,580.4 ÷ 42.5 = 107.8배. 재생 오류는 헤드리스 크롬에서 16초 틀며 예외와 콘솔 오류를 센 값입니다.</p>
+
+<div class="warn"><h3>알아 둘 것</h3>
+<p>단계마다 한 번씩만 돌렸고, 그때그때 캐시 상태도 달랐습니다. 다시 돌리면 값이 달라질 수 있습니다.</p>
+<p>비용은 API 정가 환산입니다. 구독이면 따로 청구되지 않고 한도에서 나가는데, 이 실험이 한도를 몇 % 썼는지는 재지 않았습니다.</p>
+<p>실험 다섯 번은 Claude Code v2.1.280 으로 돌렸고, /effort 패널과 첫 화면 캡처는 v2.1.285 입니다. 패널의 Ultracode 스위치는 돌려 보지 않았습니다.</p>
+<p>이 아이디어는 유튜브 Nate Herk 영상에서 가져왔고, 결과와 숫자는 전부 제 실행에서 다시 잰 것입니다.</p></div>
+
+<div class="src">실측: Claude Code v2.1.280 · claude -p --model claude-opus-5-5 --effort low|medium|high|xhigh|max · 도구 Read·Write·Edit 만, 설정·플러그인 없이 빈 폴더에서 단계마다 1회(2026-09-28) · 결과 파일은 수정 없이 그대로 올렸습니다</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div>
+<script>document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{const t=document.getElementById(b.dataset.t).innerText;navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>{b.textContent="복사됨";setTimeout(()=>b.textContent="복사",1500)})}));</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-effort-ladder"})}).catch(()=>{});</script></body></html>

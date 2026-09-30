@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Low-poly Tiger Run · Three.js</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #f3e3c3; }
+  canvas { display: block; }
+  #hud {
+    position: fixed; left: 16px; bottom: 16px; padding: 10px 14px;
+    background: rgba(45, 30, 18, 0.6); color: #fff3e0; border-radius: 10px;
+    font: 13px/1.5 system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+    user-select: none;
+  }
+  #hud b { font-size: 14px; }
+  #hud label { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  #hud input { width: 120px; accent-color: #e27b25; }
+  #hud button {
+    margin-top: 6px; padding: 4px 12px; border: 0; border-radius: 6px;
+    background: #e27b25; color: #fff; font: inherit; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="hud">
+  <b>Low-poly Tiger Run</b><br />
+  드래그 회전 · 휠 줌
+  <label>속도 <input id="speed" type="range" min="0.2" max="2" step="0.05" value="1" /> <span id="speedVal">1.00×</span></label>
+  <button id="pause" type="button">일시정지</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const TAU = Math.PI * 2;
+const { clamp, lerp, smoothstep, degToRad, radToDeg, euclideanModulo } = THREE.MathUtils;
+
+// ─────────────── 장면 · 카메라 · 조명 ───────────────
+const SKY = 0xf3e3c3;
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(SKY);
+scene.fog = new THREE.Fog(SKY, 9, 24);
+
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+camera.position.set(3.2, 1.8, 5.4);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(-0.2, 0.75, 0);
+controls.enableDamping = true;
+controls.minDistance = 3;
+controls.maxDistance = 12;
+controls.maxPolarAngle = Math.PI * 0.48;
+controls.update();
+
+scene.add(new THREE.HemisphereLight(0xfff4de, 0x8a6f48, 1.3));
+const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+sun.position.set(3, 8, 5);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4, near: 1, far: 25 });
+sun.shadow.camera.updateProjectionMatrix();
+sun.shadow.normalBias = 0.02;
+scene.add(sun);
+
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(60, 40),
+  new THREE.MeshStandardMaterial({ color: 0xd4b574, roughness: 1 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+function resize() {
+  const a = innerWidth / innerHeight;
+  camera.aspect = a;
+  // 세로 화면에서도 호랑이 전체가 보이도록 FOV 보정
+  camera.fov = a >= 1 ? 40 : Math.min(80, radToDeg(2 * Math.atan(Math.tan(degToRad(20)) / a)));
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+}
+addEventListener('resize', resize);
+resize();
+
+// ─────────────── 재질 · 기본 도형 헬퍼 ───────────────
+const mat = (color, extra = {}) =>
+  new THREE.MeshStandardMaterial({ color, flatShading: true, roughness: 0.85, ...extra });
+const M = {
+  orange: mat(0xe27b25),
+  dark: mat(0x2b1b12, { side: THREE.DoubleSide }),
+  cream: mat(0xf6ecd8),
+  nose: mat(0xc0695c),
+  tongue: mat(0xd9786f),
+  eye: mat(0xf2cf3b),
+  black: mat(0x111111),
+};
+const GEO = {
+  ico: new THREE.IcosahedronGeometry(1, 1),  // 타원체 덩어리 (몸통·머리·근육)
+  ico0: new THREE.IcosahedronGeometry(1, 0), // 더 각진 작은 덩어리 (눈·코·발가락)
+  box: new THREE.BoxGeometry(1, 1, 1),
+  ring: new THREE.CylinderGeometry(1, 1, 0.04, 8), // 다리 줄무늬 (Y축 고리)
+};
+// 몸통 줄무늬: 등과 옆구리만 감싸는 부분 원기둥을 X축 방향 고리로 눕힘
+const stripeGeo = new THREE.CylinderGeometry(1, 1, 0.07, 10, 1, false, Math.PI / 2 - 1.95, 3.9).rotateZ(Math.PI / 2);
+const tailRingGeo = new THREE.CylinderGeometry(1, 1, 0.035, 6).rotateZ(Math.PI / 2);
+
+function add(parent, geo, material, pos = [0, 0, 0], scale = [1, 1, 1], rot = [0, 0, 0]) {
+  const m = new THREE.Mesh(geo, material);
+  m.position.set(...pos);
+  m.scale.set(...scale);
+  m.rotation.set(...rot);
+  m.castShadow = m.receiveShadow = true;
+  parent.add(m);
+  return m;
+}
+const blob = (parent, material, pos, radii, rot) => add(parent, GEO.ico, material, pos, radii, rot);
+
+function group(parent, pos = [0, 0, 0], rot = [0, 0, 0]) {
+  const g = new THREE.Group();
+  g.position.set(...pos);
+  g.rotation.set(...rot);
+  parent.add(g);
+  return g;
+}
+// 관절(원점)에서 -Y 방향으로 뻗는, 끝이 가늘어지는 각기둥
+function limb(parent, material, len, rTop, rBot, sides = 6) {
+  const geo = new THREE.CylinderGeometry(rTop, rBot, len, sides).translate(0, -len / 2, 0);
+  return add(parent, geo, material);
+}
+// 타원체 e = { c: 중심, r: 반지름 } 위 x 지점에 줄무늬 고리를 두른다
+function stripeOn(parent, e, x, tilt = 0, width = 1) {
+  const t = (x - e.c[0]) / e.r[0];
+  const k = Math.sqrt(Math.max(0, 1 - t * t)) * 1.07;
+  return add(parent, stripeGeo, M.dark, [x, e.c[1], e.c[2]], [width, e.r[1] * k, e.r[2] * k], [0, 0, tilt]);
+}
+// 다리용 줄무늬 고리 (Y축)
+const band = (parent, y, rx, rz, tilt = 0, x = 0) =>
+  add(parent, GEO.ring, M.dark, [x, y, 0], [rx, 1, rz], [0, 0, tilt]);
+
+// ─────────────── 호랑이 (기본 도형 조립) ───────────────
+// 머리는 +X 방향. 앞몸통/뒷몸통은 허리(원점)를 축으로 따로 굽혀진다.
+const H0 = 0.95; // 몸통 중심 높이
+const tiger = group(scene);
+const body = group(tiger, [0, H0, 0]);
+const chest = group(body); // 앞몸통 (+X)
+const hips = group(body);  // 뒷몸통 (-X)
+
+const CHEST = { c: [0.45, 0.02, 0], r: [0.62, 0.36, 0.34] };
+blob(chest, M.orange, CHEST.c, CHEST.r);
+blob(chest, M.cream, [0.88, -0.1, 0], [0.24, 0.26, 0.25]); // 가슴 흰 털
+blob(chest, M.cream, [0.4, -0.2, 0], [0.42, 0.15, 0.26]);  // 배
+[[0.08, 0.1], [0.28, 0.14], [0.48, 0.18], [0.66, 0.24]].forEach(([x, t]) => stripeOn(chest, CHEST, x, t));
+
+const HIPS = { c: [-0.45, 0.03, 0], r: [0.62, 0.33, 0.31] };
+blob(hips, M.orange, HIPS.c, HIPS.r);
+blob(hips, M.cream, [-0.35, -0.18, 0], [0.4, 0.14, 0.24]);
+[[-0.14, 0.02], [-0.34, -0.06], [-0.54, -0.14], [-0.74, -0.22]].forEach(([x, t]) => stripeOn(hips, HIPS, x, t));
+
+// 목 · 머리
+const neck = group(chest, [0.92, 0.08, 0], [0, 0, 0.18]);
+blob(neck, M.orange, [0.12, 0, 0], [0.26, 0.23, 0.21]);
+blob(neck, M.cream, [0.14, -0.1, 0], [0.2, 0.14, 0.16]);
+const head = group(neck, [0.28, 0, 0]);
+const SKULL = { c: [0.12, 0.03, 0], r: [0.25, 0.22, 0.24] };
+blob(head, M.orange, SKULL.c, SKULL.r);
+stripeOn(head, SKULL, -0.02, 0.15, 0.7);
+stripeOn(head, SKULL, 0.07, 0.1, 0.6);
+blob(head, M.orange, [0.3, 0.06, 0], [0.14, 0.09, 0.11]);  // 콧등
+blob(head, M.cream, [0.36, -0.05, 0], [0.12, 0.09, 0.13]); // 주둥이
+add(head, GEO.ico0, M.nose, [0.46, 0.03, 0], [0.045, 0.035, 0.055]);
+add(head, GEO.box, M.dark, [0.24, 0.225, 0], [0.12, 0.02, 0.05], [0, 0, -0.35]); // 이마 무늬
+const fangGeo = new THREE.ConeGeometry(0.012, 0.045, 4);
+for (const s of [1, -1]) {
+  blob(head, M.cream, [0.13, -0.07, 0.15 * s], [0.14, 0.12, 0.1]);                    // 흰 볼털
+  add(head, GEO.box, M.dark, [0.12, -0.04, 0.245 * s], [0.1, 0.022, 0.02], [0, 0, 0.3]); // 볼 무늬
+  add(head, GEO.ico0, M.eye, [0.3, 0.1, 0.13 * s], [0.042, 0.04, 0.042]);
+  add(head, GEO.ico0, M.black, [0.326, 0.1, 0.16 * s], [0.012, 0.03, 0.012]);          // 세로 동공
+  blob(head, M.cream, [0.25, 0.17, 0.12 * s], [0.05, 0.022, 0.04]);                   // 눈 위 흰 점
+  add(head, fangGeo, M.cream, [0.43, -0.13, 0.04 * s], [1, 1, 1], [Math.PI, 0, 0]);    // 송곳니
+}
+// 아래턱 (헐떡임)
+const jaw = group(head, [0.2, -0.11, 0]);
+blob(jaw, M.cream, [0.12, -0.02, 0], [0.15, 0.045, 0.1]);
+blob(jaw, M.tongue, [0.1, 0.012, 0], [0.1, 0.02, 0.06]);
+// 귀: 사각뿔을 얇게 눌러 사용
+const earGeo = new THREE.ConeGeometry(0.075, 0.13, 4).rotateY(Math.PI / 4).translate(0, 0.065, 0);
+const ears = [1, -1].map((s) => {
+  const ear = group(head, [0.02, 0.19, 0.14 * s], [0.35 * s, 0, 0.3]);
+  add(ear, earGeo, M.orange, [0, 0, 0], [0.55, 1, 1]);
+  add(ear, earGeo, M.cream, [0.02, 0.005, 0], [0.3, 0.72, 0.62]);
+  return ear;
+});
+
+// 다리: 관절마다 Group. 회전값은 매 프레임 IK로 계산한다.
+// homeX: 발 궤적 중심(월드 X), lift: 발 드는 높이, tuck: 들 때 뒤로 접는 양, curl: 발끝 말기
+const FRONT = { L1: 0.48, L2: 0.47, pawH: 0.1, homeX: 0.75, lift: 0.26, tuck: 0.06, curl: 1.4, ease: 0.7 };
+const BACK = { L1: 0.42, L2: 0.4, L3: 0.26, pawH: 0.1, homeX: -0.9, lift: 0.26, tuck: 0, curl: 0.9, ease: 1 };
+
+function paw(parent, y) {
+  const p = group(parent, [0, y, 0]);
+  add(p, GEO.box, M.cream, [0.045, -0.055, 0], [0.2, 0.09, 0.15]);
+  for (const z of [-0.045, 0, 0.045]) add(p, GEO.ico0, M.cream, [0.14, -0.065, z], [0.035, 0.035, 0.03]); // 발가락
+  return p;
+}
+function frontLeg(s, phase) {
+  const upper = group(chest, [0.72, -0.12, 0.2 * s]);
+  blob(upper, M.orange, [0, -0.06, 0], [0.18, 0.22, 0.13]); // 어깨 근육
+  limb(upper, M.orange, FRONT.L1, 0.12, 0.08);
+  const lower = group(upper, [0, -FRONT.L1, 0]);
+  blob(lower, M.orange, [0, 0, 0], [0.085, 0.085, 0.085]); // 팔꿈치
+  limb(lower, M.orange, FRONT.L2, 0.08, 0.062);
+  band(lower, -0.16, 0.083, 0.083, 0.2);
+  band(lower, -0.3, 0.078, 0.078, 0.2);
+  return { cfg: FRONT, phase, upper, lower, paw: paw(lower, -FRONT.L2) };
+}
+function backLeg(s, phase) {
+  const upper = group(hips, [-0.78, -0.05, 0.2 * s]);
+  blob(upper, M.orange, [0.03, -0.14, 0], [0.21, 0.3, 0.14]); // 허벅지
+  band(upper, -0.02, 0.216, 0.144, 0.35, 0.03);
+  band(upper, -0.2, 0.23, 0.154, 0.35, 0.03);
+  limb(upper, M.orange, BACK.L1, 0.11, 0.075);
+  const lower = group(upper, [0, -BACK.L1, 0]);
+  blob(lower, M.orange, [0, 0, 0], [0.085, 0.085, 0.085]); // 무릎
+  limb(lower, M.orange, BACK.L2, 0.08, 0.06);
+  band(lower, -0.13, 0.083, 0.083, 0.2);
+  band(lower, -0.25, 0.076, 0.076, 0.2);
+  const meta = group(lower, [0, -BACK.L2, 0]);
+  blob(meta, M.orange, [0, 0, 0], [0.066, 0.066, 0.066]); // 뒤꿈치(hock)
+  limb(meta, M.orange, BACK.L3, 0.062, 0.056);
+  return { cfg: BACK, phase, upper, lower, meta, paw: paw(meta, -BACK.L3) };
+}
+// phase = 발이 땅에 닿는 순간(사이클 비율). 뒷다리 좌→우, 앞다리 우→좌 순서의 로터리 갤럽
+const legs = [frontLeg(1, 0.45), frontLeg(-1, 0.52), backLeg(1, 0.07), backLeg(-1, 0)];
+
+// 꼬리: 8마디 체인 (각 마디가 앞 마디의 자식), 끝 두 마디는 검정
+const TAIL_SEG = 0.15;
+const tail = [];
+{
+  let parent = group(hips, [-1.0, 0.16, 0]);
+  for (let i = 0; i < 8; i++) {
+    const seg = group(parent, [i ? -TAIL_SEG : 0, 0, 0]);
+    const r0 = 0.07 - i * 0.0045;
+    const r1 = r0 - 0.0045;
+    const geo = new THREE.CylinderGeometry(r1, r0, TAIL_SEG * 1.1, 6)
+      .rotateZ(Math.PI / 2)
+      .translate(-TAIL_SEG / 2, 0, 0);
+    add(seg, geo, i >= 6 ? M.dark : M.orange);
+    if (i % 2 === 1 && i < 6) add(seg, tailRingGeo, M.dark, [-TAIL_SEG / 2, 0, 0], [1, r0 * 1.2, r0 * 1.2]);
+    tail.push(seg);
+    parent = seg;
+  }
+}
+
+// ─────────────── 흘러가는 바닥 (제자리 달리기용 러닝머신 효과) ───────────────
+const WRAP = 30; // 소품이 되감기는 구간 길이
+const props = [];
+let seed = 12345;
+const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const envMat = (color) => new THREE.MeshStandardMaterial({ color, flatShading: true, roughness: 1 });
+const ENV = {
+  rock: envMat(0x9e907c), grass: envMat(0x9ba34b), grass2: envMat(0xb3aa55),
+  patchA: envMat(0xc6a767), patchB: envMat(0xdfc58f),
+};
+const rockGeo = new THREE.DodecahedronGeometry(1, 0);
+const bladeGeo = new THREE.ConeGeometry(1, 1, 4).translate(0, 0.5, 0);
+const patchGeo = new THREE.CircleGeometry(1, 6).rotateX(-Math.PI / 2);
+
+function place(obj, zMin, zMax) {
+  obj.position.z = (rand() < 0.5 ? -1 : 1) * lerp(zMin, zMax, rand());
+  obj.userData.x0 = (rand() - 0.5) * WRAP;
+  obj.userData.s0 = obj.scale.clone();
+  props.push(obj);
+  scene.add(obj);
+}
+for (let i = 0; i < 70; i++) { // 땅 얼룩 (납작해서 발밑도 지나감)
+  const m = new THREE.Mesh(patchGeo, rand() < 0.5 ? ENV.patchA : ENV.patchB);
+  const r = 0.2 + rand() * 0.6;
+  m.scale.set(r * (1 + rand()), 1, r);
+  m.rotation.y = rand() * TAU;
+  m.position.y = 0.002 + rand() * 0.004;
+  m.receiveShadow = true;
+  place(m, 0, 9);
+}
+for (let i = 0; i < 40; i++) { // 바위 (호랑이 경로 밖)
+  const m = new THREE.Mesh(rockGeo, ENV.rock);
+  const r = 0.06 + rand() * 0.22;
+  m.scale.set(r * (1 + rand() * 0.6), r * 0.7, r);
+  m.rotation.set(rand(), rand() * TAU, rand());
+  m.position.y = r * 0.25;
+  m.castShadow = m.receiveShadow = true;
+  place(m, 1.0, 9);
+}
+for (let i = 0; i < 70; i++) { // 풀 덤불
+  const g = new THREE.Group();
+  const n = 3 + Math.floor(rand() * 3);
+  for (let j = 0; j < n; j++) {
+    const b = new THREE.Mesh(bladeGeo, rand() < 0.5 ? ENV.grass : ENV.grass2);
+    b.scale.set(0.035, 0.18 + rand() * 0.25, 0.035);
+    b.position.set((rand() - 0.5) * 0.12, 0, (rand() - 0.5) * 0.12);
+    b.rotation.set((rand() - 0.5) * 0.6, 0, (rand() - 0.5) * 0.6);
+    b.castShadow = true;
+    g.add(b);
+  }
+  place(g, 0.9, 9);
+}
+function updateProps(offset) {
+  for (const p of props) {
+    const x = euclideanModulo(p.userData.x0 - offset + WRAP / 2, WRAP) - WRAP / 2;
+    p.position.x = x;
+    // 되감기는 양 끝에서 크기를 0으로 줄여 튀어 보이지 않게
+    const fade = Math.max(smoothstep(WRAP / 2 - Math.abs(x), 0, 3), 0.001);
+    p.scale.copy(p.userData.s0).multiplyScalar(fade);
+  }
+}
+
+// 발 디딜 때 흙먼지
+const dustGeo = new THREE.IcosahedronGeometry(1, 0);
+const dust = Array.from({ length: 36 }, () => {
+  const m = new THREE.Mesh(dustGeo, new THREE.MeshStandardMaterial({
+    color: 0xe8d6ad, flatShading: true, transparent: true, opacity: 0, depthWrite: false,
+  }));
+  m.visible = false;
+  m.userData = { life: 0, v: new THREE.Vector3() };
+  scene.add(m);
+  return m;
+});
+let dustNext = 0;
+function puff(x, z) {
+  for (let k = 0; k < 3; k++) {
+    const d = dust[dustNext++ % dust.length];
+    d.visible = true;
+    d.position.set(x + (Math.random() - 0.5) * 0.15, 0.05, z + (Math.random() - 0.5) * 0.15);
+    d.userData.life = 1;
+    d.userData.v.set(-GROUND_SPEED * (0.5 + Math.random() * 0.3), 0.3 + Math.random() * 0.4, (Math.random() - 0.5) * 0.6);
+  }
+}
+function updateDust(dt) {
+  for (const d of dust) {
+    const ud = d.userData;
+    if (ud.life <= 0) continue;
+    ud.life -= dt / 0.55;
+    if (ud.life <= 0) { d.visible = false; continue; }
+    d.position.addScaledVector(ud.v, dt);
+    d.scale.setScalar(0.04 + 0.1 * (1 - ud.life));
+    d.material.opacity = 0.5 * ud.life;
+  }
+}
+
+// ─────────────── 달리기 사이클 ───────────────
+// 모든 움직임은 사이클 위상 u∈[0,1)의 주기 함수 → u가 1에서 0으로 넘어가도 이음새가 없다.
+const CYCLE = 0.58;  // 한 사이클 길이(초)
+const DUTY = 0.32;   // 발이 땅에 닿아 있는 비율
+const STRIDE = 0.7;  // 딛고 있는 동안 발이 뒤로 밀리는 거리
+const GROUND_SPEED = STRIDE / (DUTY * CYCLE); // 바닥 속도 = 딛은 발의 속도 → 발이 미끄러지지 않음
+
+// 발 궤적: 접지(일정 속도로 뒤로) → 공중(들어 올려 앞으로). 두 구간 끝점이 맞물려 닫힌 고리
+function footPath(lu, cfg) {
+  if (lu < DUTY) {
+    const s = lu / DUTY;
+    return { s, stance: true, x: STRIDE * (0.5 - s), y: 0 };
+  }
+  const s = (lu - DUTY) / (1 - DUTY);
+  const arc = Math.sin(Math.PI * s);
+  const e = 0.5 - 0.5 * Math.cos(Math.PI * Math.pow(s, cfg.ease));
+  return { s, stance: false, x: STRIDE * (e - 0.5) - cfg.tuck * arc * (1 - s), y: cfg.lift * arc };
+}
+
+// 2관절 IK (옆에서 본 2D 평면). bend=+1: 관절이 뒤로 접힘(앞다리 팔꿈치), -1: 앞으로(뒷다리 무릎)
+function solve2(dx, dy, L1, L2, bend) {
+  const d = clamp(Math.hypot(dx, dy), Math.abs(L1 - L2) + 1e-4, (L1 + L2) * 0.999);
+  const aim = Math.atan2(dx, -dy);
+  const A = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
+  const B = Math.acos(clamp((L1 * L1 + L2 * L2 - d * d) / (2 * L1 * L2), -1, 1));
+  return [aim - bend * A, bend * (Math.PI - B)];
+}
+
+const _p = new THREE.Vector3();
+function poseLeg(leg, u, moving) {
+  const { cfg, upper, lower, paw } = leg;
+  const lu = euclideanModulo(u - leg.phase, 1);
+  if (moving && leg.prev !== undefined && lu < leg.prev) puff(cfg.homeX + STRIDE * 0.5, upper.position.z);
+  leg.prev = lu;
+
+  const f = footPath(lu, cfg);
+  const frame = body.rotation.z + upper.parent.rotation.z; // 다리가 붙은 몸통 부분의 월드 기울기
+  // 발목 목표점(월드) → 앞/뒷몸통 로컬 좌표
+  _p.set(cfg.homeX + f.x, cfg.pawH + f.y, upper.position.z);
+  upper.parent.worldToLocal(_p);
+  let dx = _p.x - upper.position.x;
+  let dy = _p.y - upper.position.y;
+  const pawAngle = f.stance ? 0 : -cfg.curl * Math.sin(Math.PI * f.s); // 공중에선 발끝을 말아 올림
+
+  if (!leg.meta) {
+    const [a1, a2] = solve2(dx, dy, cfg.L1, cfg.L2, 1);
+    upper.rotation.z = a1;
+    lower.rotation.z = a2;
+    paw.rotation.z = pawAngle - frame - a1 - a2;
+  } else {
+    // 뒷다리: 발등(중족골) 각도를 먼저 정하고, 뒤꿈치(hock) 위치를 IK 목표로 삼는다
+    const metaWorld = f.stance
+      ? lerp(0.25, -0.45, f.s)
+      : lerp(-0.45, 0.25, 0.5 - 0.5 * Math.cos(Math.PI * f.s)) + 0.45 * Math.sin(Math.PI * f.s);
+    const m = metaWorld - frame;
+    dx -= cfg.L3 * Math.sin(m);
+    dy += cfg.L3 * Math.cos(m);
+    const [a1, a2] = solve2(dx, dy, cfg.L1, cfg.L2, -1);
+    upper.rotation.z = a1;
+    lower.rotation.z = a2;
+    leg.meta.rotation.z = m - a1 - a2;
+    paw.rotation.z = pawAngle - frame - m;
+  }
+}
+
+function poseTiger(u, moving) {
+  const w = TAU * u;
+  // 몸통: 공중 구간 2번에 맞춰 두 번 오르내림, 앞뒤 끄덕임, 허리 굽힘/펴기, 약한 좌우 롤
+  body.position.y = H0 + 0.045 * Math.cos(2 * TAU * (u - 0.42));
+  body.rotation.z = 0.045 * Math.cos(TAU * (u - 0.3));
+  body.rotation.x = 0.02 * Math.sin(TAU * (u - 0.1));
+  const flex = 0.09 * Math.cos(TAU * (u - 0.95)); // +: 등이 둥글게(다리 모음), -: 쭉 폄
+  chest.rotation.z = -flex;
+  hips.rotation.z = flex;
+  tiger.updateMatrixWorld(true);
+
+  for (const leg of legs) poseLeg(leg, u, moving);
+
+  // 머리: 목은 따라 흔들리지만 머리는 수평을 유지하려고 반대로 보정
+  neck.rotation.z = 0.18 + 0.06 * Math.sin(TAU * (u - 0.35));
+  head.rotation.z = -0.06 + 0.035 * Math.sin(2 * w - 0.6) - (body.rotation.z + chest.rotation.z + neck.rotation.z);
+  head.rotation.y = 0.03 * Math.sin(w);
+  jaw.rotation.z = -0.08 - 0.07 * (0.5 + 0.5 * Math.sin(2 * w));
+  ears.forEach((ear, i) => (ear.rotation.z = 0.3 + 0.07 * Math.sin(2 * w + i * 1.3)));
+
+  // 꼬리: 마디마다 위상이 조금씩 늦게 전달되는 파동
+  tail.forEach((seg, i) => {
+    const ph = w - i * 0.6;
+    seg.rotation.z = (i ? -0.07 : 0.5 - 0.6 * flex) + (0.08 + 0.015 * i) * Math.sin(ph);
+    seg.rotation.y = (0.04 + 0.012 * i) * Math.sin(ph + 1.2);
+  });
+}
+
+// ─────────────── 루프 · UI ───────────────
+let cycle = 0;
+let groundOffset = 0;
+let speed = 1;
+let paused = false;
+const speedInput = document.getElementById('speed');
+const speedVal = document.getElementById('speedVal');
+const pauseBtn = document.getElementById('pause');
+speedInput.addEventListener('input', () => {
+  speed = parseFloat(speedInput.value);
+  speedVal.textContent = speed.toFixed(2) + '×';
+});
+pauseBtn.addEventListener('click', () => {
+  paused = !paused;
+  pauseBtn.textContent = paused ? '재생' : '일시정지';
+});
+
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 1 / 20); // 탭 전환 뒤 큰 dt로 튀는 것 방지
+  const step = paused ? 0 : dt * speed;
+  // 위상을 누적하므로 속도를 바꿔도 자세가 튀지 않는다
+  cycle = (cycle + step / CYCLE) % 1;
+  groundOffset = (groundOffset + GROUND_SPEED * step) % WRAP;
+  poseTiger(cycle, step > 0);
+  updateProps(groundOffset);
+  updateDust(step);
+  controls.update();
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
