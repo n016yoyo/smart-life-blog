@@ -97,7 +97,7 @@ td.d{font-size:12.5px;color:#5c554a}
 
 <div class="lead"><h2>숫자, 세는 법까지</h2><p>클로드 코드가 남긴 실행 기록과 결과 파일로 잰 값입니다</p></div>
 <div class="tw"><table><tr><th>무엇</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>세는 법</th></tr>
-<tr><td>비용</td><td class="n">$0.3705</td><td class="n">$0.9583</td><td class="d">실행 기록 total_cost_usd 0.3705086 · 0.9583112. 나눈 값 2.59배. 요청 하나가 아니라 이 한 번의 세션 전체 값이고, 시스템 프롬프트를 캐시에 쓰는 약 8만 토큰이 두 쪽에 비슷하게 들어 있습니다</td></tr>
+<tr><td>비용</td><td class="n">$0.3705</td><td class="n">$0.9583</td><td class="d">실행 기록 total_cost_usd 0.3705086 · 0.9583112. 나눈 값 2.59배. 요청 하나가 아니라 이 한 번의 세션 전체 값입니다. 캐시에 쓰는 약 8만 토큰이 두 쪽에 비슷하게 들어 있는데, 그게 무엇인지는 확인하지 못했습니다</td></tr>
 <tr><td>걸린 시간</td><td class="n">24.5초</td><td class="n">104.9초</td><td class="d">실행 기록 duration_ms 24,501 · 104,899. 나눈 값 4.28배. 명령을 시작해서 끝날 때까지 벽시계로 재면 27.7초 · 108.1초, 3.9배</td></tr>
 <tr><td>출력 토큰</td><td class="n">4,218</td><td class="n">13,183</td><td class="d">실행 기록 usage.output_tokens. 나눈 값 3.13배</td></tr>
 <tr><td>만든 파일</td><td class="n">190줄</td><td class="n">647줄</td><td class="d">index.html 하나씩. 줄 수는 줄바꿈 수(wc -l), 크기 6,985바이트 · 20,708바이트</td></tr>
@@ -110,7 +110,7 @@ td.d{font-size:12.5px;color:#5c554a}
 <tr><td>출력</td><td class="n">$10</td><td class="n">$20</td></tr>
 <tr><td>캐시 읽기</td><td class="n">$0.20</td><td class="n">$0.20</td></tr>
 </table></div>
-<p style="font-size:13px;color:var(--dim);margin-top:8px">입력과 출력은 Opus 5.5 가 딱 두 배(Sonnet 5.5 는 반값)이고, 캐시 읽기는 둘이 같습니다. 제가 잰 비용 배수 2.59배가 표의 2배보다 큰 건 Opus 5.5 가 출력 토큰을 3.13배 더 썼기 때문입니다.</p>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">입력과 출력은 Opus 5.5 가 딱 두 배(Sonnet 5.5 는 반값)이고, 캐시 읽기는 둘이 같습니다. 제가 잰 비용 배수 2.59배가 표의 2배보다 큰 건 Opus 5.5 가 토큰을 더 많이 썼기 때문입니다(출력 토큰은 3.13배).</p>
 
 <div class="warn"><h3>알아 둘 것</h3>
 <p>각 모델 한 번씩, effort(생각 수준)는 정하지 않은 기본값입니다. 쉬운 요청 하나라서 어려운 일에도 같은 차이가 난다는 뜻은 아닙니다.</p>
