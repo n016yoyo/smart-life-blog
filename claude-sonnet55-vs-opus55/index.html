@@ -1,0 +1,124 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sonnet 5.5 vs Opus 5.5, 같은 요청 한 번씩 | AI TIGER MASK</title>
+<meta name="description" content="같은 벽돌깨기 요청을 Sonnet 5.5 와 Opus 5.5 에 한 번씩 보냈더니 정가 환산 비용은 $0.3705 대 $0.9583(2.59배), 걸린 시간은 24.5초 대 104.9초였습니다. 보낸 요청문, 결과 파일 두 개, 세는 법 그대로.">
+<meta property="og:title" content="Sonnet 5.5 vs Opus 5.5, 같은 요청 한 번씩">
+<meta property="og:description" content="요청문 그대로 · 결과 파일 두 개 · 비용과 시간 세는 법">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e;--g:#1e9e6a}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.calc{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.calc label{display:block;font-size:13px;font-weight:800;color:#5c554a;margin:10px 0 6px}
+.calc .row{display:flex;gap:10px;flex-wrap:wrap}
+.calc select,.calc input{font:inherit;font-size:15px;padding:9px 12px;border-radius:10px;border:1px solid #d8d0c0;background:#faf7f1;color:var(--ink)}
+.calc button{margin-top:14px;width:100%;background:var(--o);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:900;cursor:pointer}
+.out{margin-top:14px;border-radius:14px;padding:16px;background:#faf7f1;border:1px solid #eee7db;display:none}
+.out .big{font-size:28px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.out .big.ok{color:var(--g)}.out .big.no{color:var(--o)}
+.out p{font-size:13.5px;color:#4b473f;margin-top:6px}
+.bar{margin-top:10px;height:14px;border-radius:7px;background:#e6f4ec;overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--o)}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tw table{min-width:520px}
+th{background:#efe7db;font-size:12.5px;color:#5c554a;white-space:nowrap}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:14px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.warn p+p{margin-top:6px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#7a4a36}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+.box{margin:12px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden}
+.box .bar{display:flex;justify-content:space-between;align-items:center;height:auto;margin:0;padding:10px 14px;background:#efe7db;font-size:12.5px;font-weight:800;color:#5c554a;border-radius:0}
+.box pre{padding:14px 16px;font:inherit;font-size:14px;line-height:1.6;white-space:pre-wrap}
+.copy{border:0;background:var(--o);color:#fff;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:800;cursor:pointer}
+.dl{margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.dl a{display:block;text-align:center;background:var(--ink);color:#fff;border-radius:12px;padding:13px;font-size:14.5px;font-weight:800;text-decoration:none}
+.dl p{font-size:12.5px;color:var(--dim);text-align:center}
+</style>
+</head><body>
+<header><div class="b">AI TIGER MASK</div>
+<h1>Sonnet 5.5 vs Opus 5.5<br>같은 요청 한 번씩</h1>
+<div class="sub">2026년 9월 30일 같은 요청을 두 모델에 한 번씩 보낸 기록 · 시각은 한국 시간</div>
+<div class="chips"><span class="chip">비용 <b>$0.3705</b> 대 <b>$0.9583</b></span><span class="chip">시간 <b>24.5초</b> 대 <b>104.9초</b></span><span class="chip">각 <b>1회</b></span></div>
+</header>
+<div class="wrap">
+<div class="who"><h2>한 줄 요약</h2>
+<p>같은 벽돌깨기 요청을 Sonnet 5.5 와 Opus 5.5 에 한 번씩 보냈습니다. 둘 다 고치지 않고 그대로 돌아가는 게임이 나왔습니다. 정가로 환산한 비용은 Opus 5.5 가 2.59배, 걸린 시간은 4.28배였고, Opus 5.5 는 출력 토큰을 3.13배 더 썼습니다.</p>
+<p class="note">각 모델 한 번씩, 쉬운 요청으로 잰 값입니다. 같은 요청을 다시 보내면 값이 조금씩 다르게 나옵니다.</p></div>
+
+<div class="lead"><h2>제가 보낸 요청, 그대로</h2><p>두 모델에 글자 하나 다르지 않게 같은 요청을 보냈습니다</p></div>
+<div class="box"><div class="bar"><span>보낸 요청 · 두 줄</span><button class="copy" data-t="req">복사</button></div>
+<pre id="req">index.html 파일 하나로, 브라우저에서 바로 할 수 있는 벽돌깨기 게임을 만들어줘.
+점수, 남은 목숨, 벽돌 깨질 때 파티클, 게임오버 화면까지 넣어줘.</pre></div>
+<div class="dl"><a href="sonnet55.html">Sonnet 5.5 가 만든 파일 그대로 열어 보기</a><a href="opus55.html">Opus 5.5 가 만든 파일 그대로 열어 보기</a><p>둘 다 수정 없이 올렸습니다. 스페이스나 마우스 클릭으로 공을 쏩니다(PC 권장)</p></div>
+
+<div class="lead"><h2>고르는 순서, 세 가지</h2><p>이 한 번의 비교와 공식 발표문을 함께 본 제 정리입니다</p></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>하나, 일단 Sonnet 5.5 부터</h3>
+<p>쉬운 요청은 Sonnet 5.5 가 더 싸고 더 빨랐습니다. 제 한 번의 기록에서는 결과도 그대로 돌아갔습니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>둘, 결과가 모자라면 Opus 5.5 로 올리기</h3>
+<p>제 기록에서 Opus 5.5 는 시작 화면, P 일시정지, M 음소거를 더 넣었고 코드가 647줄로 Sonnet 5.5 의 190줄보다 길었습니다. 더 넣어 달라고 할 때 올리면 됩니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>셋, 복잡한 일은 처음부터 Opus 5.5</h3>
+<p>공식 발표문은 「Opus 5.5 remains clearly stronger at complex, open-ended work requiring sustained judgment」라고 적고 있습니다. 저는 쉬운 요청 하나만 재서, 어려운 일에서 Sonnet 5.5 가 어디까지 되는지는 모릅니다.</p></div></div>
+</div>
+
+<div class="lead"><h2>직접 해 보는 법</h2></div>
+<div class="rules">
+<div class="rule"><div class="n">1</div><div><h3>지금 쓰는 모델 이름부터 확인</h3><p>클로드 코드에서 /model 을 입력하면 모델 목록이 뜨고, 지금 고른 모델에 ✓ 가 붙어 있습니다. 여기서 Sonnet 5.5 와 Opus 5.5 를 바꿀 수 있습니다.</p></div></div>
+<div class="rule"><div class="n">2</div><div><h3>같은 요청을 붙여 넣기</h3><p>빈 폴더에서 클로드 코드를 열고 위 요청을 그대로 보냅니다. 끝나면 그 폴더에 index.html 이 생깁니다. 모델을 바꿔 한 번 더 보내면 같은 조건으로 나란히 볼 수 있습니다.</p></div></div>
+<div class="rule"><div class="n">3</div><div><h3>모자란 곳만 한 줄로 다시 요청</h3><p>결과가 마음에 안 들면 처음부터 다시 하지 말고, 빠진 것만 한 줄로 말해 보세요. 그때 모델을 올릴지 정하면 됩니다.</p></div></div>
+</div>
+
+<div class="lead"><h2>숫자, 세는 법까지</h2><p>클로드 코드가 남긴 실행 기록과 결과 파일로 잰 값입니다</p></div>
+<div class="tw"><table><tr><th>무엇</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>세는 법</th></tr>
+<tr><td>비용</td><td class="n">$0.3705</td><td class="n">$0.9583</td><td class="d">실행 기록 total_cost_usd 0.3705086 · 0.9583112. 나눈 값 2.59배. 요청 하나가 아니라 이 한 번의 세션 전체 값이고, 시스템 프롬프트를 캐시에 쓰는 약 8만 토큰이 두 쪽에 비슷하게 들어 있습니다</td></tr>
+<tr><td>걸린 시간</td><td class="n">24.5초</td><td class="n">104.9초</td><td class="d">실행 기록 duration_ms 24,501 · 104,899. 나눈 값 4.28배. 명령을 시작해서 끝날 때까지 벽시계로 재면 27.7초 · 108.1초, 3.9배</td></tr>
+<tr><td>출력 토큰</td><td class="n">4,218</td><td class="n">13,183</td><td class="d">실행 기록 usage.output_tokens. 나눈 값 3.13배</td></tr>
+<tr><td>만든 파일</td><td class="n">190줄</td><td class="n">647줄</td><td class="d">index.html 하나씩. 줄 수는 줄바꿈 수(wc -l), 크기 6,985바이트 · 20,708바이트</td></tr>
+<tr><td>재생 오류</td><td class="n">0건</td><td class="n">0건</td><td class="d">헤드리스 크롬(1280x900)에서 틀어 예외·콘솔 오류를 센 값</td></tr>
+</table></div>
+
+<div class="lead"><h2>공식 토큰값</h2><p>100만 토큰당 API 정가, Sonnet 5.5 공식 발표 페이지 표</p></div>
+<div class="tw"><table><tr><th>항목</th><th>Sonnet 5.5</th><th>Opus 5.5</th></tr>
+<tr><td>입력</td><td class="n">$2</td><td class="n">$4</td></tr>
+<tr><td>출력</td><td class="n">$10</td><td class="n">$20</td></tr>
+<tr><td>캐시 읽기</td><td class="n">$0.20</td><td class="n">$0.20</td></tr>
+</table></div>
+<p style="font-size:13px;color:var(--dim);margin-top:8px">입력과 출력은 Opus 5.5 가 딱 두 배(Sonnet 5.5 는 반값)이고, 캐시 읽기는 둘이 같습니다. 제가 잰 비용 배수 2.59배가 표의 2배보다 큰 건 Opus 5.5 가 출력 토큰을 3.13배 더 썼기 때문입니다.</p>
+
+<div class="warn"><h3>알아 둘 것</h3>
+<p>각 모델 한 번씩, effort(생각 수준)는 정하지 않은 기본값입니다. 쉬운 요청 하나라서 어려운 일에도 같은 차이가 난다는 뜻은 아닙니다.</p>
+<p>비용은 API 정가로 환산한 값입니다. 구독이면 따로 청구되지 않고 한도에서 나가는데, 이 한 번이 한도를 몇 % 썼는지는 재지 않았습니다.</p>
+<p>Opus 5.5 파일에는 소리를 내는 코드가 있지만, 실제로 소리가 나는지는 직접 들어 보지 않았습니다.</p></div>
+
+<div class="src">실측: Claude Code v2.1.285 · claude -p --model claude-sonnet-5-5, claude-opus-5-5 · 도구 Read·Write·Edit 만, 설정·플러그인 없이 빈 폴더에서 각 1회(2026-09-30 오전 8시대) · 토큰값은 anthropic.com/claude-sonnet-5-5 「Cost and speed」 표 · 결과 파일은 수정 없이 그대로 올렸습니다</div>
+<div class="foot"><a href="../">AI TIGER MASK 홈</a></div>
+</div>
+<script>document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{const t=document.getElementById(b.dataset.t).innerText;navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>{b.textContent="복사됨";setTimeout(()=>b.textContent="복사",1500)})}));</script>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-sonnet55-vs-opus55"})}).catch(()=>{});</script></body></html>
