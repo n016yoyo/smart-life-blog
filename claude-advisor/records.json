@@ -1,0 +1,76 @@
+{
+ "note": "reel_advisor 실측 기록 , 각 구성 stream.jsonl(클로드 코드 2.1.287 claude -p --output-format stream-json)의 result 줄과 조언자 호출 수, playtest 기록(log.json)에서 그대로 뽑은 값. 비용은 클로드 코드 집계(API 정가 환산, 구독 청구액 아님).",
+ "request": "index.html 파일 하나로, 브라우저에서 바로 하는 3D 카트 레이싱 게임을 만들어줘.\n트랙 한 바퀴, 컴퓨터 차 3대, 아이템 상자, 랩 타임과 순위, 미니맵까지 넣어줘. three.js 는 CDN 으로 불러와도 돼.",
+ "runs": {
+  "opus": {
+   "model": "claude-opus-5-5",
+   "total_cost_usd": 2.7713379999999996,
+   "duration_ms": 655994,
+   "num_turns": 11,
+   "modelUsage": {
+    "claude-opus-5-5": {
+     "inputTokens": 6,
+     "outputTokens": 72566,
+     "cacheReadInputTokens": 164450,
+     "cacheCreationInputTokens": 160888,
+     "costUSD": 2.7713379999999996
+    }
+   },
+   "advisor_calls": 0,
+   "index_html_lines": 1137,
+   "playtest": {
+    "console_errors": 0,
+    "page_errors": 0
+   }
+  },
+  "sonnet": {
+   "model": "claude-sonnet-5-5",
+   "total_cost_usd": 1.4255115999999999,
+   "duration_ms": 552795,
+   "num_turns": 3,
+   "modelUsage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 6,
+     "outputTokens": 73025,
+     "cacheReadInputTokens": 167108,
+     "cacheCreationInputTokens": 165457,
+     "costUSD": 1.4255115999999999
+    }
+   },
+   "advisor_calls": 0,
+   "index_html_lines": 1053,
+   "playtest": {
+    "console_errors": 0,
+    "page_errors": 0
+   }
+  },
+  "sonnet_adv": {
+   "model": "claude-sonnet-5-5",
+   "total_cost_usd": 2.1550248,
+   "duration_ms": 567702,
+   "num_turns": 3,
+   "modelUsage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 10,
+     "outputTokens": 48467,
+     "cacheReadInputTokens": 290114,
+     "cacheCreationInputTokens": 145993,
+     "costUSD": 1.1185488000000001
+    },
+    "claude-opus-5-5": {
+     "inputTokens": 150464,
+     "outputTokens": 21731,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 0,
+     "costUSD": 1.036476
+    }
+   },
+   "advisor_calls": 2,
+   "index_html_lines": 857,
+   "playtest": {
+    "console_errors": 0,
+    "page_errors": 0
+   }
+  }
+ }
+}
