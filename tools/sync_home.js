@@ -36,6 +36,7 @@ const dirs = fs.readdirSync(ROOT, { withFileTypes: true })
   .map(d => d.name).filter(n => fs.existsSync(path.join(ROOT, n, "index.html"))).sort();
 
 let home = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+const origHome = home;
 const injected = [], added = [], ghosts = [];
 
 // ── ① 조회수 카운터
@@ -69,7 +70,9 @@ for (const slug of dirs) {
   if (!WRITE) continue;
   // 같은 카테고리 마지막 카드 뒤에 넣는다(그룹 라벨 순서를 지킨다)
   const re = new RegExp(`(          <a class="kw-card" data-cat="${cat}"[\\s\\S]*?</a>\\n)(?![\\s\\S]*          <a class="kw-card" data-cat="${cat}")`);
-  home = re.test(home) ? home.replace(re, `$1${card}`) : home.replace(/(        <\/div>\n        <div style="text-align:center">)/, `${card}$1`);
+  // ★치환은 **함수**로 한다(2026-10-08). 문자열 치환은 카드 설명의 `$1`·`$&` 를 캡처 그룹으로 펼친다.
+  //   opus55-vs-fable 설명의 "$1.9283" 이 `$1`+".9283" 이 되어 카드 56줄이 홈에 한 번 더 붙었다(9/23 부터 방치).
+  home = re.test(home) ? home.replace(re, (m, g1) => g1 + card) : home.replace(/(        <\/div>\n        <div style="text-align:center">)/, (m, g1) => card + g1);
 }
 
 // ── ②b 외부 페이지 카드(pages.json, 2026-09-13) , 블로그 폴더 밖 착지 페이지(봇 대시보드 등)는 대장에서 읽는다.
@@ -87,27 +90,47 @@ for (const e of ext) {
   }
   if (home.includes(`data-ext="${e.key}"`)) {
     // 이미 있으면 제목·설명·날짜만 대장 기준으로 맞춘다(대장이 정본)
-    const re = new RegExp(`          <a class="kw-card" data-cat="[^"]*" data-ext="${e.key}"[\s\S]*?</a>\n`);
+    // ★템플릿 리터럴 안의 `\s` 는 그냥 's' 가 된다(2026-10-08 발견). `\\s\\S` 로 써야 정규식에 도달한다.
+    const re = new RegExp(`          <a class="kw-card" data-cat="[^"]*" data-ext="${e.key}"[\\s\\S]*?</a>\\n`);
     const cur = (home.match(re) || [""])[0];
     const card = extCard(e);
-    if (cur && cur !== card && WRITE) home = home.replace(re, card);
+    if (cur && cur !== card && WRITE) home = home.replace(re, () => card);
     continue;
   }
   addedExt.push(`${e.key} [${e.cat || "etc"}] ${e.title}`);
   if (!WRITE) continue;
   const cat = e.cat || "etc", card = extCard(e);
-  const re = new RegExp(`(          <a class="kw-card" data-cat="${cat}"[\s\S]*?</a>\n)(?![\s\S]*          <a class="kw-card" data-cat="${cat}")`);
-  home = re.test(home) ? home.replace(re, `$1${card}`) : home.replace(/(        <\/div>\n        <div style="text-align:center">)/, `${card}$1`);
+  const re = new RegExp(`(          <a class="kw-card" data-cat="${cat}"[\\s\\S]*?</a>\\n)(?![\\s\\S]*          <a class="kw-card" data-cat="${cat}")`);
+  home = re.test(home) ? home.replace(re, (m, g1) => g1 + card) : home.replace(/(        <\/div>\n        <div style="text-align:center">)/, (m, g1) => card + g1);
 }
 function extCard(e) {
   return `          <a class="kw-card" data-cat="${e.cat || "etc"}" data-ext="${e.key}" href="${e.url}" target="_blank" rel="noopener"><span class="kw-mark"></span><span class="kw-tx"><span class="kw-t">${esc(e.title)}</span><span class="kw-s">${esc(e.desc || "")}</span></span><span class="kw-views" data-date="${e.date || ""}" data-views="${e.key}"></span>${CHEV}</a>\n`;
 }
 
-// ── ③ 유령 카드
-for (const m of home.matchAll(/data-page="([^"]+)"/g))
-  if (!dirs.includes(m[1]) && !SKIP.has(m[1]) && !fs.existsSync(path.join(ROOT, m[1]))) ghosts.push(m[1]);
+// ── ③ 중복 카드 (2026-10-08) , 같은 data-page / data-ext 카드가 두 번 이상이면 첫 번째만 남긴다.
+//   ②는 `data-page="<slug>"` 가 한 번이라도 있으면 통과시키므로 중복은 영영 안 보였다(9/23~10/8 카드 54장이 두 벌).
+//   카드는 한 줄에 하나다. 줄 단위로 걸러서 그룹 라벨·주석·스크립트는 건드리지 않는다.
+const dups = [];
+{
+  const seen = new Set(), keep = [];
+  for (const l of home.split("\n")) {
+    const m = l.match(/^\s*<a class="kw-card"[^>]*\bdata-(?:page|ext)="([^"]+)"/);
+    if (m) {
+      if (seen.has(m[1])) { dups.push(m[1]); continue; }
+      seen.add(m[1]);
+    }
+    keep.push(l);
+  }
+  if (dups.length && WRITE) home = keep.join("\n");
+}
 
-if (WRITE && (added.length || addedExt.length || removedExt.length || ext.length)) fs.writeFileSync(path.join(ROOT, "index.html"), home);
+// ── ④ 유령 카드 , 폴더가 없는 페이지의 카드는 죽은 링크다. 점검에선 경고, --write 면 지운다.
+for (const m of home.matchAll(/data-page="([^"]+)"/g))
+  if (!dirs.includes(m[1]) && !SKIP.has(m[1]) && !fs.existsSync(path.join(ROOT, m[1])) && !ghosts.includes(m[1])) ghosts.push(m[1]);
+if (WRITE && ghosts.length)
+  home = home.split("\n").filter(l => !(/^\s*<a class="kw-card"/.test(l) && ghosts.some(g => l.includes(`data-page="${g}"`)))).join("\n");
+
+if (WRITE && home !== origHome) fs.writeFileSync(path.join(ROOT, "index.html"), home);
 
 const say = (t, arr) => { console.log(`${t}: ${arr.length}건`); arr.forEach(x => console.log("   " + x)); };
 console.log(`가이드 페이지 ${dirs.length}개 · 홈 카드 ${(home.match(/class="kw-card"/g) || []).length}개`);
@@ -115,5 +138,6 @@ say("조회수 카운터 없음", injected);
 say("홈 카드 없음", added);
 say("외부 페이지 카드 없음(pages.json)", addedExt);
 say("비공개(unlisted)라 홈에서 뺀 카드", removedExt);
+say("중복 카드", dups);
 say("유령 카드(폴더 없음)", ghosts);
 console.log(WRITE ? "\n✅ 반영했다. link_check 로 확인하고 커밋할 것." : "\n점검만 했다. 고치려면 --write");

@@ -120,7 +120,7 @@ const ok = m => console.log("✅ " + m);
   try {
     const sync = require("child_process").execSync("node " + JSON.stringify(__dirname + "/sync_home.js"), { encoding: "utf8" });
     const n = (t) => { const m = sync.match(new RegExp(t + ": (\\d+)건")); return m ? +m[1] : 0; };
-    const miss = n("조회수 카운터 없음") + n("홈 카드 없음") + n("유령 카드\\(폴더 없음\\)");
+    const miss = n("조회수 카운터 없음") + n("홈 카드 없음") + n("유령 카드\\(폴더 없음\\)") + n("중복 카드");
     if (miss) { bad++; console.log(`❌ 홈 동기화 ${miss}건 , node tools/sync_home.js --write 로 고친다`);
       sync.split("\n").filter(l => /^   /.test(l)).forEach(l => console.log(l)); }
     else console.log("✅ 홈 동기화(조회수 카운터·홈 카드) 최신");
