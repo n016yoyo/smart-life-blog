@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>타워 디펜스</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #1b1f2a;
+    color: #e8e8e8;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    user-select: none;
+  }
+  #app { display: flex; flex-direction: column; gap: 12px; }
+  #hud {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    background: #262b38; padding: 10px 14px; border-radius: 10px;
+  }
+  .stat { font-size: 18px; font-weight: 600; background: #1b1f2a; padding: 6px 12px; border-radius: 8px; }
+  .stat span { display: inline-block; min-width: 36px; text-align: right; }
+  #hp.low { color: #ff5252; }
+  #gold { color: #ffd54f; }
+  .spacer { flex: 1; }
+  button {
+    font: inherit; font-weight: 600; cursor: pointer;
+    border: none; border-radius: 8px; padding: 8px 14px;
+    background: #3d7eff; color: #fff;
+  }
+  button:hover:not(:disabled) { filter: brightness(1.15); }
+  button:disabled { background: #444a58; color: #8a90a0; cursor: default; }
+  #speedBtn { background: #5b6275; }
+  #main { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  #canvasWrap { position: relative; }
+  canvas#game { display: block; border-radius: 10px; max-width: 100%; cursor: crosshair; }
+  #side { width: 240px; display: flex; flex-direction: column; gap: 10px; }
+  .panel { background: #262b38; border-radius: 10px; padding: 12px; }
+  .panel h3 { margin: 0 0 8px; font-size: 15px; color: #aab; }
+  .tower-btn {
+    display: flex; gap: 10px; align-items: center;
+    background: #1b1f2a; border: 2px solid transparent; border-radius: 8px;
+    padding: 8px; margin-bottom: 8px; cursor: pointer;
+  }
+  .tower-btn:last-child { margin-bottom: 0; }
+  .tower-btn:hover { border-color: #556; }
+  .tower-btn.active { border-color: #3d7eff; background: #22304d; }
+  .tower-btn.disabled { opacity: 0.45; }
+  .tower-btn .icon {
+    width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .tower-btn .name { font-weight: 700; }
+  .tower-btn .cost { color: #ffd54f; font-size: 13px; }
+  .tower-btn .desc { color: #99a; font-size: 12px; margin-top: 2px; }
+  #selInfo { display: none; }
+  #selInfo .row { font-size: 13px; color: #ccd; margin: 3px 0; }
+  #selInfo .btns { display: flex; gap: 6px; margin-top: 10px; }
+  #selInfo .btns button { flex: 1; font-size: 13px; padding: 8px 6px; }
+  #sellBtn { background: #c0563f; }
+  .help { font-size: 12px; color: #889; line-height: 1.6; }
+  #overlay {
+    position: absolute; inset: 0; border-radius: 10px;
+    background: rgba(10, 12, 18, 0.78);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  }
+  #overlay.hidden { display: none; }
+  #overlay h1 { margin: 0; font-size: 48px; }
+  #overlay p { margin: 0; font-size: 18px; color: #ccd; }
+  #overlay button { font-size: 20px; padding: 12px 28px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hud">
+    <div class="stat">❤️ 체력 <span id="hp">20</span></div>
+    <div class="stat">💰 골드 <span id="gold">0</span></div>
+    <div class="stat">🌊 웨이브 <span id="wave">0</span> / 10</div>
+    <div class="spacer"></div>
+    <button id="speedBtn">속도 x1</button>
+    <button id="startBtn">웨이브 1 시작</button>
+  </div>
+  <div id="main">
+    <div id="canvasWrap">
+      <canvas id="game" width="800" height="520"></canvas>
+      <div id="overlay" class="hidden">
+        <h1 id="ovTitle">게임 오버</h1>
+        <p id="ovMsg"></p>
+        <button id="restartBtn">다시 시작</button>
+      </div>
+    </div>
+    <div id="side">
+      <div class="panel">
+        <h3>타워 건설</h3>
+        <div class="tower-btn" data-type="arrow">
+          <div class="icon" style="background:#2e5d32">🏹</div>
+          <div>
+            <div class="name">화살탑 <span class="cost">50G</span></div>
+            <div class="desc">빠른 연사, 단일 대상 공격</div>
+          </div>
+        </div>
+        <div class="tower-btn" data-type="cannon">
+          <div class="icon" style="background:#5a4036">💣</div>
+          <div>
+            <div class="name">대포탑 <span class="cost">100G</span></div>
+            <div class="desc">느린 포탄, 착탄 지점 범위 피해</div>
+          </div>
+        </div>
+        <div class="tower-btn" data-type="frost">
+          <div class="icon" style="background:#1f4f66">❄️</div>
+          <div>
+            <div class="name">냉기탑 <span class="cost">80G</span></div>
+            <div class="desc">주변 모든 적에게 냉기 파동, 감속</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" id="selInfo">
+        <h3 id="selName">타워</h3>
+        <div class="row" id="selLevel"></div>
+        <div class="row" id="selDmg"></div>
+        <div class="row" id="selRange"></div>
+        <div class="row" id="selRate"></div>
+        <div class="row" id="selExtra"></div>
+        <div class="btns">
+          <button id="upgradeBtn">업그레이드</button>
+          <button id="sellBtn">판매</button>
+        </div>
+      </div>
+      <div class="panel help">
+        • 타워를 고른 뒤 풀밭을 클릭해 건설<br>
+        • 설치된 타워를 클릭해 업그레이드/판매<br>
+        • 단축키: 1·2·3 타워 선택, Space 웨이브 시작<br>
+        • 우클릭 또는 Esc: 선택 취소
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 기본 설정 =====
+const TILE = 40, COLS = 20, ROWS = 13;
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+// 적 이동 경로 (격자 좌표). 첫/마지막 점은 화면 밖.
+const WAYPOINTS = [[-1, 2], [4, 2], [4, 9], [9, 9], [9, 3], [15, 3], [15, 10], [20, 10]];
+const PATH = WAYPOINTS.map(([c, r]) => ({ x: c * TILE + TILE / 2, y: r * TILE + TILE / 2 }));
+
+// 길이 지나는 칸 표시
+const pathCells = new Set();
+for (let i = 0; i < WAYPOINTS.length - 1; i++) {
+  const [c1, r1] = WAYPOINTS[i], [c2, r2] = WAYPOINTS[i + 1];
+  const steps = Math.max(Math.abs(c2 - c1), Math.abs(r2 - r1));
+  for (let s = 0; s <= steps; s++) {
+    const c = c1 + Math.sign(c2 - c1) * s, r = r1 + Math.sign(r2 - r1) * s;
+    if (c >= 0 && c < COLS && r >= 0 && r < ROWS) pathCells.add(c + ',' + r);
+  }
+}
+// 기지 그림이 걸치는 칸도 건설 불가
+pathCells.add('19,9'); pathCells.add('19,11');
+
+const TOWER_TYPES = {
+  arrow:  { name: '화살탑', cost: 50,  range: 120, rate: 0.45, damage: 12 },
+  cannon: { name: '대포탑', cost: 100, range: 140, rate: 1.6,  damage: 45, splash: 60 },
+  frost:  { name: '냉기탑', cost: 80,  range: 95,  rate: 1.0,  damage: 5,  slow: 0.5, slowTime: 1.5 },
+};
+const MAX_LEVEL = 3;
+
+const ENEMY_TYPES = {
+  normal: { hp: 60,   speed: 60,  reward: 6,   radius: 10, color: '#e57373', dmg: 1 },
+  fast:   { hp: 35,   speed: 115, reward: 5,   radius: 8,  color: '#ffd54f', dmg: 1 },
+  tank:   { hp: 260,  speed: 36,  reward: 15,  radius: 14, color: '#7e57c2', dmg: 2 },
+  boss:   { hp: 3000, speed: 28,  reward: 200, radius: 20, color: '#b71c1c', dmg: 10 },
+};
+
+// 웨이브 구성: [적 종류, 수, 출현 간격(초)]
+const WAVES = [
+  [['normal', 10, 0.9]],
+  [['normal', 14, 0.75]],
+  [['normal', 8, 0.8], ['fast', 8, 0.5]],
+  [['tank', 4, 1.6], ['normal', 10, 0.7]],
+  [['fast', 18, 0.4]],
+  [['tank', 8, 1.2], ['fast', 10, 0.45]],
+  [['normal', 20, 0.5], ['tank', 6, 1.1]],
+  [['fast', 20, 0.35], ['tank', 10, 1.0]],
+  [['tank', 14, 0.8], ['fast', 20, 0.3]],
+  [['normal', 15, 0.5], ['tank', 8, 0.9], ['boss', 1, 0]],
+];
+
+function towerStats(t) {
+  const b = TOWER_TYPES[t.type], l = t.level - 1;
+  return {
+    range: b.range * (1 + 0.12 * l),
+    rate: b.rate * Math.pow(0.88, l),
+    damage: b.damage * Math.pow(1.6, l),
+    splash: b.splash ? b.splash * (1 + 0.15 * l) : 0,
+    slow: b.slow ? b.slow - 0.1 * l : 0,
+    slowTime: b.slowTime ? b.slowTime + 0.3 * l : 0,
+  };
+}
+const upgradeCost = t => Math.round(TOWER_TYPES[t.type].cost * 0.8 * t.level);
+const sellValue = t => Math.floor(t.spent * 0.7);
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+// ===== 상태 =====
+let state;
+function resetGame() {
+  state = {
+    gold: 200, hp: 20, wave: 0, phase: 'build', // build | wave | over | win
+    towers: [], enemies: [], projectiles: [], effects: [],
+    spawnQueue: [], spawnTimer: 0,
+    buildType: null, selected: null, hover: null,
+    speed: 1, time: 0, banner: null,
+  };
+  document.getElementById('overlay').classList.add('hidden');
+  showBanner('타워를 배치하고 웨이브를 시작하세요');
+}
+
+function showBanner(text, color = '#fff') {
+  state.banner = { text, color, t: 0, life: 2.2 };
+}
+
+function startWave() {
+  if (state.phase !== 'build' || state.wave >= WAVES.length) return;
+  state.wave++;
+  state.spawnQueue = [];
+  WAVES[state.wave - 1].forEach(([type, count, gap], gi) => {
+    for (let i = 0; i < count; i++) {
+      state.spawnQueue.push({ type, delay: i === 0 ? (gi === 0 ? 0 : 2) : gap });
+    }
+  });
+  state.spawnTimer = 0;
+  state.phase = 'wave';
+  showBanner(state.wave === WAVES.length ? '최종 웨이브! 보스 출현!' : `웨이브 ${state.wave}`,
+             state.wave === WAVES.length ? '#ff6b6b' : '#fff');
+}
+
+function spawnEnemy(type) {
+  const b = ENEMY_TYPES[type];
+  const hp = Math.round(b.hp * (1 + (state.wave - 1) * 0.15));
+  state.enemies.push({
+    type, x: PATH[0].x, y: PATH[0].y, wp: 1,
+    hp, maxHp: hp, speed: b.speed, reward: b.reward, radius: b.radius, color: b.color, dmg: b.dmg,
+    slowTimer: 0, slowFactor: 1, progress: 0, hitFlash: 0, dead: false,
+  });
+}
+
+function damageEnemy(e, amount) {
+  if (e.dead) return;
+  e.hp -= amount;
+  e.hitFlash = 0.08;
+  if (e.hp <= 0) {
+    e.dead = true;
+    state.gold += e.reward;
+    state.effects.push({ kind: 'text', x: e.x, y: e.y - 10, text: '+' + e.reward, color: '#ffd54f', t: 0, life: 0.8 });
+  }
+}
+
+function applySlow(e, factor, time) {
+  if (e.slowTimer <= 0 || factor < e.slowFactor) e.slowFactor = factor;
+  e.slowTimer = Math.max(e.slowTimer, time);
+}
+
+function findTarget(t, range) {
+  let best = null;
+  for (const e of state.enemies) {
+    if (e.dead || dist(e, t) > range) continue;
+    if (!best || e.progress > best.progress) best = e; // 출구에 가장 가까운 적 우선
+  }
+  return best;
+}
+
+// ===== 업데이트 =====
+function update(dt) {
+  state.time += dt;
+
+  if (state.phase === 'wave') {
+    state.spawnTimer += dt;
+    while (state.spawnQueue.length && state.spawnTimer >= state.spawnQueue[0].delay) {
+      state.spawnTimer -= state.spawnQueue[0].delay;
+      spawnEnemy(state.spawnQueue.shift().type);
+    }
+  }
+
+  // 적 이동
+  for (const e of state.enemies) {
+    if (e.slowTimer > 0) { e.slowTimer -= dt; if (e.slowTimer <= 0) e.slowFactor = 1; }
+    e.hitFlash = Math.max(0, e.hitFlash - dt);
+    let move = e.speed * e.slowFactor * dt;
+    while (move > 0 && e.wp < PATH.length) {
+      const p = PATH[e.wp], dx = p.x - e.x, dy = p.y - e.y, d = Math.hypot(dx, dy);
+      if (d <= move) { e.x = p.x; e.y = p.y; e.wp++; move -= d; e.progress += d; }
+      else { e.x += dx / d * move; e.y += dy / d * move; e.progress += move; move = 0; }
+    }
+    if (e.wp >= PATH.length && !e.dead) {
+      e.dead = true;
+      state.hp -= e.dmg;
+    }
+  }
+  if (state.hp <= 0) { state.hp = 0; endGame(false); return; }
+
+  // 타워
+  for (const t of state.towers) {
+    const s = towerStats(t);
+    t.cooldown = Math.max(t.cooldown - dt, 0);
+    if (t.type === 'frost') {
+      if (t.cooldown > 0) continue;
+      const hits = state.enemies.filter(e => !e.dead && dist(e, t) <= s.range);
+      if (hits.length) {
+        hits.forEach(e => { damageEnemy(e, s.damage); applySlow(e, s.slow, s.slowTime); });
+        state.effects.push({ kind: 'pulse', x: t.x, y: t.y, r: s.range, t: 0, life: 0.45 });
+        t.cooldown = s.rate;
+      }
+      continue;
+    }
+    const target = findTarget(t, s.range);
+    if (!target) continue;
+    t.angle = Math.atan2(target.y - t.y, target.x - t.x);
+    if (t.cooldown > 0) continue;
+    t.cooldown = s.rate;
+    const mx = t.x + Math.cos(t.angle) * 18, my = t.y + Math.sin(t.angle) * 18;
+    if (t.type === 'arrow') {
+      state.projectiles.push({ kind: 'arrow', x: mx, y: my, target, tx: target.x, ty: target.y, speed: 520, damage: s.damage });
+    } else {
+      state.projectiles.push({ kind: 'shell', x: mx, y: my, target, tx: target.x, ty: target.y, speed: 280, damage: s.damage, splash: s.splash });
+      t.recoil = 1;
+    }
+  }
+
+  // 투사체
+  for (const p of state.projectiles) {
+    if (p.target && !p.target.dead) { p.tx = p.target.x; p.ty = p.target.y; }
+    const dx = p.tx - p.x, dy = p.ty - p.y, d = Math.hypot(dx, dy), step = p.speed * dt;
+    p.angle = Math.atan2(dy, dx);
+    if (d > step) { p.x += dx / d * step; p.y += dy / d * step; continue; }
+    p.done = true;
+    if (p.kind === 'arrow') {
+      if (p.target && !p.target.dead) damageEnemy(p.target, p.damage);
+    } else {
+      for (const e of state.enemies) {
+        if (!e.dead && Math.hypot(e.x - p.tx, e.y - p.ty) <= p.splash + e.radius) damageEnemy(e, p.damage);
+      }
+      state.effects.push({ kind: 'explosion', x: p.tx, y: p.ty, r: p.splash, t: 0, life: 0.35 });
+    }
+  }
+  state.projectiles = state.projectiles.filter(p => !p.done);
+  state.enemies = state.enemies.filter(e => !e.dead);
+
+  for (const t of state.towers) if (t.recoil) t.recoil = Math.max(0, t.recoil - dt * 5);
+
+  // 웨이브 종료 확인
+  if (state.phase === 'wave' && !state.spawnQueue.length && !state.enemies.length) {
+    if (state.wave >= WAVES.length) { endGame(true); return; }
+    const bonus = 25 + state.wave * 5;
+    state.gold += bonus;
+    state.phase = 'build';
+    showBanner(`웨이브 ${state.wave} 클리어! 보너스 +${bonus}G`, '#8be78b');
+  }
+}
+
+function updateEffects(dt) {
+  for (const f of state.effects) {
+    f.t += dt;
+    if (f.kind === 'text') f.y -= 30 * dt;
+  }
+  state.effects = state.effects.filter(f => f.t < f.life);
+  if (state.banner) { state.banner.t += dt; if (state.banner.t > state.banner.life) state.banner = null; }
+}
+
+function endGame(win) {
+  state.phase = win ? 'win' : 'over';
+  state.buildType = null;
+  state.selected = null;
+  document.getElementById('ovTitle').textContent = win ? '🏆 승리!' : '💀 게임 오버';
+  document.getElementById('ovTitle').style.color = win ? '#ffd54f' : '#ff5252';
+  document.getElementById('ovMsg').textContent = win
+    ? `10개의 웨이브를 모두 막아냈습니다! 남은 체력 ${state.hp}`
+    : `웨이브 ${state.wave}에서 기지가 함락되었습니다.`;
+  document.getElementById('overlay').classList.remove('hidden');
+}
+
+// ===== 그리기 =====
+const mapLayer = document.createElement('canvas');
+mapLayer.width = canvas.width; mapLayer.height = canvas.height;
+(function drawMapLayer() {
+  const m = mapLayer.getContext('2d');
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    m.fillStyle = (r + c) % 2 ? '#4a7c3a' : '#518540';
+    m.fillRect(c * TILE, r * TILE, TILE, TILE);
+  }
+  m.lineCap = 'butt'; m.lineJoin = 'round';
+  m.strokeStyle = '#9c7b4f'; m.lineWidth = TILE;
+  m.beginPath(); PATH.forEach((p, i) => i ? m.lineTo(p.x, p.y) : m.moveTo(p.x, p.y)); m.stroke();
+  m.strokeStyle = '#d2b07a'; m.lineWidth = TILE - 8;
+  m.stroke();
+  // 입구/출구 표시
+  m.fillStyle = 'rgba(255,255,255,0.85)'; m.font = 'bold 12px sans-serif'; m.textAlign = 'center';
+  m.fillText('입구 ▶', 40, PATH[1].y - 24);
+  m.fillStyle = '#8b1e1e'; m.fillRect(COLS * TILE - 30, PATH[PATH.length - 1].y - 32, 28, 64);
+  m.fillStyle = '#c62828'; m.fillRect(COLS * TILE - 30, PATH[PATH.length - 1].y - 40, 8, 10);
+  m.fillRect(COLS * TILE - 20, PATH[PATH.length - 1].y - 40, 8, 10);
+  m.fillRect(COLS * TILE - 10, PATH[PATH.length - 1].y - 40, 8, 10);
+  m.fillStyle = '#fff'; m.fillText('기지', COLS * TILE - 16, PATH[PATH.length - 1].y + 4);
+})();
+
+function drawTower(t, alpha = 1) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.translate(t.x, t.y);
+  ctx.fillStyle = '#5c5f66';
+  ctx.fillRect(-16, -16, 32, 32);
+  ctx.fillStyle = '#74777f';
+  ctx.fillRect(-13, -13, 26, 26);
+
+  if (t.type === 'arrow') {
+    ctx.fillStyle = '#2e7d32';
+    ctx.beginPath(); ctx.arc(0, 0, 11, 0, Math.PI * 2); ctx.fill();
+    ctx.rotate(t.angle || 0);
+    ctx.strokeStyle = '#6d4c2f'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(4, 0, 10, -Math.PI / 2, Math.PI / 2); ctx.stroke(); // 활
+    ctx.strokeStyle = '#ddd'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(-6, 0); ctx.lineTo(18, 0); ctx.stroke(); // 화살
+  } else if (t.type === 'cannon') {
+    ctx.rotate(t.angle || 0);
+    const back = (t.recoil || 0) * 5;
+    ctx.fillStyle = '#212121';
+    ctx.fillRect(-back, -5, 22, 10);
+    ctx.fillStyle = '#3e2723';
+    ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#5d4037';
+    ctx.beginPath(); ctx.arc(-2, -2, 5, 0, Math.PI * 2); ctx.fill();
+  } else {
+    const glow = 0.5 + 0.5 * Math.sin(state.time * 4 + t.x);
+    ctx.fillStyle = `rgba(79,195,247,${0.25 + glow * 0.25})`;
+    ctx.beginPath(); ctx.arc(0, 0, 14, 0, Math.PI * 2); ctx.fill();
+    ctx.rotate(state.time * 0.8);
+    ctx.fillStyle = '#b3e5fc'; ctx.strokeStyle = '#0288d1'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, -13); ctx.lineTo(8, 0); ctx.lineTo(0, 13); ctx.lineTo(-8, 0); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+  }
+  ctx.restore();
+
+  // 레벨 표시
+  if (t.level) {
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#ffd54f';
+    for (let i = 0; i < t.level; i++) {
+      ctx.beginPath(); ctx.arc(t.x - 8 + i * 8, t.y + 15, 2.5, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+function drawRange(x, y, r, color) {
+  ctx.fillStyle = color + '22';
+  ctx.strokeStyle = color + 'aa';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+}
+
+function draw() {
+  ctx.drawImage(mapLayer, 0, 0);
+
+  if (state.selected) drawRange(state.selected.x, state.selected.y, towerStats(state.selected).range, '#ffffff');
+
+  for (const t of state.towers) drawTower(t);
+
+  // 적
+  for (const e of state.enemies) {
+    ctx.fillStyle = e.hitFlash > 0 ? '#fff' : e.color;
+    ctx.beginPath(); ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = e.slowTimer > 0 ? '#4fc3f7' : 'rgba(0,0,0,0.5)';
+    ctx.lineWidth = e.slowTimer > 0 ? 3 : 1.5;
+    ctx.stroke();
+    if (e.type === 'boss') {
+      ctx.fillStyle = '#ffd54f';
+      ctx.beginPath();
+      ctx.moveTo(e.x - 10, e.y - 14); ctx.lineTo(e.x - 10, e.y - 26); ctx.lineTo(e.x - 5, e.y - 20);
+      ctx.lineTo(e.x, e.y - 28); ctx.lineTo(e.x + 5, e.y - 20); ctx.lineTo(e.x + 10, e.y - 26); ctx.lineTo(e.x + 10, e.y - 14);
+      ctx.closePath(); ctx.fill();
+    }
+    const w = e.radius * 2 + 6, ratio = Math.max(0, e.hp / e.maxHp);
+    const by = e.y - e.radius - (e.type === 'boss' ? 20 : 8);
+    ctx.fillStyle = '#222'; ctx.fillRect(e.x - w / 2, by, w, 4);
+    ctx.fillStyle = ratio > 0.5 ? '#66bb6a' : ratio > 0.25 ? '#ffca28' : '#ef5350';
+    ctx.fillRect(e.x - w / 2, by, w * ratio, 4);
+  }
+
+  // 투사체
+  for (const p of state.projectiles) {
+    if (p.kind === 'arrow') {
+      ctx.strokeStyle = '#f5f5f5'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(p.x - Math.cos(p.angle || 0) * 9, p.y - Math.sin(p.angle || 0) * 9);
+      ctx.lineTo(p.x, p.y); ctx.stroke();
+    } else {
+      ctx.fillStyle = '#111';
+      ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  // 효과
+  for (const f of state.effects) {
+    const k = f.t / f.life;
+    if (f.kind === 'explosion') {
+      ctx.fillStyle = `rgba(255,${140 - k * 100},40,${0.7 * (1 - k)})`;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r * (0.4 + 0.6 * k), 0, Math.PI * 2); ctx.fill();
+    } else if (f.kind === 'pulse') {
+      ctx.strokeStyle = `rgba(129,212,250,${1 - k})`; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r * k, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = `rgba(129,212,250,${0.15 * (1 - k)})`; ctx.fill();
+    } else if (f.kind === 'text') {
+      ctx.globalAlpha = 1 - k;
+      ctx.fillStyle = f.color; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(f.text, f.x, f.y);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // 건설 미리보기
+  if (state.buildType && state.hover) {
+    const { c, r } = state.hover;
+    const ok = canBuild(c, r) && state.gold >= TOWER_TYPES[state.buildType].cost;
+    const x = c * TILE + TILE / 2, y = r * TILE + TILE / 2;
+    ctx.fillStyle = ok ? 'rgba(100,255,100,0.3)' : 'rgba(255,60,60,0.35)';
+    ctx.fillRect(c * TILE, r * TILE, TILE, TILE);
+    drawRange(x, y, TOWER_TYPES[state.buildType].range, ok ? '#ffffff' : '#ff5252');
+    drawTower({ type: state.buildType, x, y, angle: 0, level: 0 }, 0.6);
+  }
+
+  // 배너
+  if (state.banner) {
+    const b = state.banner;
+    const a = Math.min(1, b.t * 4, (b.life - b.t) * 2);
+    ctx.globalAlpha = Math.max(0, a);
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+    ctx.fillStyle = b.color; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(b.text, canvas.width / 2, canvas.height / 2);
+    ctx.textBaseline = 'alphabetic';
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ===== 입력 =====
+const towerAt = (c, r) => state.towers.find(t => t.c === c && t.r === r);
+const canBuild = (c, r) => c >= 0 && c < COLS && r >= 0 && r < ROWS && !pathCells.has(c + ',' + r) && !towerAt(c, r);
+
+function cellFromEvent(e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * canvas.width / rect.width;
+  const y = (e.clientY - rect.top) * canvas.height / rect.height;
+  return { c: Math.floor(x / TILE), r: Math.floor(y / TILE) };
+}
+
+function selectBuild(type) {
+  if (state.phase === 'over' || state.phase === 'win') return;
+  state.buildType = state.buildType === type ? null : type;
+  state.selected = null;
+}
+
+canvas.addEventListener('mousemove', e => { state.hover = cellFromEvent(e); });
+canvas.addEventListener('mouseleave', () => { state.hover = null; });
+canvas.addEventListener('click', e => {
+  if (state.phase === 'over' || state.phase === 'win') return;
+  const { c, r } = cellFromEvent(e);
+  const existing = towerAt(c, r);
+  if (state.buildType) {
+    if (existing) { state.selected = existing; state.buildType = null; return; }
+    if (!canBuild(c, r)) { showBanner('길 위에는 지을 수 없습니다', '#ff8a80'); return; }
+    const cost = TOWER_TYPES[state.buildType].cost;
+    if (state.gold < cost) { showBanner('골드가 부족합니다', '#ff8a80'); return; }
+    state.gold -= cost;
+    state.towers.push({
+      type: state.buildType, c, r, x: c * TILE + TILE / 2, y: r * TILE + TILE / 2,
+      level: 1, cooldown: 0, angle: -Math.PI / 2, spent: cost, recoil: 0,
+    });
+    state.buildType = null;
+    return;
+  }
+  state.selected = existing || null;
+});
+canvas.addEventListener('contextmenu', e => { e.preventDefault(); state.buildType = null; state.selected = null; });
+
+document.querySelectorAll('.tower-btn').forEach(btn => btn.addEventListener('click', () => selectBuild(btn.dataset.type)));
+
+document.addEventListener('keydown', e => {
+  if (e.key === '1') selectBuild('arrow');
+  else if (e.key === '2') selectBuild('cannon');
+  else if (e.key === '3') selectBuild('frost');
+  else if (e.key === 'Escape') { state.buildType = null; state.selected = null; }
+  else if (e.code === 'Space') { e.preventDefault(); startWave(); }
+});
+
+const startBtn = document.getElementById('startBtn');
+const speedBtn = document.getElementById('speedBtn');
+startBtn.addEventListener('click', () => { startWave(); startBtn.blur(); });
+speedBtn.addEventListener('click', () => { state.speed = state.speed === 1 ? 2 : 1; speedBtn.blur(); });
+document.getElementById('restartBtn').addEventListener('click', resetGame);
+
+document.getElementById('upgradeBtn').addEventListener('click', () => {
+  const t = state.selected;
+  if (!t || t.level >= MAX_LEVEL) return;
+  const cost = upgradeCost(t);
+  if (state.gold < cost) return;
+  state.gold -= cost; t.spent += cost; t.level++;
+});
+document.getElementById('sellBtn').addEventListener('click', () => {
+  const t = state.selected;
+  if (!t) return;
+  state.gold += sellValue(t);
+  state.towers = state.towers.filter(x => x !== t);
+  state.selected = null;
+});
+
+// ===== UI 갱신 =====
+const els = {};
+['hp', 'gold', 'wave', 'selInfo', 'selName', 'selLevel', 'selDmg', 'selRange', 'selRate', 'selExtra', 'upgradeBtn', 'sellBtn']
+  .forEach(id => els[id] = document.getElementById(id));
+function setText(el, v) { v = String(v); if (el.textContent !== v) el.textContent = v; }
+
+function updateUI() {
+  setText(els.hp, state.hp);
+  els.hp.classList.toggle('low', state.hp <= 5);
+  setText(els.gold, state.gold);
+  setText(els.wave, state.wave);
+  startBtn.disabled = state.phase !== 'build';
+  setText(startBtn, state.phase === 'wave' ? '웨이브 진행 중...'
+    : state.wave >= WAVES.length ? '종료' : `웨이브 ${state.wave + 1} 시작 (Space)`);
+  setText(speedBtn, `속도 x${state.speed}`);
+  document.querySelectorAll('.tower-btn').forEach(b => {
+    b.classList.toggle('disabled', state.gold < TOWER_TYPES[b.dataset.type].cost);
+    b.classList.toggle('active', state.buildType === b.dataset.type);
+  });
+
+  const t = state.selected;
+  els.selInfo.style.display = t ? 'block' : 'none';
+  if (!t) return;
+  const s = towerStats(t);
+  setText(els.selName, TOWER_TYPES[t.type].name);
+  setText(els.selLevel, `레벨 ${t.level} / ${MAX_LEVEL}`);
+  setText(els.selDmg, `공격력 ${Math.round(s.damage)}` + (t.type === 'frost' ? ' (범위 전체)' : ''));
+  setText(els.selRange, `사거리 ${Math.round(s.range)}`);
+  setText(els.selRate, `공격 간격 ${s.rate.toFixed(2)}초`);
+  setText(els.selExtra, t.type === 'cannon' ? `폭발 반경 ${Math.round(s.splash)}`
+    : t.type === 'frost' ? `감속 ${Math.round((1 - s.slow) * 100)}% · ${s.slowTime.toFixed(1)}초` : '단일 대상');
+  if (t.level >= MAX_LEVEL) {
+    setText(els.upgradeBtn, '최대 레벨');
+    els.upgradeBtn.disabled = true;
+  } else {
+    const cost = upgradeCost(t);
+    setText(els.upgradeBtn, `업그레이드 ${cost}G`);
+    els.upgradeBtn.disabled = state.gold < cost;
+  }
+  setText(els.sellBtn, `판매 +${sellValue(t)}G`);
+}
+
+// ===== 메인 루프 =====
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min((now - last) / 1000, 0.05);
+  last = now;
+  if (state.phase === 'build' || state.phase === 'wave') {
+    for (let i = 0; i < state.speed; i++) {
+      update(dt);
+      updateEffects(dt);
+      if (state.phase === 'over' || state.phase === 'win') break;
+    }
+  } else {
+    updateEffects(dt);
+  }
+  draw();
+  updateUI();
+  requestAnimationFrame(loop);
+}
+
+resetGame();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

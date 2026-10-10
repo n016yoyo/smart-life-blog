@@ -1,0 +1,126 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>플랜 모드, 정말 더 비쌀까? 같은 게임을 6번 만들어 봤습니다 (요청문과 게임 6개) | AI TIGER MASK</title>
+<meta name="description" content="Opus 5.5 에 같은 타워 디펜스 요청을 바로 시킨 3번과 플랜 모드로 시킨 3번. 평균 $1.63 대 $1.83, 약 1.1배. 요청문 전문과 만들어진 게임 6개, 따라 하는 법, 한계까지 공개.">
+<meta property="og:title" content="플랜 모드, 정말 더 비쌀까? 같은 게임을 6번 만들어 봤습니다">
+<meta property="og:description" content="요청문 그대로, 게임 6개 그대로 드립니다.">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head><body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>플랜 모드, 정말 더 비쌀까?<br>같은 게임을 6번 만들어 봤습니다</h1>
+  <div class="sub">Opus 5.5 에 같은 요청을 바로 3번, 플랜 모드로 3번 시켰어요</div>
+  <div class="chips"><span class="chip"><b>$1.63</b> 바로 시키기</span><span class="chip"><b>$1.83</b> 플랜 모드</span><span class="chip"><b>약 1.1배</b></span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>어디서 시작된 얘기냐면</h2>
+    <p>"플랜 모드를 켜면 비용이 훨씬 든다"는 말이 많아서 직접 재 봤습니다. 같은 요청을 플랜 모드 없이 3번, 플랜 모드로(계획을 받고 승인한 뒤 진행) 3번 만들게 했어요.</p>
+    <p class="note">※ 실험은 2026-10-10, 모델 Opus 5.5(claude-opus-5-5), effort high, claude -p 로 돌렸습니다. 금액은 실제 청구액이 아니라 API 정가로 환산한 값이에요. <b>제가 잰 요청 하나, 3번씩의 결과라서 모든 작업에 그대로 들어맞는다는 뜻은 아닙니다.</b></p>
+  </div>
+  <div class="lead">
+    <h2>실험 결과</h2>
+    <p>3번 평균입니다</p>
+  </div>
+  <table>
+    <tr><th>무엇</th><th>바로 시키기</th><th>플랜 모드</th></tr>
+    <tr><td>평균 비용</td><td class="n">$1.63</td><td class="n">$1.83</td></tr>
+    <tr><td>평균 시간</td><td class="n">237초</td><td class="n">264초</td></tr>
+    <tr><td>평균 코드 줄</td><td class="n">740줄</td><td class="n">807줄</td></tr>
+    <tr><td>첫 웨이브까지 오류</td><td class="n">0 / 3</td><td class="n">0 / 3</td></tr>
+  </table>
+  <div class="src" style="margin-top:12px">세는 방법: 비용은 각 실행의 마지막 result 줄 <code>total_cost_usd</code>(세션 누적)를 3번 평균, 1.8329 ÷ 1.6254 = 1.128. 시간은 <code>duration_ms</code> 합의 평균. 오류는 브라우저에서 같은 조작으로 돌려 콘솔·페이지 오류를 센 값이고 "첫 웨이브까지" 진행을 확인했습니다(10웨이브 완주는 아닙니다).</div>
+  <div class="lead">
+    <h2>플랜 모드 쪽 비용을 쪼개 보면</h2>
+    <p>플랜 모드 3번 평균 $1.83 = 1단계 $1.03 + 2단계 $0.80</p>
+  </div>
+  <div class="warn">
+    <h3>1단계 $1.03 을 "계획 비용"이라고 읽으면 틀려요</h3>
+    <p>1단계 비용의 큰 몫은 세션을 시작할 때 읽는 기본 내용을 처음 저장하는 비용이고, 바로 시키기도 같은 비용을 냅니다. 그래서 실제로 플랜 모드가 더 쓴 건 합계 차이 약 $0.21 입니다.</p>
+  </div>
+  <div class="how">
+    <h2>한 대화로 이어 가서 덜 오른 걸로 보여요 (추정)</h2>
+    <p style="font-size:13.8px;color:#43403a">플랜 모드 2단계에서 캐시에서 다시 읽은 입력이 약 23만 토큰, 새로 캐시에 올린 입력이 2만~3만 토큰이었어요(3번 모두). 계획과 구현을 따로 호출해 이어받는 옛 방식에서는 캐시를 약 24만 토큰 다시 만들었고 비용이 $3.5 안팎까지 불었습니다(이 방식은 영상에 쓰지 않았어요). 원인을 단정할 수는 없고, 3번 실험이라 "보인다" 정도로만 말합니다.</p>
+  </div>
+  <div class="warn">
+    <h3>⚠️ 한계: 조건이 완전히 같지 않았어요</h3>
+    <p>바로 시키기와 플랜 모드는 번갈아 돌리지 않고 시간대를 나눠 돌렸고(바로 시키기 00:06~01:20, 플랜 모드 08:12~08:27), Claude Code 버전이 달랐고(2.1.295 / 2.1.296), 실행마다 로드된 도구(MCP) 수가 달랐습니다. 범위도 겹쳐요: 바로 시키기 $1.52~1.78, 플랜 모드 $1.77~1.94. 그래서 1.1배는 오차 범위일 수 있습니다. 같은 버전·같은 도구 구성으로 번갈아 다시 재면 이 글에 결과를 추가할게요.</p>
+  </div>
+  <div class="how">
+    <h2>직접 해 보세요</h2>
+    <ol>
+      <li>새 대화에서 <b>시프트 탭</b>을 눌러 플랜 모드를 켜고(입력창 아래에 <code>plan mode on</code>이 보여요) 아래 요청문을 보냅니다. 계획이 나오면 승인해서 같은 대화에서 끝까지 진행하세요.</li>
+      <li>또 새 대화에서 플랜 모드를 끄고 같은 요청문을 보냅니다.</li>
+      <li><code>/usage</code> 로 비교하세요. <b>구독이면 달러가 아니라 사용량 퍼센트가 나옵니다.</b> API 계정이라면 <code>/cost</code> 로 달러를 봅니다.</li>
+      <li>한 번의 차이는 작을 수 있어요. 여러 번 돌려 보세요.</li>
+    </ol>
+  </div>
+  <div class="box">
+    <div class="bar"><span>실험에 쓴 요청문</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('pr').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='요청문 복사'},1500)})">요청문 복사</button></div>
+    <pre id="pr">index.html 파일 하나로, 브라우저에서 바로 하는 타워 디펜스 게임을 만들어줘.
+적이 지나가는 길 하나, 타워 3종(공격 방식이 서로 달라야 해), 웨이브 10개, 골드와 체력 표시, 게임 오버와 다시 시작까지 넣어줘.</pre>
+  </div>
+  <div class="lead">
+    <h2>만들어진 게임 6개</h2>
+    <p>클로드가 만든 파일 그대로입니다(수정 없음). 열어서 직접 해 보세요</p>
+  </div>
+  <table>
+    <tr><th>어느 쪽</th><th>비용</th><th>시간 · 코드</th><th>게임</th></tr>
+    <tr><td>바로 시키기 1회</td><td class="n">$1.78</td><td class="d">283초 · 791줄</td><td><a href="games/direct-1.html" target="_blank" rel="noopener">열기</a></td></tr><tr><td>바로 시키기 2회</td><td class="n">$1.52</td><td class="d">207초 · 743줄</td><td><a href="games/direct-2.html" target="_blank" rel="noopener">열기</a></td></tr><tr><td>바로 시키기 3회</td><td class="n">$1.58</td><td class="d">220초 · 686줄</td><td><a href="games/direct-3.html" target="_blank" rel="noopener">열기</a></td></tr><tr><td>플랜 모드 1회</td><td class="n">$1.94</td><td class="d">297초 · 934줄</td><td><a href="games/plan-1.html" target="_blank" rel="noopener">열기</a></td></tr><tr><td>플랜 모드 2회</td><td class="n">$1.80</td><td class="d">256초 · 717줄</td><td><a href="games/plan-2.html" target="_blank" rel="noopener">열기</a></td></tr><tr><td>플랜 모드 3회</td><td class="n">$1.77</td><td class="d">239초 · 769줄</td><td><a href="games/plan-3.html" target="_blank" rel="noopener">열기</a></td></tr>
+  </table>
+  <div class="src">게임은 index.html 파일 하나짜리입니다. 영상에 나온 화면은 이 파일들을 브라우저에서 스크립트로 같은 조작(타워 설치 후 웨이브 시작)으로 돌려 녹화한 것이에요. 표의 시간은 <code>duration_ms</code> 합입니다.</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"claude-planmode-cost"})}).catch(()=>{});</script></body></html>
