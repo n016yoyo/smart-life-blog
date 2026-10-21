@@ -1,0 +1,152 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드한테 가계부 앱을 만들게 하고 직접 확인하는 법 (요청문·검사 스크립트 포함) | AI TIGER MASK</title>
+<meta name="description" content="같은 요청문으로 가계부 앱을 세 번 만들게 했더니 45·43·36초에 검사 14개가 전부 통과했어요. 요청문과 검사 스크립트를 그대로 드립니다. 한계도 같이 적었어요.">
+<meta property="og:title" content="클로드한테 가계부 앱을 만들게 하고 직접 확인하는 법">
+<meta property="og:description" content="요청문과 검사 스크립트 그대로 드립니다">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head>
+<body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>월 구독료 내는 가계부 앱을<br>클로드가 45초에 만들었어요</h1>
+  <div class="sub">같은 요청문으로 세 번, 검사는 스크립트가 판정했어요</div>
+  <div class="chips"><span class="chip"><b>45초</b> 1회차</span><span class="chip"><b>14/14</b> 세 번 모두 통과</span><span class="chip"><b>2%→2%</b> 주간 한도</span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>어디서 시작된 얘기냐면</h2>
+    <p>월 구독료를 내는 가계부 앱을 클로드한테 만들어 달라고 했어요. 빈 폴더에서 같은 요청문(기능 11개 명령)으로 세 번 돌렸고, 걸린 시간은 하루가 아니라 45초였어요. 만들어진 앱은 제가 따로 만든 검사 스크립트 14개로 확인했고, 사람 눈이 아니라 스크립트가 통과 여부를 판정했습니다.</p>
+    <p class="note">※ 2026-10-21 내 컴퓨터(모델 claude-sonnet-5-5, 기본 설정)에서 잰 값입니다. 구독료 숫자는 가격 출처를 확인하지 못해 말하지 않았어요.</p>
+  </div>
+  <div class="lead">
+    <h2>세 번 돌린 결과</h2>
+    <p>같은 요청문, 같은 빈 폴더, 같은 검사 스크립트입니다</p>
+  </div>
+  <table>
+    <tr><th>회차</th><th>걸린 시간</th><th>검사</th><th>총 입력 토큰</th><th>코드 줄 수</th></tr>
+    <tr><td class="n">1</td><td class="n">45초</td><td class="n">14/14</td><td class="d">143,601</td><td class="d">251</td></tr>
+    <tr><td class="n">2</td><td class="n">43초</td><td class="n">14/14</td><td class="d">105,077</td><td class="d">233</td></tr>
+    <tr><td class="n">3</td><td class="n">36초</td><td class="n">14/14</td><td class="d">66,634</td><td class="d">237</td></tr>
+  </table>
+  <p class="src" style="margin-top:10px">총 입력 토큰 = input + cache_creation + cache_read 세 값의 합. 주간 한도(모든 모델) 숫자는 실험 전 2%, 세 번 뒤에도 2%였어요. 정수 퍼센트라 1% 미만의 변화는 보이지 않습니다.</p>
+  <div class="warn">
+    <h3>이 실험의 한계예요</h3>
+    <p>화면 없는 터미널 가계부예요. 달력·휴대폰 앱·디자인·동기화는 없습니다. 기능 11개 목록과 검사 14개 항목은 제가 정했고, 구독 앱을 대신한다는 얘기가 아니에요. 이만큼은 이제 45초면 된다는 거예요. 제 환경과 버전 한 곳의 값이라 다르게 나올 수 있어요.</p>
+  </div>
+  <div class="how">
+    <h2>따라 하는 법, 하나 둘 셋</h2>
+    <ol>
+      <li><b>하나.</b> 빈 폴더에 아래 「요청문」을 <code>SPEC.md</code> 로 저장하고, 그 폴더에서 <code>time claude -p "$(cat SPEC.md)" --permission-mode acceptEdits --allowedTools "Bash,Write,Edit,Read"</code> 를 실행하세요(제가 쓴 옵션 그대로, 걸린 시간은 time 이 알려 줘요).</li>
+      <li><b>둘.</b> 아래 「검사 스크립트」를 <code>check.js</code> 로 저장하고 <code>node check.js &lt;budget.js 가 있는 폴더&gt;</code> 로 확인하세요. 마지막 줄이 <code>RESULT 14/14</code> 이면 통과입니다.</li>
+      <li><b>셋.</b> 실행 전후에 <code>claude -p "/usage"</code> 를 한 번씩 돌려 주간 한도 숫자를 비교하세요.</li>
+    </ol>
+  </div>
+  <div class="box">
+    <div class="bar"><span>요청문 (SPEC.md)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('pr').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='요청문 복사'},1500)})">요청문 복사</button></div>
+    <pre id="pr">Build a command-line household budget app (가계부) as a single Node.js file `budget.js` in the current folder. No npm packages, Node built-ins only.
+Data is stored as JSON in the file named by the environment variable BUDGET_FILE (default `data.json` in the current folder).
+Commands (exact output formats matter, a test script will run them):
+
+1. `node budget.js add &lt;amount&gt; &lt;category&gt; &lt;note...&gt; [--date YYYY-MM-DD]`  adds an expense (date defaults to today). Prints `added #&lt;id&gt;` (ids start at 1 and increase). Amount must be a positive integer, otherwise print an error to stderr and exit with code 1.
+2. `node budget.js list [--month YYYY-MM]`  prints one line per expense: `#&lt;id&gt; &lt;date&gt; &lt;category&gt; &lt;amount&gt; &lt;note&gt;` in date order (oldest first). With --month only that month.
+3. `node budget.js total --month YYYY-MM`  prints `total: &lt;sum&gt;`.
+4. `node budget.js bycat --month YYYY-MM`  prints one line per category `&lt;category&gt;: &lt;sum&gt;` sorted by sum descending.
+5. `node budget.js search &lt;text&gt;`  prints the list lines (same format as list) whose note contains the text (case-insensitive).
+6. `node budget.js edit &lt;id&gt; --amount &lt;n&gt;`  changes the amount, prints `edited #&lt;id&gt;`.
+7. `node budget.js delete &lt;id&gt;`  removes it, prints `deleted #&lt;id&gt;`. Unknown id: error to stderr, exit code 1.
+8. `node budget.js budget set &lt;category&gt; &lt;amount&gt;`  sets a monthly limit for a category, prints `budget &lt;category&gt; &lt;amount&gt;`.
+9. `node budget.js budget status --month YYYY-MM`  for each category that has a limit and whose month sum is above it prints `&lt;category&gt;: OVER by &lt;difference&gt;`; if none are over prints `all within budget`.
+10. `node budget.js export csv &lt;file&gt;`  writes all expenses as CSV with header `id,date,category,amount,note`.
+11. `node budget.js import csv &lt;file&gt;`  reads such a CSV and adds its rows as new expenses (new ids), prints `imported &lt;count&gt;`.
+Work until the app is complete and try it yourself. Do not ask questions.</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>검사 스크립트 (check.js)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('ck').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='스크립트 복사'},1500)})">스크립트 복사</button></div>
+    <pre id="ck" class="small">// 가계부 체크리스트 14개 , 스크립트가 판정한다(사람 아님). 사용: node check.js &lt;budget.js 가 있는 폴더&gt;
+const { spawnSync } = require(&quot;child_process&quot;), fs = require(&quot;fs&quot;), path = require(&quot;path&quot;), os = require(&quot;os&quot;);
+const dir = path.resolve(process.argv[2] || &quot;.&quot;), F = path.join(os.tmpdir(), &quot;budget_check_&quot; + process.pid + &quot;.json&quot;);
+const run = (...a) =&gt; spawnSync(&quot;node&quot;, [&quot;budget.js&quot;, ...a], { cwd: dir, env: { ...process.env, BUDGET_FILE: F }, encoding: &quot;utf8&quot;, timeout: 10000 });
+const out = (...a) =&gt; (run(...a).stdout || &quot;&quot;).trim();
+const lines = (s) =&gt; s.split(&quot;\n&quot;).map((x) =&gt; x.trim()).filter(Boolean);
+const today = new Date().toISOString().slice(0, 10);
+try { fs.rmSync(F); } catch {}
+const T = [];
+const t = (name, fn) =&gt; { let ok = false, why = &quot;&quot;; try { ok = !!fn(); } catch (e) { why = String(e.message || e).slice(0, 80); } T.push({ name, ok, why }); };
+t(&quot;1 지출 추가 → added #1&quot;, () =&gt; out(&quot;add&quot;, &quot;5000&quot;, &quot;food&quot;, &quot;lunch&quot;, &quot;--date&quot;, &quot;2026-10-03&quot;) === &quot;added #1&quot;);
+t(&quot;2 id 증가(#2)&quot;, () =&gt; out(&quot;add&quot;, &quot;12000&quot;, &quot;food&quot;, &quot;dinner&quot;, &quot;with&quot;, &quot;friends&quot;, &quot;--date&quot;, &quot;2026-10-05&quot;) === &quot;added #2&quot;);
+run(&quot;add&quot;, &quot;30000&quot;, &quot;transport&quot;, &quot;taxi&quot;, &quot;--date&quot;, &quot;2026-10-07&quot;); run(&quot;add&quot;, &quot;9000&quot;, &quot;food&quot;, &quot;Coffee&quot;, &quot;--date&quot;, &quot;2026-11-02&quot;);
+t(&quot;3 list 형식·날짜순&quot;, () =&gt; { const l = lines(out(&quot;list&quot;)); return l[0] === &quot;#1 2026-10-03 food 5000 lunch&quot; &amp;&amp; l.length === 4 &amp;&amp; l[3].startsWith(&quot;#4 2026-11-02&quot;); });
+t(&quot;4 list --month 필터&quot;, () =&gt; lines(out(&quot;list&quot;, &quot;--month&quot;, &quot;2026-10&quot;)).length === 3);
+t(&quot;5 total&quot;, () =&gt; out(&quot;total&quot;, &quot;--month&quot;, &quot;2026-10&quot;) === &quot;total: 47000&quot;);
+t(&quot;6 bycat 내림차순&quot;, () =&gt; { const l = lines(out(&quot;bycat&quot;, &quot;--month&quot;, &quot;2026-10&quot;)); return l[0] === &quot;transport: 30000&quot; &amp;&amp; l[1] === &quot;food: 17000&quot;; });
+t(&quot;7 search 대소문자 무시&quot;, () =&gt; { const l = lines(out(&quot;search&quot;, &quot;coffee&quot;)); return l.length === 1 &amp;&amp; l[0].startsWith(&quot;#4 &quot;); });
+t(&quot;8 edit&quot;, () =&gt; out(&quot;edit&quot;, &quot;1&quot;, &quot;--amount&quot;, &quot;6000&quot;) === &quot;edited #1&quot; &amp;&amp; out(&quot;total&quot;, &quot;--month&quot;, &quot;2026-10&quot;) === &quot;total: 48000&quot;);
+t(&quot;9 delete&quot;, () =&gt; out(&quot;delete&quot;, &quot;3&quot;) === &quot;deleted #3&quot; &amp;&amp; out(&quot;total&quot;, &quot;--month&quot;, &quot;2026-10&quot;) === &quot;total: 18000&quot;);
+t(&quot;10 없는 id 삭제 → 종료코드 1&quot;, () =&gt; run(&quot;delete&quot;, &quot;99&quot;).status === 1);
+t(&quot;11 잘못된 금액 거부&quot;, () =&gt; run(&quot;add&quot;, &quot;abc&quot;, &quot;food&quot;, &quot;x&quot;).status === 1 &amp;&amp; run(&quot;add&quot;, &quot;-5&quot;, &quot;food&quot;, &quot;x&quot;).status === 1);
+t(&quot;12 예산 초과 표시&quot;, () =&gt; { out(&quot;budget&quot;, &quot;set&quot;, &quot;food&quot;, &quot;10000&quot;); return out(&quot;budget&quot;, &quot;status&quot;, &quot;--month&quot;, &quot;2026-10&quot;) === &quot;food: OVER by 8000&quot;; });
+t(&quot;13 CSV 내보내기&quot;, () =&gt; { const f = path.join(os.tmpdir(), &quot;bx_&quot; + process.pid + &quot;.csv&quot;); run(&quot;export&quot;, &quot;csv&quot;, f); const l = lines(fs.readFileSync(f, &quot;utf8&quot;)); return l[0] === &quot;id,date,category,amount,note&quot; &amp;&amp; l.length &gt;= 4; });
+t(&quot;14 CSV 가져오기&quot;, () =&gt; { const f = path.join(os.tmpdir(), &quot;bi_&quot; + process.pid + &quot;.csv&quot;); fs.writeFileSync(f, &quot;id,date,category,amount,note\n1,2026-12-01,etc,700,gum\n2,2026-12-02,etc,300,candy\n&quot;); return out(&quot;import&quot;, &quot;csv&quot;, f) === &quot;imported 2&quot; &amp;&amp; lines(out(&quot;list&quot;, &quot;--month&quot;, &quot;2026-12&quot;)).length === 2; });
+const pass = T.filter((x) =&gt; x.ok).length;
+for (const x of T) console.log((x.ok ? &quot;PASS &quot; : &quot;FAIL &quot;) + x.name + (x.why ? &quot;  (&quot; + x.why + &quot;)&quot; : &quot;&quot;));
+console.log(`RESULT ${pass}/${T.length}`);
+try { fs.rmSync(F); } catch {}
+process.exit(pass === T.length ? 0 : 1);</pre>
+  </div>
+  <div class="src">영상의 터미널 화면은 실제로 돌린 명령입니다(<code>sh names.sh</code> 검사 목록, <code>node check.js run3 | tail -9</code> 검사 실행, 실험 전후 한도 출력, 만든 앱 실행). 장면 그래픽은 AI가 코드로 그린 그림이에요.</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"subapp"})}).catch(()=>{});</script></body></html>

@@ -1,0 +1,151 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 클로드의 도구 시작 비용 재는 법 (측정 파일 포함) | AI TIGER MASK</title>
+<meta name="description" content="클로드에 도구를 200개 붙여도 처음 읽는 양은 2,600토큰만 늘었어요. 도구 검색을 끄면 38,800토큰이었습니다. 내 컴퓨터에서 같은 요청 한 번으로 재는 파일을 그대로 드려요.">
+<meta property="og:title" content="내 클로드의 도구 시작 비용 재는 법">
+<meta property="og:description" content="측정 파일 그대로 드립니다">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head>
+<body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>도구를 200개 붙였는데<br>처음 읽는 양은 2,600토큰만 늘었어요</h1>
+  <div class="sub">같은 요청 한 줄, 도구 개수만 다르게 쟀어요</div>
+  <div class="chips"><span class="chip"><b>+2,600</b> 기본 설정</span><span class="chip"><b>+38,800</b> 도구 검색 끔</span><span class="chip"><b>200</b> 도구 개수</span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>어디서 시작된 얘기냐면</h2>
+    <p>도구(MCP)를 많이 붙일수록 한도가 닳는다는 얘기를 자주 봤어요. 그래서 같은 요청 한 줄(「안녕이라고만 답해」)을 도구 0개와 200개로 보내 총 입력 토큰을 쟀습니다. 공식 문서(code.claude.com/docs/en/mcp)대로 도구 검색이 기본으로 켜져 있으면 도구 이름만 먼저 보여 주고, 끄면 정의 전체가 실려요.</p>
+    <p class="note">※ 2026-10-20 내 컴퓨터의 값이고, 도구는 설명이 짧은 가짜(더미) 서버로 만들었어요. 한도 퍼센트는 재지 않았고 입력 토큰만 말합니다.</p>
+  </div>
+  <div class="lead">
+    <h2>잰 값</h2>
+    <p>도구 정의 크기는 전부 같고, 달라진 건 개수 하나입니다</p>
+  </div>
+  <table>
+    <tr><th>조건</th><th>도구 0개</th><th>도구 200개</th><th>늘어난 양</th></tr>
+    <tr><td>기본(도구 검색 켜짐)</td><td class="d">25,633</td><td class="d">28,233</td><td class="n">+2,600 (기준선의 약 10%)</td></tr>
+    <tr><td>도구 검색 끔</td><td class="d">41,119</td><td class="d">79,919</td><td class="n">+38,800 (기준선의 약 94%)</td></tr>
+  </table>
+  <p class="src" style="margin-top:10px">총 입력 토큰 = input + cache_creation + cache_read 세 값의 합. 같은 조건을 3번 재서 총합이 같았어요. 두 조건의 기준선이 달라서(내장 도구 정의까지 실려서) 항상 「각 조건에서 늘어난 양」으로 비교합니다. 도구 하나당 13토큰 대 194토큰이에요.</p>
+  <div class="warn">
+    <h3>이 실험의 한계예요</h3>
+    <p>더미 도구는 설명이 짧아요(도구당 약 190토큰). 실제 서비스 도구는 더 길 수 있습니다. 도구를 실제로 부른 요청, 한도 퍼센트, 다른 버전은 재지 않았어요. 제 Claude Code 버전 한 곳의 값이에요.</p>
+  </div>
+  <div class="how">
+    <h2>따라 하는 법, 하나 둘 셋</h2>
+    <ol>
+      <li><b>하나.</b> 폴더 하나에 아래 두 파일 <code>count.sh</code>, <code>dummy_mcp.js</code> 를 같은 폴더에 저장하세요(<code>chmod +x count.sh</code>).</li>
+      <li><b>둘.</b> <code>./count.sh 0</code> 과 <code>./count.sh 200</code> 을 실행하세요. 도구 검색을 끄고 재려면 <code>ENABLE_TOOL_SEARCH=false ./count.sh 200</code>.</li>
+      <li><b>셋.</b> 두 값의 차이가 내 환경에서 도구 200개가 더하는 양이에요. 폴더에 CLAUDE.md 가 있으면 기준선이 달라지니 비교는 같은 폴더에서만 하세요.</li>
+    </ol>
+  </div>
+  <div class="box">
+    <div class="bar"><span>측정 스크립트 (count.sh)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('cs').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='count.sh 복사'},1500)})">count.sh 복사</button></div>
+    <pre id="cs">#!/bin/bash
+# 사용: ./count.sh &lt;도구 개수&gt;   (도구 검색 끄기: ENABLE_TOOL_SEARCH=false ./count.sh 200)
+# 같은 요청을 한 번 보내고 총 입력 토큰(input + cache_creation + cache_read)을 출력한다.
+N=${1:-0}
+D=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;
+CFG=&quot;$(mktemp)&quot;
+echo &quot;{\&quot;mcpServers\&quot;:{\&quot;dummy\&quot;:{\&quot;command\&quot;:\&quot;node\&quot;,\&quot;args\&quot;:[\&quot;$D/dummy_mcp.js\&quot;],\&quot;env\&quot;:{\&quot;N\&quot;:\&quot;$N\&quot;}}}}&quot; &gt; &quot;$CFG&quot;
+claude -p &quot;안녕이라고만 답해&quot; --mcp-config &quot;$CFG&quot; --strict-mcp-config --output-format json &lt; /dev/null \
+ \
+ | python3 -c &quot;import json,sys; u=json.load(sys.stdin)[&#x27;usage&#x27;]; t=u[&#x27;input_tokens&#x27;]+u[&#x27;cache_creation_input_tokens&#x27;]+u[&#x27;cache_read_input_tokens&#x27;]; sys.exit(&#x27;실패: 응답 없음(로그인 확인)&#x27;) if t==0 else None; print(format(u[&#x27;input_tokens&#x27;]+u[&#x27;cache_creation_input_tokens&#x27;]+u[&#x27;cache_read_input_tokens&#x27;],&#x27;,&#x27;))&quot; \
+ | sed &quot;s/^/도구 ${N}개  총 입력 토큰 /&quot;
+rm -f &quot;$CFG&quot;</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>더미 도구 서버 (dummy_mcp.js)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('dm').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='dummy_mcp.js 복사'},1500)})">dummy_mcp.js 복사</button></div>
+    <pre id="dm" class="small">#!/usr/bin/env node
+// reel_mcpcost 더미 MCP 서버. 도구 N개(환경변수 N), 정의 크기는 전부 같다(비교 변수는 개수 하나).
+const N = parseInt(process.env.N || &quot;0&quot;, 10);
+const tools = [];
+for (let i = 1; i &lt;= N; i++) {
+  tools.push({
+    name: `tool_${String(i).padStart(3, &quot;0&quot;)}`,
+    description: &quot;Look up one record by its identifier and return the stored fields. Use when the user asks for the details of a single item in the connected system.&quot;,
+    inputSchema: {
+      type: &quot;object&quot;,
+      properties: {
+        id: { type: &quot;string&quot;, description: &quot;Identifier of the record to look up.&quot; },
+        fields: { type: &quot;array&quot;, items: { type: &quot;string&quot; }, description: &quot;Optional list of field names to return.&quot; },
+        limit: { type: &quot;integer&quot;, description: &quot;Maximum number of rows to return.&quot; },
+      },
+      required: [&quot;id&quot;],
+    },
+  });
+}
+let buf = &quot;&quot;;
+process.stdin.on(&quot;data&quot;, (d) =&gt; {
+  buf += d;
+  let i;
+  while ((i = buf.indexOf(&quot;\n&quot;)) &gt;= 0) {
+    const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+    if (!line) continue;
+    let m; try { m = JSON.parse(line); } catch { continue; }
+    const send = (r) =&gt; process.stdout.write(JSON.stringify({ jsonrpc: &quot;2.0&quot;, id: m.id, result: r }) + &quot;\n&quot;);
+    if (m.method === &quot;initialize&quot;) send({ protocolVersion: m.params?.protocolVersion || &quot;2024-11-05&quot;, capabilities: { tools: {} }, serverInfo: { name: &quot;dummy&quot;, version: &quot;1.0.0&quot; } });
+    else if (m.method === &quot;tools/list&quot;) send({ tools });
+    else if (m.method === &quot;tools/call&quot;) send({ content: [{ type: &quot;text&quot;, text: &quot;ok&quot; }] });
+    else if (m.id !== undefined) process.stdout.write(JSON.stringify({ jsonrpc: &quot;2.0&quot;, id: m.id, result: {} }) + &quot;\n&quot;);
+  }
+});</pre>
+  </div>
+  <div class="src">영상의 터미널 화면은 실제로 돌린 명령입니다. 장면 그래픽은 AI가 코드로 그린 그림이에요.</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"mcpcost"})}).catch(()=>{});</script></body></html>
