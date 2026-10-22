@@ -15,8 +15,9 @@
 // 쓰는 법
 //   node tools/link_check.js            (로컬 파일 기준)
 //   node tools/link_check.js --live     (배포된 주소 기준)
+const SERVER_HOME = process.env.SERVER_HOME || require("os").homedir();
 const fs = require("fs"), path = require("path");
-const { chromium } = require(require.resolve("playwright", { paths: ["/home/user/template/docs/_engine"] }));
+const { chromium } = require(require.resolve("playwright", { paths: [(SERVER_HOME + "/template/docs/_engine")] }));
 const { execSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");

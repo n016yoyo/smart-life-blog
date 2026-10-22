@@ -8,6 +8,7 @@
 //   `</style>` 하나가 빠져서 브라우저가 body 전체를 CSS 로 먹었기 때문이다.
 //   HTTP 코드·링크 검사로는 절대 안 걸린다. 그려진 픽셀(본문 높이·글자 수)로 판정해야 한다.
 //   같은 날 만든 claude-memory-count 에는 `</style>` 이 하나 더 있었다(복사 실수 한 쌍).
+const SERVER_HOME = process.env.SERVER_HOME || require("os").homedir();
 const fs = require("fs"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const LIVE = process.argv.includes("--live");
@@ -16,7 +17,7 @@ const ONLY = (() => { const i = process.argv.indexOf("--only"); return i < 0 ? n
 const BASE = "https://n016yoyo.github.io/smart-life-blog/";
 const SKIP = new Set(["assets", "tools", "commands", "certs", "docs"]);
 const CHR = process.env.CHR || require("child_process").execSync("ls /nix/store/*/bin/chromium | head -1").toString().trim();
-const { chromium } = require(require.resolve("playwright-core", { paths: ["/home/user/template/docs/_engine"] }));
+const { chromium } = require(require.resolve("playwright-core", { paths: [(SERVER_HOME + "/template/docs/_engine")] }));
 
 const PAIRS = ["style", "script", "head", "body", "html", "table", "ul", "ol"];
 function tagCheck(html) {
