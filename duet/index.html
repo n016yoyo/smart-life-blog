@@ -1,0 +1,119 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>먼저 말 거는 클로드 비서, 아침마다 사람이 볼 3개만 (요청문·시간표 설정 그대로) | AI TIGER MASK</title>
+<meta name="description" content="정해진 시각에 클로드가 받은 요청을 읽고 사람이 직접 답할 3개만 골라 주는 요청문과 맥 시간표 설정 파일을 그대로 드려요.">
+<meta property="og:title" content="먼저 말 거는 클로드 비서">
+<meta property="og:description" content="정해진 시각에 클로드가 받은 요청을 읽고 사람이 직접 답할 3개만 골라 주는 요청문과 맥 시간표 설정 파일을">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head>
+<body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>먼저 말 거는<br>클로드 비서</h1>
+  <div class="sub">정해진 시각에 혼자 돌아요</div>
+  <div class="chips"><span class="chip"><b>8개 중 3개</b> 사람이 볼 것</span><span class="chip"><b>4/4</b> 같은 3개</span><span class="chip"><b>09:13</b> 예약 실행</span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>제가 해 본 것</h2>
+    <p>이름 없는 예시 요청 8개를 파일로 두고, 정해진 시각에 클로드가 읽어 사람이 직접 답할 3개만 고르게 했어요. 예약해 둔 09시 13분에 아무도 입력하지 않았는데 혼자 돌았어요. 같은 요청 네 번, 고른 3개는 매번 같았고, 3일 묵은 거래처 문의는 네 번 다 3개에서 빠졌어요(짧게 답하라는 한 줄은 매번 붙었어요).</p>
+    <p class="note">※ 2026-10-25, 하루 한 번 예약 실행만 시험했어요. 며칠 연속 실행은 시험하지 않았어요.</p>
+  </div>
+  <div class="box">
+    <div class="bar"><span>예시 요청 inbox.txt</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('ib').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='예시 복사'},1500)})">예시 복사</button></div>
+    <pre id="ib">1. 거래처 A: 견적서 보냈는데 확인했는지 물어봄 (3일 전)
+2. 팀원 B: 다음 주 회의 자료 초안 검토 요청 (내일 오전까지)
+3. 사이트 알림: 월 구독료 결제 예정 (자동 결제, 조치 필요 없음)
+4. 거래처 C: 계약서 서명 요청 (이번 주 금요일 마감)
+5. 뉴스레터: 이번 주 신제품 소식
+6. 팀원 D: 점심 메뉴 투표
+7. 은행: 이번 달 명세서 발급 안내
+8. 거래처 E: 납품 일정 변경 가능한지 문의 (오늘 답 필요)</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>요청문 morning_prompt.txt (묵은 요청 한 줄은 아래 주의 참고)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('rq').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='문장 복사'},1500)})">문장 복사</button></div>
+    <pre id="rq">inbox.txt 는 오늘 아침 받은 요청 8개야. 사람이 직접 보고 답해야 하는 것만 3개 골라서, 번호와 한 줄 이유로 알려줘. 나머지는 건드리지 않아도 된다고 한 줄로 말해줘. 아무것도 보내거나 바꾸지 말고 읽기만 해.</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>실행 스크립트 morning.sh</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('ms').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='스크립트 복사'},1500)})">스크립트 복사</button></div>
+    <pre id="ms">#!/bin/bash
+# 정해진 시각에 claude -p 가 받은 요청을 읽고 사람이 봐야 할 3개를 brief.txt 에 적는다(읽기만, 보내거나 바꾸지 않음)
+cd &quot;$HOME/duet_demo&quot;
+claude -p &quot;$(cat morning_prompt.txt)&quot; --allowedTools &quot;Read&quot; --output-format text &gt; brief.txt 2&gt; brief_err.txt &lt; /dev/null
+date &#x27;+%m-%d %H:%M&#x27; &gt; brief_done.txt</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>시간표 설정 (맥 LaunchAgent, 매일 08:00 예시)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('pl').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='설정 복사'},1500)})">설정 복사</button></div>
+    <pre id="pl">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;&lt;dict&gt;
+&lt;key&gt;Label&lt;/key&gt;&lt;string&gt;com.demo.morningbrief&lt;/string&gt;
+&lt;key&gt;ProgramArguments&lt;/key&gt;&lt;array&gt;&lt;string&gt;/Users/YOU/duet_demo/morning.sh&lt;/string&gt;&lt;/array&gt;
+&lt;key&gt;StartCalendarInterval&lt;/key&gt;&lt;dict&gt;&lt;key&gt;Hour&lt;/key&gt;&lt;integer&gt;8&lt;/integer&gt;&lt;key&gt;Minute&lt;/key&gt;&lt;integer&gt;0&lt;/integer&gt;&lt;/dict&gt;
+&lt;/dict&gt;&lt;/plist&gt;</pre>
+  </div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>폴더 만들기</h3><p><code>~/duet_demo</code> 에 inbox.txt · morning_prompt.txt · morning.sh 를 두고 <code>chmod +x morning.sh</code>.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>시간표 걸기</h3><p>설정 파일의 YOU 를 내 계정 이름으로 바꿔 <code>~/Library/LaunchAgents/</code> 에 넣고 <code>launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.demo.morningbrief.plist</code>.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>끄기</h3><p><code>launchctl bootout gui/$(id -u)/com.demo.morningbrief</code> 후 설정 파일을 지워요.</p></div></div>
+  </div>
+  <div class="warn">
+    <h3>이 방법의 한계예요</h3>
+    <p>요청문에 「오래 묵은 요청도 챙겨 줘」 같은 줄이 없으면 마감이 가까운 것 위주로 골라요(제 네 번이 그랬어요). 결과는 brief.txt 파일로만 남겨요. 알림·메일 보내기는 넣지 않았어요. 실제 메일함을 읽게 하려면 그 연결은 직접 만드셔야 해요.</p>
+  </div>
+  <div class="src">영상의 터미널 화면은 예약 실행이 남긴 실제 파일이에요. Duet 은 Anthropic 공식 영상에서 소개된 기능이고, 이 방법은 그것을 흉내 낸 것이지 같은 기능이 아니에요.</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"duet"})}).catch(()=>{});</script></body></html>

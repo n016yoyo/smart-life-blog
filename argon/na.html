@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>해 질 녘 바닷가 등대</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0b0614;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @keyframes pulse-beam {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.95; }
+    }
+
+    @keyframes float-sun {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(3px); }
+    }
+
+    @keyframes wave-shimmer {
+      0%, 100% { transform: scaleX(1); opacity: 0.8; }
+      50% { transform: scaleX(1.03); opacity: 1; }
+    }
+
+    @keyframes lantern-glow {
+      0%, 100% { filter: drop-shadow(0 0 15px #fff5c0); }
+      50% { filter: drop-shadow(0 0 30px #ffffff); }
+    }
+
+    .light-beam {
+      animation: pulse-beam 5s infinite ease-in-out;
+      mix-blend-mode: screen;
+    }
+
+    .sun-group {
+      animation: float-sun 8s infinite ease-in-out;
+    }
+
+    .shimmer {
+      animation: wave-shimmer 4s infinite ease-in-out;
+      transform-origin: 420px 650px;
+    }
+
+    .shimmer-delay {
+      animation: wave-shimmer 5.5s infinite ease-in-out reverse;
+      transform-origin: 420px 650px;
+    }
+
+    .lantern-core {
+      animation: lantern-glow 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 하늘 그라데이션 -->
+        <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0f0722" />
+          <stop offset="22%" stop-color="#291147" />
+          <stop offset="45%" stop-color="#681c5c" />
+          <stop offset="68%" stop-color="#b9375e" />
+          <stop offset="85%" stop-color="#ef6a51" />
+          <stop offset="96%" stop-color="#f9a852" />
+          <stop offset="100%" stop-color="#fedc76" />
+        </linearGradient>
+
+        <!-- 바다 그라데이션 -->
+        <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#d45058" />
+          <stop offset="12%" stop-color="#962755" />
+          <stop offset="30%" stop-color="#5c164e" />
+          <stop offset="60%" stop-color="#2c0c37" />
+          <stop offset="100%" stop-color="#0d051a" />
+        </linearGradient>
+
+        <!-- 태양 그라데이션 -->
+        <linearGradient id="sunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" />
+          <stop offset="25%" stop-color="#fff099" />
+          <stop offset="60%" stop-color="#fca856" />
+          <stop offset="100%" stop-color="#e84c5b" />
+        </linearGradient>
+
+        <!-- 태양 후광 -->
+        <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffae52" stop-opacity="0.6" />
+          <stop offset="40%" stop-color="#e35163" stop-opacity="0.25" />
+          <stop offset="100%" stop-color="#681c5c" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- 구름 그라데이션 -->
+        <linearGradient id="cloudGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#47184f" />
+          <stop offset="60%" stop-color="#8f2959" />
+          <stop offset="100%" stop-color="#f58355" />
+        </linearGradient>
+
+        <linearGradient id="cloudGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#872357" />
+          <stop offset="70%" stop-color="#dc5754" />
+          <stop offset="100%" stop-color="#fcc769" />
+        </linearGradient>
+
+        <!-- 등대 불빛 그라데이션 (좌) -->
+        <linearGradient id="beamLeft" x1="100%" y1="50%" x2="0%" y2="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+          <stop offset="15%" stop-color="#fff3a8" stop-opacity="0.55" />
+          <stop offset="50%" stop-color="#ffd56b" stop-opacity="0.2" />
+          <stop offset="100%" stop-color="#f9a852" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- 등대 불빛 그라데이션 (우) -->
+        <linearGradient id="beamRight" x1="0%" y1="50%" x2="100%" y2="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+          <stop offset="25%" stop-color="#fff3a8" stop-opacity="0.55" />
+          <stop offset="70%" stop-color="#ffd56b" stop-opacity="0.2" />
+          <stop offset="100%" stop-color="#f9a852" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- 등대 몸체 음영 (흰색 부분) -->
+        <linearGradient id="lhWhite" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff9a6c" />
+          <stop offset="18%" stop-color="#e3c5c8" />
+          <stop offset="45%" stop-color="#7c5678" />
+          <stop offset="100%" stop-color="#2c1738" />
+        </linearGradient>
+
+        <!-- 등대 몸체 음영 (빨간색 부분) -->
+        <linearGradient id="lhRed" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff5e5b" />
+          <stop offset="18%" stop-color="#b82547" />
+          <stop offset="45%" stop-color="#5e1337" />
+          <stop offset="100%" stop-color="#1f081e" />
+        </linearGradient>
+
+        <!-- 절벽 음영 -->
+        <linearGradient id="cliffBase" x1="0%" y1="0%" x2="100%" y2="20%">
+          <stop offset="0%" stop-color="#381530" />
+          <stop offset="30%" stop-color="#1d0b21" />
+          <stop offset="100%" stop-color="#0b0410" />
+        </linearGradient>
+
+        <linearGradient id="cliffRim" x1="0%" y1="0%" x2="80%" y2="80%">
+          <stop offset="0%" stop-color="#f78858" />
+          <stop offset="35%" stop-color="#a83255" />
+          <stop offset="100%" stop-color="#2b0f2b" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- 파도 포말 그라데이션 -->
+        <linearGradient id="foamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffbfa0" stop-opacity="0.75" />
+          <stop offset="60%" stop-color="#d46875" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#5c164e" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- 등대 몸체 클리핑 패스 -->
+        <clipPath id="lhBodyClip">
+          <polygon points="813,560 887,560 871,280 829,280" />
+        </clipPath>
+
+        <!-- 하늘 영역 클리핑 (태양이 바다 밑으로 안 보이게) -->
+        <clipPath id="skyClip">
+          <rect x="0" y="0" width="1080" height="650" />
+        </clipPath>
+
+        <!-- 빛 번짐 필터 -->
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="12" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- ================= 1. 하늘 배경 ================= -->
+      <rect x="0" y="0" width="1080" height="650" fill="url(#skyGrad)" />
+
+      <!-- 별 (상단 어두운 하늘) -->
+      <g fill="#ffffff" opacity="0.8">
+        <circle cx="120" cy="60" r="1.2" opacity="0.5" />
+        <circle cx="280" cy="40" r="2" opacity="0.9" />
+        <circle cx="450" cy="85" r="1" opacity="0.4" />
+        <circle cx="620" cy="50" r="1.5" opacity="0.7" />
+        <circle cx="820" cy="35" r="1.2" opacity="0.6" />
+        <circle cx="960" cy="75" r="2.2" opacity="0.8" />
+        <circle cx="70" cy="140" r="1.5" opacity="0.5" />
+        <circle cx="340" cy="130" r="1" opacity="0.3" />
+        <circle cx="730" cy="110" r="1.8" opacity="0.6" />
+        <circle cx="910" cy="150" r="1" opacity="0.4" />
+        <circle cx="190" cy="190" r="1.2" opacity="0.3" />
+        <circle cx="550" cy="160" r="1.4" opacity="0.5" />
+        <!-- 반짝이는 큰 별 -->
+        <path d="M 280,33 Q 280,40 287,40 Q 280,40 280,47 Q 280,40 273,40 Q 280,40 280,33" fill="#ffffff" opacity="0.7" />
+        <path d="M 960,67 Q 960,75 968,75 Q 960,75 960,83 Q 960,75 952,75 Q 960,75 960,67" fill="#ffffff" opacity="0.6" />
+      </g>
+
+      <!-- ================= 2. 태양 및 구름 (하늘 클리핑) ================= -->
+      <g clip-path="url(#skyClip)">
+        <!-- 태양 후광 -->
+        <circle cx="420" cy="620" r="450" fill="url(#sunGlow)" />
+        
+        <!-- 먼 배경 구름 (실루엣) -->
+        <g fill="#571845" opacity="0.35">
+          <path d="M -50,480 Q 80,430 180,460 Q 280,410 400,450 Q 520,420 620,470 L 620,520 L -50,520 Z" />
+          <path d="M 650,380 Q 750,340 850,370 Q 980,330 1120,380 L 1120,430 L 650,430 Z" />
+        </g>
+
+        <!-- 태양 본체 -->
+        <circle cx="420" cy="620" r="165" fill="url(#sunGrad)" class="sun-group" filter="url(#glow)" />
+
+        <!-- 해 질 녘 구름층 1 (상단 보라/붉은 구름) -->
+        <g fill="url(#cloudGrad1)" opacity="0.85">
+          <path d="M 40,260 Q 95,215 160,245 Q 230,185 320,230 Q 385,205 430,255 Q 480,235 510,270 L 20,270 Z" />
+          <path d="M 620,190 Q 690,140 770,175 Q 850,130 930,170 Q 990,150 1050,195 L 600,195 Z" />
+        </g>
+
+        <!-- 해 질 녘 구름층 2 (태양을 가로지르는 황금빛 구름) -->
+        <g fill="url(#cloudGrad2)" opacity="0.92">
+          <path d="M -30,540 Q 60,490 150,520 Q 240,465 340,515 Q 410,490 470,530 L 470,548 L -30,548 Z" />
+          <path d="M 480,430 Q 560,380 650,410 Q 740,360 830,405 Q 900,385 960,425 L 480,425 Z" />
+          <!-- 태양 앞을 지나가는 얇은 구름 띠 -->
+          <rect x="180" y="565" width="380" height="12" rx="6" fill="#9c2b53" opacity="0.7" />
+          <rect x="220" y="565" width="300" height="5" rx="2.5" fill="#ffae52" opacity="0.8" />
+          
+          <rect x="290" y="605" width="340" height="16" rx="8" fill="#781d4f" opacity="0.8" />
+          <rect x="310" y="605" width="280" height="6" rx="3" fill="#ffd06b" opacity="0.8" />
+        </g>
+
+        <!-- 먼 수평선 산맥/섬 실루엣 -->
+        <path d="M 0,650 L 0,628 Q 65,610 135,622 Q 210,595 290,630 Q 340,618 395,650 Z" fill="#3d1139" />
+        <path d="M 550,650 Q 610,630 675,638 Q 730,622 790,650 Z" fill="#320d30" />
+      </g>
+
+      <!-- 수평선 하이라이트 라인 -->
+      <line x1="0" y1="650" x2="1080" y2="650" stroke="#ffbe6b" stroke-width="1.5" opacity="0.6" />
+
+      <!-- ================= 3. 바다 및 윤슬 ================= -->
+      <rect x="0" y="650" width="1080" height="430" fill="url(#seaGrad)" />
+
+      <!-- 바다의 어두운 물결 질감 -->
+      <g fill="#1c0626" opacity="0.45">
+        <ellipse cx="180" cy="690" rx="120" ry="3" />
+        <ellipse cx="750" cy="680" rx="150" ry="2.5" />
+        <ellipse cx="120" cy="740" rx="180" ry="5" />
+        <ellipse cx="640" cy="730" rx="130" ry="4" />
+        <ellipse cx="220" cy="810" rx="240" ry="7" />
+        <ellipse cx="580" cy="840" rx="190" ry="6" />
+        <ellipse cx="150" cy="910" rx="280" ry="10" />
+        <ellipse cx="480" cy="950" rx="220" ry="9" />
+        <ellipse cx="260" cy="1020" rx="350" ry="14" />
+      </g>
+
+      <!-- 태양 빛 반사 (윤슬) - 그룹 1 -->
+      <g class="shimmer">
+        <!-- 수평선 근처 집중된 빛 -->
+        <ellipse cx="420" cy="654" rx="160" ry="4" fill="#fff8b8" />
+        <ellipse cx="420" cy="662" rx="150" ry="4.5" fill="#ffe680" />
+        <ellipse cx="415" cy="672" rx="135" ry="5" fill="#ffbe57" />
+        <ellipse cx="425" cy="684" rx="125" ry="5.5" fill="#fa9650" />
+        <ellipse cx="418" cy="698" rx="115" ry="6" fill="#f57653" />
+        <ellipse cx="422" cy="715" rx="105" ry="6.5" fill="#e65359" />
+        <ellipse cx="410" cy="735" rx="95" ry="7" fill="#d9435f" />
+        <ellipse cx="430" cy="758" rx="88" ry="8" fill="#c73260" />
+        <ellipse cx="415" cy="785" rx="80" ry="9" fill="#b0255e" />
+        <ellipse cx="425" cy="818" rx="70" ry="10" fill="#911c59" />
+        <ellipse cx="418" cy="855" rx="60" ry="11" fill="#73134a" />
+        <ellipse cx="422" cy="900" rx="50" ry="12" fill="#590d3b" />
+      </g>
+
+      <!-- 태양 빛 반사 (윤슬) - 그룹 2 (밝은 하이라이트 조각) -->
+      <g class="shimmer-delay" fill="#fff5a8">
+        <rect x="320" y="658" width="200" height="3" rx="1.5" opacity="0.9" />
+        <rect x="340" y="668" width="160" height="4" rx="2" opacity="0.85" />
+        <rect x="310" y="680" width="90" height="4" rx="2" opacity="0.8" />
+        <rect x="420" y="682" width="110" height="4.5" rx="2.2" opacity="0.8" />
+        <rect x="350" y="696" width="140" height="5" rx="2.5" opacity="0.75" />
+        <rect x="330" y="712" width="80" height="5" rx="2.5" opacity="0.65" fill="#ffbe57" />
+        <rect x="435" y="716" width="75" height="5.5" rx="2.7" opacity="0.7" fill="#ffbe57" />
+        <rect x="365" y="736" width="110" height="6" rx="3" opacity="0.6" fill="#fa9650" />
+        <rect x="345" y="762" width="65" height="6.5" rx="3.2" opacity="0.55" fill="#fa9650" />
+        <rect x="430" y="768" width="70" height="6.5" rx="3.2" opacity="0.5" fill="#f57653" />
+        <rect x="380" y="795" width="85" height="7" rx="3.5" opacity="0.45" fill="#f57653" />
+        <rect x="360" y="830" width="55" height="8" rx="4" opacity="0.4" fill="#e65359" />
+        <rect x="420" y="870" width="60" height="8" rx="4" opacity="0.3" fill="#d9435f" />
+        <!-- 흩어진 작은 반짝임 (물방울 빛) -->
+        <circle cx="290" cy="675" r="2.5" opacity="0.8" />
+        <circle cx="545" cy="670" r="2" opacity="0.7" />
+        <circle cx="275" cy="705" r="3" opacity="0.6" fill="#ffbe57" />
+        <circle cx="560" cy="710" r="2.5" opacity="0.6" fill="#ffbe57" />
+        <circle cx="315" cy="748" r="3.5" opacity="0.5" fill="#fa9650" />
+        <circle cx="525" cy="755" r="3" opacity="0.5" fill="#fa9650" />
+        <circle cx="335" cy="805" r="4" opacity="0.4" fill="#f57653" />
+        <circle cx="495" cy="815" r="3.5" opacity="0.35" fill="#f57653" />
+      </g>
+
+      <!-- ================= 4. 파도 및 바위섬 ================= -->
+      <!-- 왼쪽 바다의 작은 바위섬들 -->
+      <g>
+        <polygon points="140,785 185,745 220,765 255,750 285,785" fill="#180821" />
+        <polygon points="140,785 185,745 198,765 165,785" fill="#5e1b46" opacity="0.7" />
+        <polygon points="220,765 255,750 262,770 235,785" fill="#5e1b46" opacity="0.5" />
+        <!-- 바위섬 주변 물보라 -->
+        <path d="M 125,785 Q 210,778 300,785 Q 250,792 180,790 Z" fill="#f58b76" opacity="0.5" />
+      </g>
+
+      <!-- 절벽에 부딪히는 파도 포말 (중경 & 전경) -->
+      <g>
+        <!-- 뒤쪽 파도 -->
+        <path d="M 650,695 Q 690,685 730,692 L 750,710 L 630,710 Z" fill="url(#foamGrad)" />
+        <path d="M 550,750 Q 610,735 670,745 Q 710,755 680,775 L 530,775 Z" fill="url(#foamGrad)" />
+        <!-- 앞쪽 큰 파도 포말 -->
+        <path d="M 460,825 Q 530,805 600,820 Q 640,830 620,860 L 430,860 Z" fill="url(#foamGrad)" />
+        <path d="M 470,825 Q 530,810 595,822" fill="none" stroke="#ffdfc2" stroke-width="2.5" opacity="0.7" />
+        
+        <path d="M 350,920 Q 430,895 510,910 Q 560,920 540,960 L 320,960 Z" fill="url(#foamGrad)" />
+        <path d="M 360,918 Q 430,898 505,912" fill="none" stroke="#ffdfc2" stroke-width="3" opacity="0.8" />
+        
+        <path d="M 240,1010 Q 340,985 450,1005 L 470,1050 L 210,1050 Z" fill="url(#foamGrad)" />
+        <path d="M 255,1008 Q 340,988 440,1005" fill="none" stroke="#ffdfc2" stroke-width="3.5" opacity="0.6" />
+      </g>
+
+      <!-- ================= 5. 해안 절벽 및 지형 ================= -->
+      <g>
+        <!-- 절벽 뒤에 깔리는 중간 바위산 -->
+        <polygon points="660,720 715,640 780,625 840,660 780,730" fill="#230b26" />
+        <polygon points="660,720 715,640 740,655 695,720" fill="url(#cliffRim)" opacity="0.8" />
+
+        <!-- 메인 절벽 베이스 -->
+        <polygon points="340,1080 410,990 480,960 530,885 615,850 675,775 735,730 765,620 795,555 855,545 925,565 985,610 1080,640 1080,1080" fill="url(#cliffBase)" />
+
+        <!-- 절벽의 입체적인 면 분할 (석양 역광 림라이트) -->
+        <!-- 상단 등대 바로 아래 절벽면 -->
+        <polygon points="795,555 855,545 835,615 765,620" fill="url(#cliffRim)" />
+        <polygon points="765,620 835,615 790,715 735,730" fill="url(#cliffRim)" opacity="0.85" />
+        
+        <!-- 중간 절벽면 -->
+        <polygon points="735,730 790,715 745,805 675,775" fill="url(#cliffRim)" opacity="0.75" />
+        <polygon points="675,775 745,805 680,875 615,850" fill="url(#cliffRim)" opacity="0.65" />
+        <polygon points="615,850 680,875 600,920 530,885" fill="url(#cliffRim)" opacity="0.7" />
+        
+        <!-- 하단 전경 절벽면 -->
+        <polygon points="530,885 600,920 545,985 480,960" fill="url(#cliffRim)" opacity="0.55" />
+        <polygon points="480,960 545,985 460,1035 410,990" fill="url(#cliffRim)" opacity="0.5" />
+        <polygon points="410,990 460,1035 395,1080 340,1080" fill="url(#cliffRim)" opacity="0.4" />
+
+        <!-- 절벽 어두운 그림자 각진 면 디테일 -->
+        <polygon points="855,545 925,565 895,650 835,615" fill="#140619" />
+        <polygon points="835,615 895,650 850,750 790,715" fill="#110516" />
+        <polygon points="790,715 850,750 810,840 745,805" fill="#0d0312" />
+        <polygon points="745,805 810,840 750,930 680,875" fill="#0b020f" />
+        <polygon points="680,875 750,930 670,1020 600,920" fill="#09020c" />
+
+        <!-- 절벽 가장자리 날카로운 빛 하이라이트 선 -->
+        <polyline points="795,555 765,620 735,730 675,775 615,850 530,885 480,960 410,990 340,1080" fill="none" stroke="#ff9e66" stroke-width="2" opacity="0.7" />
+      </g>
+
+      <!-- ================= 6. 등대 및 부속 건물 ================= -->
+      <g id="lighthouse">
+        <!-- 등대지기 집 (왼쪽 작은 부속 건물) -->
+        <g>
+          <!-- 굴뚝 -->
+          <rect x="752" y="492" width="9" height="22" fill="#2b0f2b" />
+          <rect x="752" y="492" width="3" height="22" fill="#ff8a5b" />
+          <!-- 집 본체 -->
+          <polygon points="740,560 740,522 772,502 805,522 805,560" fill="#230e2b" />
+          <!-- 집 서쪽 벽면 (석양 빛 받음) -->
+          <polygon points="740,560 740,522 772,502 772,560" fill="#63264a" />
+          <!-- 지붕 -->
+          <polygon points="734,524 772,498 810,524 804,527 772,505 740,527" fill="#140619" />
+          <polyline points="734,524 772,498 810,524" fill="none" stroke="#ff9a6c" stroke-width="2" />
+          <!-- 따뜻한 불이 켜진 창문 -->
+          <rect x="750" y="530" width="12" height="16" rx="2" fill="#ffdf70" filter="url(#glow)" />
+          <rect x="750" y="530" width="12" height="16" rx="2" fill="#fff5ba" />
+          <line x1="756" y1="530" x2="756" y2="546" stroke="#471838" stroke-width="1.5" />
+          <line x1="750" y1="538" x2="762" y2="538" stroke="#471838" stroke-width="1.5" />
+        </g>
+
+        <!-- 등대 기초 베이스 (석조) -->
+        <polygon points="806,562 894,562 890,545 810,545" fill="#2b1230" />
+        <polygon points="806,562 835,562 835,545 810,545" fill="#803556" />
+
+        <!-- 등대 원통형 몸체 (클리핑 적용 및 줄무늬) -->
+        <g clip-path="url(#lhBodyClip)">
+          <!-- 전체 흰색 베이스 -->
+          <rect x="800" y="280" width="100" height="280" fill="url(#lhWhite)" />
+          
+          <!-- 붉은색 줄무늬 (곡선 형태로 입체감 부여) -->
+          <path d="M 800,280 L 900,280 L 900,325 Q 850,332 800,325 Z" fill="url(#lhRed)" />
+          <path d="M 800,375 Q 850,382 900,375 L 900,430 Q 850,437 800,430 Z" fill="url(#lhRed)" />
+          <path d="M 800,480 Q 850,487 900,480 L 900,535 Q 850,542 800,535 Z" fill="url(#lhRed)" />
+
+          <!-- 등대 왼쪽 모서리 강렬한 석양 반사광 (Rim Light) -->
+          <line x1="829" y1="280" x2="813" y2="560" stroke="#ffd29d" stroke-width="5" opacity="0.85" />
+          
+          <!-- 등대 오른쪽 깊은 그림자 -->
+          <polygon points="860,280 871,280 887,560 872,560" fill="#12051c" opacity="0.6" />
+        </g>
+
+        <!-- 등대 몸체 작은 창문들 -->
+        <g fill="#160721" stroke="#9e5a78" stroke-width="1">
+          <rect x="842" y="345" width="8" height="14" rx="4" />
+          <rect x="844" y="450" width="8" height="14" rx="4" />
+          <rect x="840" y="502" width="8" height="14" rx="4" fill="#ffdf70" stroke="none" opacity="0.9" />
+        </g>
+
+        <!-- 상단 전망대 갤러리 데크 (턱) -->
+        <polygon points="818,282 882,282 876,288 824,288" fill="#1f0a24" />
+        <rect x="815" y="276" width="70" height="6" rx="2" fill="#3b1638" />
+        <rect x="815" y="276" width="25" height="6" rx="2" fill="#ff9a6c" />
+
+        <!-- 전망대 난간 -->
+        <g stroke="#260c29" stroke-width="1.8">
+          <line x1="817" y1="266" x2="883" y2="266" stroke="#ff9a6c" stroke-width="1.5" />
+          <line x1="835" y1="266" x2="883" y2="266" stroke="#260c29" stroke-width="1.8" />
+          <line x1="819" y1="266" x2="819" y2="276" stroke="#ff9a6c" />
+          <line x1="827" y1="266" x2="827" y2="276" stroke="#ff9a6c" />
+          <line x1="835" y1="266" x2="835" y2="276" />
+          <line x1="843" y1="266" x2="843" y2="276" />
+          <line x1="850" y1="266" x2="850" y2="276" />
+          <line x1="857" y1="266" x2="857" y2="276" />
+          <line x1="865" y1="266" x2="865" y2="276" />
+          <line x1="873" y1="266" x2="873" y2="276" />
+          <line x1="881" y1="266" x2="881" y2="276" />
+        </g>
+
+        <!-- 등실 (Lantern Room - 유리방) -->
+        <rect x="829" y="235" width="42" height="41" fill="#2c122e" />
+        <!-- 유리창 내부 빛 -->
+        <rect x="832" y="237" width="36" height="37" fill="#ffeb99" opacity="0.9" />
+        <!-- 등대 렌즈 코어 (강렬한 빛) -->
+        <circle cx="850" cy="255" r="14" fill="#ffffff" class="lantern-core" />
+        <!-- 등실 유리창 프레임 (격자) -->
+        <g stroke="#210924" stroke-width="2">
+          <line x1="832" y1="237" x2="832" y2="274" />
+          <line x1="841" y1="237" x2="841" y2="274" />
+          <line x1="850" y1="237" x2="850" y2="274" />
+          <line x1="859" y1="237" x2="859" y2="274" />
+          <line x1="868" y1="237" x2="868" y2="274" />
+          <line x1="830" y1="255" x2="870" y2="255" stroke-width="1.5" />
+        </g>
+
+        <!-- 등대 지붕 (돔/원뿔형) -->
+        <path d="M 823,237 Q 850,205 877,237 Z" fill="#1f081e" />
+        <!-- 지붕 왼쪽 빛 반사 -->
+        <path d="M 823,237 Q 842,213 850,219 L 842,237 Z" fill="#d94b57" />
+        <path d="M 823,237 Q 837,219 846,221 L 832,237 Z" fill="#ff9e66" />
+        
+        <!-- 피뢰침 및 꼭대기 장식 -->
+        <circle cx="850" cy="218" r="4.5" fill="#1f081e" />
+        <circle cx="848.5" cy="217.5" r="3" fill="#ff9e66" />
+        <line x1="850" y1="215" x2="850" y2="192" stroke="#210924" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="849.5" y1="215" x2="849.5" y2="192" stroke="#ffbe78" stroke-width="1" />
+
+        <!-- 절벽 위 작은 나무/수풀 및 울타리 실루엣 -->
+        <g fill="#140619">
+          <!-- 오른쪽 수풀 -->
+          <circle cx="902" cy="558" r="10" />
+          <circle cx="914" cy="562" r="12" />
+          <circle cx="926" cy="568" r="9" />
+          <circle cx="893" cy="561" r="7" />
+          <!-- 왼쪽 작은 울타리 -->
+          <path d="M 795,555 L 770,565 M 790,552 L 790,562 M 782,555 L 782,565 M 774,558 L 774,568" stroke="#1f0a24" stroke-width="2" />
+        </g>
+      </g>
+
+      <!-- ================= 7. 등대 불빛 (Light Beams) ================= -->
+      <g class="light-beam">
+        <!-- 왼쪽으로 뻗어나가는 메인 빛줄기 -->
+        <polygon points="850,255 -100,40 -100,460" fill="url(#beamLeft)" />
+        <!-- 왼쪽 빛줄기 중심 코어 (더 밝고 좁은 영역) -->
+        <polygon points="850,255 -100,180 -100,320" fill="url(#beamLeft)" opacity="0.6" />
+
+        <!-- 오른쪽으로 뻗어나가는 빛줄기 -->
+        <polygon points="850,255 1180,160 1180,350" fill="url(#beamRight)" />
+        
+        <!-- 등실 주변 광원 후광 -->
+        <circle cx="850" cy="255" r="75" fill="url(#sunGlow)" />
+        <ellipse cx="850" cy="255" rx="140" ry="12" fill="#ffffff" opacity="0.4" filter="url(#glow)" />
+      </g>
+
+      <!-- ================= 8. 갈매기 및 전경 디테일 ================= -->
+      <!-- 하늘을 나는 갈매기 실루엣 -->
+      <g fill="none" stroke="#2b0c30" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 태양 근처 갈매기들 -->
+        <path d="M 250,490 Q 260,478 270,488 Q 280,478 290,490" stroke-width="2.8" />
+        <path d="M 295,465 Q 302,456 310,464 Q 318,456 325,465" stroke-width="2.2" />
+        <path d="M 225,515 Q 231,508 237,514 Q 243,508 249,515" stroke-width="1.8" />
+        
+        <!-- 등대 쪽 높은 하늘 갈매기들 -->
+        <path d="M 580,290 Q 592,275 604,288 Q 616,275 628,290" stroke-width="3" />
+        <path d="M 640,315 Q 648,305 656,314 Q 664,305 672,315" stroke-width="2.2" />
+        <path d="M 545,325 Q 551,318 557,324 Q 563,318 569,325" stroke-width="1.6" opacity="0.8" />
+      </g>
+
+      <!-- 전경 프레임 (양쪽 하단 어두운 바위/해초류 실루엣으로 깊이감 추가) -->
+      <g fill="#07020a">
+        <!-- 우측 하단 절벽 풀/억새 실루엣 -->
+        <path d="M 920,1080 Q 910,1020 880,980 Q 905,1020 905,1080 Z" />
+        <path d="M 935,1080 Q 940,1010 925,960 Q 950,1010 950,1080 Z" />
+        <path d="M 960,1080 Q 975,1020 995,975 Q 980,1025 975,1080 Z" />
+        <path d="M 985,1080 Q 1010,1035 1035,1005 Q 1010,1045 1000,1080 Z" />
+        <path d="M 885,1080 Q 865,1040 840,1015 Q 870,1045 875,1080 Z" />
+        
+        <!-- 좌측 하단 해안가 바위 끝자락 -->
+        <path d="M 0,1080 L 0,1015 L 45,1030 L 95,1065 L 150,1080 Z" />
+        <polygon points="0,1015 45,1030 25,1045 0,1040" fill="#2e0d2b" opacity="0.6" />
+      </g>
+    </svg>
+  </div>
+</body>
+</html>

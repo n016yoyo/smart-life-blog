@@ -1,0 +1,98 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>클로드한테 내 컴퓨터 점검만 시켰더니 낡은 게 10개, 보안 공지 걸린 건 1개 (점검 요청문 그대로) | AI TIGER MASK</title>
+<meta name="description" content="클로드에게 읽기만 허용하고 내 컴퓨터를 점검시킨 요청문과 실행 명령을 그대로 드려요. 낡은 항목 10개 중 보안 공지가 걸린 건 Node.js 하나였어요.">
+<meta property="og:title" content="점검만 시켰더니 낡은 게 10개">
+<meta property="og:description" content="클로드에게 읽기만 허용하고 내 컴퓨터를 점검시킨 요청문과 실행 명령을 그대로 드려요. 낡은 항목 10개 중 ">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head>
+<body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>점검만 시켰더니<br>낡은 게 10개</h1>
+  <div class="sub">읽기만 허용한 요청문 그대로</div>
+  <div class="chips"><span class="chip"><b>10개</b> 최신보다 낮은 항목</span><span class="chip"><b>1개</b> 보안 공지 걸림</span><span class="chip"><b>v22.23.2</b> → 수정 v22.23.4</span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>제가 해 본 것</h2>
+    <p>클로드에게 읽기 도구와 버전 확인 명령 세 개만 허용하고 점검을 시켰어요. 최신보다 낮은 항목은 10개(Node 1 · npm 전역 2 · pip 7). 그중 보안 공지가 걸린 건 Node 하나였고, 제 v22.23.2 는 2026-10-21 공식 공지의 22.x 수정 버전 v22.23.4 보다 두 단계 낮았어요. 공지에는 압축(Brotli) 해제 결함으로 원격 코드 실행이 가능하다고 적혀 있어요. 아무것도 설치하거나 바꾸지 않았어요.</p>
+    <p class="note">※ 2026-10-25, 제 맥 한 대의 값이에요. 공지 본문은 nodejs.org 공식 페이지를 텍스트로 저장해 폴더에 넣어 두고 읽게 했어요.</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>공지 본문을 파일로 저장</h3><p>nodejs.org 보안 공지 페이지 본문을 복사해 <code>node_advisory.txt</code> 로 저장하고, 그 폴더에서 실행해요.</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>읽기만 허용하고 실행</h3><p>아래 명령처럼 <code>--allowedTools</code> 에 읽기와 버전 확인 명령만 넣어요. 설치·변경은 시키지 않아요.</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>공지 걸린 것만 먼저</h3><p>나머지는 메이저 버전이 크게 바뀌는 것도 있어서, 호환을 확인하고 천천히 올려요.</p></div></div>
+  </div>
+  <div class="box">
+    <div class="bar"><span>점검 요청문 (제가 쓴 그대로, 파일 이름만 일반화)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('rq').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='문장 복사'},1500)})">문장 복사</button></div>
+    <pre id="rq">내 컴퓨터를 점검만 해줘. 아무것도 설치하거나 바꾸지 말고 읽기만 해.
+1) node -v, npm outdated -g, python3 -m pip list --outdated 를 실행해서 최신보다 낮은 항목을 전부 세어줘(Node 1개로 세고, npm 전역·pip 는 표에 나온 줄 수).
+2) 이 폴더의 node_advisory.txt 는 Node.js 공식 보안 공지야. 내 Node 가 공지의 수정 버전보다 낮은지 알려줘.
+3) 결과를 이 순서로 짧게: 낡은 항목 총 몇 개(종류별 개수), 그중 보안 공지가 걸린 건 몇 개, 급한 건 무엇이고 나머지는 서두를 필요가 있는지.</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>실행 명령 (요청문을 req_audit.txt 로 저장한 폴더에서)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('cm').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='명령 복사'},1500)})">명령 복사</button></div>
+    <pre id="cm">claude -p &quot;$(cat req_audit.txt)&quot; --allowedTools &quot;Read,Bash(node -v),Bash(npm outdated -g),Bash(python3 -m pip list --outdated)&quot;</pre>
+  </div>
+  <table><tr><th>항목</th><th>제 값</th></tr><tr><td class="">낡은 항목</td><td class="n">10개</td></tr><tr><td class="">Node</td><td class="n">1 (v22.23.2)</td></tr><tr><td class="">npm 전역</td><td class="n">2</td></tr><tr><td class="">pip</td><td class="n">7</td></tr><tr><td class="">보안 공지 걸림</td><td class="n">1 (Node)</td></tr><tr><td class="">공지 중 22.x 해당</td><td class="n">7건 (high 3 · medium 3 · low 1)</td></tr></table>
+  <div class="warn">
+    <h3>이 방법의 한계예요</h3>
+    <p>이 공지 하나만 대조했어요. npm·pip 항목에 다른 보안 공지가 있는지는 확인하지 않았어요. 업데이트 방법(설치 방식마다 다름)은 직접 확인하고 올리세요. 클로드의 판단(「나머지는 급하지 않다」)은 이 공지 기준이에요.</p>
+  </div>
+  <div class="src">영상의 터미널 화면은 실제로 돌린 명령의 출력이에요. 공지 페이지는 Node.js 공식 블로그(2026-10-21 보안 공지)를 그대로 찍었어요.</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"nodesec"})}).catch(()=>{});</script></body></html>
