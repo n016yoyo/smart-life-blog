@@ -1,0 +1,103 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>한 시간 쉬고 보낸 고마워 한마디에 1.31달러, 클로드 코드 자동 압축 설정 위치 | AI TIGER MASK</title>
+<meta name="description" content="한 시간 넘게 쉰 클로드 코드 대화에 한마디 보내면 캐시가 식어 대화 전체를 다시 읽어요. 자동 압축(Idle compaction) 켜고 끄는 위치와 직접 잰 값을 정리했어요.">
+<meta property="og:title" content="쉬고 보낸 고마워 한마디, 1.31달러">
+<meta property="og:description" content="클로드 코드 자동 압축 설정 위치와 직접 잰 값">
+<style>
+:root{--o:#d97757;--ink:#1a1610;--bg:#f4efe6;--dim:#6b665e}
+*{box-sizing:border-box;margin:0}body{font-family:-apple-system,"Pretendard",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.62}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(160deg,#2a221d,#160f0b);color:#fff;padding:44px 20px 38px;text-align:center}
+header .b{font-size:13px;letter-spacing:3px;color:var(--o);font-weight:800}
+header h1{font-size:clamp(23px,5.6vw,30px);margin-top:12px;line-height:1.28;letter-spacing:-.02em}
+header .sub{margin-top:12px;color:#c9c3b8;font-size:14px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eee}
+.chip b{color:var(--o)}
+.who{margin:24px 0 6px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px 18px}
+.who h2{font-size:16px;margin-bottom:7px}
+.who p{font-size:14px;color:#43403a}
+.who .note{font-size:12.5px;color:var(--dim);margin-top:9px;border-top:1px dashed #e0d9cc;padding-top:9px}
+.lead{margin:26px 0 8px;text-align:center}
+.lead h2{font-size:clamp(19px,4.6vw,23px);letter-spacing:-.02em}
+.lead p{font-size:13.5px;color:var(--dim);margin-top:6px}
+.box{position:relative;margin:14px 0 8px;border:1px solid #322c25;border-radius:12px;overflow:hidden}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--o);color:#fff;font-size:13px;font-weight:800;padding:10px 14px}
+.copy{background:#fff;color:var(--o);border:0;border-radius:8px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+pre{margin:0;background:#1e1b17;color:#e8e2d6;padding:16px;overflow:auto;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.small{font-size:11.5px;line-height:1.5}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:13.5px;margin:14px 0 0;border:1px solid rgba(0,0,0,.07)}
+th,td{padding:10px 12px;border-bottom:1px solid #eee7db;text-align:left;vertical-align:top}
+th{background:#efe7db;font-size:12.5px;color:#5c554a}
+td.n{font-weight:900;color:var(--o);white-space:nowrap;font-variant-numeric:tabular-nums}
+td.d{font-size:12.5px;color:#5c554a}
+.rules{margin:26px 0 0;display:flex;flex-direction:column;gap:11px}
+.rule{display:flex;gap:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:15px 16px}
+.rule .n{flex:none;width:38px;height:38px;border-radius:11px;background:#efe7db;color:var(--o);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rule h3{font-size:15.5px;margin-bottom:3px}
+.rule p{font-size:13.5px;color:#4b473f}
+.rule code,.how code{background:#efe7db;color:#7a4a36;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.warn{margin:22px 0 0;background:#fff4f2;border:1px solid #f3c7bd;border-radius:16px;padding:16px 18px}
+.warn h3{font-size:15px;color:#c0392b;margin-bottom:6px}
+.warn p{font-size:13.5px;color:#5c4b47}
+.how{margin:24px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:18px}
+.how h2{font-size:16px;margin-bottom:8px}
+.how ol,.how ul{margin:0;padding-left:20px;font-size:13.8px;color:#43403a}
+.how li{margin:5px 0}
+.pic{margin:14px 0 0;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:14px;text-align:center}
+.pic img{width:100%;max-width:520px;border-radius:10px}
+.pic .cap{font-size:12.5px;color:var(--dim);margin-top:8px}
+.src{margin:22px 0 0;font-size:12.5px;color:var(--dim);background:#efe9df;border-radius:12px;padding:14px 16px}
+.src a{color:#a8624a}
+.cta{margin:26px 0 0;text-align:center}
+.cta a{display:inline-block;background:var(--o);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:14px 26px;border-radius:14px}
+.foot{margin-top:30px;text-align:center;color:var(--dim);font-size:12.5px}
+.foot a{color:var(--dim)}
+</style></head>
+<body>
+<header>
+  <div class="b">AI TIGER MASK</div>
+  <h1>쉬고 보낸 고마워 한마디<br>1.31달러</h1>
+  <div class="sub">클로드 코드 패치노트 리뷰 · 자동 압축 설정 위치</div>
+  <div class="chips"><span class="chip"><b>+$1.31</b> 65분 쉬고 한마디</span><span class="chip"><b>+$0.03</b> 1분 뒤 같은 말</span><span class="chip"><b>54분 9초</b> 자동 압축</span></div>
+</header>
+<div class="wrap">
+  <div class="who">
+    <h2>제가 해 본 것</h2>
+    <p>공개 소설(구텐베르크 《오만과 편견》)을 통째로 읽힌 시연 대화를 만들고, 마지막 응답 뒤 65분을 쉬었다가 「고마워」 한마디를 보냈어요. 상태 줄 비용 표시가 $1.44 에서 $2.75 로 1.31달러 올랐어요. 55초 뒤 같은 말을 한 번 더 보내니 $2.75 → $2.78, 3센트였어요.</p>
+    <p>차이는 프롬프트 캐시예요. 쉬는 동안 1시간 캐시가 식어서 첫 한마디에 대화 전체(이번엔 327,241 토큰)를 다시 썼고, 바로 다음 말은 캐시에서 읽었어요(354,567 토큰을 읽기만 함).</p>
+    <p class="note">※ 2026-10-25, 제 시연 한 번의 값이에요. 상태 줄의 달러는 사용량을 API 단가로 환산한 표시예요. 구독 요금제는 돈이 따로 나가지 않고 5시간·주간 한도에서 깎여요.</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><div class="n">1</div><div><h3>한 시간 넘게 쉬었으면 새 대화로</h3><p>v2.1.304 부터 Pro·Max 요금제에서 쉰 대화를 이어 가면 5시간 한도를 꽤 쓸 때 경고가 떠요. 「그래도 이어 가기」나 「새 대화」를 고르는데, 새 대화에서 이전 대화를 말하면 클로드가 찾아본다고 해요. (제 시연에서는 이 경고가 뜨지 않았어요.)</p></div></div>
+    <div class="rule"><div class="n">2</div><div><h3>쉬는 동안 자동 압축 (v2.1.299)</h3><p>20만 토큰이 넘는 대화를 약 54분 그대로 두면 캐시가 식기 전에 알아서 압축해 둬요. 제 시연은 54분 9초에 압축됐고 109,437 → 10,316 토큰이 됐어요(기준을 2만 토큰으로 낮춰서 잰 값).</p></div></div>
+    <div class="rule"><div class="n">3</div><div><h3>설정에서 켜고 끄기 (v2.1.302)</h3><p>클로드 코드에서 <code>/config</code> 를 열고 검색 칸에 <code>idle</code> 을 치면 <code>Idle compaction</code> 줄이 나와요. 여기서 끄거나 다시 켜요.</p></div></div>
+  </div>
+  <div class="box">
+    <div class="bar"><span>settings.json 으로 끄기 (공식 문구 그대로)</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('sj').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='복사'},1500)})">복사</button></div>
+    <pre id="sj">{
+  "idleCompaction": false
+}</pre>
+  </div>
+  <div class="box">
+    <div class="bar"><span>압축 기준(기본 20만 토큰) 바꾸기 , 값은 예시</span><button class="copy" onclick="navigator.clipboard.writeText(document.getElementById('ev').textContent).then(()=>{this.textContent='복사됨';setTimeout(()=>{this.textContent='복사'},1500)})">복사</button></div>
+    <pre id="ev">export CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS=100000</pre>
+  </div>
+  <table><tr><th>제가 잰 것</th><th>값</th></tr>
+  <tr><td>65분 쉬고 「고마워」</td><td class="n">$1.44 → $2.75</td></tr>
+  <tr><td>55초 뒤 같은 말</td><td class="n">$2.75 → $2.78</td></tr>
+  <tr><td>쉰 뒤 다시 쓴 캐시</td><td class="n">327,241 토큰</td></tr>
+  <tr><td>자동 압축까지</td><td class="n">54분 9초</td></tr>
+  <tr><td>압축 전 → 후</td><td class="n">109,437 → 10,316 토큰</td></tr></table>
+  <div class="warn">
+    <h3>이 방법의 한계예요</h3>
+    <p>시연 한 번씩의 값이에요. 비용은 대화 크기와 모델에 따라 달라요. 자동 압축은 기본으로 20만 토큰이 넘는 대화에만 걸려요(제 시연은 공식 환경 변수로 기준을 2만으로 낮췄어요). 압축하면 대화가 요약으로 줄어서, 아주 자세한 앞부분이 필요하면 끄는 게 나을 수도 있어요. 환경 변수와 settings.json 끄기는 v2.1.290 이후 버전에서 돼요.</p>
+  </div>
+  <div class="src">근거: 클로드 코드 공식 릴리즈 노트 <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.299" target="_blank" rel="noopener">v2.1.299</a> · <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.302" target="_blank" rel="noopener">v2.1.302</a> · <a href="https://github.com/anthropics/claude-code/releases/tag/v2.1.304" target="_blank" rel="noopener">v2.1.304</a>. 영상의 터미널 화면은 시연을 실제로 돌린 화면이에요. 인용 영상: Leo Desp 「L'erreur qui crame tes tokens trop rapidement」, Pexels(Eren Li · Tima Miroshnichenko).</div>
+  <div class="cta">
+    <a href="https://instagram.com/aitigermask" target="_blank" rel="noopener">더 많은 클로드 꿀팁 보기 @aitigermask</a>
+  </div>
+  <p class="foot"><a href="/">← AI TIGER MASK 홈</a> · © 2026 DONGHYUCK YANG</p>
+</div>
+<script>fetch("https://instagram.verification-app.workers.dev/api/view",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:"ccpatch1"})}).catch(()=>{});</script></body></html>
