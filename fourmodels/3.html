@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비 오는 밤의 도시</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #05060d;
+  }
+  canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+  }
+  .caption {
+    position: fixed;
+    left: 16px;
+    bottom: 12px;
+    font: 12px/1.4 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    color: rgba(200, 210, 230, 0.45);
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="caption">RAINY NIGHT · 클릭하면 번개가 칩니다</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+
+  let W = 0, H = 0, DPR = 1;
+  let buildingsFar = [], buildingsNear = [];
+  let raindrops = [], splashes = [];
+  let stars = [];
+  let lightning = { flash: 0, bolt: null, boltLife: 0, nextAt: 0 };
+  let skylineCanvas = null;
+  let t0 = performance.now();
+
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const randInt = (a, b) => Math.floor(rand(a, b + 1));
+
+  // 창문 색상 팔레트(따뜻한 노랑, 차가운 흰빛, 형광등 청록)
+  const WINDOW_COLORS = [
+    [255, 214, 120],
+    [255, 236, 180],
+    [200, 225, 255],
+    [255, 190, 90],
+    [160, 230, 255]
+  ];
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildWorld();
+  }
+
+  // ---------- 세계 생성 ----------
+  function makeBuildings(count, minW, maxW, minH, maxH, baseY, layer) {
+    const list = [];
+    let x = -rand(10, 40);
+    while (x < W + 40) {
+      const bw = rand(minW, maxW);
+      const bh = rand(minH, maxH) * H;
+      const b = {
+        x, w: bw, h: bh, y: baseY - bh,
+        layer,
+        windows: [],
+        antenna: Math.random() < 0.3,
+        roofStyle: randInt(0, 2),
+        shade: layer === 'near' ? rand(0.06, 0.12) : rand(0.14, 0.22)
+      };
+      // 창문 격자
+      const cellW = layer === 'near' ? rand(10, 15) : rand(6, 9);
+      const cellH = layer === 'near' ? rand(13, 18) : rand(8, 11);
+      const cols = Math.floor((bw - 6) / cellW);
+      const rows = Math.floor((bh - 10) / cellH);
+      const litRatio = rand(0.25, 0.6);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const lit = Math.random() < litRatio;
+          const color = WINDOW_COLORS[randInt(0, WINDOW_COLORS.length - 1)];
+          b.windows.push({
+            x: b.x + 4 + c * cellW + 1,
+            y: b.y + 8 + r * cellH + 1,
+            w: cellW - 3,
+            h: cellH - 4,
+            lit,
+            color,
+            brightness: lit ? rand(0.5, 1) : 0,
+            target: lit ? rand(0.5, 1) : 0,
+            flickerRate: rand(0.002, 0.02),
+            phase: rand(0, Math.PI * 2),
+            toggleAt: rand(2, 20)
+          });
+        }
+      }
+      list.push(b);
+      x += bw + rand(2, layer === 'near' ? 14 : 6);
+    }
+    return list;
+  }
+
+  function buildWorld() {
+    const groundY = H * 0.82;
+    buildingsFar = makeBuildings(0, 30, 70, 0.18, 0.45, groundY + 10, 'far');
+    buildingsNear = makeBuildings(0, 50, 130, 0.25, 0.62, groundY, 'near');
+
+    raindrops = [];
+    const n = Math.floor((W * H) / 2600);
+    for (let i = 0; i < n; i++) raindrops.push(newDrop(true));
+
+    stars = [];
+    for (let i = 0; i < 80; i++) {
+      stars.push({ x: rand(0, W), y: rand(0, H * 0.45), r: rand(0.3, 1.1), tw: rand(0, Math.PI * 2) });
+    }
+    splashes = [];
+    lightning.nextAt = rand(6, 12);
+    skylineCanvas = null;
+  }
+
+  function newDrop(anywhere) {
+    const depth = Math.random(); // 0 = 멀리, 1 = 가까이
+    return {
+      x: rand(-W * 0.2, W * 1.1),
+      y: anywhere ? rand(-H, H) : rand(-120, -10),
+      len: 10 + depth * 22,
+      speed: 9 + depth * 16,
+      depth,
+      wind: 1.5 + depth * 2
+    };
+  }
+
+  // ---------- 그리기 ----------
+  function drawSky(time, flash) {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, `rgb(${6 + flash * 60}, ${8 + flash * 70}, ${22 + flash * 90})`);
+    g.addColorStop(0.55, `rgb(${16 + flash * 70}, ${18 + flash * 80}, ${40 + flash * 100})`);
+    g.addColorStop(1, `rgb(${30 + flash * 60}, ${26 + flash * 60}, ${48 + flash * 80})`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // 구름 덩어리(부드러운 원 여러 개)
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    for (let i = 0; i < 7; i++) {
+      const cx = ((i * 211 + time * 6) % (W + 400)) - 200;
+      const cy = H * 0.08 + Math.sin(i * 1.7) * H * 0.05;
+      const r = 140 + (i % 3) * 60;
+      const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      const lum = 28 + flash * 120;
+      cg.addColorStop(0, `rgba(${lum}, ${lum + 4}, ${lum + 18}, 0.9)`);
+      cg.addColorStop(1, 'rgba(20, 22, 40, 0)');
+      ctx.fillStyle = cg;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    }
+    ctx.restore();
+
+    // 별(구름 사이로 희미하게)
+    for (const s of stars) {
+      const a = 0.15 + 0.2 * (0.5 + 0.5 * Math.sin(time * 2 + s.tw));
+      ctx.fillStyle = `rgba(220, 230, 255, ${a})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 도시 빛공해(지평선 근처 붉은 보랏빛)
+    const hz = ctx.createLinearGradient(0, H * 0.35, 0, H * 0.82);
+    hz.addColorStop(0, 'rgba(120, 60, 140, 0)');
+    hz.addColorStop(1, 'rgba(140, 70, 120, 0.35)');
+    ctx.fillStyle = hz;
+    ctx.fillRect(0, H * 0.35, W, H * 0.47);
+  }
+
+  function drawBuildings(list, time, flash, dt) {
+    for (const b of list) {
+      // 몸체
+      const base = b.shade;
+      const r = Math.floor(10 + base * 60 + flash * 110);
+      const gch = Math.floor(10 + base * 60 + flash * 110);
+      const bl = Math.floor(18 + base * 80 + flash * 120);
+      ctx.fillStyle = `rgb(${r}, ${gch}, ${bl})`;
+      ctx.fillRect(b.x, b.y, b.w, b.h + 20);
+
+      // 지붕 장식
+      if (b.roofStyle === 1) {
+        ctx.fillRect(b.x + b.w * 0.3, b.y - 8, b.w * 0.4, 8);
+      } else if (b.roofStyle === 2) {
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y);
+        ctx.lineTo(b.x + b.w / 2, b.y - b.w * 0.25);
+        ctx.lineTo(b.x + b.w, b.y);
+        ctx.fill();
+      }
+      if (b.antenna) {
+        ctx.strokeStyle = `rgb(${r + 20}, ${gch + 20}, ${bl + 20})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(b.x + b.w / 2, b.y);
+        ctx.lineTo(b.x + b.w / 2, b.y - b.w * 0.35);
+        ctx.stroke();
+        // 항공 장애등(빨간 점멸)
+        const blink = (Math.sin(time * 3 + b.x) > 0.6) ? 1 : 0.15;
+        ctx.fillStyle = `rgba(255, 50, 60, ${blink})`;
+        ctx.beginPath();
+        ctx.arc(b.x + b.w / 2, b.y - b.w * 0.35, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 창문
+      for (const w of b.windows) {
+        // 가끔 켜지고 꺼짐
+        w.toggleAt -= dt;
+        if (w.toggleAt <= 0) {
+          w.toggleAt = rand(4, 25);
+          if (Math.random() < 0.5) {
+            w.lit = !w.lit;
+            w.target = w.lit ? rand(0.5, 1) : 0;
+          }
+        }
+        w.brightness += (w.target - w.brightness) * Math.min(1, dt * 4);
+        const flicker = 1 - w.flickerRate * 8 * (0.5 + 0.5 * Math.sin(time * 17 + w.phase));
+        const a = w.brightness * flicker;
+        if (a > 0.02) {
+          const [cr, cg, cb] = w.color;
+          ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${a})`;
+          ctx.fillRect(w.x, w.y, w.w, w.h);
+          if (b.layer === 'near' && a > 0.6) {
+            // 창문 빛 번짐
+            ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${(a - 0.6) * 0.18})`;
+            ctx.fillRect(w.x - 2, w.y - 2, w.w + 4, w.h + 4);
+          }
+        } else {
+          ctx.fillStyle = `rgba(0, 0, 0, 0.25)`;
+          ctx.fillRect(w.x, w.y, w.w, w.h);
+        }
+      }
+    }
+  }
+
+  function drawGround(time, flash) {
+    const groundY = H * 0.82;
+    // 젖은 도로 기본색
+    const g = ctx.createLinearGradient(0, groundY, 0, H);
+    g.addColorStop(0, `rgb(${18 + flash * 60}, ${18 + flash * 60}, ${30 + flash * 80})`);
+    g.addColorStop(1, `rgb(${8 + flash * 30}, ${8 + flash * 30}, ${14 + flash * 40})`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, groundY, W, H - groundY);
+
+    // 건물 창문 빛의 바닥 반사(세로로 늘어진 흐릿한 띠)
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const b of buildingsNear) {
+      for (let i = 0; i < b.windows.length; i += 3) {
+        const w = b.windows[i];
+        if (w.brightness < 0.3) continue;
+        const [cr, cg, cb] = w.color;
+        const wobble = Math.sin(time * 4 + w.x * 0.1) * 1.5;
+        const refY = groundY + (groundY - w.y) * 0.22;
+        const len = 18 + (groundY - w.y) * 0.08;
+        const rg = ctx.createLinearGradient(0, refY, 0, refY + len);
+        rg.addColorStop(0, `rgba(${cr}, ${cg}, ${cb}, ${w.brightness * 0.10})`);
+        rg.addColorStop(1, `rgba(${cr}, ${cg}, ${cb}, 0)`);
+        ctx.fillStyle = rg;
+        ctx.fillRect(w.x + wobble, refY, w.w, len);
+      }
+    }
+    ctx.restore();
+
+    // 물웅덩이 반짝임(파문)
+    ctx.strokeStyle = 'rgba(180, 200, 240, 0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 12; i++) {
+      const px = ((i * 173 + 50) % W);
+      const py = groundY + 10 + ((i * 97) % (H - groundY - 20));
+      const ph = (time * 0.8 + i) % 1;
+      ctx.beginPath();
+      ctx.ellipse(px, py, 6 + ph * 22, 2 + ph * 6, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawRain(dt) {
+    ctx.lineCap = 'round';
+    for (const d of raindrops) {
+      d.x += d.wind * dt * 60;
+      d.y += d.speed * dt * 60;
+      if (d.y > H + 20 || d.x > W + 50) {
+        // 바닥에 닿으면 튀는 물방울
+        if (d.depth > 0.6 && Math.random() < 0.5) {
+          splashes.push({ x: d.x - 20, y: H * 0.82 + rand(0, H * 0.18), r: 0, life: 1 });
+        }
+        Object.assign(d, newDrop(false));
+      }
+      const a = 0.12 + d.depth * 0.35;
+      ctx.strokeStyle = `rgba(190, 205, 235, ${a})`;
+      ctx.lineWidth = 0.6 + d.depth * 1.2;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x - d.wind * 1.2, d.y - d.len);
+      ctx.stroke();
+    }
+
+    // 물 튀김
+    for (let i = splashes.length - 1; i >= 0; i--) {
+      const s = splashes[i];
+      s.life -= dt * 3;
+      s.r += dt * 40;
+      if (s.life <= 0) { splashes.splice(i, 1); continue; }
+      ctx.strokeStyle = `rgba(200, 215, 245, ${s.life * 0.5})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(s.x, s.y, s.r, s.r * 0.35, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  // ---------- 번개 ----------
+  function makeBolt() {
+    const startX = rand(W * 0.15, W * 0.85);
+    const segs = [];
+    let x = startX, y = -10;
+    const endY = rand(H * 0.3, H * 0.6);
+    segs.push({ x, y });
+    while (y < endY) {
+      x += rand(-28, 28);
+      y += rand(12, 30);
+      segs.push({ x, y });
+    }
+    // 가지
+    const branches = [];
+    for (let i = 3; i < segs.length - 2; i += randInt(2, 4)) {
+      if (Math.random() < 0.5) {
+        const pts = [{ x: segs[i].x, y: segs[i].y }];
+        let bx = segs[i].x, by = segs[i].y;
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        const n = randInt(3, 7);
+        for (let k = 0; k < n; k++) {
+          bx += dir * rand(8, 24);
+          by += rand(6, 18);
+          pts.push({ x: bx, y: by });
+        }
+        branches.push(pts);
+      }
+    }
+    return { segs, branches };
+  }
+
+  function triggerLightning() {
+    lightning.bolt = makeBolt();
+    lightning.boltLife = 1;
+    lightning.flash = 1;
+    lightning.strobe = randInt(1, 3);
+    lightning.nextAt = rand(10, 24);
+  }
+
+  function updateLightning(dt, elapsed) {
+    lightning.nextAt -= dt;
+    if (lightning.nextAt <= 0 && lightning.boltLife <= 0) triggerLightning();
+
+    if (lightning.boltLife > 0) {
+      lightning.boltLife -= dt * 2.6;
+      if (lightning.boltLife <= 0 && lightning.strobe > 0) {
+        lightning.strobe--;
+        if (lightning.strobe > 0 && Math.random() < 0.7) {
+          lightning.bolt = makeBolt();
+          lightning.boltLife = 0.6;
+          lightning.flash = 0.8;
+        }
+      }
+    }
+    lightning.flash = Math.max(0, lightning.flash - dt * 2.2);
+  }
+
+  function drawBolt() {
+    if (lightning.boltLife <= 0 || !lightning.bolt) return;
+    const a = Math.min(1, lightning.boltLife);
+    const drawPath = (pts, width, color, blur) => {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = 'rgba(200, 220, 255, 1)';
+      ctx.shadowBlur = blur;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.stroke();
+      ctx.restore();
+    };
+    const { segs, branches } = lightning.bolt;
+    drawPath(segs, 6, `rgba(170, 190, 255, ${a * 0.35})`, 30);
+    drawPath(segs, 2, `rgba(255, 255, 255, ${a})`, 12);
+    for (const b of branches) {
+      drawPath(b, 1.2, `rgba(230, 238, 255, ${a * 0.8})`, 8);
+    }
+  }
+
+  // ---------- 안개 / 비네팅 ----------
+  function drawFogAndVignette(time) {
+    // 낮게 깔린 안개
+    const groundY = H * 0.82;
+    const fg = ctx.createLinearGradient(0, groundY - H * 0.12, 0, groundY + 10);
+    const drift = 0.5 + 0.5 * Math.sin(time * 0.3);
+    fg.addColorStop(0, 'rgba(60, 70, 110, 0)');
+    fg.addColorStop(1, `rgba(60, 70, 110, ${0.18 + drift * 0.08})`);
+    ctx.fillStyle = fg;
+    ctx.fillRect(0, groundY - H * 0.12, W, H * 0.12 + 10);
+
+    // 비네팅
+    const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+    vg.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    vg.addColorStop(1, 'rgba(0, 0, 0, 0.55)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // ---------- 메인 루프 ----------
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const time = (now - t0) / 1000;
+
+    updateLightning(dt, time);
+    const flash = lightning.flash * lightning.flash; // 급격히 사라지도록
+
+    drawSky(time, flash);
+    drawBolt();
+    drawBuildings(buildingsFar, time, flash * 0.6, dt);
+    drawBuildings(buildingsNear, time, flash, dt);
+    drawGround(time, flash);
+    drawRain(dt);
+    drawFogAndVignette(time);
+
+    // 번개 순간 화면 전체 섬광
+    if (flash > 0.01) {
+      ctx.fillStyle = `rgba(210, 220, 255, ${flash * 0.35})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', resize);
+  canvas.addEventListener('click', triggerLightning);
+  resize();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
